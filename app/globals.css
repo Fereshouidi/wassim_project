@@ -12,15 +12,54 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
+} */
+
+*{
+  font-family:'Times New Roman', Times, serif;
+  scroll-behavior: smooth;
+  /* transition: 0.3s; */
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.page {
+  font-family: sans-serif; /* font-sans */
+  background-color: rgb(246, 246, 246);
+  min-height: 100vh;
+}
+
+@media (min-width: 640px) {
+  .page {
+    /* padding: 5rem; p-20 (20 * 0.25rem = 5rem) */
+  }
+}
+
+
+.x{
+  background-color: #000000;
+}
+
+.scrollbar-hidden {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+.no-sellect {
+  user-select: none;
+}
+
+a {
+  width: 500px;
 }

@@ -1,0 +1,144 @@
+"use client";
+import { headerHeight } from '@/constent';
+import { SideBarProps } from '@/types';
+import React, { useEffect, useState } from 'react'
+import SearchBar from '../sub/searchBar';
+import LanguageSelector from '../sub/languageSelector';
+import ThemeModeSelectorForMobiles from '../sub/themeModeSelectorForMobiles';
+import { useScreen } from '@/contexts/screenProvider';
+import { useTheme } from '@/contexts/themeProvider';
+import { useLanguage } from '@/contexts/languageContext';
+import LanguageSelectorForMobile from '../sub/languageSelectorForMobile';
+
+const SideBar = ({
+    isActive,
+    setIsActive
+}: SideBarProps) => {
+
+    const swreenWidth = useScreen().screenWidth;
+    const { activeTheme, colors } = useTheme();
+    const { activeLanguage } = useLanguage();
+    // const [isExist, setIsExist] = useState<boolean>(false);
+
+    // useEffect(() => {
+        
+    //     if (!isActive) {
+    //         setTimeout(() => {
+    //             setIsExist(false);
+    //         }, 300)
+    //     } else {
+    //         setIsExist(true);
+    //     }
+
+    // }, [isActive])
+
+  return (
+    <div 
+        className={`w-screen h-screen z-50 fixed top-0 ${isActive ? "" : "invisible"} no-sellect`}
+        style={{
+            backgroundColor: "rgba(74, 74, 74, 0.677)",
+            // display: isExist ? "" : "none"
+        }}
+        onClick={() => setIsActive(!isActive)}
+    >
+        <div    
+            className={`
+                w-[320px] h-full bg-white absolute top-0 ${isActive ? "left-0" : "left-[-320px]"} 
+                flex flex-col items-center justify-between p-2 overflow-y-scroll scrollbar-hidden transition-[left] duration-300
+            `}
+            style={{
+                boxShadow: '0 0px 10px rgba(13, 13, 13, 0.02)',
+                backgroundColor: colors.dark[100]
+            }}
+            onClick={(e) => e.stopPropagation()}
+        >
+
+            <div className='w-full flex flex-1 flex-col items-center  gap-4 '>
+                <div 
+                    className='  w-3xs  flex items-center justify-center  p-7'
+                    style={{
+                        height: headerHeight*1.5,
+                    }}
+                >
+                    <img 
+                        className=' h-full object-contain no-sellect'
+                        src={activeTheme == "dark" ? "/logo-simple-white.jpg" : "/logo-simple-black.jpg" }
+                    />
+                </div>
+
+                <SearchBar
+                    className='w-full border-[0.5px] border-gray-100 min-h-14'
+                    inputClassName='bg-transparent'
+                    style={{
+                        borderColor: colors.dark[300]
+                    }}
+                    inputStyle={{
+                        borderColor: colors.dark[300],
+                        color: colors.light[300],
+                    }}
+                    searchIcon={ activeTheme == "light" ? "/icons/searchBlack.png" : "/icons/searchWhite.png" }
+                    searchIconStyle={{
+                        backgroundColor: colors.light[100],
+                        color: colors.dark[100]
+                    }}
+                />
+
+                <ul className='w-full mt-5'>
+                    <li
+                        className='flex h-14 border-b-[1px] border-b-gray-100 text-sm'
+                        style={{
+                            borderBottomColor: colors.dark[200]
+                        }}
+                    >
+                        <a href="#" 
+                            className='w-full h-ful flex items-center px-7'
+                            style={{
+                                color: colors.light[200]
+                            }}    
+                        >{activeLanguage.nav.home}</a>
+                    </li>
+                    <li
+                        className='flex h-14 border-b-[1px] border-b-gray-100 text-sm'
+                        style={{
+                            borderBottomColor: colors.dark[200]
+                        }}
+                    >
+                        <a href="#" 
+                            className='w-full h-full flex items-center px-7'
+                            style={{
+                                color: colors.light[200]
+                            }}    
+                        >{activeLanguage.nav.collection}</a>
+                    </li>
+                    <li
+                        className='flex h-14 border-b-[1px] border-b-gray-100 text-sm'
+                        style={{
+                            borderBottomColor: colors.dark[200]
+                        }}
+                    >
+                        <a href="#" 
+                            className='w-full h-full flex items-center px-7'
+                            style={{
+                                color: colors.light[200]
+                            }}    
+                        >{activeLanguage.nav.contact}</a>
+                    </li>
+                </ul>
+            </div>
+            
+
+            {swreenWidth < 1000 && <div className='h-[30vh] flex flex-col justify-start items-center gap-10 py-5'>
+                <ThemeModeSelectorForMobiles/>
+                <LanguageSelectorForMobile
+                    className="w-full p-2"
+                />
+            </div>}
+
+
+        </div>
+      
+    </div>
+  )
+}
+
+export default SideBar
