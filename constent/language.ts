@@ -14,7 +14,8 @@ export const english = {
             system: "System",
             dark: "Dark",
             light: "Light"
-        }
+        },
+        more: "get more"
     }
 } as LanguageStracture;
 
@@ -32,7 +33,8 @@ export const frensh = {
             system: "Système",
             dark: "Sombre",
             light: "Clair"
-        }
+        },
+        more: "charger plus"
     },
 
 } as LanguageStracture;

@@ -1,5 +1,10 @@
 import { CSSProperties } from "react"
 
+type language = {
+    fr: string,
+    en: string
+}
+
 export type ScreenContextType = {
     screenWidth: number
     setScreenWidth: (value: number) => void
@@ -52,7 +57,8 @@ export type LanguageStracture = {
             system: string,
             dark: string,
             light: string,
-        }
+        },
+        more: string
     }
 }
 
@@ -67,3 +73,57 @@ export type Colors = {
   light: Record<100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900, string>;
   dark: Record<100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900, string>;
 };
+
+export type PubType = {
+    topBar?: {
+        fr: string;
+        en: string;
+    };
+    heroBanner?: {
+        sm: string;
+        md: string;
+    };
+    bottomBanner?: {
+        sm: string;
+        md: string;
+    };
+    createdAt?: Date;
+    updatedAt?: Date;
+}
+
+export type OwnerInfoType = {
+    _id?: string;
+    name?: string;
+    logo?: {
+        dark?: string;
+        light?: string;
+    };
+    socialMedia?: {
+        facebook?: string;
+        instagram?: string;
+        gmail?: string;
+    };
+    homeCollections?: CollectionType[]
+    createdAt?: Date;
+    updatedAt?: Date;
+}
+
+export type ProductType = {
+    _id?: string ;
+    name: language;
+    price: number;
+    thumbNail: string;
+    images?: string[];
+    description?: string;
+    collection: string;
+    stock?: number;
+    createdAt?: string;
+    updatedAt?: string;
+}
+
+export type CollectionType = {
+    _id?: string ;
+    name: language;
+    type: "private" | "public";
+    products?: ProductType[];
+}

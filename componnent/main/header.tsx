@@ -12,7 +12,7 @@ import { useTheme } from '@/contexts/themeProvider';
 
 const Header = ({
     isSideBarActive,
-    setIsSideBarActive
+    setIsSideBarActive,
 }: HeaderProps) => {
 
   const screenWidth = useScreen().screenWidth;
@@ -25,7 +25,7 @@ const Header = ({
     return (
 
       <div 
-        className='w-full bg-white flex items-center justify-between px-5 sticky top-0'
+        className='w-full bg-white flex items-center justify-between px-5 sticky top-0 z-50'
         style={{
             height: headerHeight/1.2,
             boxShadow: '0 0px 10px rgba(13, 13, 13, 0.02)',
@@ -38,7 +38,7 @@ const Header = ({
           setIsSideBarActive={setIsSideBarActive}
         />
 
-        <div className='flex flex-row items-end gap-1.5 absolute left-50 translate-x-[-50%]'>
+        <div className='flex flex-row items-end gap-1.5 absolute left-[50%] translate-x-[-50%]'>
 
           <div 
             className='h-16 flex items-center justify-center'
@@ -77,7 +77,7 @@ const Header = ({
 
     return (
       <div 
-          className='w-full bg-white flex items-center justify-between gap-5 px-10 sticky top-0'
+          className='w-full bg-white flex items-center justify-between gap-5 px-10 sticky top-0 z-50'
           style={{
               height: headerHeight,
               boxShadow: '0 0px 10px rgba(13, 13, 13, 0.02)',

@@ -1,13 +1,24 @@
 "use client";
 import { headerHeight } from '@/constent';
+import { useLanguage } from '@/contexts/languageContext';
 import { ScreenProvider, useScreen } from '@/contexts/screenProvider';
 import { useTheme } from '@/contexts/themeProvider';
 import React, { useContext } from 'react'
 
-const AnnouncementBar = () => {
+type AnnouncementBarType = {
+  topBar: {
+    fr: string,
+    en: string
+  }
+}
+
+const AnnouncementBar = ({
+  topBar
+}: AnnouncementBarType) => {
 
   const screenWidth = useScreen().screenWidth;
   const { colors } = useTheme();
+  const { activeLanguage } = useLanguage();
 
   return (
     <div 
@@ -19,7 +30,7 @@ const AnnouncementBar = () => {
             color: colors.light[100]
         }}
     >
-      LIVRAISON GRATUITE A PARTIR DE 100 DT ACHAT
+      {topBar[activeLanguage.language]}
     </div>
   )
 }
