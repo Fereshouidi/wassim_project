@@ -57,14 +57,14 @@ export default function Home() {
 
       <HomeCollections/>
 
-        <div 
+        {/* <div 
           className="h-[5000px]"
           style={{
             backgroundColor: colors.light[200]
           }}
         >
-          {/* hhhhhhh */}
-        </div>
+          hhhhhhh
+        </div> */}
         
       <SideBar
         isActive={sideBarActive}
