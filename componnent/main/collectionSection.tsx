@@ -36,7 +36,7 @@ const CollectionSection = ({
 
         const fetchData = async () => {
             
-                setProducts(productsLoading);
+                setProducts(fakeProducts);
 
                 await axios.get(backEndUrl + "/getProductsByCollection", { params: { 
                     collectionId: collection._id, 
@@ -46,9 +46,9 @@ const CollectionSection = ({
 
                 .then(({data}) => {
 
-                    products?.length && products?.length > limit ?
-                        setProducts([...products, ...data.products]) : 
-                        setProducts(data.products);
+                    // products?.length && products?.length > limit ?
+                    //     setProducts([...products, ...data.products]) : 
+                    //     setProducts(data.products);
 
                     setProductsCount(data.productsCount);
                     
