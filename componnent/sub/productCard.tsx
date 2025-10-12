@@ -25,13 +25,18 @@ const ProductCard = ({
         
         <div 
             className='w-full h-[185px] sm:h-[250px] overflow-hidden'
+            style={{
+                backgroundColor: colors.light[300]
+            }}
         >
             {
                 product.thumbNail ? <img 
                     src={product.thumbNail}
                     className='w-full h-full hover:scale-110 duration-300'
                 /> :
-                <SkeletonLoading/>
+                product.thumbNail == null ?
+                    <SkeletonLoading/> :
+                null
                 }
         </div>
 
@@ -43,7 +48,7 @@ const ProductCard = ({
             }}
         >
             {
-                product.name[activeLanguage.language] ?
+                product.name[activeLanguage.language] != null ?
                     product.name[activeLanguage.language] + ""
                 : <SkeletonLoading/>
             }
@@ -57,7 +62,7 @@ const ProductCard = ({
             }}
         >
             {
-                product.price ?
+                product.price != null ?
                     product.price + " D.T"
                 : <SkeletonLoading/>
             }

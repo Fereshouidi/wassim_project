@@ -23,8 +23,9 @@ const CollectionSection = ({
     const [limit, setLimit] = useState<number>(6);
     const [skip, setSkip] = useState<number>(0);
     const [productsCount, setProductsCount] = useState<number>(0);
+    const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
 
-    const [products, setProducts] = useState<ProductType[] | undefined>(undefined);
+    const [products, setProducts] = useState<ProductType[]>(productsLoading);
 
     useEffect(() => {
         console.log({productsCount});
@@ -36,7 +37,8 @@ const CollectionSection = ({
 
         const fetchData = async () => {
             
-                setProducts(fakeProducts);
+
+                // isFirstRender && setProducts(fakeProducts);
 
                 await axios.get(backEndUrl + "/getProductsByCollection", { params: { 
                     collectionId: collection._id, 
@@ -46,11 +48,12 @@ const CollectionSection = ({
 
                 .then(({data}) => {
 
-                    // products?.length && products?.length > limit ?
-                    //     setProducts([...products, ...data.products]) : 
-                    //     setProducts(data.products);
+                    !isFirstRender && data.products ?
+                        setProducts([...products, ...data.products]) : 
+                        setProducts(data.products);
 
                     setProductsCount(data.productsCount);
+                    setIsFirstRender(false);
                     
                 })
                 .catch((err) => {

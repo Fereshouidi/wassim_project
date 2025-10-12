@@ -1,8 +1,8 @@
 import { CSSProperties } from "react"
 
 type language = {
-    fr: string,
-    en: string
+    fr: string | null,
+    en: string | null
 }
 
 export type ScreenContextType = {
@@ -116,16 +116,16 @@ export type OwnerInfoType = {
 }
 
 export type ProductType = {
-    _id?: string ;
+    _id?: string | null;
     name: language;
-    price: number;
-    thumbNail: string;
-    images?: string[];
-    description?: string;
-    collection: string;
-    stock?: number;
-    createdAt?: string;
-    updatedAt?: string;
+    price: number | null;
+    thumbNail: string | null;
+    images?: string[] | null;
+    description?: string | null;
+    collection: string | null;
+    stock?: number | null;
+    createdAt?: string | null;
+    updatedAt?: string | null;
 }
 
 export type CollectionType = {
