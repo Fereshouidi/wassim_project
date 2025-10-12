@@ -7,7 +7,7 @@ import { useLanguage } from '@/contexts/languageContext'
 import axios from 'axios';
 import { backEndUrl } from '@/api';
 import MoreBotton from '../sub/moreBotton';
-import { fakeProducts } from '@/constent/data';
+import { fakeProducts, productsLoading } from '@/constent/data';
 
 type collectionSectionType = {
     collection: CollectionType
@@ -36,7 +36,7 @@ const CollectionSection = ({
 
         const fetchData = async () => {
             
-                setProducts(fakeProducts);
+                setProducts(productsLoading);
 
                 await axios.get(backEndUrl + "/getProductsByCollection", { params: { 
                     collectionId: collection._id, 
@@ -46,9 +46,9 @@ const CollectionSection = ({
 
                 .then(({data}) => {
 
-                    // products?.length && products?.length > limit ?
-                    //     setProducts([...products, ...data.products]) : 
-                    //     setProducts(data.products);
+                    products?.length && products?.length > limit ?
+                        setProducts([...products, ...data.products]) : 
+                        setProducts(data.products);
 
                     setProductsCount(data.productsCount);
                     

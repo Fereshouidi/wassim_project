@@ -70,9 +70,16 @@ export type LanguageContextType = {
 
 
 export type Colors = {
-  light: Record<100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900, string>;
-  dark: Record<100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900, string>;
+  light: Record<
+    100 | 150 | 200 | 250 | 300 | 350 | 400 | 450 | 500 | 550 | 600 | 650 | 700 | 750 | 800 | 850 | 900,
+    string
+  >;
+  dark: Record<
+    100 | 150 | 200 | 250 | 300 | 350 | 400 | 450 | 500 | 550 | 600 | 650 | 700 | 750 | 800 | 850 | 900,
+    string
+  >;
 };
+
 
 export type PubType = {
     topBar?: {

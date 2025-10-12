@@ -63,3 +63,16 @@ body {
 a {
   width: 500px;
 }
+
+@keyframes move {
+  from {
+    left: -100%;
+  }
+  to {
+    left: 200%;
+  }
+}
+
+.animate-move {
+  animation: move 1s infinite ease-in-out;
+}

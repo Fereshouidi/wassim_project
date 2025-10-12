@@ -88,3 +88,86 @@ export const fakeProducts = [
     }
 
 ] as ProductType[]
+
+export const productsLoading = [
+
+    {
+        _id: "1",
+        name: {
+            fr: "",
+            en: ""
+        },
+        price: 0,
+        thumbNail: "",
+        images: [],
+        description: "",
+        collection: "",
+        stock: 0
+    },
+    {
+        _id: "2",
+        name: {
+            fr: "",
+            en: ""
+        },
+        price: 0,
+        thumbNail: "",
+        images: [],
+        description: "",
+        collection: "",
+        stock: 0
+    },
+    {
+        _id: "3",
+        name: {
+            fr: "",
+            en: ""
+        },
+        price: 0,
+        thumbNail: "",
+        images: [],
+        description: "",
+        collection: "",
+        stock: 0
+    },
+    {
+        _id: "4",
+        name: {
+            fr: "",
+            en: ""
+        },
+        price: 0,
+        thumbNail: "",
+        images: [],
+        description: "",
+        collection: "",
+        stock: 0
+    },
+    {
+        _id: "5",
+        name: {
+            fr: "",
+            en: ""
+        },
+        price: 0,
+        thumbNail: "",
+        images: [],
+        description: "",
+        collection: "",
+        stock: 0
+    },
+    {
+        _id: "6",
+        name: {
+            fr: "",
+            en: ""
+        },
+        price: 0,
+        thumbNail: "",
+        images: [],
+        description: "",
+        collection: "",
+        stock: 0
+    }
+
+] as ProductType[]
