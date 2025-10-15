@@ -76,3 +76,27 @@ a {
 .animate-move {
   animation: move 1s infinite ease-in-out;
 }
+
+@keyframes slide {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-slide {
+  display: flex;
+  animation: slide 5s linear infinite;
+  /* transform: (); */
+}
+
+
+.slide {
+  transition: 1s ease;
+  scroll-behavior: smooth;
+}
+
+
+

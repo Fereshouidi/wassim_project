@@ -132,5 +132,5 @@ export type CollectionType = {
     _id?: string ;
     name: language;
     type: "private" | "public";
-    products?: ProductType[];
+    display: "vertical" | "horizontal"
 }

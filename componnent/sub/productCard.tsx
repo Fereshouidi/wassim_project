@@ -1,15 +1,19 @@
 import { useLanguage } from '@/contexts/languageContext'
 import { useTheme } from '@/contexts/themeProvider'
 import { ProductType } from '@/types'
-import React from 'react'
+import React, { CSSProperties } from 'react'
 import SkeletonLoading from './SkeletonLoading'
 
 type productCardType = {
     product: ProductType
+    className?: String
+    style?: CSSProperties
 }
 
 const ProductCard = ({
-    product
+    product,
+    className,
+    style
 }: productCardType) => {
 
     const { colors } = useTheme();
@@ -17,8 +21,9 @@ const ProductCard = ({
 
   return (
     <div 
-        className='w-[185px] sm:w-[250px] min-h-[185px] sm:min-h-[250px] flex flex-col items-center gap-3 my-3 overflow-hidden cursor-pointer'
+        className={`flex flex-col items-center gap-3 overflow-hidden cursor-pointer ${className}`}
         style={{
+            ...style
             // backgroundColor: colors.light[100]
         }}
     >
