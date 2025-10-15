@@ -90,6 +90,16 @@ const Slider = ({
         }
   }, [productLoadingVisible])
 
+  useEffect(() => {
+
+    if (!userScroll) return;
+
+    setTimeout(() => {
+        setUserScroll(false);
+    }, 3000)
+
+  }, [userScroll])
+
     return (
         <div 
             className='w-full relative overflow-x-scroll scrollbar-hidden slide'
