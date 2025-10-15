@@ -6,10 +6,13 @@ import React, { useEffect, useState } from 'react'
 
 const ThemeMode = () => {
 
-  const { activeTheme, setActiveTheme, colors } = useTheme();
+  const { themeDispo, activeTheme, setActiveTheme, colors } = useTheme();
   const [optionsListExist, setOptionListExit] = useState<boolean>(false);
   const { activeLanguage } = useLanguage();
   const [deviceTheme, setDeviceTheme] = useState<"light" | "dark" |undefined>(undefined);
+  const [firstRender, setFirstRender] = useState<boolean>(true);
+  const [replaceSystemtoRealTheme, setReplaceSystemtoRealTheme] = useState<boolean>(false);
+
 
   const [activeChoise, setActiveChoise] = useState<{
     theme: Themes,
@@ -38,16 +41,51 @@ const ThemeMode = () => {
 
   useEffect(() => {
 
+    if (firstRender) return;
+
     if (activeChoise.theme == "system") {
-      setActiveChoise({
-        theme: !deviceTheme? "dark" : "light",
-        label: activeLanguage.sideMatter.theme.system
-      })
+      // setActiveChoise({
+      //   theme: 'system',
+      //   label: activeLanguage.sideMatter.theme.system
+      // })
+        setActiveTheme(deviceTheme? "dark" : "light")
     } else {
         setActiveTheme(activeChoise.theme);
     }
 
+    console.log({activeChoise});
+    
+
+    localStorage.setItem('activeTheme', activeChoise.theme)
+
   }, [activeChoise, deviceTheme])
+
+  // useEffect(() => {
+  //   if (activeChoise.theme == "system") {
+  //     setActiveChoise({
+  //       ...activeChoise,
+  //       theme: deviceTheme? "dark" : "light"
+  //     })
+  //     setReplaceSystemtoRealTheme(true)
+  //   }
+  // }, [activeChoise])
+
+  useEffect(() => {
+    const storedTheme = localStorage.getItem('activeTheme') as Themes;
+    console.log({storedTheme});
+    
+    const storedTheme_ = themeDispo.find(( theme ) => theme.theme == storedTheme);
+
+    if (storedTheme_) {
+      setActiveChoise({
+        theme: storedTheme_?.theme,
+        label: storedTheme_?.label
+      });
+    };
+    setFirstRender(false);
+  }, [])
+
+  // localStorage.removeItem('activeTheme')
 
   return (
 
@@ -100,7 +138,36 @@ const ThemeMode = () => {
             }}
           >
 
-            <li 
+            {themeDispo.map((theme, index) => (
+
+              <li 
+                key={index}
+                className={`flex w-full h-full items-center gap-2 px-6`}
+                style={{
+                  display: optionsListExist ? "" : "none",
+                  backgroundColor: activeChoise.label == theme.label ? colors.light[100] : colors.light[300]
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = colors.light[400])}
+                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = activeChoise.label == theme.label ? 
+                  colors.light[100] : 
+                  colors.light[300]
+                )}
+                onClick={() => setActiveChoise({
+                  theme: theme.theme,
+                  label: theme.label
+                })}
+              >
+                <img 
+                  className='w-5 h-5'
+                  src={activeTheme == "dark" ? theme.icon.dark : theme.icon.light }
+                  alt="" 
+                />
+                <h6>{theme.label}</h6>
+              </li>
+
+            ))}
+
+            {/* <li 
               className={`flex w-full h-full items-center gap-2 px-6`}
               style={{
                 display: optionsListExist ? "" : "none",
@@ -170,7 +237,7 @@ const ThemeMode = () => {
                 alt="" 
               />
               <h6>{activeLanguage.sideMatter.theme.light}</h6>
-            </li>
+            </li> */}
 
           </ul>
 

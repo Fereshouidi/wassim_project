@@ -2,7 +2,7 @@ import { english, frensh, languagesDispo } from '@/constent/language'
 import { useLanguage } from '@/contexts/languageContext'
 import { useTheme } from '@/contexts/themeProvider'
 import { LanguageStracture } from '@/types'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 type LanguageSelectorProps = {
     className?: string
@@ -20,6 +20,14 @@ const LanguageSelector = ({
         setActiveLanguage(languageSelected);
         localStorage.setItem('activeLanguage', languageSelected.language);
     }
+
+    useEffect(() => {
+        const storedLanguage = localStorage.getItem("activeLanguage");
+        const storedLanguage_ = languagesDispo.find(lang => lang.language == storedLanguage);
+        if (!storedLanguage_) return;
+        
+        setActiveLanguage(storedLanguage_)
+    }, [])
     
 
   return (

@@ -32,7 +32,7 @@ const MoreBotton = ({
                 color: colors.dark[100],
                 // backgroundColor: colors.light[100]
             }}
-            onClick={() => setSkip(skip + limit)}
+            onClick={() => !isLoading && setSkip(skip + limit)}
             ref={ref}
             onMouseEnter={(e) => {
                 if (screenWidth > 1000) {

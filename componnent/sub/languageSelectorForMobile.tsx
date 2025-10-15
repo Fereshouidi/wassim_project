@@ -1,7 +1,7 @@
 import { english, frensh, languagesDispo } from '@/constent/language'
 import { useLanguage } from '@/contexts/languageContext'
 import { useTheme } from '@/contexts/themeProvider'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 type LanguageSelectorProps = {
     className?: string
@@ -15,7 +15,14 @@ const LanguageSelectorForMobile = ({
     const { activeLanguage, setActiveLanguage } = useLanguage();
     const [optionsListExist, setOptionListExit] = useState<boolean>(true);
     
-
+    useEffect(() => {
+        const storedLanguage = localStorage.getItem("activeLanguage");
+        const storedLanguage_ = languagesDispo.find(lang => lang.language == storedLanguage);
+        if (!storedLanguage_) return;
+        
+        setActiveLanguage(storedLanguage_)
+    }, [])
+    
   return (
     <div 
         className={`w-32 relative flex flex-row justify-center items-center outline-none ${className} cursor-pointer no-sellect`}

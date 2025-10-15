@@ -39,11 +39,11 @@ export default function RootLayout({
         // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ScreenProvider>
-          <ThemeProvider>
             <LanguageProvider>
-              {children}
+              <ThemeProvider>
+                {children}
+              </ThemeProvider>
             </LanguageProvider>
-          </ThemeProvider>
         </ScreenProvider>
       </body>
       

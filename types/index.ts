@@ -37,7 +37,17 @@ export type SearchBarProps = {
 
 export type Themes = "system" | "dark" | "light"
 
+export type ThemeProps = {
+  label: string
+  theme: Themes
+  icon: {
+    dark: string,
+    light: string
+  }
+}
+
 export type ThemeContextType = {
+    themeDispo: ThemeProps[]
     activeTheme: Themes
     setActiveTheme: (value: "light" | "dark") => void
     colors: Colors

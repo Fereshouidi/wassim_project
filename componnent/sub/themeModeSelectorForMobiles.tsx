@@ -6,10 +6,11 @@ import React, { useEffect, useState } from 'react'
 
 const ThemeModeSelectorForMobiles = () => {
 
-    const [activeChoise, setActiveChoise] = useState<Themes>("system");
+    const [activeChoise, setActiveChoise] = useState<Themes>("light");
     const { activeTheme, setActiveTheme, colors } = useTheme();
     const { activeLanguage } = useLanguage();
     const [deviceTheme, setDeviceTheme] = useState<"light" | "dark" | undefined>(undefined);
+    const [firstRender, setFirstRender] = useState<boolean>(true);
 
 
     useEffect(() => {
@@ -30,15 +31,24 @@ const ThemeModeSelectorForMobiles = () => {
 
     useEffect(() => {
 
+      if (firstRender) return;
+
         if (activeChoise == "system") {
           if (!deviceTheme) return;
           setActiveTheme( deviceTheme );
+          localStorage.setItem('activeTheme', "system");
         } else {
-            setActiveTheme(activeChoise);
+          setActiveTheme(activeChoise);
+          localStorage.setItem('activeTheme', activeChoise);
         }
 
     }, [activeChoise, deviceTheme])
 
+    useEffect(() => {
+      const storedTheme = localStorage.getItem('activeTheme') as Themes;
+      setActiveChoise(storedTheme);
+      setFirstRender(false);
+    }, [])
 
   return (
     <div className='w-full flex flex-row justify-center gap-3 no-sellect'>
