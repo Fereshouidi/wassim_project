@@ -9,6 +9,8 @@ import { backEndUrl } from '@/api';
 import MoreBotton from '../sub/moreBotton';
 import { fakeProducts, productsLoading } from '@/constent/data';
 import Slider from '../sub/slider';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+
 
 type collectionSectionType = {
     collection: CollectionType
@@ -25,6 +27,7 @@ const CollectionSection = ({
     const [skip, setSkip] = useState<number>(0);
     const [productsCount, setProductsCount] = useState<number>(0);
     const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const [products, setProducts] = useState<ProductType[]>(productsLoading);
 
@@ -41,6 +44,7 @@ const CollectionSection = ({
             
 
                 // isFirstRender && setProducts(fakeProducts);
+                setLoading(true);
 
                 await axios.get(backEndUrl + "/getProductsByCollection", { params: { 
                     collectionId: collection._id, 
@@ -56,6 +60,7 @@ const CollectionSection = ({
 
                     setProductsCount(data.productsCount);
                     setIsFirstRender(false);
+                    setLoading(false);
                     
                 })
                 .catch((err) => {
@@ -102,11 +107,14 @@ const CollectionSection = ({
 
                     { 
                         products?.length != productsCount &&  
-                        <MoreBotton
-                            skip={skip}
-                            setSkip={setSkip}
-                            limit={limit}
-                        />
+
+                            <MoreBotton
+                                skip={skip}
+                                setSkip={setSkip}
+                                limit={limit}
+                                isLoading={loading}
+                            /> 
+
                     }
 
                 </div>

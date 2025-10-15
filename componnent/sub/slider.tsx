@@ -39,7 +39,9 @@ const Slider = ({
 
     useEffect(() => {
         
-        if (isFirstRender && products.length == productsCount) {
+        // if (isFirstRender) return;
+
+        if (!isFirstRender && products.length == productsCount) {
             setProductLoadingShowUp(false);
         }
 
@@ -50,12 +52,12 @@ const Slider = ({
 
         const observer = new IntersectionObserver(
             (entries) => {
-            const entry = entries[0];
-            setProductLoadingVisible(entry.isIntersecting);
+                const entry = entries[0];
+                setProductLoadingVisible(entry.isIntersecting);
             },
             {
-            root: sliderRef.current,
-            threshold: 0.0001,
+                root: document.body,
+                threshold: 1,
             }
         );
 
