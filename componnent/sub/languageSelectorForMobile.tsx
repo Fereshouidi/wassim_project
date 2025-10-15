@@ -57,7 +57,10 @@ const LanguageSelectorForMobile = ({
                     style={{
                         color: colors.dark[200]
                     }}
-                    onClick={() => {setActiveLanguage(language), alert('hh')}}
+                    onClick={() => {
+                        setActiveLanguage(language);
+                        localStorage.setItem("activeLanguage", language.language)
+                    }}
                 >
                     {language.label}
                 </option>
