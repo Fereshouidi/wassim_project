@@ -18,10 +18,15 @@ const LanguageSelectorForMobile = ({
     useEffect(() => {
         const storedLanguage = localStorage.getItem("activeLanguage");
         const storedLanguage_ = languagesDispo.find(lang => lang.language == storedLanguage);
+        console.log({storedLanguage});
+        
         if (!storedLanguage_) return;
         
         setActiveLanguage(storedLanguage_)
     }, [])
+
+        // localStorage.removeItem("activeLanguage")
+
     
   return (
     <div 
@@ -45,9 +50,13 @@ const LanguageSelectorForMobile = ({
             style={{
                 color: colors.light[200]
             }}
+            value={activeLanguage.language}
             onChange={(e) => {
                 const selectedLang = languagesDispo.find(lan => lan.language === e.target.value);
-                if (selectedLang) setActiveLanguage(selectedLang);
+                if (selectedLang) {
+                    setActiveLanguage(selectedLang);
+                    localStorage.setItem("activeLanguage", selectedLang.language);
+                }
             }}
         >
             {languagesDispo.map((language, index) => (
@@ -57,10 +66,10 @@ const LanguageSelectorForMobile = ({
                     style={{
                         color: colors.dark[200]
                     }}
-                    onClick={() => {
-                        setActiveLanguage(language);
-                        localStorage.setItem("activeLanguage", language.language)
-                    }}
+                    // onClick={() => {
+                    //     setActiveLanguage(language);
+                    //     localStorage.setItem("activeLanguage", language.language)
+                    // }}
                 >
                     {language.label}
                 </option>

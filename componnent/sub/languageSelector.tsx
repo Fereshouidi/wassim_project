@@ -28,7 +28,6 @@ const LanguageSelector = ({
         
         setActiveLanguage(storedLanguage_)
     }, [])
-    
 
   return (
     <div 
