@@ -37,9 +37,9 @@ const HomeCollections = () => {
     return (
 
         <div 
-            className='w-full min-h-44'
+            className='w-full'
             style={{
-                backgroundColor: colors.light[200]
+                // backgroundColor: colors.light[250]
             }}
         >
         

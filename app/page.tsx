@@ -35,7 +35,12 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="page h-auto">
+    <div 
+      className="page h-auto"
+      style={{
+        backgroundColor: colors.light[200]
+      }}
+    >
 
       {pub?.topBar && <AnnouncementBar
         topBar={pub?.topBar}
@@ -47,11 +52,17 @@ export default function Home() {
       />
 
       <div 
-        className="w-full  bg-gray-500"
+        className="w-full"
+        style={{
+          backgroundColor: colors.dark[800]
+        }}
       >
         <img 
           src={screenWidth < 1000 ? pub?.heroBanner?.sm : pub?.heroBanner?.md}
           className="w-full h-full object-cover max-h-[70vh]" 
+          style={{
+            backgroundColor: colors.dark[800]
+          }}
         />
       </div>
 
