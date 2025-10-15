@@ -39,8 +39,7 @@ const Slider = ({
 
     useEffect(() => {
         
-        if (products.length == productsCount) {
-            
+        if (isFirstRender && products.length == productsCount) {
             setProductLoadingShowUp(false);
         }
 
