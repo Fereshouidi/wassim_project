@@ -4,18 +4,24 @@ import { CollectionType } from '@/types';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import CollectionCard from '../sub/collectionCard';
+import { collectionsLoading } from '@/constent/data';
 
 const CollectionsSections = () => {
 
     const { activeLanguage } = useLanguage();
     const [collections, setCollections] = useState<CollectionType[] | undefined>(undefined);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
 
+        setCollections(collectionsLoading);
+
         const fetchData = async () => {
+            setIsLoading(true);
             await axios.get(backEndUrl + "/getPublicCollections")
             .then(({ data }) => {
-                setCollections(data.publicCollections)
+                setCollections(data.publicCollections);
+                setIsLoading(false);
             })
             .catch((err) => {
                 throw err;
@@ -46,6 +52,7 @@ const CollectionsSections = () => {
             <CollectionCard
                 key={collection._id}
                 collection={collection}
+                isLoading={isLoading}
             />
 
         ))}

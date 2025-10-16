@@ -143,9 +143,9 @@ export type ProductType = {
 }
 
 export type CollectionType = {
-    _id?: string ;
+    _id?: string | null;
     name: language;
-    thumbNail?: string;
+    thumbNail?: string | null;
     type: "private" | "public";
     display: "vertical" | "horizontal"
 }
