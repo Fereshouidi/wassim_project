@@ -7,17 +7,22 @@ import ThemeMode from '../sub/themeModeSelector';
 import LanguageSelector from '../sub/languageSelector';
 import { useScreen } from '@/contexts/screenProvider';
 import MenuIcon from '../sub/menuIcon';
-import { HeaderProps } from '@/types';
+import { HeaderProps, OwnerInfoType } from '@/types';
 import { useTheme } from '@/contexts/themeProvider';
+import axios from 'axios';
+import { backEndUrl } from '@/api';
 
 const Header = ({
     isSideBarActive,
     setIsSideBarActive,
+    ownerInfo, 
+    setOwnerInfo
 }: HeaderProps) => {
 
   const screenWidth = useScreen().screenWidth;
   const { activeTheme, colors } = useTheme();
   // const [isSideBarActive, setIsSideBarActive] = useState<boolean>(true);
+
 
   
   if (screenWidth < 1000) {
@@ -45,10 +50,20 @@ const Header = ({
             style={{
             }}
           >
-            <img 
-              src={activeTheme == "light" ? "/logo-simple-white.jpg" : "/logo-simple-black.jpg" }
-              className=' h-[50%] object-contain no-sellect'
-            />
+              {
+                activeTheme == "light" ? 
+                  <img 
+                    src={ownerInfo?.logo?.light}
+                    className=' h-[50%] object-contain no-sellect'
+                  /> : 
+                activeTheme == "dark" ?
+                  <img 
+                    src={ownerInfo?.logo?.dark}
+                    className=' h-[50%] object-contain no-sellect'
+                  /> :
+                null
+              }
+
           </div>
 
         </div>
@@ -97,10 +112,20 @@ const Header = ({
               style={{
               }}
             >
-              <img 
-                src={activeTheme == "light" ? "/logo-simple-white.jpg" : "/logo-simple-black.jpg" }
-                className=' h-[50%] object-contain no-sellect'
-              />
+              {
+                activeTheme == "light" ? 
+                  <img 
+                    src={ownerInfo?.logo?.light}
+                    className=' h-[50%] object-contain no-sellect'
+                  /> : 
+                activeTheme == "dark" ?
+                  <img 
+                    src={ownerInfo?.logo?.dark}
+                    className=' h-[50%] object-contain no-sellect'
+                  /> :
+                null
+              }
+
             </div>
 
           <div className='w-10'></div>

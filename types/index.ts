@@ -13,6 +13,8 @@ export type ScreenContextType = {
 export type SideBarProps = {
     isActive: boolean
     setIsActive: (value: boolean) => void
+    ownerInfo?: OwnerInfoType 
+    setOwnerInfo: (value: OwnerInfoType) => void
 }
 
 export type MenuIconProps = {
@@ -23,6 +25,8 @@ export type MenuIconProps = {
 export type HeaderProps = {
     isSideBarActive: boolean,
     setIsSideBarActive: (value: boolean) => void
+    ownerInfo?: OwnerInfoType 
+    setOwnerInfo: (value: OwnerInfoType) => void
 }
 
 export type SearchBarProps = {
@@ -141,6 +145,7 @@ export type ProductType = {
 export type CollectionType = {
     _id?: string ;
     name: language;
+    thumbNail?: string;
     type: "private" | "public";
     display: "vertical" | "horizontal"
 }

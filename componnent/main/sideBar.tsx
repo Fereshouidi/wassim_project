@@ -12,7 +12,9 @@ import LanguageSelectorForMobile from '../sub/languageSelectorForMobile';
 
 const SideBar = ({
     isActive,
-    setIsActive
+    setIsActive,
+    ownerInfo, 
+    setOwnerInfo
 }: SideBarProps) => {
 
     const swreenWidth = useScreen().screenWidth;
@@ -60,10 +62,19 @@ const SideBar = ({
                         height: headerHeight*1.5,
                     }}
                 >
-                    <img 
-                        className=' h-full object-contain no-sellect'
-                        src={activeTheme == "dark" ? "/logo-simple-white.jpg" : "/logo-simple-black.jpg" }
-                    />
+              {
+                activeTheme == "light" ? 
+                  <img 
+                    src={ownerInfo?.logo?.dark}
+                    className=' h-full object-contain no-sellect'
+                  /> : 
+                activeTheme == "dark" ?
+                  <img 
+                    src={ownerInfo?.logo?.light}
+                    className=' h-full object-contain no-sellect'
+                  /> :
+                null
+              }
                 </div>
 
                 <SearchBar

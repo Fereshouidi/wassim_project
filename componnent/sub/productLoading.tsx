@@ -39,23 +39,23 @@ const ProductLoading = ({
         </div>
 
 
-        <h4 
-            className='w-full min-h-5 text-sm sm:text-lg text-center px-2 sm:px-0'
+        <div 
+            className='w-full h-5 text-sm sm:text-lg text-center px-2 sm:px-0'
             style={{
                 backgroundColor: colors.light[300]
             }}
         >
             <SkeletonLoading/>
-        </h4>
+        </div>
 
-        <span 
-            className='min-w-[50%] min-h-5 text-lg sm:text-lg font-bold text-center'
+        <div 
+            className='min-w-[50%] h-5 text-lg sm:text-lg font-bold text-center'
             style={{
                 backgroundColor: colors.light[300]
             }}
         >
             <SkeletonLoading/>
-        </span>
+        </div>
 
     </div>
   )

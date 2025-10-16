@@ -3,7 +3,7 @@ import { backEndUrl } from '@/api';
 import { CollectionType } from '@/types';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import CollectionSection from './collectionSection';
+import ProductsSection from './productsSection';
 import { useTheme } from '@/contexts/themeProvider';
 
 const HomeCollections = () => {
@@ -11,10 +11,10 @@ const HomeCollections = () => {
     const [collections, setCollection] = useState<CollectionType[] | undefined>(undefined);
     const { colors } = useTheme();
 
-    useEffect(() => {
-        console.log({collections});
+    // useEffect(() => {
+    //     console.log({collections});
         
-    }, [collections])
+    // }, [collections])
 
     useEffect(() => {
         
@@ -44,7 +44,7 @@ const HomeCollections = () => {
         >
         
             {collections?.map((collection) => (
-                <CollectionSection
+                <ProductsSection
                     key={collection._id}
                     collection={collection}
                 />

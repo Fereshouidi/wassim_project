@@ -12,13 +12,13 @@ import Slider from '../sub/slider';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 
-type collectionSectionType = {
+type ProductsSectionType = {
     collection: CollectionType
 }
 
-const CollectionSection = ({
+const ProductsSection = ({
     collection
-}: collectionSectionType) => {
+}: ProductsSectionType) => {
 
     const { colors } = useTheme();
     const { activeLanguage } = useLanguage();
@@ -31,11 +31,11 @@ const CollectionSection = ({
 
     const [products, setProducts] = useState<ProductType[]>(productsLoading);
 
-    useEffect(() => {
-        console.log({productsCount});
-        console.log({products});
+    // useEffect(() => {
+    //     console.log({productsCount});
+    //     console.log({products});
         
-    }, [products])
+    // }, [products])
 
 
     useEffect(() => {
@@ -91,7 +91,7 @@ const CollectionSection = ({
 
                 <div className='w-full sm:px-24 flex flex-col justify-center items-center'>
 
-                    <div className='w-full flex flex-wrap justify-center gap-2 sm:gap-10'>
+                    <div className='w-full flex flex-wrap justify-center sm:justify-start gap-2 sm:gap-10'>
 
                         {
                             products?.map((product, index) => (
@@ -137,4 +137,4 @@ const CollectionSection = ({
   )
 }
 
-export default CollectionSection
+export default ProductsSection

@@ -18,7 +18,7 @@ const LanguageSelectorForMobile = ({
     useEffect(() => {
         const storedLanguage = localStorage.getItem("activeLanguage");
         const storedLanguage_ = languagesDispo.find(lang => lang.language == storedLanguage);
-        console.log({storedLanguage});
+        // console.log({storedLanguage});
         
         if (!storedLanguage_) return;
         

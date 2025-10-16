@@ -53,7 +53,7 @@ const ThemeMode = () => {
         setActiveTheme(activeChoise.theme);
     }
 
-    console.log({activeChoise});
+    // console.log({activeChoise});
     
 
     localStorage.setItem('activeTheme', activeChoise.theme)
@@ -72,7 +72,7 @@ const ThemeMode = () => {
 
   useEffect(() => {
     const storedTheme = localStorage.getItem('activeTheme') as Themes;
-    console.log({storedTheme});
+    // console.log({storedTheme});
     
     const storedTheme_ = themeDispo.find(( theme ) => theme.theme == storedTheme);
 

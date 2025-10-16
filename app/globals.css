@@ -22,6 +22,7 @@
 *{
   font-family:'Times New Roman', Times, serif;
   scroll-behavior: smooth;
+  /* border-radius: 4px; */
   /* transition: 0.3s; */
 }
 
@@ -45,7 +46,7 @@ body {
 
 
 .x{
-  background-color: #000000;
+  background-color: rgba(13, 13, 13, 0.21);
 }
 
 .scrollbar-hidden {

@@ -56,7 +56,7 @@ const Slider = ({
                 setProductLoadingVisible(entry.isIntersecting);
             },
             {
-                root: document.body,
+                root: sliderRef.current,
                 threshold: 1,
             }
         );
@@ -138,8 +138,6 @@ const Slider = ({
                     <div ref={productLoading} className=''>
                         <ProductLoading
                             className='w-[170px] sm:w-[220px] min-h-[150px] sm:min-h-[220px] m-0 '
-                            
-                            
                         />
                     </div>
 
