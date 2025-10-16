@@ -31,7 +31,7 @@ const CollectionCard = ({
     >
 
         <img 
-            src="" 
+            src="/" 
             alt="" 
             className='w-[270px] h-[270px] flex flex-1 '
             style={{

@@ -31,10 +31,10 @@ export default function Home() {
     fetchData();
   }, [])
 
-  // useEffect(() => {
-  //   console.log({ownerInfo});
+  useEffect(() => {
+    console.log({ownerInfo});
     
-  // }, [ownerInfo])
+  }, [ownerInfo])
 
 
   useEffect(() => {
