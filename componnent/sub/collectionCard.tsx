@@ -49,15 +49,18 @@ const CollectionCard = ({
             isLoading ?
                 <SkeletonLoading/>
             :
-                <div className='w-full h-full'>
-                    
-                </div>
+                null
         }
         </div>
 
         <div className='min-h-7 my-[1px]'>{
             collection.name[activeLanguage.language] ? 
-                <h4 className='min-h-5 p-3 text-center'>
+                <h4     
+                    className='min-h-5 p-3 text-center'
+                    style={{
+                        color: colors.dark[150]
+                    }}
+                >
                     {collection.name[activeLanguage.language]}
                 </h4> :
                 <div className='h-7'>

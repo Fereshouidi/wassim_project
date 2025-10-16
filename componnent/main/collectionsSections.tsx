@@ -41,7 +41,7 @@ const CollectionsSections = () => {
     
 
   return (
-    <div className='w-full flex flex-col items-center sm:p-10'>
+    <div className='w-full flex flex-col items-center p-10 sm:p-10'>
       
       <h4 className='text-2xl sm:text-4xl py-5'>{activeLanguage.nav.collection}</h4>
 
