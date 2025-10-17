@@ -6,7 +6,13 @@ import React, { useEffect, useState } from 'react'
 import CollectionCard from '../sub/collectionCard';
 import { collectionsLoading } from '@/constent/data';
 
-const CollectionsSections = () => {
+type CollectionsSectionType = {
+    importedFrom: "collectionsPage" | "homePage"
+}
+
+const CollectionsSection = ({
+    importedFrom
+}: CollectionsSectionType) => {
 
     const { activeLanguage } = useLanguage();
     const [collections, setCollections] = useState<CollectionType[] | undefined>(undefined);
@@ -17,16 +23,35 @@ const CollectionsSections = () => {
         setCollections(collectionsLoading);
 
         const fetchData = async () => {
+
             setIsLoading(true);
-            await axios.get(backEndUrl + "/getPublicCollections")
-            .then(({ data }) => {
-                setCollections(data.publicCollections);
-                setIsLoading(false);
-            })
-            .catch((err) => {
-                throw err;
-            })
+
+            if (importedFrom == "homePage") {
+
+              await axios.get(backEndUrl + "/topCollections")
+              .then(({ data }) => {
+                  setCollections(data.topCollections);
+                  setIsLoading(false);
+              })
+              .catch((err) => {
+                  throw err;
+              })
+              
+            } else {
+
+              await axios.get(backEndUrl + "/getPublicCollections")
+              .then(({ data }) => {
+                  setCollections(data.publicCollections);
+                  setIsLoading(false);
+              })
+              .catch((err) => {
+                  throw err;
+              })
+
+            }
+
         }
+
         fetchData();
 
     }, [])
@@ -41,9 +66,14 @@ const CollectionsSections = () => {
     
 
   return (
-    <div className='w-full flex flex-col items-center p-10 sm:p-10'>
+    <div className='w-full flex flex-col items-center p-5 sm:p-10'>
       
-      <h4 className='text-2xl sm:text-4xl py-5'>{activeLanguage.nav.collection}</h4>
+      <h4 className='text-2xl sm:text-4xl py-10 sm:py-16'>
+        {importedFrom == "collectionsPage" ?
+          activeLanguage.sideMatter.allCollections :
+          activeLanguage.nav.collections
+        }
+      </h4>
 
       <div className='w-full flex flex-wrap justify-center sm:justify-start gap-5 sm:p-10'>
 
@@ -63,4 +93,4 @@ const CollectionsSections = () => {
   )
 }
 
-export default CollectionsSections;
+export default CollectionsSection;

@@ -1,6 +1,7 @@
 "use client";
 import { backEndUrl } from "@/api";
-import CollectionsSections from "@/componnent/main/collectionsSections";
+import CollectionsSections from "@/componnent/main/collectionsSection";
+import Footer from "@/componnent/main/footer";
 import Header from "@/componnent/main/header";
 import HomeCollections from "@/componnent/main/homeCollections";
 import SideBar from "@/componnent/main/sideBar";
@@ -53,7 +54,7 @@ export default function Home() {
     <div 
       className="page h-auto"
       style={{
-        backgroundColor: colors.light[200]
+        backgroundColor: colors.light[150]
       }}
     >
 
@@ -85,7 +86,11 @@ export default function Home() {
 
       <HomeCollections/>
 
-      <CollectionsSections/>
+      <CollectionsSections
+        importedFrom="homePage"
+      />
+
+      <Footer/>
 
         {/* <div 
           className="h-[5000px]"

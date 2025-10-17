@@ -63,6 +63,7 @@ export type LanguageStracture = {
     nav: {
         home: string,
         collection: string,
+        collections: string,
         contact: string,
     },
     sideMatter: {
@@ -72,7 +73,8 @@ export type LanguageStracture = {
             dark: string,
             light: string,
         },
-        more: string
+        more: string,
+        allCollections: string
     }
 }
 

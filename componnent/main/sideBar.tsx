@@ -9,6 +9,8 @@ import { useScreen } from '@/contexts/screenProvider';
 import { useTheme } from '@/contexts/themeProvider';
 import { useLanguage } from '@/contexts/languageContext';
 import LanguageSelectorForMobile from '../sub/languageSelectorForMobile';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const SideBar = ({
     isActive,
@@ -20,19 +22,8 @@ const SideBar = ({
     const swreenWidth = useScreen().screenWidth;
     const { activeTheme, colors } = useTheme();
     const { activeLanguage } = useLanguage();
-    // const [isExist, setIsExist] = useState<boolean>(false);
+    const router = useRouter();
 
-    // useEffect(() => {
-        
-    //     if (!isActive) {
-    //         setTimeout(() => {
-    //             setIsExist(false);
-    //         }, 300)
-    //     } else {
-    //         setIsExist(true);
-    //     }
-
-    // }, [isActive])
 
   return (
     <div 
@@ -101,12 +92,12 @@ const SideBar = ({
                             borderBottomColor: colors.dark[200]
                         }}
                     >
-                        <a href="#" 
+                        <Link href="/" 
                             className='w-full h-ful flex items-center px-7'
                             style={{
                                 color: colors.light[200]
                             }}    
-                        >{activeLanguage.nav.home}</a>
+                        >{activeLanguage.nav.home}</Link>
                     </li>
                     <li
                         className='flex h-14 border-b-[1px] border-b-gray-100 text-sm'
@@ -114,12 +105,13 @@ const SideBar = ({
                             borderBottomColor: colors.dark[200]
                         }}
                     >
-                        <a href="#" 
+                        <Link href="/pages/collections" 
+                            // onClick={() => router.replace('/pages/collections')}
                             className='w-full h-full flex items-center px-7'
                             style={{
                                 color: colors.light[200]
                             }}    
-                        >{activeLanguage.nav.collection}</a>
+                        >{activeLanguage.nav.collections}</Link>
                     </li>
                     <li
                         className='flex h-14 border-b-[1px] border-b-gray-100 text-sm'

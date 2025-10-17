@@ -33,7 +33,7 @@ const Header = ({
         className='w-full bg-white flex items-center justify-between px-5 sticky top-0 z-50'
         style={{
             height: headerHeight/1.2,
-            boxShadow: '0 0px 10px rgba(13, 13, 13, 0.02)',
+            boxShadow: '0 0px 15px rgba(13, 13, 13, 0.07)',
             backgroundColor: colors.light[100]
         }}
       >
@@ -95,7 +95,7 @@ const Header = ({
           className='w-full bg-white flex items-center justify-between gap-5 px-10 sticky top-0 z-50'
           style={{
               height: headerHeight,
-              boxShadow: '0 0px 10px rgba(13, 13, 13, 0.02)',
+              boxShadow: '0 0px 15px rgba(13, 13, 13, 0.07)',
               backgroundColor: colors.light[100]
           }}
       >

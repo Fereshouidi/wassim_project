@@ -89,9 +89,9 @@ const ProductsSection = ({
         {
             collection.display == "vertical" ?
 
-                <div className='w-full sm:px-24 flex flex-col justify-center items-center'>
+                <div className='w-full sm:px-2 flex flex-col justify-center items-center'>
 
-                    <div className='w-full flex flex-wrap justify-center sm:justify-start gap-2 sm:gap-10'>
+                    <div className='w-full flex flex-wrap justify-center gap-2 sm:gap-10'>
 
                         {
                             products?.map((product, index) => (

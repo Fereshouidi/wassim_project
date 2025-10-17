@@ -6,6 +6,7 @@ export const english = {
     nav: {
         home: "Home",
         collection: "Collection",
+        collections: "Collections",
         contact: "Contact Us"
     },
     sideMatter: {
@@ -15,7 +16,9 @@ export const english = {
             dark: "Dark",
             light: "Light"
         },
-        more: "get more"
+        more: "get more",
+        allCollections: "All of collections"
+
     }
 } as LanguageStracture;
 
@@ -24,6 +27,7 @@ export const frensh = {
     language: "fr",
     nav: {
         home: "Accueil",
+        collections: "Collections",
         collection: "Collection",
         contact: "Contactez Nous"
     },
@@ -34,7 +38,8 @@ export const frensh = {
             dark: "Sombre",
             light: "Clair"
         },
-        more: "charger plus"
+        more: "charger plus",
+        allCollections: "Toutes les collections"
     },
 
 } as LanguageStracture;

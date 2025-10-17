@@ -3,6 +3,7 @@ import { useTheme } from '@/contexts/themeProvider'
 import { CollectionType } from '@/types'
 import React, { useRef, useState } from 'react'
 import SkeletonLoading from './SkeletonLoading'
+import { useRouter } from 'next/navigation'
 
 type CollectionCardType = {
     collection: CollectionType
@@ -18,12 +19,13 @@ const CollectionCard = ({
     const { activeLanguage } = useLanguage();
     const cardRef = useRef<HTMLDivElement>(null);
     const [isHover, setIsHover] = useState<boolean>(false);
+    const router = useRouter();
 
 
 
   return (
     <div 
-        className='w-[300px] rounded-sm cursor-pointer duration-300'
+        className='w-[300px] rounded-sm cursor-pointer duration-300 overflow-hidden'
         style={{
             backgroundColor: colors.light[100],
             boxShadow: isHover ? '0 0px 10px rgba(13, 13, 13, 0.15)' : "0 0px 10px rgba(13, 13, 13, 0.02)",
@@ -31,6 +33,7 @@ const CollectionCard = ({
         }}
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
+        onClick={() => router.push(`/pages/search?collectionId=${collection._id}`)}
     >
 
         <div 
