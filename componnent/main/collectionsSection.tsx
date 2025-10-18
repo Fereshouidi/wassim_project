@@ -5,6 +5,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import CollectionCard from '../sub/collectionCard';
 import { collectionsLoading } from '@/constent/data';
+import { useTheme } from '@/contexts/themeProvider';
 
 type CollectionsSectionType = {
     importedFrom: "collectionsPage" | "homePage"
@@ -17,6 +18,8 @@ const CollectionsSection = ({
     const { activeLanguage } = useLanguage();
     const [collections, setCollections] = useState<CollectionType[] | undefined>(undefined);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const { colors } = useTheme();
+
 
     useEffect(() => {
 
@@ -68,7 +71,12 @@ const CollectionsSection = ({
   return (
     <div className='w-full flex flex-col items-center p-5 sm:p-10'>
       
-      <h4 className='text-2xl sm:text-4xl py-10 sm:py-16'>
+      <h4 
+        className='text-2xl sm:text-4xl py-10 sm:py-16'
+        style={{
+          color: colors.dark[200]
+        }}
+      >
         {importedFrom == "collectionsPage" ?
           activeLanguage.sideMatter.allCollections :
           activeLanguage.nav.collections

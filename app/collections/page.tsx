@@ -28,7 +28,7 @@ const Page = () => {
 
     return (
         <div
-            className="page h-auto"
+            className="page min-h-screen"
             style={{
                 backgroundColor: colors.light[150]
             }}

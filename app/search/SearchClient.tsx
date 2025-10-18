@@ -57,7 +57,10 @@ const Page = () => {
         ownerInfo={ownerInfo}
         setOwnerInfo={setOwnerInfo}
       />
-      {collectionId}
+
+      <div className='w-full min-h-screen'>
+        {collectionId}
+      </div>
 
       <Footer/>
 
