@@ -33,7 +33,7 @@ const CollectionCard = ({
         }}
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
-        onClick={() => router.push(`/search?collectionId=${collection._id}`)}
+        onClick={() => collection.name && router.push(`/search?collectionId=${collection._id}`)}
     >
 
         <div 

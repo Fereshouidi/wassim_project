@@ -17,7 +17,8 @@ export const english = {
             light: "Light"
         },
         more: "get more",
-        allCollections: "All of collections"
+        allCollections: "All of collections",
+        noRes: "No result!"
 
     }
 } as LanguageStracture;
@@ -39,7 +40,8 @@ export const frensh = {
             light: "Clair"
         },
         more: "charger plus",
-        allCollections: "Toutes les collections"
+        allCollections: "Toutes les collections",
+        noRes: "Aucun résultat!"
     },
 
 } as LanguageStracture;

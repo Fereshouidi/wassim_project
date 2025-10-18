@@ -74,7 +74,8 @@ export type LanguageStracture = {
             light: string,
         },
         more: string,
-        allCollections: string
+        allCollections: string,
+        noRes: string
     }
 }
 
