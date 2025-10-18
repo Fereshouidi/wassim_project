@@ -12,7 +12,7 @@ const ShoppingCart = () => {
     >
 
         <img  
-            src={activeTheme == "dark" ? "/icons/shopping-cart-white.png" : "/icons/shopping-cart-black.png" }
+            src={activeTheme == "dark" ? "/icons/shopping-bag-white.png" : "/icons/shopping-bag-black.png" }
             alt="" 
         />
 
