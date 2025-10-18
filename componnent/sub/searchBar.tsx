@@ -32,6 +32,8 @@ const SearchBar = ({
     const [limit, setLimit] = useState<number>(5);
     const [searchResultCount, setSearchResultCount] = useState<number>(0);
     const resRef = useRef<(HTMLParagraphElement | null)[]>([]);
+    const searchResultDivRef = useRef<HTMLDivElement>(null);
+    const [isSkipChanged, setIsSkipChanged] = useState<boolean>(false);
 
 
     useEffect(() => {
@@ -45,7 +47,16 @@ const SearchBar = ({
                 }
             })
             .then(({ data }) => {
-                setSearchResult(data.products);
+                setSearchResult(prev => {
+                    const map = new Map();
+
+                    [...prev, ...data.products].forEach(product => {
+                        map.set(product._id, product);
+                    });
+
+                    return Array.from(map.values());
+                })
+
                 setSearchResultCount(data.productsCount);
             })
             .catch(( err ) => {
@@ -55,12 +66,46 @@ const SearchBar = ({
 
         input && fetchData();
 
-    }, [input])
+    }, [skip])
 
     useEffect(() => {
-        console.log({searchResult});
+        const fetchData = async () => {
+            await axios.get(backEndUrl + "/getProductsBySearch", {
+                params: { 
+                    searchText: input, 
+                    limit, 
+                    skip 
+                }
+            })
+            .then(({ data }) => {
+                setSearchResult(data.products);  
+                setSearchResultCount(data.productsCount);
+            })
+            .catch(( err ) => {
+                throw err;
+            })
+        }
+
+        if (input.length > 0) {
+            setSkip(0);
+            fetchData(); 
+        }    
+
+    }, [input])
+    
+    const handleScroll = () => {
+
+        if (!searchResultDivRef.current) return;
         
-    }, [searchResult])
+
+        const { scrollTop, scrollHeight, clientHeight } = searchResultDivRef.current;
+        const reachedToEnd = scrollTop + clientHeight >= scrollHeight;
+
+        if (reachedToEnd) {
+            setSkip(skip + limit);
+            setIsSkipChanged(true)
+        }
+    };
 
     return(
         <div className={`w-[60%] relative flex flex-col ${containerClassName}`}>
@@ -97,10 +142,12 @@ const SearchBar = ({
             </div>
 
             <div 
-                className='w-full absolute top-full rounded-sm'
+                className='w-full max-h-[100px] absolute top-full rounded-sm overflow-y-scroll scrollbar-hidden'
                 style={{
                     backgroundColor: colors.light[100]
                 }}
+                ref={searchResultDivRef}
+                onScroll={handleScroll}
             >
                 {
                     searchResult.length > 0 && input.length > 0 ?
