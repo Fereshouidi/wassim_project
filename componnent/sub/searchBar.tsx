@@ -33,7 +33,6 @@ const SearchBar = ({
     const [searchResultCount, setSearchResultCount] = useState<number>(0);
     const resRef = useRef<(HTMLParagraphElement | null)[]>([]);
     const searchResultDivRef = useRef<HTMLDivElement>(null);
-    const [isSkipChanged, setIsSkipChanged] = useState<boolean>(false);
 
 
     useEffect(() => {
@@ -103,7 +102,6 @@ const SearchBar = ({
 
         if (reachedToEnd) {
             setSkip(skip + limit);
-            setIsSkipChanged(true)
         }
     };
 
