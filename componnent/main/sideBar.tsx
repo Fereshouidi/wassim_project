@@ -105,7 +105,7 @@ const SideBar = ({
                             borderBottomColor: colors.dark[200]
                         }}
                     >
-                        <Link href="/pages/collections" 
+                        <Link href="/collections" 
                             // onClick={() => router.replace('/pages/collections')}
                             className='w-full h-full flex items-center px-7'
                             style={{
