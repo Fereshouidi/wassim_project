@@ -69,6 +69,7 @@ const SideBar = ({
                 </div>
 
                 <SearchBar
+                    containerClassName='w-full'
                     className='w-full border-[0.5px] border-gray-100 min-h-14'
                     inputClassName='bg-transparent'
                     style={{

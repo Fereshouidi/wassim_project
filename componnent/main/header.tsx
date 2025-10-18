@@ -135,7 +135,8 @@ const Header = ({
         <div className='w-[75%] h-full flex flex-row justify-between items-center'>
 
           <SearchBar
-            className='h-14 border-[0.5px]'
+            containerClassName="h-14"
+            className='h-full border-[0.02px]'
             style={{
               backgroundColor: colors.light[200],
               borderColor: colors.light[300]

@@ -20,6 +20,7 @@ const SearchBar = ({
     searchIcon,
     searchIconClassName,
     searchIconStyle,
+    containerClassName
 }: SearchBarProps) => {
 
     const [focus, setFocus] = useState(false);
@@ -62,7 +63,7 @@ const SearchBar = ({
     }, [searchResult])
 
     return(
-        <div className={`w-[60%] relative flex flex-col`}>
+        <div className={`w-[60%] relative flex flex-col ${containerClassName}`}>
 
             <div 
                 className={`w-full relative flex flex-row ${className}`}
