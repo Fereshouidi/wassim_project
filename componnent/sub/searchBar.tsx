@@ -1,6 +1,7 @@
 "use client";
 import { backEndUrl } from '@/api';
 import { useLanguage } from '@/contexts/languageContext';
+import { useScreen } from '@/contexts/screenProvider';
 import { useTheme } from '@/contexts/themeProvider';
 import { ProductType, SearchBarProps } from '@/types';
 import axios from 'axios';
@@ -33,11 +34,14 @@ const SearchBar = ({
     const [searchResultCount, setSearchResultCount] = useState<number>(0);
     const resRef = useRef<(HTMLParagraphElement | null)[]>([]);
     const searchResultDivRef = useRef<HTMLDivElement>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const { screenWidth } = useScreen();
 
 
     useEffect(() => {
 
         const fetchData = async () => {
+            setIsLoading(true);
             await axios.get(backEndUrl + "/getProductsBySearch", {
                 params: { 
                     searchText: input, 
@@ -55,8 +59,8 @@ const SearchBar = ({
 
                     return Array.from(map.values());
                 })
-
                 setSearchResultCount(data.productsCount);
+                setIsLoading(false);
             })
             .catch(( err ) => {
                 throw err;
@@ -68,6 +72,7 @@ const SearchBar = ({
     }, [skip])
 
     useEffect(() => {
+        setIsLoading(true);
         const fetchData = async () => {
             await axios.get(backEndUrl + "/getProductsBySearch", {
                 params: { 
@@ -79,6 +84,7 @@ const SearchBar = ({
             .then(({ data }) => {
                 setSearchResult(data.products);  
                 setSearchResultCount(data.productsCount);
+                setIsLoading(false);
             })
             .catch(( err ) => {
                 throw err;
@@ -171,12 +177,28 @@ const SearchBar = ({
                                     color: colors.dark[200]
                                 }}
                             >
-                                {product.name[activeLanguage.language]}
+                                {
+                                    screenWidth > 1000 ?
+
+                                        (product.name[activeLanguage.language]?.length ?? 0) > 80 ? 
+                                            (product.name[activeLanguage.language]?.slice(0, 80) ?? "") + "..." :
+                                            (product.name[activeLanguage.language] ?? "")
+
+                                    : 
+
+                                        (product.name[activeLanguage.language]?.length ?? 0) > 30 ? 
+                                            (product.name[activeLanguage.language]?.slice(0, 30) ?? "") + "..." :
+                                            (product.name[activeLanguage.language] ?? "")
+
+                                }
                             </p>
                         ))
                     : input.length > 0 && searchResult.length == 0 ?
 
-                        <p className='p-5'>{activeLanguage.sideMatter.noRes}</p>
+                        isLoading ? 
+                            <p className='p-5'>{activeLanguage.sideMatter.loading + "..."}</p>
+                        :
+                            <p className='p-5'>{activeLanguage.sideMatter.noRes}</p>
                     : null
                 }
             </div>

@@ -18,7 +18,8 @@ export const english = {
         },
         more: "get more",
         allCollections: "All of collections",
-        noRes: "No result!"
+        noRes: "No result!",
+        loading: "loading"
 
     }
 } as LanguageStracture;
@@ -41,7 +42,8 @@ export const frensh = {
         },
         more: "charger plus",
         allCollections: "Toutes les collections",
-        noRes: "Aucun résultat!"
+        noRes: "Aucun résultat!",
+        loading: "chargement"
     },
 
 } as LanguageStracture;
