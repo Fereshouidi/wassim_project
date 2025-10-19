@@ -29,7 +29,7 @@ const SearchBar = ({
     const [input, setInput] = useState<string>('');
     const [searchResult, setSearchResult] = useState<ProductType[]>([]);
     const [skip, setSkip] = useState<number>(0);
-    const [limit, setLimit] = useState<number>(5);
+    const [limit, setLimit] = useState<number>(8);
     const [searchResultCount, setSearchResultCount] = useState<number>(0);
     const resRef = useRef<(HTMLParagraphElement | null)[]>([]);
     const searchResultDivRef = useRef<HTMLDivElement>(null);
@@ -140,7 +140,7 @@ const SearchBar = ({
             </div>
 
             <div 
-                className='w-full max-h-[100px] absolute top-full rounded-sm overflow-y-scroll scrollbar-hidden'
+                className='w-full max-h-[500px] absolute top-full rounded-sm overflow-y-scroll scrollbar-hidden'
                 style={{
                     backgroundColor: colors.light[100]
                 }}
