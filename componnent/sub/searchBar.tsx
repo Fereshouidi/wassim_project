@@ -7,6 +7,7 @@ import { ProductType, SearchBarProps } from '@/types';
 import axios from 'axios';
 // import SearchIcon from "@/app/svg/icons/search";
 import React, { CSSProperties, useState, useContext, useEffect, useRef } from 'react';
+import AiMode from './aiMode';
 // import english from '@/app/languages/english.json';
 // import arabic from '@/app/languages/arabic.json';
 // import { LanguageSelectorContext } from "@/app/contexts/LanguageSelectorContext";
@@ -37,6 +38,7 @@ const SearchBar = ({
     const searchResultDivRef = useRef<HTMLDivElement>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const { screenWidth } = useScreen();
+    const [aiModeActive, setAiModeActive] = useState<boolean>(false);
 
 
     useEffect(() => {
@@ -134,15 +136,25 @@ const SearchBar = ({
                     onChange={(e) => setInput(e.target.value)}
                 />
                 
-                <img 
-                    className='h-[90%] p-4 absolute right-[3px] top-[50%] translate-y-[-50%] rounded-sm cursor-pointer'
-                    src={searchIcon} 
-                    alt="" 
-                    style={{
-                        // backgroundColor: colors.dark[100]
-                        ...searchIconStyle,
-                    }}
-                />
+                <div
+                    className='h-full absolute right-[3px] top-[50%] translate-y-[-50%] rounded-sm cursor-pointer flex justify-between items-center duration-300'
+                >
+                    <AiMode
+                        aiModeActive={aiModeActive}
+                        setAiModeActive={setAiModeActive}
+                    />
+
+                    <img 
+                        className='h-full p-4 rounded-sm cursor-pointer'
+                        src={searchIcon} 
+                        alt="" 
+                        style={{
+                            // backgroundColor: colors.dark[100]
+                            ...searchIconStyle,
+                        }}
+                    />
+                </div>
+
 
             </div>
 

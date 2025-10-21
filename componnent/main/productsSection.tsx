@@ -75,7 +75,7 @@ const ProductsSection = ({
 
   return (
 
-    <div className='w-full sm:px-24 flex flex-col justify-center items-center'>
+    <div className='w-full flex flex-col justify-center items-center'>
 
         <h2 
             className='text-2xl sm:text-5xl sm:m-20 m-10'
@@ -86,10 +86,16 @@ const ProductsSection = ({
             {collection.name[activeLanguage.language]}
         </h2>
 
+    {/* <DotLottieReact
+      src="https://lottie.host/1754c77d-0972-4dff-8844-f0350d515947/kliZzgbtLk.lottie"
+      loop
+      autoplay
+    /> */}
+
         {
             collection.display == "vertical" ?
 
-                <div className='w-full sm:px-2 flex flex-col justify-center items-center'>
+                <div className='w-full sm:px-24 flex flex-col justify-center items-center'>
 
                     <div className='w-full flex flex-wrap justify-center gap-2 sm:gap-10'>
 
