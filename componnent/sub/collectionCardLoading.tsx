@@ -49,7 +49,7 @@ const CollectionCardLoading = ({
         </div>
 
         <div 
-            className='min-w-[50%] h-5 text-lg sm:text-lg font-bold text-center'
+            className='min-w-[50%] h-5 text-lg sm:text-lg font-bold text-center m-5'
             style={{
                 backgroundColor: colors.light[300]
             }}

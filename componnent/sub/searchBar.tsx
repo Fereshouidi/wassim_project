@@ -21,7 +21,8 @@ const SearchBar = ({
     searchIcon,
     searchIconClassName,
     searchIconStyle,
-    containerClassName
+    containerClassName,
+    resSectionStyle
 }: SearchBarProps) => {
 
     const [focus, setFocus] = useState(false);
@@ -148,7 +149,7 @@ const SearchBar = ({
             <div 
                 className='w-full max-h-[500px] absolute top-full rounded-sm overflow-y-scroll scrollbar-hidden'
                 style={{
-                    backgroundColor: colors.light[100]
+                    ...resSectionStyle
                 }}
                 ref={searchResultDivRef}
                 onScroll={handleScroll}
@@ -172,7 +173,7 @@ const SearchBar = ({
                                         resRef.current[index].style.backgroundColor = 'transparent'
                                     }
                                 }}
-                                className='px-4 py-2 cursor-pointer'
+                                className='px-4 py-2 text-sm cursor-pointer'
                                 style={{
                                     color: colors.dark[200]
                                 }}
@@ -196,9 +197,9 @@ const SearchBar = ({
                     : input.length > 0 && searchResult.length == 0 ?
 
                         isLoading ? 
-                            <p className='p-5'>{activeLanguage.sideMatter.loading + "..."}</p>
+                            <p className='p-5 text-sm'>{activeLanguage.sideMatter.loading + "..."}</p>
                         :
-                            <p className='p-5'>{activeLanguage.sideMatter.noRes}</p>
+                            <p className='p-5 text-sm'>{activeLanguage.sideMatter.noRes}</p>
                     : null
                 }
             </div>

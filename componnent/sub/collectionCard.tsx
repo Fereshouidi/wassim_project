@@ -56,17 +56,17 @@ const CollectionCard = ({
         }
         </div>
 
-        <div className='min-h-10 my-[1px]'>{
+        <div className='min-h-10 mt-[1px]'>{
             collection.name[activeLanguage.language] ? 
                 <h4     
-                    className='min-h-5 p-3 text-center'
+                    className='min-h-10 p-3 text-center'
                     style={{
                         color: colors.dark[150]
                     }}
                 >
                     {collection.name[activeLanguage.language]}
                 </h4> :
-                <div className='h-7'>
+                <div className='h-10'>
                     <SkeletonLoading/>
                 </div>
         }</div>

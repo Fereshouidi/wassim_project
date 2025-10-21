@@ -146,8 +146,11 @@ const Header = ({
             }}
             searchIcon={ activeTheme == "dark" ? "/icons/searchBlack.png" : "/icons/searchWhite.png" }
             searchIconStyle={{
-              backgroundColor: colors.dark[100]
-          }}
+                backgroundColor: colors.dark[100]
+            }}
+            resSectionStyle={{
+                backgroundColor: colors.light[100]
+            }}
           />
 
           <ThemeMode/>

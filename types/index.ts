@@ -37,7 +37,8 @@ export type SearchBarProps = {
     searchIcon: string,
     searchIconClassName?: string,
     searchIconStyle?: CSSProperties,
-    containerClassName?: string
+    containerClassName?: string,
+    resSectionStyle?: CSSProperties
 }
 
 export type Themes = "system" | "dark" | "light"

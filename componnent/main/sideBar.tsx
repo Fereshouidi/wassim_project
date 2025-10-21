@@ -84,6 +84,12 @@ const SideBar = ({
                         backgroundColor: colors.light[100],
                         color: colors.dark[100]
                     }}
+                    resSectionStyle={{
+                        backgroundColor: colors.dark[100],
+                        color: colors.light[100],
+                        border: `0.02px solid ${colors.light[800]}`,
+                        borderTop: 'none'
+                    }}
                 />
 
                 <ul className='w-full mt-5'>
