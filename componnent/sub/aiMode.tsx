@@ -25,7 +25,7 @@ const AiMode = ({
     return (
 
         <div 
-            className={`${aiModeHover || aiModeActive ? 'w-[100px]' : 'w-[50px]'} h-[80%] flex justify-center items-center bg-red-500 relative overflow-hidden m-3 rounded-full duration-300`}
+            className={`${aiModeHover || aiModeActive ? 'w-[100px]' : 'w-[50px]'} h-[80%] flex justify-center items-center relative overflow-hidden m-3 rounded-full duration-300`}
             onClick={() => {
                 setAiModeActive(!aiModeActive)
                 setAiModeHover(aiModeActive ? false : aiModeHover)
@@ -33,7 +33,7 @@ const AiMode = ({
         >
 
             <div    
-                className={`${aiModeHover || aiModeActive ? 'w-[97px]' : 'w-[47px]'} h-[92%] flex justify-center items-center rounded-full p-2 z-10 overflow-hidden relative duration-300`}
+                className={`${aiModeHover || aiModeActive ? 'w-[97px] p-3' : 'w-[47px] p-2'} h-[92%] flex justify-center items-center rounded-full z-10 overflow-hidden relative duration-300`}
                 style={{
                     ...aiIconStyle,
                     // backgroundColor: colors.light[200]
