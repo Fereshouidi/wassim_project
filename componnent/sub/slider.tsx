@@ -26,7 +26,7 @@ const Slider = ({
     limit
 }: sliderProps) => {
 
-    const [cardWidth, setCardWidth] = useState<number>(4);
+    const [cardWidth, setCardWidth] = useState<number>(25);
     const [sliderWidth, setSliderWidth] = useState<number>(90);
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [userScroll, setUserScroll] = useState<boolean>(false);
