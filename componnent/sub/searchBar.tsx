@@ -23,7 +23,9 @@ const SearchBar = ({
     searchIconClassName,
     searchIconStyle,
     containerClassName,
-    resSectionStyle
+    resSectionStyle,
+    aiIconStyle,
+    aiIconContentStyle
 }: SearchBarProps) => {
 
     const [focus, setFocus] = useState(false);
@@ -142,6 +144,8 @@ const SearchBar = ({
                     <AiMode
                         aiModeActive={aiModeActive}
                         setAiModeActive={setAiModeActive}
+                        aiIconStyle={aiIconStyle} 
+                        aiIconContentStyle={aiIconContentStyle}
                     />
 
                     <img 
@@ -158,63 +162,80 @@ const SearchBar = ({
 
             </div>
 
-            <div 
-                className='w-full max-h-[500px] absolute top-full rounded-sm overflow-y-scroll scrollbar-hidden'
-                style={{
-                    ...resSectionStyle
-                }}
-                ref={searchResultDivRef}
-                onScroll={handleScroll}
-            >
-                {
-                    searchResult.length > 0 && input.length > 0 ?
+                    
+            { 
+                aiModeActive ?
 
-                        searchResult.map((product, index) => (
-                            <p 
-                                key={product._id}
-                                ref={(el: HTMLParagraphElement | null) => {
-                                    resRef.current[index] = el;
-                                }}                            
-                                onMouseEnter={(e) => {
-                                    if (resRef.current[index]) {
-                                        resRef.current[index].style.backgroundColor = colors.light[300]
+                    <div 
+                        className='p-2'
+                        style={{
+                            ...resSectionStyle
+                        }}
+                    >
+                        {input.length > 0 && "ya wassim ridh rahi mazelet ma te5demch hadhika"}
+                    </div>
+
+                :
+
+                <div 
+                    className='w-full max-h-[500px] absolute top-full rounded-sm overflow-y-scroll scrollbar-hidden'
+                    style={{
+                        ...resSectionStyle
+                    }}
+                    ref={searchResultDivRef}
+                    onScroll={handleScroll}
+                >
+                    {
+                        searchResult.length > 0 && input.length > 0 ?
+
+                            searchResult.map((product, index) => (
+                                <p 
+                                    key={product._id}
+                                    ref={(el: HTMLParagraphElement | null) => {
+                                        resRef.current[index] = el;
+                                    }}                            
+                                    onMouseEnter={(e) => {
+                                        if (resRef.current[index]) {
+                                            resRef.current[index].style.backgroundColor = colors.light[300]
+                                        }
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        if (resRef.current[index]) {
+                                            resRef.current[index].style.backgroundColor = 'transparent'
+                                        }
+                                    }}
+                                    className='px-4 py-2 text-sm cursor-pointer'
+                                    style={{
+                                        color: colors.dark[200]
+                                    }}
+                                >
+                                    {
+                                        screenWidth > 1000 ?
+
+                                            (product.name[activeLanguage.language]?.length ?? 0) > 80 ? 
+                                                (product.name[activeLanguage.language]?.slice(0, 80) ?? "") + "..." :
+                                                (product.name[activeLanguage.language] ?? "")
+
+                                        : 
+
+                                            (product.name[activeLanguage.language]?.length ?? 0) > 30 ? 
+                                                (product.name[activeLanguage.language]?.slice(0, 30) ?? "") + "..." :
+                                                (product.name[activeLanguage.language] ?? "")
+
                                     }
-                                }}
-                                onMouseLeave={(e) => {
-                                    if (resRef.current[index]) {
-                                        resRef.current[index].style.backgroundColor = 'transparent'
-                                    }
-                                }}
-                                className='px-4 py-2 text-sm cursor-pointer'
-                                style={{
-                                    color: colors.dark[200]
-                                }}
-                            >
-                                {
-                                    screenWidth > 1000 ?
+                                </p>
+                            ))
+                        : input.length > 0 && searchResult.length == 0 ?
 
-                                        (product.name[activeLanguage.language]?.length ?? 0) > 80 ? 
-                                            (product.name[activeLanguage.language]?.slice(0, 80) ?? "") + "..." :
-                                            (product.name[activeLanguage.language] ?? "")
+                            isLoading ? 
+                                <p className='p-5 text-sm'>{activeLanguage.sideMatter.loading + "..."}</p>
+                            :
+                                <p className='p-5 text-sm'>{activeLanguage.sideMatter.noRes}</p>
+                        : null
+                    }
+                </div>
 
-                                    : 
-
-                                        (product.name[activeLanguage.language]?.length ?? 0) > 30 ? 
-                                            (product.name[activeLanguage.language]?.slice(0, 30) ?? "") + "..." :
-                                            (product.name[activeLanguage.language] ?? "")
-
-                                }
-                            </p>
-                        ))
-                    : input.length > 0 && searchResult.length == 0 ?
-
-                        isLoading ? 
-                            <p className='p-5 text-sm'>{activeLanguage.sideMatter.loading + "..."}</p>
-                        :
-                            <p className='p-5 text-sm'>{activeLanguage.sideMatter.noRes}</p>
-                    : null
-                }
-            </div>
+            }
 
         </div>
 

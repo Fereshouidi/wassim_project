@@ -19,7 +19,8 @@ export const english = {
         more: "get more",
         allCollections: "All of collections",
         noRes: "No result!",
-        loading: "loading"
+        loading: "loading",
+        aiMode: "ai mode"
 
     }
 } as LanguageStracture;
@@ -43,7 +44,9 @@ export const frensh = {
         more: "charger plus",
         allCollections: "Toutes les collections",
         noRes: "Aucun résultat!",
-        loading: "chargement"
+        loading: "chargement",
+        aiMode: "mode IA"
+
     },
 
 } as LanguageStracture;

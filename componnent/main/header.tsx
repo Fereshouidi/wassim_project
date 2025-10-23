@@ -151,6 +151,9 @@ const Header = ({
             resSectionStyle={{
                 backgroundColor: colors.light[100]
             }}
+            aiIconStyle={{
+                backgroundColor: colors.light[200]
+            }}
           />
 
           <ThemeMode/>

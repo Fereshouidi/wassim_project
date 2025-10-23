@@ -90,6 +90,14 @@ const SideBar = ({
                         border: `0.02px solid ${colors.light[800]}`,
                         borderTop: 'none'
                     }}
+                    // aiIcon=""
+                    aiIconStyle={{
+                        backgroundColor: colors.dark[200],
+                        // color: colors.light[200]
+                    }}
+                    // aiIconContentStyle={{
+                    //     color: colors.light[200]
+                    // }}
                 />
 
                 <ul className='w-full mt-5'>
