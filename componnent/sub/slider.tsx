@@ -131,7 +131,7 @@ const Slider = ({
 
             <div className='w-full flex flex-row items-center justify-between'>
 
-                <div 
+                {screenWidth > 1000 && <div 
                     className={`w-32 h-32 flex justify-center items-center rounded-full mx-10 cursor-pointer duration-300`}
                     onMouseEnter={() => setLeftArrowHover(true)}
                     onMouseLeave={() => setLeftArrowHover(false)}
@@ -142,7 +142,7 @@ const Slider = ({
                         src={activeTheme == "dark" ? "/icons/left-arrow-white.png" : "/icons/left-arrow-black.png"}
                         className='w-12 h-12'
                     />
-                </div>
+                </div>}
                 
                 <div 
                     className='flex relative overflow-x-scroll scrollbar-hidden slide flex-1 justify-between'
@@ -195,7 +195,7 @@ const Slider = ({
 
                 </div>
 
-                <div 
+                {screenWidth > 1000 && <div 
                     className={`w-32 h-32 flex justify-center items-center rounded-full mx-10 cursor-pointer duration-300`}
                     onMouseEnter={() => setRightArrowHover(true)}
                     onMouseLeave={() => setRightArrowHover(false)}
@@ -206,7 +206,7 @@ const Slider = ({
                         src={activeTheme == "dark" ? "/icons/right-arrow-white.png" : "/icons/right-arrow-black.png"}
                         className='w-12 h-12'
                     />
-                </div>
+                </div>}
 
             </div>
 
