@@ -49,7 +49,7 @@ const Slider = ({
     const slidesRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        setCardWidth( screenWidth * 0.25);
+        setCardWidth( screenWidth > 1000 ? screenWidth * 0.25 :  screenWidth * 0.25 );
     }, [])
 
     useEffect(() => {
