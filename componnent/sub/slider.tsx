@@ -26,7 +26,7 @@ const Slider = ({
     limit
 }: sliderProps) => {
 
-    const [cardWidth, setCardWidth] = useState<number>(25);
+    const [cardWidth, setCardWidth] = useState<number>(200);
     const [sliderWidth, setSliderWidth] = useState<number>(90);
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [userScroll, setUserScroll] = useState<boolean>(false);
@@ -49,7 +49,7 @@ const Slider = ({
     const slidesRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        // setCardWidth( screenWidth > 1000 ? screenWidth /5 :  screenWidth/2 );
+        setCardWidth( screenWidth * 0.25);
     }, [])
 
     useEffect(() => {
@@ -183,9 +183,9 @@ const Slider = ({
                                     >
                                         <ProductCard
                                             product={product}
-                                            className=' h-full'
+                                            className='w-full h-full'
                                             style={{
-                                                width: cardWidth + '%'
+                                                // width: cardWidth + '%'
                                             }}
                                         />
                                     </div>
