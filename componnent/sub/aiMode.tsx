@@ -26,7 +26,10 @@ const AiMode = ({
 
         <div 
             className={`${aiModeHover || aiModeActive ? 'w-[100px]' : 'w-[50px]'} h-[80%] flex justify-center items-center bg-red-500 relative overflow-hidden m-3 rounded-full duration-300`}
-            onClick={() => setAiModeActive(!aiModeActive)}
+            onClick={() => {
+                setAiModeActive(!aiModeActive)
+                setAiModeHover(aiModeActive ? false : aiModeHover)
+            }}
         >
 
             <div    

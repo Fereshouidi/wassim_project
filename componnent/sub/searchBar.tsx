@@ -181,7 +181,7 @@ const SearchBar = ({
                 <div 
                     className='w-full max-h-[500px] absolute top-full rounded-sm overflow-y-scroll scrollbar-hidden'
                     style={{
-                        ...resSectionStyle
+                        ...resSectionStyle,
                     }}
                     ref={searchResultDivRef}
                     onScroll={handleScroll}
@@ -197,7 +197,7 @@ const SearchBar = ({
                                     }}                            
                                     onMouseEnter={(e) => {
                                         if (resRef.current[index]) {
-                                            resRef.current[index].style.backgroundColor = colors.light[300]
+                                            resRef.current[index].style.backgroundColor = resSectionStyle?.color + '20'
                                         }
                                     }}
                                     onMouseLeave={(e) => {
@@ -207,7 +207,7 @@ const SearchBar = ({
                                     }}
                                     className='px-4 py-2 text-sm cursor-pointer'
                                     style={{
-                                        color: colors.dark[200]
+                                        color: resSectionStyle?.color
                                     }}
                                 >
                                     {
