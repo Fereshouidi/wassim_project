@@ -167,12 +167,13 @@ const SearchBar = ({
                 aiModeActive ?
 
                     <div 
-                        className='p-2'
+                        className='w-full max-h-[500px] absolute top-full rounded-sm overflow-y-scroll scrollbar-hidden'
                         style={{
                             ...resSectionStyle
+                            
                         }}
                     >
-                        {input.length > 0 && "ya wassim ridh rahi mazelet ma te5demch hadhika"}
+                        {input.length > 0 ? <p className='p-2'>ya wassim ridh rahi mazelet mate5demch hadhika</p> : null }
                     </div>
 
                 :
