@@ -8,6 +8,7 @@ import axios from 'axios';
 // import SearchIcon from "@/app/svg/icons/search";
 import React, { CSSProperties, useState, useContext, useEffect, useRef } from 'react';
 import AiMode from './aiMode';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 // import english from '@/app/languages/english.json';
 // import arabic from '@/app/languages/arabic.json';
 // import { LanguageSelectorContext } from "@/app/contexts/LanguageSelectorContext";
@@ -117,10 +118,10 @@ const SearchBar = ({
     };
 
     return(
-        <div className={`w-[60%] relative flex flex-col ${containerClassName}`}>
+        <div className={`w-[60%] relative flex flex-col overflow-hidden ${containerClassName} relative rounded-sm p-[2px] pb-[1px] pr-0`}>
 
             <div 
-                className={`w-full relative flex flex-row ${className}`}
+                className={`w-full relative flex flex-row rounded-sm z-10 ${className}`}
                 style={style} 
             > 
                 <input 
@@ -179,7 +180,7 @@ const SearchBar = ({
                 :
 
                 <div 
-                    className='w-full max-h-[500px] absolute top-full rounded-sm overflow-y-scroll scrollbar-hidden'
+                    className={`w-full max-h-[500px] absolute top-full rounded-sm overflow-y-scroll scrollbar-hidden ${!input && "invisible"} `}
                     style={{
                         ...resSectionStyle,
                     }}
@@ -237,6 +238,26 @@ const SearchBar = ({
                 </div>
 
             }
+
+            {/* <video 
+                src="/AIBg.json"
+                className="absolute inset-0 w-full h-full pointer-events-none bg-red-500"
+                loop
+                autoPlay
+            ></video> */}
+
+        {/* <div className="absolute inset-0 w-full h-full overflow-hidden flex items-center justify-center z-0">
+        <DotLottieReact
+            src="/AIBg.json"
+            autoplay
+            loop
+            className="w-[150%] h-[150%] scale-[2000%] pointer-events-none"
+        />
+        </div> */}
+
+
+
+
 
         </div>
 

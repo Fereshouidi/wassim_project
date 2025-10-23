@@ -130,7 +130,7 @@ const ProductsSection = ({
 
             :
                 
-                screenWidth > 2000 ?
+                screenWidth > 1500 ?
 
                     <Slider
                         products={products}

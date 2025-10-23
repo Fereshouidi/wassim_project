@@ -154,9 +154,6 @@ const Header = ({
                 border: `0.02px solid ${colors.dark[800]}`,
                 borderTop: 'none'
             }}
-            // resSectionStyle={{
-            //     backgroundColor: colors.light[100]
-            // }}
             aiIconStyle={{
                 backgroundColor: colors.light[200]
             }}

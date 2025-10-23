@@ -132,19 +132,6 @@ const SliderForPhones = ({
 
                 <div className={`w-full flex flex-row items-center justify-between `}>
 
-                    {screenWidth > 1000 && <div 
-                        className={`w-32 h-32 flex justify-center items-center rounded-full mx-10 cursor-pointer duration-300`}
-                        onMouseEnter={() => setLeftArrowHover(true)}
-                        onMouseLeave={() => setLeftArrowHover(false)}
-                        onClick={handleLeftArrowClick}
-                        style={leftArrowHover ?  arrowHoverStyle : arrowStyle}
-                    >
-                        <img 
-                            src={activeTheme == "dark" ? "/icons/left-arrow-white.png" : "/icons/left-arrow-black.png"}
-                            className='w-12 h-12'
-                        />
-                    </div>}
-                    
                     <div 
                         className='flex relative overflow-x-scroll scrollbar-hidden slide flex-1 justify-between'
                         ref={sliderRef}
@@ -195,19 +182,6 @@ const SliderForPhones = ({
                         </div>
 
                     </div>
-
-                    {screenWidth > 1000 && <div 
-                        className={`w-32 h-32 flex justify-center items-center rounded-full mx-10 cursor-pointer duration-300`}
-                        onMouseEnter={() => setRightArrowHover(true)}
-                        onMouseLeave={() => setRightArrowHover(false)}
-                        onClick={handleRightArrowClick}
-                        style={rightArrowHover ?  arrowHoverStyle : arrowStyle}
-                    >
-                        <img 
-                            src={activeTheme == "dark" ? "/icons/right-arrow-white.png" : "/icons/right-arrow-black.png"}
-                            className='w-12 h-12'
-                        />
-                    </div>}
 
                 </div>
 
