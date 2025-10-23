@@ -10,6 +10,8 @@ import MoreBotton from '../sub/moreBotton';
 import { fakeProducts, productsLoading } from '@/constent/data';
 import Slider from '../sub/slider';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import { useScreen } from '@/contexts/screenProvider';
+import SliderForPhones from '../sub/sliderForPhones';
 
 
 type ProductsSectionType = {
@@ -22,7 +24,7 @@ const ProductsSection = ({
 
     const { colors } = useTheme();
     const { activeLanguage } = useLanguage();
-
+    const { screenWidth } = useScreen();
     const [limit, setLimit] = useState<number>(6);
     const [skip, setSkip] = useState<number>(0);
     const [productsCount, setProductsCount] = useState<number>(0);
@@ -127,15 +129,29 @@ const ProductsSection = ({
 
 
             :
-                <Slider
-                    products={products}
-                    productsCount={productsCount}
-                    isFirstRender={isFirstRender}
-                    setIsFirstRender={setIsFirstRender}
-                    skip={skip}
-                    setSkip={setSkip}
-                    limit={limit}
-                /> 
+                
+                screenWidth > 2000 ?
+
+                    <Slider
+                        products={products}
+                        productsCount={productsCount}
+                        isFirstRender={isFirstRender}
+                        setIsFirstRender={setIsFirstRender}
+                        skip={skip}
+                        setSkip={setSkip}
+                        limit={limit}
+                    /> 
+                :
+                    <SliderForPhones
+                        products={products}
+                        productsCount={productsCount}
+                        isFirstRender={isFirstRender}
+                        setIsFirstRender={setIsFirstRender}
+                        skip={skip}
+                        setSkip={setSkip}
+                        limit={limit}
+                    />
+            
         }
 
     </div>
