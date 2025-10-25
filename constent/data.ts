@@ -205,87 +205,86 @@ export const fakeProducts = [
 
 
 export const productsLoading = [
+  {
+    _id: "1",
+    name: { fr: "", en: "" },
+    price: 0,
+    thumbNail: "",
+    images: [],
+    description: { fr: "", en: "" },
+    collections: [],
+    stock: 0,
+    specifications: [],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    _id: "2",
+    name: { fr: "", en: "" },
+    price: 0,
+    thumbNail: "",
+    images: [],
+    description: { fr: "", en: "" },
+    collections: [],
+    stock: 0,
+    specifications: [],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    _id: "3",
+    name: { fr: "", en: "" },
+    price: 0,
+    thumbNail: "",
+    images: [],
+    description: { fr: "", en: "" },
+    collections: [],
+    stock: 0,
+    specifications: [],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    _id: "4",
+    name: { fr: "", en: "" },
+    price: 0,
+    thumbNail: "",
+    images: [],
+    description: { fr: "", en: "" },
+    collections: [],
+    stock: 0,
+    specifications: [],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    _id: "5",
+    name: { fr: "", en: "" },
+    price: 0,
+    thumbNail: "",
+    images: [],
+    description: { fr: "", en: "" },
+    collections: [],
+    stock: 0,
+    specifications: [],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    _id: "6",
+    name: { fr: "", en: "" },
+    price: 0,
+    thumbNail: "",
+    images: [],
+    description: { fr: "", en: "" },
+    collections: [],
+    stock: 0,
+    specifications: [],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+] as ProductType[];
 
-    {
-        _id: "1",
-        name: {
-            fr: null,
-            en: null
-        },
-        price: null,
-        thumbNail: null,
-        images: [],
-        description: null,
-        collection: null,
-        stock: null
-    },
-    {
-        _id: "2",
-        name: {
-            fr: null,
-            en: null
-        },
-        price: null,
-        thumbNail: null,
-        images: [],
-        description: null,
-        collection: null,
-        stock: null
-    },
-    {
-        _id: "3",
-        name: {
-            fr: null,
-            en: null
-        },
-        price: null,
-        thumbNail: null,
-        images: [],
-        description: null,
-        collection: null,
-        stock: null
-    },
-    {
-        _id: "4",
-        name: {
-            fr: null,
-            en: null
-        },
-        price: null,
-        thumbNail: null,
-        images: [],
-        description: null,
-        collection: null,
-        stock: null
-    },
-    {
-        _id: "5",
-        name: {
-            fr: null,
-            en: null
-        },
-        price: null,
-        thumbNail: null,
-        images: [],
-        description: null,
-        collection: null,
-        stock: null
-    },
-    {
-        _id: "6",
-        name: {
-            fr: null,
-            en: null
-        },
-        price: null,
-        thumbNail: null,
-        images: [],
-        description: null,
-        collection: null,
-        stock: null
-    }
-
-] as ProductType[]
 
 export const collectionsLoading = [
 
