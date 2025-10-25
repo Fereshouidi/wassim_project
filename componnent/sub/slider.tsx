@@ -127,7 +127,7 @@ const Slider = ({
         transform: 'scale(1.2)'
     }
 
-        return (
+        return ( 
 
             <div className={`w-full- ${screenWidth < 1000 && 'px-5-'}`}>
 
