@@ -8,6 +8,8 @@ type language = {
 export type ScreenContextType = {
     screenWidth: number
     setScreenWidth: (value: number) => void
+    screenHeight: number
+    setScreenHeight: (value: number) => void
 }
 
 export type SideBarProps = {

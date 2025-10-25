@@ -17,9 +17,23 @@ export default function Home() {
 
   const [sideBarActive, setSideBarActive] = useState<boolean>(false);
   const { colors } = useTheme();
-  const [pub, setPub] = useState<PubType | undefined>(undefined);
+  // const [pub, setPub] = useState<PubType | undefined>(undefined);
   const { screenWidth } = useScreen();
   const [ownerInfo, setOwnerInfo] = useState<OwnerInfoType | undefined>(undefined);
+  const [pub, setPub] = useState<PubType | undefined>(undefined);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await axios.get(backEndUrl + "/getPub")
+      .then(({data}) => setPub(data.pub))
+      .catch((err) => {
+        console.log(err);
+        
+      })
+    }
+    fetchData();
+  }, [])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,17 +52,17 @@ export default function Home() {
   }, [ownerInfo])
 
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await axios.get(backEndUrl + "/getPub")
-      .then(({data}) => setPub(data.pub))
-      .catch((err) => {
-        console.log(err);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const res = await axios.get(backEndUrl + "/getPub")
+  //     .then(({data}) => setPub(data.pub))
+  //     .catch((err) => {
+  //       console.log(err);
         
-      })
-    }
-    fetchData();
-  }, [])
+  //     })
+  //   }
+  //   fetchData();
+  // }, [])
 
   return (
     <div 
@@ -58,9 +72,8 @@ export default function Home() {
       }}
     >
 
-      {pub?.topBar && <AnnouncementBar
-        topBar={pub?.topBar}
-      />}
+      <AnnouncementBar
+      />
 
       <Header
         isSideBarActive={sideBarActive}

@@ -3,6 +3,7 @@ import { useTheme } from '@/contexts/themeProvider'
 import { ProductType } from '@/types'
 import React, { CSSProperties } from 'react'
 import SkeletonLoading from './SkeletonLoading'
+import { useRouter } from 'next/navigation'
 
 type productCardType = {
     product: ProductType
@@ -18,6 +19,7 @@ const ProductCard = ({
 
     const { colors } = useTheme();
     const { activeLanguage } = useLanguage();
+    const router = useRouter();
 
   return (
     <div 
@@ -26,6 +28,7 @@ const ProductCard = ({
             ...style
             // backgroundColor: colors.light[100]
         }}
+        onClick={() => router.push(`/product/${product._id}`)}
     >
         
         <div 

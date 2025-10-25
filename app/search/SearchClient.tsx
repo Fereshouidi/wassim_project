@@ -31,23 +31,6 @@ const Page = () => {
     fetchData();
   }, [])
 
-  useEffect(() => {
-    console.log({ownerInfo});
-    
-  }, [ownerInfo])
-
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await axios.get(backEndUrl + "/getPub")
-      .then(({data}) => setPub(data.pub))
-      .catch((err) => {
-        console.log(err);
-        
-      })
-    }
-    fetchData();
-  }, [])
 
   return (
     <div>

@@ -11,6 +11,7 @@ import { HeaderProps, OwnerInfoType } from '@/types';
 import { useTheme } from '@/contexts/themeProvider';
 import axios from 'axios';
 import { backEndUrl } from '@/api';
+import { useRouter } from 'next/navigation';
 
 const Header = ({
     isSideBarActive,
@@ -21,6 +22,7 @@ const Header = ({
 
   const screenWidth = useScreen().screenWidth;
   const { activeTheme, colors } = useTheme();
+  const router = useRouter();
   // const [isSideBarActive, setIsSideBarActive] = useState<boolean>(true);
 
 
@@ -50,19 +52,25 @@ const Header = ({
             style={{
             }}
           >
+
+            <div 
+              className=' h-[50%] cursor-pointer'
+              onClick={() => router.replace('/')}
+            >
               {
                 activeTheme == "light" ? 
                   <img 
                     src={ownerInfo?.logo?.light}
-                    className=' h-[50%] object-contain no-sellect'
+                    className=' h-full object-contain no-sellect'
                   /> : 
                 activeTheme == "dark" ?
                   <img 
                     src={ownerInfo?.logo?.dark}
-                    className=' h-[50%] object-contain no-sellect'
+                    className=' h-full object-contain no-sellect'
                   /> :
                 null
               }
+            </div>
 
           </div>
 
@@ -112,19 +120,24 @@ const Header = ({
               style={{
               }}
             >
-              {
-                activeTheme == "light" ? 
-                  <img 
-                    src={ownerInfo?.logo?.light}
-                    className=' h-[50%] object-contain no-sellect'
-                  /> : 
-                activeTheme == "dark" ?
-                  <img 
-                    src={ownerInfo?.logo?.dark}
-                    className=' h-[50%] object-contain no-sellect'
-                  /> :
-                null
-              }
+              <div 
+                className=' h-[50%] cursor-pointer'
+                onClick={() => router.replace('/')}
+              >
+                {
+                  activeTheme == "light" ? 
+                    <img 
+                      src={ownerInfo?.logo?.light}
+                      className=' h-full object-contain no-sellect'
+                    /> : 
+                  activeTheme == "dark" ?
+                    <img 
+                      src={ownerInfo?.logo?.dark}
+                      className=' h-full object-contain no-sellect'
+                    /> :
+                  null
+                }
+              </div>
 
             </div>
 

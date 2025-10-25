@@ -1,9 +1,12 @@
 "use client";
+import { backEndUrl } from '@/api';
 import { headerHeight } from '@/constent';
 import { useLanguage } from '@/contexts/languageContext';
 import { ScreenProvider, useScreen } from '@/contexts/screenProvider';
 import { useTheme } from '@/contexts/themeProvider';
-import React, { useContext } from 'react'
+import { PubType } from '@/types';
+import axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react'
 
 type AnnouncementBarType = {
   topBar: {
@@ -12,13 +15,25 @@ type AnnouncementBarType = {
   }
 }
 
-const AnnouncementBar = ({
-  topBar
-}: AnnouncementBarType) => {
+const AnnouncementBar = ({}) => {
 
   const screenWidth = useScreen().screenWidth;
   const { colors } = useTheme();
   const { activeLanguage } = useLanguage();
+  const [pub, setPub] = useState<PubType | undefined>(undefined);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await axios.get(backEndUrl + "/getPub")
+      .then(({data}) => setPub(data.pub))
+      .catch((err) => {
+        console.log(err);
+        
+      })
+    }
+    fetchData();
+  }, [])
 
   return (
     <div 
@@ -30,7 +45,7 @@ const AnnouncementBar = ({
             color: colors.light[100]
         }}
     >
-      {topBar[activeLanguage.language]}
+      {pub?.topBar && pub.topBar[activeLanguage.language]}
     </div>
   )
 }
