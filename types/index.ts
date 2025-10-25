@@ -82,7 +82,10 @@ export type LanguageStracture = {
         more: string,
         allCollections: string,
         noRes: string,
-        loading: string
+        loading: string,
+        colors: string,
+        sizes: string,
+        types: string
     }
 }
 
@@ -140,16 +143,23 @@ export type OwnerInfoType = {
 }
 
 export type ProductType = {
-    _id?: string | null;
-    name: language;
-    price: number | null;
-    thumbNail: string | null;
-    images?: string[] | null;
-    description?: string | null;
-    collection: string | null;
-    stock?: number | null;
-    createdAt?: string | null;
-    updatedAt?: string | null;
+  _id?: string;
+  name: {
+    fr: string;
+    en: string;
+  };
+  price: number;
+  thumbNail: string;
+  images: string[];
+  description: {
+    fr: string;
+    en: string;
+  };
+  collections: string[];
+  stock: number;
+  specifications: ProductSpecification[];
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export type CollectionType = {
@@ -158,4 +168,12 @@ export type CollectionType = {
     thumbNail?: string | null;
     type: "private" | "public";
     display: "vertical" | "horizontal"
+}
+
+export type ProductSpecification = {
+  color?: string;
+  size?: string;
+  type?: string;
+  price?: number;
+  quantity?: number;
 }

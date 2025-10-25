@@ -8,6 +8,7 @@ import ProductDetails from "@/componnent/main/productDetails";
 import SideBar from "@/componnent/main/sideBar";
 import AnnouncementBar from "@/componnent/sub/AnnouncementBar";
 import { headerHeight } from "@/constent";
+import { fakeProducts } from "@/constent/data";
 import { useScreen } from "@/contexts/screenProvider";
 import { OwnerInfoType, ProductType } from "@/types";
 import axios from "axios";
@@ -72,6 +73,7 @@ export default function ProductPage() {
         />
 
         <ProductDetails
+            product={product?? fakeProducts[0]}
             style={{
                 width: screenWidth > 1000 ? "40%" : "90%"
             }}

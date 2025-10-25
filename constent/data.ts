@@ -1,122 +1,208 @@
 import { CollectionType, ProductType } from "@/types";
 
 export const fakeProducts = [
-
-    {
-        _id: "1",
-        name: {
-            fr: "nom de produit",
-            en: "product name"
-        },
-        price: 0.0,
-        thumbNail: "",
-        images: [],
-        description: "description",
-        collection: "",
-        stock: 0
-
+  {
+    _id: "1",
+    name: {
+      fr: "",
+      en: "",
     },
-    {
-        _id: "2",
-        name: {
-            fr: "nom de produit",
-            en: "product name"
-        },
-        price: 0.0,
-        thumbNail: "",
-        images: [],
-        description: "description",
-        collection: "",
-        stock: 0
-
+    price: 0.0,
+    thumbNail: "",
+    images: [],
+    description: {
+      fr: "",
+      en: "",
     },
-    {
-        _id: "3",
-        name: {
-            fr: "nom de produit",
-            en: "product name"
-        },
+    collections: [],
+    stock: 0,
+    specifications: [
+      {
+        color: "",
+        size: "",
+        type: "",
         price: 0.0,
-        thumbNail: "",
-        images: [],
-        description: "description",
-        collection: "",
-        stock: 0
-
+        quantity: 0,
+      },
+    ],
+  },
+  {
+    _id: "2",
+    name: {
+      fr: "",
+      en: "",
     },
-    {
-        _id: "4",
-        name: {
-            fr: "nom de produit",
-            en: "product name"
-        },
-        price: 0.0,
-        thumbNail: "",
-        images: [],
-        description: "description",
-        collection: "",
-        stock: 0
-
+    price: 0.0,
+    thumbNail: "",
+    images: [],
+    description: {
+      fr: "",
+      en: "",
     },
-    {
-        _id: "5",
-        name: {
-            fr: "nom de produit",
-            en: "product name"
-        },
+    collections: [],
+    stock: 0,
+    specifications: [
+      {
+        color: "",
+        size: "",
+        type: "",
         price: 0.0,
-        thumbNail: "",
-        images: [],
-        description: "description",
-        collection: "",
-        stock: 0
-
+        quantity: 0,
+      },
+    ],
+  },
+  {
+    _id: "3",
+    name: {
+      fr: "",
+      en: "",
     },
-    {
-        _id: "6",
-        name: {
-            fr: "nom de produit",
-            en: "product name"
-        },
-        price: 0.0,
-        thumbNail: "",
-        images: [],
-        description: "description",
-        collection: "",
-        stock: 0
-
+    price: 0.0,
+    thumbNail: "",
+    images: [],
+    description: {
+      fr: "",
+      en: "",
     },
-    {
-        _id: "7",
-        name: {
-            fr: "nom de produit",
-            en: "product name"
-        },
+    collections: [],
+    stock: 0,
+    specifications: [
+      {
+        color: "",
+        size: "",
+        type: "",
         price: 0.0,
-        thumbNail: "",
-        images: [],
-        description: "description",
-        collection: "",
-        stock: 0
-
-    },,
-    {
-        _id: "8",
-        name: {
-            fr: "nom de produit",
-            en: "product name"
-        },
-        price: 0.0,
-        thumbNail: "",
-        images: [],
-        description: "description",
-        collection: "",
-        stock: 0
-
+        quantity: 0,
+      },
+    ],
+  },
+  {
+    _id: "4",
+    name: {
+      fr: "",
+      en: "",
     },
-    
+    price: 0.0,
+    thumbNail: "",
+    images: [],
+    description: {
+      fr: "",
+      en: "",
+    },
+    collections: [],
+    stock: 0,
+    specifications: [
+      {
+        color: "",
+        size: "",
+        type: "",
+        price: 0.0,
+        quantity: 0,
+      },
+    ],
+  },
+  {
+    _id: "5",
+    name: {
+      fr: "",
+      en: "",
+    },
+    price: 0.0,
+    thumbNail: "",
+    images: [],
+    description: {
+      fr: "",
+      en: "",
+    },
+    collections: [],
+    stock: 0,
+    specifications: [
+      {
+        color: "",
+        size: "",
+        type: "",
+        price: 0.0,
+        quantity: 0,
+      },
+    ],
+  },
+  {
+    _id: "6",
+    name: {
+      fr: "",
+      en: "",
+    },
+    price: 0.0,
+    thumbNail: "",
+    images: [],
+    description: {
+      fr: "",
+      en: "",
+    },
+    collections: [],
+    stock: 0,
+    specifications: [
+      {
+        color: "",
+        size: "",
+        type: "",
+        price: 0.0,
+        quantity: 0,
+      },
+    ],
+  },
+  {
+    _id: "7",
+    name: {
+      fr: "",
+      en: "",
+    },
+    price: 0.0,
+    thumbNail: "",
+    images: [],
+    description: {
+      fr: "",
+      en: "",
+    },
+    collections: [],
+    stock: 0,
+    specifications: [
+      {
+        color: "",
+        size: "",
+        type: "",
+        price: 0.0,
+        quantity: 0,
+      },
+    ],
+  },
+  {
+    _id: "8",
+    name: {
+      fr: "",
+      en: "",
+    },
+    price: 0.0,
+    thumbNail: "",
+    images: [],
+    description: {
+      fr: "",
+      en: "",
+    },
+    collections: [],
+    stock: 0,
+    specifications: [
+      {
+        color: "",
+        size: "",
+        type: "",
+        price: 0.0,
+        quantity: 0,
+      },
+    ],
+  },
+] as ProductType[];
 
-] as ProductType[]
 
 export const productsLoading = [
 

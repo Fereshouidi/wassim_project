@@ -52,22 +52,23 @@ const ImagesSwitcher = ({
 
   return (
     <div 
-        className={`  ${className}`} 
+        className={` no-sellect ${className}`} 
         style={{ 
             ...style 
         }}
     >
       
       <div 
-        className='w-full min-h-[300px] sm:min-h-[500px] flex flex-1 justify-center items-center p-5 sm:p-10'
+        className='w-full h-[300px] sm:h-[500px] rounded-sm flex flex-1 justify-center items-center px-5 sm:px-10 scrollbar-hidden'
         style={{
+            paddingBottom: 2,
             // minHeight: imageDisplayWidth / 2
         }}
     >
         <img 
             src={images[currentImageIndex]} 
             alt="" 
-            className='w-full object-content rounded-sm'
+            className='w-full h-full object-content rounded-sm'
             style={{
                 maxHeight: imageDisplayWidth,
             }}

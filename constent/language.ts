@@ -20,7 +20,11 @@ export const english = {
         allCollections: "All of collections",
         noRes: "No result!",
         loading: "loading",
-        aiMode: "ai mode"
+        aiMode: "ai mode",
+        colors: "Colors",
+        sizes: "Sizes",
+        types: "Types"
+
 
     }
 } as LanguageStracture;
@@ -45,7 +49,10 @@ export const frensh = {
         allCollections: "Toutes les collections",
         noRes: "Aucun résultat!",
         loading: "chargement",
-        aiMode: "mode IA"
+        aiMode: "mode IA",
+        colors: "Couleurs",
+        sizes: "Tailles",
+        types: "Types"
 
     },
 
