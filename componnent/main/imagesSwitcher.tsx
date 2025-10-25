@@ -1,4 +1,5 @@
 "use client";
+import { useScreen } from '@/contexts/screenProvider';
 import { useTheme } from '@/contexts/themeProvider';
 import React, { CSSProperties, useEffect, useRef, useState } from 'react'
 
@@ -21,6 +22,7 @@ const ImagesSwitcher = ({
     const [ rightArrowHover, setRightArrowHover ] = useState<boolean>(false);
     const { colors, activeTheme } = useTheme();
     const [imgWidth, setimgWidth] = useState<number>(100);
+    const { screenWidth } = useScreen();
 
 
     useEffect(() => {
@@ -77,8 +79,8 @@ const ImagesSwitcher = ({
         <div className='w-full h-[100px]- flex flex-row justify-center items-center bg-purple-500'>
 
             {/* left arrow */}
-            <div 
-                className={`w-14 h-14 flex justify-center items-center rounded-full mx-10 cursor-pointer duration-300`}
+            {screenWidth > 1000 && <div 
+                className={`w-14 h-14 flex justify-center items-center rounded-full mx-10- cursor-pointer duration-300`}
                 onMouseEnter={() => setLeftArrowHover(true)}
                 onMouseLeave={() => setLeftArrowHover(false)}
                 onClick={handleLeftArrowClick}
@@ -88,7 +90,7 @@ const ImagesSwitcher = ({
                     src={activeTheme == "dark" ? "/icons/left-arrow-white.png" : "/icons/left-arrow-black.png"}
                     className='w-7 h-7'
                 />
-            </div>
+            </div>}
             
             {/* slider */}
         <div 
@@ -127,8 +129,8 @@ const ImagesSwitcher = ({
         </div>
 
             {/* right arrow */}
-            <div 
-                className={`w-14 h-14 flex justify-center items-center rounded-full mx-10 cursor-pointer duration-300`}
+            {screenWidth > 1000 && <div 
+                className={`w-14 h-14 flex justify-center items-center rounded-full mx-10- cursor-pointer duration-300`}
                 onMouseEnter={() => setRightArrowHover(true)}
                 onMouseLeave={() => setRightArrowHover(false)}
                 onClick={handleRightArrowClick}
@@ -138,7 +140,7 @@ const ImagesSwitcher = ({
                     src={activeTheme == "dark" ? "/icons/right-arrow-white.png" : "/icons/right-arrow-black.png"}
                     className='w-7 h-7'
                 />
-            </div>
+            </div>}
         </div>
 
 
