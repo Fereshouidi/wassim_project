@@ -59,7 +59,7 @@ const ImagesSwitcher = ({
     >
       
       <div 
-        className='w-full min-h-[500px] flex flex-1 justify-center items-center bg-green-500 p-10'
+        className='w-full min-h-[300px] sm:min-h-[500px] flex flex-1 justify-center items-center bg-green-500 p-5 sm:p-10'
         style={{
             // minHeight: imageDisplayWidth / 2
         }}
