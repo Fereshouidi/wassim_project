@@ -228,7 +228,7 @@ const ProductDetails = ({
                 >
                     {product.name[activeLanguage.language]}
                 </h4>
-            : <div className='w-[300px] h-7'><SkeletonLoading/></div>
+            : <div className='w-[300px] h-7 rounded-sm'><SkeletonLoading/></div>
         }
 
         {
@@ -238,14 +238,14 @@ const ProductDetails = ({
                 >
                     {activeSpecifications.price + ' D.T'}
                 </h2>
-            : <div className='w-[100px] h-10 m-4'><SkeletonLoading/></div>
+            : <div className='w-[100px] h-10 m-4 rounded-sm'><SkeletonLoading/></div>
         }
 
         <h4 className='font-bold text-lg sm:text-xl mx-2 my-4'>{activeLanguage.nav.collections + " :"}</h4>
         <div className='w-full flex flex-row gap-2'>{
             loadingGettingCollection ?
             [1,2,3,].map((x) => (
-                <div key={x} className='w-[70px] h-7 m-1'><SkeletonLoading/></div>
+                <div key={x} className='w-[70px] h-7 m-1 rounded-sm'><SkeletonLoading/></div>
             ))
             :collections.map((collection => (
                 <h4
@@ -265,7 +265,7 @@ const ProductDetails = ({
         <div className='w-full flex flex-row gap-2'>{
             !product.specifications ?
                 [1,2,3,].map((x) => (
-                    <div key={x} className='w-[70px] h-7 m-1'><SkeletonLoading/></div>
+                    <div key={x} className='w-[70px] h-7 m-1 rounded-sm'><SkeletonLoading/></div>
                 ))
             :colorDispo.map((color => (
                     <h4
@@ -287,7 +287,7 @@ const ProductDetails = ({
         <div className='w-full flex flex-row gap-2'>{
             !product.specifications ?
                 [1,2,3,].map((x) => (
-                    <div key={x} className='w-[70px] h-7 m-1'><SkeletonLoading/></div>
+                    <div key={x} className='w-[70px] h-7 m-1 rounded-sm'><SkeletonLoading/></div>
                 ))
             :sizeDispo.map((size => (
                     <h4
@@ -309,7 +309,7 @@ const ProductDetails = ({
         <div className='w-full flex flex-row gap-2'>{
             !product.specifications ?
                 [1,2,3,].map((x) => (
-                    <div key={x} className='w-[70px] h-7 m-1'><SkeletonLoading/></div>
+                    <div key={x} className='w-[70px] h-7 m-1 rounded-sm'><SkeletonLoading/></div>
                 ))
             :typeDispo.map((type => (
                     <h4
