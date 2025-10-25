@@ -10,7 +10,7 @@ const ProductDetails = ({
 }: ProductDetailsType ) => {
   return (
     <div 
-        className={`bg-red-500 ${className}`}
+        className={` ${className}`}
         style={{
             ...style
         }}

@@ -52,14 +52,14 @@ const ImagesSwitcher = ({
 
   return (
     <div 
-        className={` bg-blue-500  ${className}`} 
+        className={`  ${className}`} 
         style={{ 
             ...style 
         }}
     >
       
       <div 
-        className='w-full min-h-[300px] sm:min-h-[500px] flex flex-1 justify-center items-center bg-green-500 p-5 sm:p-10'
+        className='w-full min-h-[300px] sm:min-h-[500px] flex flex-1 justify-center items-center p-5 sm:p-10'
         style={{
             // minHeight: imageDisplayWidth / 2
         }}
@@ -67,7 +67,7 @@ const ImagesSwitcher = ({
         <img 
             src={images[currentImageIndex]} 
             alt="" 
-            className='w-full object-content'
+            className='w-full object-content rounded-sm'
             style={{
                 maxHeight: imageDisplayWidth,
             }}
@@ -76,7 +76,7 @@ const ImagesSwitcher = ({
       </div>
 
 
-        <div className='w-full h-[100px]- flex flex-row justify-center items-center bg-purple-500'>
+        <div className='w-full h-[100px]- flex flex-row justify-center items-center'>
 
             {/* left arrow */}
             {screenWidth > 1000 && <div 
@@ -94,7 +94,7 @@ const ImagesSwitcher = ({
             
             {/* slider */}
         <div 
-            className='h-full- overflow-x-scroll scrollbar-hidden bg-pink-500'
+            className='h-full- overflow-x-scroll scrollbar-hidden'
             ref={sliderRef}
             style={{
                 width: imgWidth * 3 + "px"
@@ -103,11 +103,11 @@ const ImagesSwitcher = ({
 
             {/* slides */}
             <div 
-                className='slides w-[500px]- w-fit h-full- bg-yellow-500 flex flex-row'
+                className='slides w-[500px]- w-fit h-full- flex flex-row'
             >{
                 images.map((img, index) => (
                     <div 
-                        className='flex justify-center items-center p-2 overflow-hidden bg-orange-500 border-1 border-red-500'
+                        className='flex justify-center items-center p-2 overflow-hidden '
                         key={index}
                         style={{
                             width: imgWidth + 'px',
