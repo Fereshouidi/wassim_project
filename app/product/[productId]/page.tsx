@@ -23,15 +23,20 @@ export default function ProductPage() {
   const [ownerInfo, setOwnerInfo] = useState<OwnerInfoType | undefined>(undefined);
   const { screenWidth, screenHeight } = useScreen();
   const [product, setProduct] = useState<ProductType | undefined>(undefined);
+  const [loading, setLoading] = useState<boolean>(true);
 
 
   useEffect(() => {
     const fetchData = async () => {
-      await axios.get(backEndUrl + "/getOwnerInfo")
-      .then(({ data }) => setOwnerInfo(data.ownerInfo))
-      .catch((err) => {
-        throw err
-      })
+        setLoading(true);
+        await axios.get(backEndUrl + "/getOwnerInfo")
+        .then(({ data }) => {
+            setOwnerInfo(data.ownerInfo);
+            setLoading(false)
+        })
+        .catch((err) => {
+            throw err
+        })
     }
     fetchData();
   }, [])
@@ -74,6 +79,7 @@ export default function ProductPage() {
 
         <ProductDetails
             product={product?? fakeProducts[0]}
+            loadingGettingProduct={loading}
             style={{
                 width: screenWidth > 1000 ? "40%" : "90%"
             }}

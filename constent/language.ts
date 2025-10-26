@@ -23,7 +23,12 @@ export const english = {
         aiMode: "ai mode",
         colors: "Colors",
         sizes: "Sizes",
-        types: "Types"
+        types: "Types",
+        fillOutTheForm: "Fill out this form",
+        fullName: "FULL Name",
+        adress: "City ​​and address",
+        phone: "Phone Number",
+        note: "Note"
 
 
     }
@@ -52,8 +57,12 @@ export const frensh = {
         aiMode: "mode IA",
         colors: "Couleurs",
         sizes: "Tailles",
-        types: "Types"
-
+        types: "Types",
+        fillOutTheForm: "Remplissez ce formulaire",
+        fullName: "Nom & Prénom",
+        adress: "ville & adresse",
+        phone: "Numéro de Téléphone",
+        note: "Note"
     },
 
 } as LanguageStracture;

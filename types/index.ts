@@ -85,7 +85,12 @@ export type LanguageStracture = {
         loading: string,
         colors: string,
         sizes: string,
-        types: string
+        types: string,
+        fillOutTheForm: string
+        fullName: string
+        adress: string
+        phone: string
+        note: string
     }
 }
 
@@ -176,4 +181,11 @@ export type ProductSpecification = {
   type?: string;
   price?: number;
   quantity?: number;
+}
+
+export type ClientFormType = {
+    fullName: string,
+    adress: string,
+    phone: number,
+    note: string
 }
