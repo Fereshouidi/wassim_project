@@ -26,7 +26,7 @@ const SliderForPhones = ({
     limit
 }: sliderProps) => {
 
-    const [cardWidth, setCardWidth] = useState<number>(200);
+    const [cardWidth, setCardWidth] = useState<number>(170);
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [userScroll, setUserScroll] = useState<boolean>(false);
     // const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
@@ -153,7 +153,7 @@ const SliderForPhones = ({
                                 products.map((product) => (
                                     <div 
                                         key={product._id}
-                                        className=' min-h-[150px] sm:min-h-[220px] m-0 '
+                                        className=' min-h-[150px]'
                                         style={{
                                             width: cardWidth  + "px"
                                         }}

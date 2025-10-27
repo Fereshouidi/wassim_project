@@ -32,7 +32,7 @@ const ProductCard = ({
     >
         
         <div 
-            className='w-full h-[185px] sm:h-[250px] overflow-hidden'
+            className='w-full h-[180px] sm:h-[250px] overflow-hidden'
             style={{
                 backgroundColor: colors.light[300]
             }}

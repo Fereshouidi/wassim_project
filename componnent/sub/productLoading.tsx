@@ -22,7 +22,7 @@ const ProductLoading = ({
   return (
 
     <div 
-        className={`w-[185px] sm:w-[250px] min-h-[185px] sm:min-h-[250px] flex flex-col items-center gap-3 overflow-hidden cursor-pointer ${className}`}
+        className={`w-[175px] sm:w-[250px] min-h-[185px] sm:min-h-[250px] flex flex-col items-center gap-3 overflow-hidden cursor-pointer ${className}`}
         style={{
             ...style
         }}
@@ -30,7 +30,7 @@ const ProductLoading = ({
     >
         
         <div 
-            className='w-full h-[185px] sm:h-[250px] overflow-hidden'
+            className='w-full h-[180px] sm:h-[250px] overflow-hidden'
             style={{
                 backgroundColor: colors.light[300]
             }}
