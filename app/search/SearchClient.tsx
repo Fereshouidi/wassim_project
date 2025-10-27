@@ -33,6 +33,10 @@ const Page = () => {
     fetchData();
   }, [])
 
+    useEffect(() => {
+    console.log({ownerInfo});
+    
+  }, [ownerInfo])
 
   return (
     <div>
