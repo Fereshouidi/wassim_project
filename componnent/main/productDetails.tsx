@@ -129,7 +129,7 @@ const ProductDetails = ({
 
         const filtered = data.collections.filter(
           (collection: CollectionType) =>
-            collection.type === "public" || collection.type === "private"
+            collection.type === "public"
         );
 
         setCollections(filtered);
