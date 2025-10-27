@@ -4,12 +4,14 @@ import { backEndUrl } from "@/api";
 import Footer from "@/componnent/main/footer";
 import Header from "@/componnent/main/header";
 import ImagesSwitcher from "@/componnent/main/imagesSwitcher";
+import OtherSimilarChose from "@/componnent/main/otherSimilarChose";
 import ProductDetails from "@/componnent/main/productDetails";
 import SideBar from "@/componnent/main/sideBar";
 import AnnouncementBar from "@/componnent/sub/AnnouncementBar";
 import { headerHeight } from "@/constent";
 import { fakeProducts } from "@/constent/data";
 import { useScreen } from "@/contexts/screenProvider";
+import { useTheme } from "@/contexts/themeProvider";
 import { OwnerInfoType, ProductType } from "@/types";
 import axios from "axios";
 import { useParams } from "next/navigation";
@@ -24,6 +26,7 @@ export default function ProductPage() {
   const { screenWidth, screenHeight } = useScreen();
   const [product, setProduct] = useState<ProductType | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(true);
+  const { colors } = useTheme();
 
 
   useEffect(() => {
@@ -53,7 +56,13 @@ export default function ProductPage() {
   }, [productId])
 
   return (
-    <div className="page">
+    <div 
+        className="page bg-transparent"
+        style={{
+            backgroundColor: colors.light[150],
+            color: colors.dark[150]
+        }}
+    >
 
       <AnnouncementBar/>
       <Header
@@ -64,7 +73,7 @@ export default function ProductPage() {
       />
 
       <div 
-        className={`w-full min-h-screen flex ${screenWidth > 1000 ? 'flex-row justify-center' : 'flex-col items-center'} py-7`}
+        className={`w-full min-h-screen sm:h-[90vh] relative flex ${screenWidth > 1000 ? 'flex-row justify-center' : 'flex-col items-center'} py-7`}
         style={{
             minHeight: screenHeight - (headerHeight * 1.5) 
         }}
@@ -85,6 +94,10 @@ export default function ProductPage() {
             }}
         />
       </div>
+
+      {product?._id && <OtherSimilarChose
+        product={product}
+      />}
 
       <Footer/>
 

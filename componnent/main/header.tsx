@@ -164,7 +164,9 @@ const Header = ({
             resSectionStyle={{
                 backgroundColor: colors.light[100],
                 color: colors.dark[100],
-                border: `0.02px solid ${colors.dark[800]}`,
+                borderRight: `0.02px solid ${colors.dark[800]}`,
+                borderBottom: `0.02px solid ${colors.dark[800]}`,
+                borderLeft: `0.02px solid ${colors.dark[800]}`,
                 borderTop: 'none'
             }}
             aiIconStyle={{

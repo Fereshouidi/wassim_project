@@ -45,7 +45,8 @@ const ProductsSection = ({
         const fetchData = async () => {
             
 
-                // isFirstRender && setProducts(fakeProducts);
+                // isFirstRender && setProducts(productsLoading);
+                
                 setLoading(true);
 
                 await axios.get(backEndUrl + "/getProductsByCollection", { params: { 

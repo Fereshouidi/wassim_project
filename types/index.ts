@@ -91,6 +91,7 @@ export type LanguageStracture = {
         adress: string
         phone: string
         note: string
+        resultsFound: string
     }
 }
 
@@ -148,23 +149,23 @@ export type OwnerInfoType = {
 }
 
 export type ProductType = {
-  _id?: string;
+  _id?: string | null;
   name: {
-    fr: string;
-    en: string;
+    fr: string | null;
+    en: string | null;
   };
-  price: number;
-  thumbNail: string;
+  price: number | null;
+  thumbNail: string | null;
   images: string[];
   description: {
-    fr: string;
-    en: string;
+    fr: string | null;
+    en: string | null;
   };
   collections: string[];
-  stock: number;
+  stock: number | null;
   specifications: ProductSpecification[];
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt?: Date | null;
+  updatedAt?: Date | null;
 }
 
 export type CollectionType = {
@@ -176,11 +177,11 @@ export type CollectionType = {
 }
 
 export type ProductSpecification = {
-  color?: string;
-  size?: string;
-  type?: string;
-  price?: number;
-  quantity?: number;
+  color?: string | null;
+  size?: string | null;
+  type?: string | null;
+  price?: number | null;
+  quantity?: number | null;
 }
 
 export type ClientFormType = {

@@ -30,7 +30,7 @@ const InputForm = ({
                 <input 
                     type="text" 
                     placeholder={activeLanguage.sideMatter.fullName}
-                    className='flex flex-1 rounded-sm h-12 p-2'
+                    className='flex flex-1 rounded-sm h-12 p-2 text-[14px]'
                     style={{
                         border: `1px solid ${colors.light[300]}`
                     }}
@@ -39,7 +39,7 @@ const InputForm = ({
                 <input 
                     type="text" 
                     placeholder={activeLanguage.sideMatter.adress}
-                    className='flex flex-1 rounded-sm h-12 p-2'
+                    className='flex flex-1 rounded-sm h-12 p-2 text-[14px]'
                     style={{
                         border: `1px solid ${colors.light[300]}`
                     }}
@@ -48,7 +48,7 @@ const InputForm = ({
                 <input 
                     type="text" 
                     placeholder={activeLanguage.sideMatter.phone}
-                    className='flex flex-1 rounded-sm h-12 p-2'
+                    className='flex flex-1 rounded-sm h-12 p-2 text-[14px]'
                     style={{
                         border: `1px solid ${colors.light[300]}`
                     }}
@@ -57,7 +57,7 @@ const InputForm = ({
                 <input 
                     type="text" 
                     placeholder={activeLanguage.sideMatter.note}
-                    className='flex flex-1 rounded-sm h-12 p-2'
+                    className='flex flex-1 rounded-sm h-12 p-2 text-[14px]'
                     style={{
                         border: `1px solid ${colors.light[300]}`
                     }}

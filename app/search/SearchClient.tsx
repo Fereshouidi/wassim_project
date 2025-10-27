@@ -1,5 +1,6 @@
 "use client";
 import { backEndUrl } from '@/api';
+import FilterBar from '@/componnent/main/filterBar';
 import Footer from '@/componnent/main/footer';
 import Header from '@/componnent/main/header';
 import SideBar from '@/componnent/main/sideBar';
@@ -14,6 +15,7 @@ const Page = () => {
 
   const params = useSearchParams();
   const collectionId = params.get('collectionId');
+  const searchInput = params.get('searchInput');
   const [sideBarActive, setSideBarActive] = useState<boolean>(false);
   const { colors } = useTheme();
   const [pub, setPub] = useState<PubType | undefined>(undefined);
@@ -41,8 +43,11 @@ const Page = () => {
         setOwnerInfo={setOwnerInfo}
       />
 
+      <FilterBar/>
+
       <div className='w-full min-h-screen'>
         {collectionId}
+        <p>{searchInput}</p>
       </div>
 
       <Footer/>

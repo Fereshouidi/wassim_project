@@ -34,7 +34,7 @@ body {
 
 .page {
   font-family: sans-serif; /* font-sans */
-  background-color: rgb(252, 252, 252);
+  /* background-color: rgb(252, 252, 252); */
   min-height: 100vh;
   /* overflow-x: hidden; */
 }

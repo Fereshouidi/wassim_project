@@ -28,8 +28,8 @@ export const english = {
         fullName: "FULL Name",
         adress: "City ​​and address",
         phone: "Phone Number",
-        note: "Note"
-
+        note: "Note",
+        resultsFound: "Results found"
 
     }
 } as LanguageStracture;
@@ -62,7 +62,8 @@ export const frensh = {
         fullName: "Nom & Prénom",
         adress: "ville & adresse",
         phone: "Numéro de Téléphone",
-        note: "Note"
+        note: "Note",
+        resultsFound: "Résultats trouvés"
     },
 
 } as LanguageStracture;

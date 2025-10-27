@@ -16,7 +16,7 @@ type sliderProps = {
     limit: number
 }
 
-const SliderForPhones = ({
+const Slider2 = ({
     products,
     productsCount,
     isFirstRender,
@@ -26,7 +26,7 @@ const SliderForPhones = ({
     limit
 }: sliderProps) => {
 
-    const [cardWidth, setCardWidth] = useState<number>(200);
+    const [cardWidth, setCardWidth] = useState<number>(270);
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [userScroll, setUserScroll] = useState<boolean>(false);
     // const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
@@ -82,9 +82,10 @@ const SliderForPhones = ({
 
         const timer = setInterval(() => {
             const slider = sliderRef.current;
-            if (!slider) return;
-            slider.scrollLeft += 5;
-        }, 100);
+            if (!slider || atEnd) return;
+            slider.scrollLeft += cardWidth;
+            
+        }, 3000);
 
         return () => {
             clearInterval(timer);
@@ -126,18 +127,34 @@ const SliderForPhones = ({
         transform: 'scale(1.2)'
     }
 
-        return (
+        return ( 
 
-            <div className={`w-full ${screenWidth < 1000 && 'px-5-'}`}>
+            <div className={`w-full- ${screenWidth < 1000 && 'px-5-'}`}>
 
                 <div className={`w-full flex flex-row items-center justify-between `}>
 
+                    <div 
+                        className={`w-32 h-32 flex justify-center items-center rounded-full mx-10 cursor-pointer duration-300`}
+                        onMouseEnter={() => setLeftArrowHover(true)}
+                        onMouseLeave={() => setLeftArrowHover(false)}
+                        onClick={handleLeftArrowClick}
+                        style={leftArrowHover ?  arrowHoverStyle : arrowStyle}
+                    >
+                        <img 
+                            src={activeTheme == "dark" ? "/icons/left-arrow-white.png" : "/icons/left-arrow-black.png"}
+                            className='w-12 h-12'
+                        />
+                    </div>
+                    
                     <div 
                         className='flex relative overflow-x-scroll scrollbar-hidden slide flex-1 justify-between'
                         ref={sliderRef}
                         onMouseDown={() => setUserScroll(true)} 
                         onTouchStart={() => setUserScroll(true)}             
                         onMouseEnter={() => setUserScroll(true)}
+                        style={{
+                            width: cardWidth * 4 + "px"
+                        }}
                     >
 
                         <div 
@@ -148,19 +165,21 @@ const SliderForPhones = ({
                             }}
                         >
 
-                            <div className='w-max h-full flex flex-row justify-start smpx-5'>{
+                            <div className='w-max h-full flex flex-row justify-start'>{
 
                                 products.map((product) => (
                                     <div 
                                         key={product._id}
                                         className=' min-h-[150px] sm:min-h-[220px] m-0 '
                                         style={{
-                                            width: cardWidth  + "px"
+                                            width: cardWidth  + "px",
+                                            paddingLeft: '5px',
+                                            paddingRight: '5px',
                                         }}
                                     >
                                         <ProductCard
                                             product={product}
-                                            className='w-[95%] h-full'
+                                            className='w-[100%] h-full'
                                         />
                                     </div>
                                 ))
@@ -172,7 +191,10 @@ const SliderForPhones = ({
 
                                 <div ref={productLoading} className=''>
                                     <ProductLoading
-                                        className='w-[170px] sm:w-[220px] min-h-[150px] sm:min-h-[220px] m-0 '
+                                        // className='w-[170px] sm:w-[220px] min-h-[150px] sm:min-h-[220px] m-0 '
+                                        style={{
+                                            width: cardWidth
+                                        }}
                                     />
                                 </div>
 
@@ -183,6 +205,19 @@ const SliderForPhones = ({
 
                     </div>
 
+                    <div 
+                        className={`w-32 h-32 flex justify-center items-center rounded-full mx-10 cursor-pointer duration-300`}
+                        onMouseEnter={() => setRightArrowHover(true)}
+                        onMouseLeave={() => setRightArrowHover(false)}
+                        onClick={handleRightArrowClick}
+                        style={rightArrowHover ?  arrowHoverStyle : arrowStyle}
+                    >
+                        <img 
+                            src={activeTheme == "dark" ? "/icons/right-arrow-white.png" : "/icons/right-arrow-black.png"}
+                            className='w-12 h-12'
+                        />
+                    </div>
+
                 </div>
 
             </div>
@@ -191,4 +226,4 @@ const SliderForPhones = ({
 
 }
 
-export default SliderForPhones;
+export default Slider2

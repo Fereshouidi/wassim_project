@@ -7,6 +7,7 @@ import axios from 'axios'
 import React, { CSSProperties, useEffect, useState } from 'react'
 import SkeletonLoading from '../sub/SkeletonLoading'
 import InputForm from './inputForm'
+import ChoseQuantity from '../sub/choseQuantity'
 
 type ProductDetailsType = {
   className?: string
@@ -41,12 +42,24 @@ const ProductDetails = ({
   const [collections, setCollections] = useState<CollectionType[]>([]);
   const [loadingGettingCollection, setLoadingGettingCollection] = useState<boolean>(true);
 
+  const [quantity, setQuantity] = useState<number>(1);
+
   const [clientForm, setClientForm] = useState<ClientFormType>({
     fullName: '',
     phone: NaN,
     adress: '',
     note: ''
   });
+
+  useEffect(() => {
+    if (
+        product?.specifications &&
+        product?.specifications?.length > 1
+    ) return;
+    setSelectedColor(product.specifications[0]?.color || null);
+    setSelectedSize(product.specifications[0]?.size || null);
+    setSelectedType(product.specifications[0]?.type || null);
+  }, [product])
 
   useEffect(() => {
     if (!product?.specifications) return;
@@ -136,14 +149,14 @@ const ProductDetails = ({
     console.log({ activeSpecifications });
   }, [activeSpecifications]);
 
-//   useEffect(() => {
-//     console.log(clientForm.fullName);
+  useEffect(() => {
+    console.log({product});
     
-//   }, [clientForm])
+  }, [product])
 
   return (
     <div
-      className={`p-5 ${className}`}
+      className={`h-full p-5 overflow-y-scroll scrollbar-hidden ${className}`}
       style={{
         ...style
       }}
@@ -277,12 +290,36 @@ const ProductDetails = ({
 
         </div>
 
-        <p className='p-2 sm:p-5 text-md opacity-90'>{product.description[activeLanguage.language]}</p>
+        <p 
+            className='p-2 sm:p-5 mt-2 sm:mt-5 text-md opacity-90'
+            style={{
+                borderTop: `0.5px solid ${colors.light[300]}`,
+                borderBottom: `0.5px solid ${colors.light[300]}`,
+            }}
+        >{product.description[activeLanguage.language]}</p>
 
         <InputForm
             clientForm={clientForm}
             setClientForm={setClientForm}
         />
+
+        <div className='flex flex-row my-5 mx-2 gap-4'>
+
+            <ChoseQuantity
+                quantity={quantity}
+                setQuantity={setQuantity}
+                max={activeSpecifications?.quantity?? 1}
+            />
+
+            <button 
+                className='flex flex-1 justify-center items-center w-12 h-12 rounded-sm cursor-pointer'
+                style={{
+                    backgroundColor: colors.dark[100],
+                    color: colors.light[200]
+                }}
+            >acheter</button>
+
+        </div>
 
 
       </div>

@@ -9,6 +9,7 @@ import axios from 'axios';
 import React, { CSSProperties, useState, useContext, useEffect, useRef } from 'react';
 import AiMode from './aiMode';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import { useRouter } from 'next/navigation';
 // import english from '@/app/languages/english.json';
 // import arabic from '@/app/languages/arabic.json';
 // import { LanguageSelectorContext } from "@/app/contexts/LanguageSelectorContext";
@@ -42,7 +43,9 @@ const SearchBar = ({
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const { screenWidth } = useScreen();
     const [aiModeActive, setAiModeActive] = useState<boolean>(false);
-
+    const [resSecVisible, setResSecVisible] = useState<boolean>(false);
+    const searchRef = useRef<HTMLDivElement | null>(null);
+    const router = useRouter();
 
     useEffect(() => {
 
@@ -101,6 +104,8 @@ const SearchBar = ({
             setSkip(0);
             fetchData(); 
         }    
+        
+        setResSecVisible(input ? true : false);
 
     }, [input])
     
@@ -117,8 +122,36 @@ const SearchBar = ({
         }
     };
 
+    const handleSearchIconClicked = () => {
+
+        if (aiModeActive) {
+
+            return;
+
+        } else {
+            router.push(`/search?searchInput=${input}`)
+        }
+
+    }
+
+    useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+        if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setResSecVisible(false);
+        }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+    };
+    }, []);
+
     return(
-        <div className={`w-[60%] relative flex flex-col overflow-hidden ${containerClassName} relative rounded-sm p-[2px] pb-[1px] pr-0`}>
+        <div 
+            className={`w-[60%] relative flex flex-col ${containerClassName} relative rounded-sm p-[2px] pb-[1px] pr-0`}
+            ref={searchRef}
+        >
 
             <div 
                 className={`w-full relative flex flex-row rounded-sm z-10 ${className}`}
@@ -129,18 +162,17 @@ const SearchBar = ({
                     placeholder={
                         activeLanguage.sideMatter.search + "..."
                     }
-                    className={`w-full h-full px-[20px] outline-none ${inputClassName}`} 
+                    className={`h-full flex flex-1 pl-[20px] outline-none ${inputClassName}`} 
                     onFocus={() => setFocus(true)}
                     onBlur={() => setFocus(false)}
                     style={{
-                        // color: colors.dark[100],
                         ...inputStyle
                     }} 
                     onChange={(e) => setInput(e.target.value)}
                 />
                 
                 <div
-                    className='h-full absolute right-[3px] top-[50%] translate-y-[-50%] rounded-sm cursor-pointer flex justify-between items-center duration-300'
+                    className='h-full rounded-sm cursor-pointer flex justify-between items-center duration-300'
                 >
                     <AiMode
                         aiModeActive={aiModeActive}
@@ -150,13 +182,14 @@ const SearchBar = ({
                     />
 
                     <img 
-                        className='h-full p-4 rounded-sm cursor-pointer'
+                        className='h-[90%] mr-0.5 p-4 rounded-sm cursor-pointer'
                         src={searchIcon} 
                         alt="" 
                         style={{
                             // backgroundColor: colors.dark[100]
                             ...searchIconStyle,
                         }}
+                        onClick={handleSearchIconClicked}
                     />
                 </div>
 
@@ -168,20 +201,21 @@ const SearchBar = ({
                 aiModeActive ?
 
                     <div 
-                        className='w-full max-h-[500px] absolute top-full rounded-sm overflow-y-scroll scrollbar-hidden'
+                        className={`w-full max-h-[500px] absolute top-full rounded-sm overflow-y-scroll scrollbar-hidden ${!resSecVisible && "invisible"}`}
                         style={{
                             ...resSectionStyle
                             
                         }}
                     >
-                        {input.length > 0 ? <p className='p-2'>ya wassim ridh rahi mazelet mate5demch hadhika</p> : null }
+                        {resSecVisible ? <p className='p-2'>ya wassim ridh rahi mazelet mate5demch hadhika</p> : null }
                     </div>
 
                 :
 
                 <div 
-                    className={`w-full max-h-[500px] absolute top-full rounded-sm overflow-y-scroll scrollbar-hidden ${!input && "invisible"} `}
+                    className={`w-full max-h-[500px] absolute top-full rounded-sm overflow-y-scroll scrollbar-hidden ${!resSecVisible && "invisible"} `}
                     style={{
+                        
                         ...resSectionStyle,
                     }}
                     ref={searchResultDivRef}

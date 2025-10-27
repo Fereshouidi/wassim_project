@@ -42,7 +42,8 @@ const ImagesSwitcher = ({
     }
 
     const arrowStyle = {
-        transform: 'scale(1)'
+        transform: 'scale(1)',
+        backgroundColor: colors.light[250],
     }
     const arrowHoverStyle = {
         backgroundColor: colors.light[250],
@@ -52,7 +53,7 @@ const ImagesSwitcher = ({
 
   return (
     <div 
-        className={` no-sellect ${className}`} 
+        className={`h-full no-sellect bg-transparent ${className}`} 
         style={{ 
             ...style 
         }}
@@ -89,7 +90,7 @@ const ImagesSwitcher = ({
             >
                 <img 
                     src={activeTheme == "dark" ? "/icons/left-arrow-white.png" : "/icons/left-arrow-black.png"}
-                    className='w-7 h-7'
+                    className='w-6 h-6'
                 />
             </div>}
             
@@ -139,7 +140,7 @@ const ImagesSwitcher = ({
             >
                 <img 
                     src={activeTheme == "dark" ? "/icons/right-arrow-white.png" : "/icons/right-arrow-black.png"}
-                    className='w-7 h-7'
+                    className='w-6 h-6'
                 />
             </div>}
         </div>

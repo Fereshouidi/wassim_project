@@ -70,8 +70,8 @@ const SideBar = ({
 
                 <SearchBar
                     containerClassName='w-full'
-                    className='w-full border-[0.5px] border-gray-100 min-h-14'
-                    inputClassName='bg-transparent'
+                    className='w-20 border-[0.5px] border-gray-100 h-14'
+                    inputClassName='w-20 bg-transparent'
                     style={{
                         borderColor: colors.dark[300]
                     }}
@@ -87,7 +87,9 @@ const SideBar = ({
                     resSectionStyle={{
                         backgroundColor: colors.dark[100],
                         color: colors.light[100],
-                        border: `0.02px solid ${colors.light[800]}`,
+                        borderRight: `0.02px solid ${colors.light[900]}`,
+                        borderBottom: `0.02px solid ${colors.light[900]}`,
+                        borderLeft: `0.02px solid ${colors.light[900]}`,
                         borderTop: 'none'
                     }}
                     // aiIcon=""
