@@ -17,7 +17,8 @@ const Header = ({
     isSideBarActive,
     setIsSideBarActive,
     ownerInfo, 
-    setOwnerInfo
+    setOwnerInfo,
+    searchInput
 }: HeaderProps) => {
 
   const screenWidth = useScreen().screenWidth;
@@ -148,6 +149,7 @@ const Header = ({
         <div className='w-[75%] h-full flex flex-row justify-between items-center'>
 
           <SearchBar
+            searchInput={searchInput}
             containerClassName="h-14"
             className='h-full border-[0.02px]'
             style={{

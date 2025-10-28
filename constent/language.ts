@@ -29,7 +29,15 @@ export const english = {
         adress: "City ​​and address",
         phone: "Phone Number",
         note: "Note",
-        resultsFound: "Results found"
+        resultsFound: "Results found",
+        color: "color",
+        price: "price",
+        name: "name",
+        date: "date",
+        Oldest: "Oldest",
+        newest: "newest",
+        cheapest: "cheapest",
+        mostExpensive: "most expensive"
 
     }
 } as LanguageStracture;
@@ -63,7 +71,15 @@ export const frensh = {
         adress: "ville & adresse",
         phone: "Numéro de Téléphone",
         note: "Note",
-        resultsFound: "Résultats trouvés"
+        resultsFound: "Résultats trouvés",
+        color: "couleur",
+        price: "prix",
+        name: "nom",
+        date: "date",
+        Oldest: "plus ancien",
+        newest: "Plus récent",
+        cheapest: "moins cher",
+        mostExpensive: "plus cher"
     },
 
 } as LanguageStracture;

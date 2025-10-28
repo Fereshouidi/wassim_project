@@ -29,6 +29,7 @@ export type HeaderProps = {
     setIsSideBarActive: (value: boolean) => void
     ownerInfo?: OwnerInfoType 
     setOwnerInfo: (value: OwnerInfoType) => void
+    searchInput?: string | null
 }
 
 export type SearchBarProps = {
@@ -43,6 +44,7 @@ export type SearchBarProps = {
     resSectionStyle?: CSSProperties
     aiIconStyle?: CSSProperties,
     aiIconContentStyle?: CSSProperties
+    searchInput?: string | null
 }
 
 export type Themes = "system" | "dark" | "light"
@@ -92,6 +94,14 @@ export type LanguageStracture = {
         phone: string
         note: string
         resultsFound: string
+        price: string
+        color: string
+        name: string
+        date: string
+        Oldest: string
+        newest: string
+        cheapest: string
+        mostExpensive: string
     }
 }
 
@@ -189,4 +199,22 @@ export type ClientFormType = {
     adress: string,
     phone: number,
     note: string
+}
+
+export type FiltrationType = {
+    price: {
+        from: number
+        to: number
+    }
+    collections: []
+    colors: string[]
+    types: string[]
+    sizes: string[]
+
+    Ranking: {
+        price: "asc" | "desc"
+        name: "asc" | "desc"
+        date: "asc" | "desc"
+    }
+
 }

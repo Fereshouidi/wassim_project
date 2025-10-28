@@ -27,7 +27,8 @@ const SearchBar = ({
     containerClassName,
     resSectionStyle,
     aiIconStyle,
-    aiIconContentStyle
+    aiIconContentStyle,
+    searchInput
 }: SearchBarProps) => {
 
     const [focus, setFocus] = useState(false);
@@ -168,6 +169,7 @@ const SearchBar = ({
                     style={{
                         ...inputStyle
                     }} 
+                    defaultValue={searchInput?? ''}
                     onChange={(e) => setInput(e.target.value)}
                 />
                 

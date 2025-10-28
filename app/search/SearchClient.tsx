@@ -6,7 +6,7 @@ import Header from '@/componnent/main/header';
 import SideBar from '@/componnent/main/sideBar';
 import { useScreen } from '@/contexts/screenProvider';
 import { useTheme } from '@/contexts/themeProvider';
-import { OwnerInfoType, PubType } from '@/types';
+import { FiltrationType, OwnerInfoType, PubType } from '@/types';
 import axios from 'axios';
 import { useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -21,6 +21,32 @@ const Page = () => {
   const [pub, setPub] = useState<PubType | undefined>(undefined);
   const { screenWidth } = useScreen();
   const [ownerInfo, setOwnerInfo] = useState<OwnerInfoType | undefined>(undefined);
+  // const [filtration, setFiltration] = useState<FiltrationType>({
+  //     price: {
+  //         from: 0,
+  //         to: 999999999999
+  //     }
+  //     collections: []
+  //     colors: string[]
+  //     types: string[]
+  //     sizes: string[]
+
+  //     Ranking: {
+  //         price: "asc" | "desc"
+  //         name: "asc" | "desc"
+  //         date: "asc" | "desc"
+  //     }
+
+  // });
+
+  useEffect(() => {
+    const fetchDefaultFiltration = async () => {
+      await axios.get(backEndUrl + '/getMostProductExpensive')
+      .then(({ data }) => {console.log({product: data.product})})
+      .catch( (err) => {throw err})
+    }
+    fetchDefaultFiltration();
+  }, [])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,6 +58,10 @@ const Page = () => {
     }
     fetchData();
   }, [])
+
+  useEffect(() => {
+
+  }, [searchInput, ])
 
     useEffect(() => {
     console.log({ownerInfo});
@@ -45,6 +75,7 @@ const Page = () => {
         setIsSideBarActive={setSideBarActive}
         ownerInfo={ownerInfo}
         setOwnerInfo={setOwnerInfo}
+        searchInput={searchInput}
       />
 
       <FilterBar/>
