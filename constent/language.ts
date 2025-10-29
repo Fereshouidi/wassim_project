@@ -37,7 +37,10 @@ export const english = {
         Oldest: "Oldest",
         newest: "newest",
         cheapest: "cheapest",
-        mostExpensive: "most expensive"
+        mostExpensive: "most expensive",
+        max: "Max",
+        min: "Min",
+        priceZone: "Price zone"
 
     }
 } as LanguageStracture;
@@ -79,7 +82,10 @@ export const frensh = {
         Oldest: "plus ancien",
         newest: "Plus récent",
         cheapest: "moins cher",
-        mostExpensive: "plus cher"
+        mostExpensive: "plus cher",
+        max: "Max",
+        min: "Min",
+        priceZone: "Zone de prix"
     },
 
 } as LanguageStracture;

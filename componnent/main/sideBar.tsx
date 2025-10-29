@@ -73,7 +73,8 @@ const SideBar = ({
                     className='w-20 border-[0.5px] border-gray-100 h-14'
                     inputClassName='w-20 bg-transparent'
                     style={{
-                        borderColor: colors.dark[300]
+                        borderColor: colors.dark[300],
+                        backgroundColor: colors.dark[100]
                     }}
                     inputStyle={{
                         borderColor: colors.dark[300],
@@ -94,7 +95,7 @@ const SideBar = ({
                     }}
                     // aiIcon=""
                     aiIconStyle={{
-                        backgroundColor: colors.dark[200],
+                        backgroundColor: colors.dark[100],
                         // color: colors.light[200]
                     }}
                     // aiIconContentStyle={{

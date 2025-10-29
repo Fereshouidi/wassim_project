@@ -101,7 +101,10 @@ export type LanguageStracture = {
         Oldest: string
         newest: string
         cheapest: string
-        mostExpensive: string
+        mostExpensive: string,
+        max: string,
+        min: string,
+        priceZone: string
     }
 }
 
@@ -206,7 +209,7 @@ export type FiltrationType = {
         from: number
         to: number
     }
-    collections: []
+    collections: CollectionType[]
     colors: string[]
     types: string[]
     sizes: string[]

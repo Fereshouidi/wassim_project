@@ -100,5 +100,37 @@ a {
   scroll-behavior: smooth;
 }
 
+.range-input-light::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 7px;
+  height: 16px;
+  /* border-radius: 50%; */
+  background: black;
+  cursor: pointer;
+  /* margin-top: -6px;  */
+}
 
+/* Chrome, Edge, Safari */
+.range-input-dark::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 7px;
+  height: 16px;
+  background: white;
+  cursor: pointer;
+}
 
+.range-input-light::-moz-range-thumb {
+  width: 7px;
+  height: 16px;
+  background: black;
+  cursor: pointer;
+}
+
+.range-input-dark::-moz-range-thumb {
+  width: 7px;
+  height: 16px;
+  background: white;
+  cursor: pointer;
+}

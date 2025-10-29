@@ -52,12 +52,11 @@ const SearchBar = ({
 
         const fetchData = async () => {
             setIsLoading(true);
-            await axios.get(backEndUrl + "/getProductsBySearch", {
-                params: { 
-                    searchText: input, 
-                    limit, 
-                    skip 
-                }
+            await axios.post(backEndUrl + "/getProductsBySearch", { 
+                searchText: input, 
+                limit, 
+                skip,
+                filtration: undefined
             })
             .then(({ data }) => {
                 setSearchResult(prev => {
@@ -84,12 +83,11 @@ const SearchBar = ({
     useEffect(() => {
         setIsLoading(true);
         const fetchData = async () => {
-            await axios.get(backEndUrl + "/getProductsBySearch", {
-                params: { 
-                    searchText: input, 
-                    limit, 
-                    skip 
-                }
+            await axios.post(backEndUrl + "/getProductsBySearch", { 
+                searchText: input, 
+                limit, 
+                skip,
+                filtration: undefined
             })
             .then(({ data }) => {
                 setSearchResult(data.products);  
@@ -184,7 +182,7 @@ const SearchBar = ({
                     />
 
                     <img 
-                        className='h-[90%] mr-0.5 p-4 rounded-sm cursor-pointer'
+                        className='h-[95%] mr-0.5 p-4 rounded-sm cursor-pointer'
                         src={searchIcon} 
                         alt="" 
                         style={{
