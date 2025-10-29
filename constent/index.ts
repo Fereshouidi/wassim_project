@@ -1,4 +1,5 @@
 export const headerHeight = 80;
+export const filterBarHeight = 150;
 
 export const colorsInsLightMode = {
 

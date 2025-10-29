@@ -18,7 +18,9 @@ const Header = ({
     setIsSideBarActive,
     ownerInfo, 
     setOwnerInfo,
-    searchInput
+    searchInput,
+    className,
+    style
 }: HeaderProps) => {
 
   const screenWidth = useScreen().screenWidth;
@@ -101,11 +103,12 @@ const Header = ({
 
     return (
       <div 
-          className='w-full bg-white flex items-center justify-between gap-5 px-10 sticky top-0 z-50'
+          className={`w-full bg-white flex items-center justify-between gap-5 px-10 sticky top-0 z-50 ${className}`}
           style={{
               height: headerHeight,
               boxShadow: '0 0px 15px rgba(13, 13, 13, 0.07)',
-              backgroundColor: colors.light[100]
+              backgroundColor: colors.light[100],
+              ...style
           }}
       >
 

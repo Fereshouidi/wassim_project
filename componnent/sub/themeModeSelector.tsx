@@ -90,7 +90,7 @@ const ThemeMode = () => {
   return (
 
     <div 
-      className='w-28 h-full flex justify-center items-center cursor-pointer no-sellect relative'
+      className='w-28 h-full flex justify-center items-center cursor-pointer no-sellect relative z-50'
       style={{
         color: colors.dark[200]
       }}

@@ -1,0 +1,93 @@
+import { useTheme } from '@/contexts/themeProvider'
+import { CustomSelectType } from '@/types'
+import React, { CSSProperties, useRef, useState } from 'react'
+
+
+
+const CustomSelect = ({
+    options,
+    currentOption,
+    setCurrentOption,
+    className,
+    style,
+}: CustomSelectType) => {
+
+    const { activeTheme, colors } = useTheme();
+    const [optionsOpen, setOptionsOpent] = useState<boolean>(false);
+    const optionsRef = useRef<(HTMLParagraphElement | null)[]>([]);
+
+
+    const optionStyle: CSSProperties = {
+        backgroundColor: 'transparent',
+        color: colors.dark[250]
+    }
+
+    const optionHoverStyle: CSSProperties = {
+        backgroundColor: colors.dark[250],
+        color: colors.light[250]
+    }
+
+    const activeOptionStyle: CSSProperties = {
+        backgroundColor: colors.dark[200],
+        color: colors.light[200]
+    }
+
+    return (
+        <div 
+            className={`relative cursor-pointer no-sellect border-[0.02px] rounded-sm z-50 duration-300 ${className}`}
+            style={{
+                border: `0.002px solid ${colors.light[400]}`,
+                ...style
+            }}
+            onClick={() => setOptionsOpent(!optionsOpen)}
+        >
+            <div className='w-full h-7 rounded-sm px-1 flex flex-row justify-between items-center'>
+                <h4 className='text-[14px]'>{currentOption.label}</h4>
+                <img 
+                    src={activeTheme == "dark" ? "/icons/down-arrow-white.png" : "/icons/down-arrow-black.png" }
+                    className='w-6 h-6 ml-1'
+                />
+            </div>
+
+            <div 
+                className={`w-full absolute top-full left-0 z-50 duration-300 ${!optionsOpen && 'invisible'}`}
+                style={{
+                    border: `0.002px solid ${colors.light[400]}`,
+                    backgroundColor: colors.light[150]
+                }}
+                onClick={(e) => e.stopPropagation()}
+            >
+                {
+                    options.map((option, index) => (
+                        <p
+                            key={index}
+                            className='px-1 cursor-pointer text-[14px]'
+                            ref={(el) => {
+                                if (optionsRef.current) {
+                                    optionsRef.current[index] = el;
+                                }
+                            }}
+                            onMouseEnter={() => {
+                                const el = optionsRef.current[index];
+                                if (el && currentOption.value != option.value) el.style.backgroundColor = colors.light[250];
+                            }}
+                            onMouseLeave={() => {
+                                const el = optionsRef.current[index];
+                                if (el && currentOption.value != option.value ) el.style.backgroundColor = "transparent";
+                            }}
+
+                            style={currentOption.value == option.value ? activeOptionStyle : optionStyle}
+                            onClick={() => {
+                                setOptionsOpent(false);
+                                setCurrentOption(option);
+                            }}
+                        >{option.label}</p>
+                    ))
+                }
+            </div>
+
+        </div>
+    )
+}
+
+export default CustomSelect

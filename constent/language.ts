@@ -40,7 +40,8 @@ export const english = {
         mostExpensive: "most expensive",
         max: "Max",
         min: "Min",
-        priceZone: "Price zone"
+        priceZone: "Price zone",
+        all: "all"
 
     }
 } as LanguageStracture;
@@ -85,7 +86,8 @@ export const frensh = {
         mostExpensive: "plus cher",
         max: "Max",
         min: "Min",
-        priceZone: "Zone de prix"
+        priceZone: "Zone de prix",
+        all: "tout les"
     },
 
 } as LanguageStracture;

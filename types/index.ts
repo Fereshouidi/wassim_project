@@ -30,6 +30,8 @@ export type HeaderProps = {
     ownerInfo?: OwnerInfoType 
     setOwnerInfo: (value: OwnerInfoType) => void
     searchInput?: string | null
+    className?: string
+    style?: CSSProperties
 }
 
 export type SearchBarProps = {
@@ -105,6 +107,7 @@ export type LanguageStracture = {
         max: string,
         min: string,
         priceZone: string
+        all: string
     }
 }
 
@@ -220,4 +223,19 @@ export type FiltrationType = {
         date: "asc" | "desc"
     }
 
+}
+
+export type CustomSelectType = {
+    options: OptionType[]
+    currentOption: OptionType
+    setCurrentOption: (value: OptionType) => void
+    className?: string
+    style?: CSSProperties
+
+
+}
+
+export type OptionType = {
+    value: string,
+    label: string
 }

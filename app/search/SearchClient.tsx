@@ -6,6 +6,7 @@ import Header from '@/componnent/main/header';
 import SideBar from '@/componnent/main/sideBar';
 import MoreBotton from '@/componnent/sub/moreBotton';
 import ProductCard from '@/componnent/sub/productCard';
+import { filterBarHeight } from '@/constent';
 import { useScreen } from '@/contexts/screenProvider';
 import { useTheme } from '@/contexts/themeProvider';
 import { CollectionType, FiltrationType, OwnerInfoType, ProductSpecification, ProductType, PubType } from '@/types';
@@ -186,6 +187,9 @@ const Page = () => {
         ownerInfo={ownerInfo}
         setOwnerInfo={setOwnerInfo}
         searchInput={searchText}
+        style={{
+          boxShadow: 'none'
+        }}
       />
 
       {
@@ -197,11 +201,18 @@ const Page = () => {
           setFiltration={setFiltration}
           mostProductExpensive={mostProductExpensive.specifications[0].price}
           productsCount={productsCount}
+          allCollections={allCollections}
+          availableColors={availableColors}
         />
 
       }
 
-        <div className='w-full sm:px-24 flex flex-col justify-center items-center overflow-scroll'>
+        <div 
+          className='w-full sm:px-24 flex flex-col justify-center items-center'
+          style={{
+            paddingTop: filterBarHeight + 'px'
+          }}
+        >hhh
 
             <div className='w-full flex flex-wrap justify-center gap-2 sm:gap-10'>
 
