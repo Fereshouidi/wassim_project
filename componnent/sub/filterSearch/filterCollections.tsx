@@ -47,7 +47,7 @@ const FilterCollection = ({
     }, [options])
     
     return (
-        <div className='w-fit h-full'>
+        <div className='w-fit h-full m-2 p-2'>
             
             <h4 
                 className='m-5 mb-4 font-extrabold'

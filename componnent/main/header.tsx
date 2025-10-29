@@ -1,5 +1,5 @@
 "use client";
-import { headerHeight } from '@/constent';
+import { headerHeight, headerHeightForPhones } from '@/constent';
 import React, { useContext, useEffect, useState } from 'react'
 import SearchBar from '../sub/searchBar';
 import ShoppingCart from '../sub/shoppingCart';
@@ -37,9 +37,10 @@ const Header = ({
       <div 
         className='w-full bg-white flex items-center justify-between px-5 sticky top-0 z-50'
         style={{
-            height: headerHeight/1.2,
+            height: headerHeightForPhones,
             boxShadow: '0 0px 15px rgba(13, 13, 13, 0.07)',
-            backgroundColor: colors.light[100]
+            backgroundColor: colors.light[100],
+            ...style
         }}
       >
         

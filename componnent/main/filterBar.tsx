@@ -4,8 +4,9 @@ import { CollectionType, FiltrationType, ProductType } from '@/types'
 import React, { useEffect, useState } from 'react'
 import FilterPriceRange from '../sub/filterSearch/FilterPriceRange'
 import FilterCollection from '../sub/filterSearch/filterCollections'
-import { filterBarHeight, headerHeight } from '@/constent'
+import { filterBarHeight, headerHeight, headerHeightForPhones } from '@/constent'
 import FilterColor from '../sub/filterSearch/filterColor'
+import { useScreen } from '@/contexts/screenProvider'
 
 type FilterBarType = {
     filtration: FiltrationType
@@ -25,6 +26,7 @@ const FilterBar = ({
     availableColors
 }: FilterBarType) => {
 
+    const { screenWidth } = useScreen();
     const { activeLanguage } = useLanguage();
     const { colors, activeTheme } = useTheme();
     // const [min, setMin] = useState<number>(filtration.price.from);
@@ -46,12 +48,12 @@ const FilterBar = ({
 
     return (
         <div 
-            className={`w-full fixed left-0 flex flex-row flex-wrap justify-between items-center  z-10`}
+            className={`w-full h-fit sticky left-0 flex flex-row flex-wrap justify-center items-center p-2 z-10`}
             style={{
                 backgroundColor: colors.light[100],
                 boxShadow: '0 0px 15px rgba(13, 13, 13, 0.07)',
-                height: filterBarHeight + "px",
-                top: headerHeight + "px"
+                // height: screenWidth > 1250 ? filterBarHeight + "px" : "",
+                top: screenWidth > 1250 ? headerHeight + "px" : headerHeightForPhones + "px"
             }}
         >
 
@@ -108,8 +110,6 @@ const FilterBar = ({
                     </div> */}
 
                 </div>
-
-                <button>validation</button>
 
                 
             {/* </div> */}

@@ -1,6 +1,6 @@
 import { useTheme } from '@/contexts/themeProvider'
 import { CustomSelectType } from '@/types'
-import React, { CSSProperties, useRef, useState } from 'react'
+import React, { CSSProperties, useEffect, useRef, useState } from 'react'
 
 
 
@@ -15,7 +15,21 @@ const CustomSelect = ({
     const { activeTheme, colors } = useTheme();
     const [optionsOpen, setOptionsOpent] = useState<boolean>(false);
     const optionsRef = useRef<(HTMLParagraphElement | null)[]>([]);
+    const selectRef = useRef<HTMLDivElement>(null)
 
+
+    useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+        if (selectRef.current && !selectRef.current?.contains(event.target as Node)) {
+        setOptionsOpent(false);
+        }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+    };
+    }, []);
 
     const optionStyle: CSSProperties = {
         backgroundColor: 'transparent',
@@ -34,11 +48,12 @@ const CustomSelect = ({
 
     return (
         <div 
-            className={`relative cursor-pointer no-sellect border-[0.02px] rounded-sm z-50 duration-300 ${className}`}
+            className={`min-w-[150px] relative cursor-pointer no-sellect border-[0.02px] rounded-sm z-50 duration-300 ${className}`}
             style={{
                 border: `0.002px solid ${colors.light[400]}`,
                 ...style
             }}
+            ref={selectRef}
             onClick={() => setOptionsOpent(!optionsOpen)}
         >
             <div className='w-full h-7 rounded-sm px-1 flex flex-row justify-between items-center'>

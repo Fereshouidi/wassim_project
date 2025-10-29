@@ -210,11 +210,11 @@ const Page = () => {
         <div 
           className='w-full sm:px-24 flex flex-col justify-center items-center'
           style={{
-            paddingTop: filterBarHeight + 'px'
+            // paddingTop: filterBarHeight + 'px'
           }}
         >hhh
 
-            <div className='w-full flex flex-wrap justify-center gap-2 sm:gap-10'>
+            <div className='w-full h-full flex flex-wrap justify-center gap-2 sm:gap-10 py-2 '>
 
                 {
                     productsFound?.map((product, index) => (
