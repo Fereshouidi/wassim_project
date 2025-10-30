@@ -65,7 +65,7 @@ const FilterBar = ({
     return (
         <div 
             className={`
-                filter-bar w-full sticky
+                filter-bar w-full sticky 
                 ${filteBarActive ? "overflow-y-scroll scrollbar-hidden" : ""}
                 ${!filteBarActive && "filter-bar-inactive"}
                 h-fit- left-0 flex flex-col
@@ -77,7 +77,7 @@ const FilterBar = ({
                 backgroundColor: colors.light[100],
                 boxShadow: filteBarActive ? '0 0px 15px rgba(13, 13, 13, 0.07)' : '',
                 border: !filteBarActive ? `0.025px solid ${colors.light[300]}` : `0.025px solid ${colors.light[300]}`,
-                height: filteBarActive ?  screenWidth > 1250 ? filterBarHeight + "px" : "500px" : "65px",
+                height: filteBarActive ?  screenWidth > 1250 ? filterBarHeight + "px" : "700px" : "65px",
                 top: screenWidth > 1250 ? headerHeight + "px" : headerHeightForPhones + "px" 
             }}
             ref={filterBarRef}
@@ -159,7 +159,7 @@ const FilterBar = ({
                     
                 />}
 
-                <div className='min-w-[300px] flex flex-1 flex-row flex-wrap justify-center items-center m-2 my-5'>
+                <div className='min-w-[300px] flex flex-1 flex-row flex-wrap justify-center items-center m-2 my-5-'>
                     <FilterCollection
                         allCollections={allCollections}
                         filtrationCopy={filtrationCopy}

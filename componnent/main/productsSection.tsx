@@ -12,6 +12,7 @@ import Slider from '../sub/slider';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { useScreen } from '@/contexts/screenProvider';
 import SliderForPhones from '../sub/sliderForPhones';
+import SkeletonLoading from '../sub/SkeletonLoading';
 
 
 type ProductsSectionType = {
@@ -80,20 +81,20 @@ const ProductsSection = ({
 
     <div className='w-full flex flex-col justify-center items-center'>
 
-        <h2 
-            className='text-2xl sm:text-5xl sm:m-20 m-10'
-            style={{
-                color: colors.dark[100]
-            }}
-        >
-            {collection.name[activeLanguage.language]}
-        </h2>
-
-    {/* <DotLottieReact
-      src="https://lottie.host/1754c77d-0972-4dff-8844-f0350d515947/kliZzgbtLk.lottie"
-      loop
-      autoplay
-    /> */}
+        {collection.name[activeLanguage.language] ?
+            <h2 
+                className='text-2xl sm:text-5xl sm:m-20 m-10'
+                style={{
+                    color: colors.dark[100]
+                }}
+            >
+                {collection.name[activeLanguage.language]}
+            </h2>
+            :
+            <div className='w-[150px] h-8 rounded-sm overflow-hidden text-2xl sm:text-5xl sm:m-20 m-10'>
+                <SkeletonLoading/>
+            </div>
+        }
 
         {
             collection.display == "vertical" ?

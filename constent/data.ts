@@ -327,57 +327,78 @@ export const productsLoading: ProductType[] = [
   },
 ];
 
+export const collectionsLoading: CollectionType[] = [
+  {
+    _id: '1',
+    name: {
+      en: null,
+      fr: null
+    },
+    thumbNail: null,
+    type: "private",
+    display: "horizontal"
+  },
+  {
+    _id: '2',
+    name: {
+      en: null,
+      fr: null
+    },
+    thumbNail: null,
+    type: "private",
+    display: "vertical"
+  }
+]
 
+// export const collectionsLoading = [
 
-export const collectionsLoading = [
+//     {
+//         _id: "1",
+//         name: {
+//             fr: null,
+//             en: null
+//         },
+//         thumbNail: null,
+//     },
+//     {
+//         _id: "2",
+//         name: {
+//             fr: null,
+//             en: null
+//         },
+//         thumbNail: null,
+//     },
+//     {
+//         _id: "3",
+//         name: {
+//             fr: null,
+//             en: null
+//         },
+//         thumbNail: null,
+//     },
+//     {
+//         _id: "4",
+//         name: {
+//             fr: null,
+//             en: null
+//         },
+//         thumbNail: null,
+//     },
+//     {
+//         _id: "5",
+//         name: {
+//             fr: null,
+//             en: null
+//         },
+//         thumbNail: null,
+//     },
+//     {
+//         _id: "6",
+//         name: {
+//             fr: null,
+//             en: null
+//         },
+//         thumbNail: null,
+//     }
 
-    {
-        _id: "1",
-        name: {
-            fr: null,
-            en: null
-        },
-        thumbNail: null,
-    },
-    {
-        _id: "2",
-        name: {
-            fr: null,
-            en: null
-        },
-        thumbNail: null,
-    },
-    {
-        _id: "3",
-        name: {
-            fr: null,
-            en: null
-        },
-        thumbNail: null,
-    },
-    {
-        _id: "4",
-        name: {
-            fr: null,
-            en: null
-        },
-        thumbNail: null,
-    },
-    {
-        _id: "5",
-        name: {
-            fr: null,
-            en: null
-        },
-        thumbNail: null,
-    },
-    {
-        _id: "6",
-        name: {
-            fr: null,
-            en: null
-        },
-        thumbNail: null,
-    }
-
-] as CollectionType[]
+// ] as CollectionType[]

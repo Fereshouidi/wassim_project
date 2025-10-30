@@ -190,7 +190,7 @@ const Page = () => {
 
   return (
     <div 
-      className='page flex flex-col items-center'
+      className='page flex flex-col items-center '
       style={{
         backgroundColor: colors.light[150]
       }}

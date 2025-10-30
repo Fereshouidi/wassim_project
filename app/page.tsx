@@ -6,6 +6,7 @@ import Header from "@/componnent/main/header";
 import HomeCollections from "@/componnent/main/homeCollections";
 import SideBar from "@/componnent/main/sideBar";
 import AnnouncementBar from "@/componnent/sub/AnnouncementBar";
+import SkeletonLoading from "@/componnent/sub/SkeletonLoading";
 import { useScreen } from "@/contexts/screenProvider";
 import { useTheme } from "@/contexts/themeProvider";
 import { OwnerInfoType, PubType } from "@/types";
@@ -64,7 +65,7 @@ export default function Home() {
   //   fetchData();
   // }, [])
 
-  if (!ownerInfo) return <div>loading</div>
+  // if (!ownerInfo) return <div>loading</div>
 
   return (
     <div 
@@ -90,13 +91,18 @@ export default function Home() {
           backgroundColor: colors.dark[800]
         }}
       >
-        <img 
-          src={screenWidth < 1000 ? pub?.heroBanner?.sm : pub?.heroBanner?.md}
-          className="w-full h-full object-cover max-h-[70vh]" 
-          style={{
-            backgroundColor: colors.dark[800]
-          }}
-        />
+        {pub?.heroBanner ?
+          <img 
+            src={screenWidth < 1000 ? pub?.heroBanner?.sm : pub?.heroBanner?.md}
+            className="w-full h-full object-cover max-h-[70vh]" 
+            style={{
+              backgroundColor: colors.dark[800]
+            }}
+          />
+          : <div className="h-[250px]">
+              <SkeletonLoading/>
+          </div>
+        }
       </div>
 
 

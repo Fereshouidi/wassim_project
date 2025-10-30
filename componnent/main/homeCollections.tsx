@@ -5,16 +5,12 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import ProductsSection from './productsSection';
 import { useTheme } from '@/contexts/themeProvider';
+import { collectionsLoading } from '@/constent/data';
 
 const HomeCollections = () => {
 
-    const [collections, setCollection] = useState<CollectionType[] | undefined>(undefined);
+    const [collections, setCollections] = useState<CollectionType[] | undefined>(collectionsLoading);
     const { colors } = useTheme();
-
-    // useEffect(() => {
-    //     console.log({collections});
-        
-    // }, [collections])
 
     useEffect(() => {
         
@@ -22,7 +18,7 @@ const HomeCollections = () => {
 
             await axios.get(backEndUrl + "/homeCollections")
 
-            .then(({data}) => setCollection(data.homeCollections))
+            .then(({data}) => setCollections(data.homeCollections))
             .catch((err) => {
                 console.log(err);
             })

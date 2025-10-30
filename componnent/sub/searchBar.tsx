@@ -279,14 +279,14 @@ const SearchBar = ({
 
             }
 
-            {aiModeActive && <div className='absolute top-0 left-0 w-full h-full'>
+            {/* {aiModeActive && <div className='absolute top-0 left-0 w-full h-full'>
                 <video 
                     src="/AIBg.webm"
                     className=" w-full  rounded-sm"
                     loop={true}
                     autoPlay={true}
                 ></video>
-            </div>}
+            </div>} */}
 
 
 

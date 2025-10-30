@@ -40,7 +40,7 @@ const ProductCard = ({
             {
                 product.thumbNail ? <img 
                     src={product.thumbNail}
-                    className='w-full h-full hover:scale-110 duration-300'
+                    className='w-full h-full rounded-sm overflow-hidden hover:scale-110 duration-300'
                 /> :
                 product.thumbNail == null ?
                     <SkeletonLoading/> :
@@ -50,7 +50,7 @@ const ProductCard = ({
 
 
         <h4 
-            className='w-full min-h-5 text-[14px] sm:text-lg text-center '
+            className='w-full rounded-sm overflow-hidden min-h-5 text-[14px] sm:text-lg text-center '
             style={{
                 color: colors.dark[200]
             }}
@@ -64,7 +64,7 @@ const ProductCard = ({
         </h4>
 
         <span 
-            className='min-w-[50%] min-h-5 text-[17px] sm:text-lg font-bold text-center'
+            className='min-w-[50%] rounded-sm overflow-hidden min-h-5 text-[17px] sm:text-lg font-bold text-center'
             style={{
                 color: colors.dark[100]
             }}
