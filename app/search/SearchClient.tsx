@@ -7,6 +7,7 @@ import SideBar from '@/componnent/main/sideBar';
 import MoreBotton from '@/componnent/sub/moreBotton';
 import ProductCard from '@/componnent/sub/productCard';
 import { filterBarHeight } from '@/constent';
+import { useLanguage } from '@/contexts/languageContext';
 import { useScreen } from '@/contexts/screenProvider';
 import { useTheme } from '@/contexts/themeProvider';
 import { CollectionType, FiltrationType, OwnerInfoType, ProductSpecification, ProductType, PubType } from '@/types';
@@ -20,7 +21,8 @@ const Page = () => {
   const collectionId = params.get('collectionId');
   const searchText = params.get('searchInput');
   const [sideBarActive, setSideBarActive] = useState<boolean>(false);
-  const { colors } = useTheme();
+  const { colors, activeTheme } = useTheme();
+  const {activeLanguage } = useLanguage();
   const [pub, setPub] = useState<PubType | undefined>(undefined);
   const { screenWidth } = useScreen();
   const [ownerInfo, setOwnerInfo] = useState<OwnerInfoType | undefined>(undefined);
@@ -49,7 +51,7 @@ const Page = () => {
     
   }, [mostProductExpensive && allCollections])
 
-  useEffect(() => {
+  useEffect(() => {console.log("Component rendered");
 
     if (!searchText || !filtration) return;
     
@@ -76,7 +78,7 @@ const Page = () => {
     
   }, [filtration, searchText])
 
-  useEffect(() => {
+  useEffect(() => {console.log("Component rendered");
 
     if (!searchText || !filtration) return;
     
@@ -110,7 +112,8 @@ const Page = () => {
     
   }, [availableColors, availableSizes, availableTypes, filtration])
 
-  useEffect(() => {
+  useEffect(() => {console.log("Component rendered");
+
     const fetchDefaultFiltration = async () => {
 
       await axios.get(backEndUrl + '/getMostProductExpensive')
@@ -139,7 +142,7 @@ const Page = () => {
 
   }, [])
 
-  useEffect(() => {
+  useEffect(() => {console.log("Component rendered");
     setFiltration({
         price: {
             from: 0,
@@ -159,7 +162,7 @@ const Page = () => {
     })
   }, [mostProductExpensive, allCollections])
 
-  useEffect(() => {
+  useEffect(() => {console.log("Component rendered");
     const fetchData = async () => {
       await axios.get(backEndUrl + "/getOwnerInfo")
       .then(({ data }) => setOwnerInfo(data.ownerInfo))
@@ -170,7 +173,7 @@ const Page = () => {
     fetchData();
   }, [])
 
-  useEffect(() => {
+  useEffect(() => {console.log("Component rendered");
 
   }, [searchText ])
 
@@ -180,7 +183,12 @@ const Page = () => {
   }, [ownerInfo])
 
   return (
-    <div className='page flex flex-col items-center'>
+    <div 
+      className='page flex flex-col items-center'
+      style={{
+        backgroundColor: colors.light[150]
+      }}
+    >
       <Header
         isSideBarActive={sideBarActive}
         setIsSideBarActive={setSideBarActive}
@@ -188,7 +196,7 @@ const Page = () => {
         setOwnerInfo={setOwnerInfo}
         searchInput={searchText}
         style={{
-          boxShadow: 'none'
+          // boxShadow: 'none'
         }}
       />
 
@@ -203,16 +211,19 @@ const Page = () => {
           productsCount={productsCount}
           allCollections={allCollections}
           availableColors={availableColors}
+          availableSizes={availableSizes}
+          availableTypes={availableTypes}
         />
 
       }
 
         <div 
-          className='w-full sm:px-24 flex flex-col justify-center items-center'
+          className='w-full relative sm:px-24 py-5- flex flex-col justify-center items-center'
           style={{
             // paddingTop: filterBarHeight + 'px'
           }}
-        >hhh
+        >
+
 
             <div className='w-full h-full flex flex-wrap justify-center gap-2 sm:gap-10 py-2 '>
 

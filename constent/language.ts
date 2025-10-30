@@ -41,7 +41,8 @@ export const english = {
         max: "Max",
         min: "Min",
         priceZone: "Price zone",
-        all: "all"
+        all: "all",
+        filter: "filter"
 
     }
 } as LanguageStracture;
@@ -87,7 +88,8 @@ export const frensh = {
         max: "Max",
         min: "Min",
         priceZone: "Zone de prix",
-        all: "tout les"
+        all: "tout les",
+        filter: "filter"
     },
 
 } as LanguageStracture;

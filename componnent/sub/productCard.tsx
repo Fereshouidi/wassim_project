@@ -32,7 +32,7 @@ const ProductCard = ({
     >
         
         <div 
-            className='w-full h-[180px] sm:h-[250px] overflow-hidden'
+            className='w-full h-[180px] sm:h-[250px] rounded-sm overflow-hidden'
             style={{
                 backgroundColor: colors.light[300]
             }}
@@ -50,7 +50,7 @@ const ProductCard = ({
 
 
         <h4 
-            className='w-full min-h-5 text-sm sm:text-lg text-center px-2 sm:px-0'
+            className='w-full min-h-5 text-[14px] sm:text-lg text-center '
             style={{
                 color: colors.dark[200]
             }}
@@ -64,7 +64,7 @@ const ProductCard = ({
         </h4>
 
         <span 
-            className='min-w-[50%] min-h-5 text-lg sm:text-lg font-bold text-center'
+            className='min-w-[50%] min-h-5 text-[17px] sm:text-lg font-bold text-center'
             style={{
                 color: colors.dark[100]
             }}

@@ -107,7 +107,8 @@ export type LanguageStracture = {
         max: string,
         min: string,
         priceZone: string
-        all: string
+        all: string,
+        filter: string
     }
 }
 

@@ -49,11 +49,13 @@ const FilterPriceRange = ({
 
   return (
     // <div>
-        <div className='h-full flex flex-col justify-center w-fit m-2 p-2'>
+        <div className='h-full flex flex-1- flex-col justify-center w-fit mx-2 px-2'>
+
             <h4 className='m-5 font-extrabold'>{activeLanguage.sideMatter.priceZone + " : "}</h4>
+            
             <div className='h-full flex flex-col justify-center items-center mx-2 relative '>
                 
-                <div className='flex flex-rox my-[6px]'>
+                <div className='flex flex-rox my-[8px]'>
 
                     <h5>{activeLanguage.sideMatter.min} </h5>
 
@@ -105,7 +107,7 @@ const FilterPriceRange = ({
 
                 </div>
 
-                <div className='flex flex-rox my-[6px]'>
+                <div className='flex flex-rox my-[8px]'>
 
                     <h5>{activeLanguage.sideMatter.max}</h5>
 

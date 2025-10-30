@@ -148,7 +148,7 @@ const SearchBar = ({
 
     return(
         <div 
-            className={`w-[60%] relative flex flex-col ${containerClassName} relative rounded-sm p-[2px] pb-[1px] pr-0`}
+            className={`w-[60%] flex flex-col overflow-hidden relative rounded-sm p-[1.5px] ${containerClassName} `}
             ref={searchRef}
         >
 
@@ -172,7 +172,7 @@ const SearchBar = ({
                 />
                 
                 <div
-                    className='h-full rounded-sm cursor-pointer flex justify-between items-center duration-300'
+                    className='h-full rounded-sm cursor-pointer flex justify-between items-center transition-[width] duration-300'
                 >
                     <AiMode
                         aiModeActive={aiModeActive}
@@ -273,22 +273,14 @@ const SearchBar = ({
 
             }
 
-            {/* <video 
-                src="/AIBg.json"
-                className="absolute inset-0 w-full h-full pointer-events-none bg-red-500"
-                loop
-                autoPlay
-            ></video> */}
-
-        {/* <div className="absolute inset-0 w-full h-full overflow-hidden flex items-center justify-center z-0">
-        <DotLottieReact
-            src="/AIBg.json"
-            autoplay
-            loop
-            className="w-[150%] h-[150%] scale-[2000%] pointer-events-none"
-        />
-        </div> */}
-
+            {/* <div className='absolute top-0 left-0 w-full h-full'>
+                <video 
+                    src="/AIBg.webm"
+                    className=" w-full  rounded-sm"
+                    loop={true}
+                    autoPlay={true}
+                ></video>
+            </div> */}
 
 
 

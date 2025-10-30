@@ -5,27 +5,27 @@ import CustomSelect from '../customSelect';
 import { CollectionType, OptionType } from '@/types';
 
 type FilterCollection = {
-    availableColors: string[]
+    availableType: string[]
 }
 
-const FilterColor = ({
-    availableColors
+const FilterType = ({
+    availableType
 }: FilterCollection) => {
 
     const { activeLanguage } = useLanguage();
     const { colors, activeTheme } = useTheme();
     const [options, setOptions] = useState<OptionType[]>([]);
     const [currentOptions, setCurrentOptions] = useState<OptionType>({
-        label: activeLanguage.sideMatter.all + " " + activeLanguage.sideMatter.colors, 
+        label: activeLanguage.sideMatter.all + " " + activeLanguage.sideMatter.types, 
         value: "all"
     });
 
     useEffect(() => {
 
-        const allOptions = availableColors.map(color => (
+        const allOptions = availableType.map(type => (
             {
-                label: color,
-                value: color
+                label: type,
+                value: type
             } as OptionType
         ))
 
@@ -33,13 +33,13 @@ const FilterColor = ({
 
         setOptions([
             {
-                label: activeLanguage.sideMatter.all + " " + activeLanguage.sideMatter.colors, 
+                label: activeLanguage.sideMatter.all + " " + activeLanguage.sideMatter.types, 
                 value: "all"
             },
             ...allOptions
         ])
 
-    }, [availableColors])
+    }, [availableType])
 
     useEffect(() => {
         console.log({options});
@@ -51,7 +51,7 @@ const FilterColor = ({
             
             <h4 
                 className='m-5 mb-4 font-extrabold'
-            >{activeLanguage.sideMatter.colors + " : "}</h4>
+            >{activeLanguage.sideMatter.types + " : "}</h4>
 
             <CustomSelect
                 options={options}
@@ -62,4 +62,4 @@ const FilterColor = ({
     )
 }
 
-export default FilterColor;
+export default FilterType;

@@ -134,3 +134,7 @@ a {
   background: white;
   cursor: pointer;
 }
+
+.filter-bar-inactive *:not(.bottom-bar):not(.bottom-bar *) {
+  display: none;
+}
