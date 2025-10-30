@@ -1,6 +1,6 @@
 export const headerHeight = 80;
 export const headerHeightForPhones =  headerHeight/1.2
-export const filterBarHeight = 150;
+export const filterBarHeight = 330;
 
 export const colorsInsLightMode = {
 

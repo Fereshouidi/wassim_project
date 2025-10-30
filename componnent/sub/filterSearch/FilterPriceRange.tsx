@@ -49,7 +49,7 @@ const FilterPriceRange = ({
 
   return (
     // <div>
-        <div className='h-full flex flex-1- flex-col justify-center w-fit mx-2 px-2'>
+        <div className='sm:h-full- flex flex-1- flex-col justify-center w-fit mx-2 px-2'>
 
             <h4 className='m-5 font-extrabold'>{activeLanguage.sideMatter.priceZone + " : "}</h4>
             
@@ -101,7 +101,7 @@ const FilterPriceRange = ({
                             style={{
                                 color: colors.dark[300]
                             }}
-                        >{filtration.price.to + " D.T"}</span>
+                        >{mostProductExpensive + " D.T"}</span>
                     </div>
 
 

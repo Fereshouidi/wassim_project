@@ -47,6 +47,7 @@ export type SearchBarProps = {
     aiIconStyle?: CSSProperties,
     aiIconContentStyle?: CSSProperties
     searchInput?: string | null
+    searchIconClicked?: Function
 }
 
 export type Themes = "system" | "dark" | "light"

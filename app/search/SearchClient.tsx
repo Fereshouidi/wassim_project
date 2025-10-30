@@ -37,25 +37,20 @@ const Page = () => {
   const [productsCount, setProductsCount] = useState<number>(0);
   const [limit, setLimit] = useState<number>(10);
   const [skip, setSkip] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const [storedSearchText, setStoredSearchText] = useState<string>('');
 
 
   const [filtration, setFiltration] = useState<FiltrationType | undefined>(undefined);
 
-  useEffect(() => {
-    console.log({productsFound});
-    
-  }, [productsFound])
 
   useEffect(() => {
-    console.log({allCollections});
-    
-  }, [mostProductExpensive && allCollections])
-
-  useEffect(() => {console.log("Component rendered");
 
     if (!searchText || !filtration) return;
     
     const fetchProductBySearch = async () => {
+      setLoading(true);
       await axios.post( backEndUrl + "/getProductsBySearch", {
         searchText,
         limit,
@@ -68,15 +63,17 @@ const Page = () => {
         setAvailableColors(data.availableColors);
         setAvailableSizes(data.availableSizes);
         setAvailableTypes(data.availableTypes);
-
+        setLoading(false);
       })
       .catch(( err ) => {
+        setLoading(false);
         throw err;
       })
     }
 
     fetchProductBySearch();
     localStorage.setItem('searchFilter', JSON.stringify(filtration));
+    localStorage.setItem('searchText', searchText);
     
   }, [filtration, searchText])
 
@@ -85,6 +82,7 @@ const Page = () => {
     if (!searchText || !filtration) return;
     
     const fetchProductBySearch = async () => {
+      setLoading(true);
       await axios.post( backEndUrl + "/getProductsBySearch", {
         searchText,
         limit,
@@ -97,9 +95,10 @@ const Page = () => {
         setAvailableColors(data.availableColors);
         setAvailableSizes(data.availableSizes);
         setAvailableTypes(data.availableTypes);
-
+        setLoading(false);
       })
       .catch(( err ) => {
+        setLoading(false);
         throw err;
       })
     }
@@ -139,14 +138,15 @@ const Page = () => {
 
   useEffect(() => {
 
-    const savedFilter = localStorage.getItem("searchFilter");
+    // const savedFilter = localStorage.getItem("searchFilter");
 
-    if (savedFilter) return setFiltration(JSON.parse(savedFilter))
+    // alert(savedFilter)
+    // if (savedFilter) return setFiltration(JSON.parse(savedFilter))
 
     setFiltration({
         price: {
             from: 0,
-            to: mostProductExpensive?.specifications[0].price ?? 9999999999
+            to: mostProductExpensive?.specifications[0].price ?? 100
         },
         collections: allCollections.map(collection => (collection._id?? '')),
         colors: availableColors,
@@ -174,7 +174,13 @@ const Page = () => {
   }, [])
 
   useEffect(() => {
-    // localStorage.removeItem("searchFilter");
+
+    // const storedSearchText = localStorage.getItem('searchText');
+    // // setStoredSearchText(storedSearchText);
+    // if (storedSearchText != searchText) 
+      
+      // localStorage.removeItem("searchFilter");
+    
   }, [searchText ])
 
     useEffect(() => {
@@ -213,12 +219,13 @@ const Page = () => {
           availableColors={availableColors}
           availableSizes={availableSizes}
           availableTypes={availableTypes}
+          searchText={searchText?? ''}
         />
 
       }
 
         <div 
-          className='w-full relative sm:px-24 py-5- flex flex-col justify-center items-center'
+          className='w-full min-h-screen relative sm:px-24 flex flex-col justify-center- items-center'
           style={{
             // paddingTop: filterBarHeight + 'px'
           }}
@@ -247,15 +254,17 @@ const Page = () => {
                     skip={skip}
                     setSkip={setSkip}
                     limit={limit}
-                    isLoading={false}
+                    isLoading={loading}
                 /> 
 
         }
 
-      <div className='w-full min-h-screen'>
+      {/* <div className='w-full min-h-screen'>
         {collectionId}
         <p>{searchText}</p>
-      </div>
+      </div> */}
+
+      <div className='h-10'></div>
 
       <Footer/>
 

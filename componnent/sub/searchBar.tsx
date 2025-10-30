@@ -28,7 +28,8 @@ const SearchBar = ({
     resSectionStyle,
     aiIconStyle,
     aiIconContentStyle,
-    searchInput
+    searchInput,
+    searchIconClicked
 }: SearchBarProps) => {
 
     const [focus, setFocus] = useState(false);
@@ -191,7 +192,10 @@ const SearchBar = ({
                             // backgroundColor: colors.dark[100]
                             ...searchIconStyle,
                         }}
-                        onClick={handleSearchIconClicked}
+                        onClick={() => {
+                            handleSearchIconClicked();
+                            searchIconClicked ? searchIconClicked() : null
+                        }}
                     />
                 </div>
 

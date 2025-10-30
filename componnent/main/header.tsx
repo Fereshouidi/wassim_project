@@ -26,77 +26,128 @@ const Header = ({
   const screenWidth = useScreen().screenWidth;
   const { activeTheme, colors } = useTheme();
   const router = useRouter();
+  const [searchBarActive, setSearchBarActive] = useState<boolean>(false)
   // const [isSideBarActive, setIsSideBarActive] = useState<boolean>(true);
 
 
-  
+  // for phones 
+
   if (screenWidth < 1000) {
 
     return (
 
+      <div className={`w-full bg-white flex items-center justify-between sticky top-0 z-50 ${searchBarActive ? "fixed-" : "sticky-"}`}>
+
       <div 
-        className='w-full bg-white flex items-center justify-between px-5 sticky top-0 z-50'
-        style={{
-            height: headerHeightForPhones,
-            boxShadow: '0 0px 15px rgba(13, 13, 13, 0.07)',
-            backgroundColor: colors.light[100],
-            ...style
-        }}
-      >
-        
-        <MenuIcon
-          isSideBarActive={isSideBarActive}
-          setIsSideBarActive={setIsSideBarActive}
-        />
+          className='w-full bg-white flex items-center justify-between px-5 sticky top-0 z-50'
+          style={{
+              height: headerHeightForPhones,
+              boxShadow: !searchBarActive ? '0 0px 15px rgba(13, 13, 13, 0.07)' : '',
+              backgroundColor: colors.light[100],
+              ...style
+          }}
+        >
+          
+          <MenuIcon
+            isSideBarActive={isSideBarActive}
+            setIsSideBarActive={setIsSideBarActive}
+          />
 
-        <div className='flex flex-row items-end gap-1.5 absolute left-[50%] translate-x-[-50%]'>
-
-          <div 
-            className='h-16 flex items-center justify-center'
-            style={{
-            }}
-          >
+          <div className='flex flex-row items-end gap-1.5 absolute left-[50%] translate-x-[-50%]'>
 
             <div 
-              className=' h-[50%] cursor-pointer'
-              onClick={() => router.replace('/')}
+              className='h-16 flex items-center justify-center'
+              style={{
+              }}
             >
-              {
-                activeTheme == "light" ? 
-                  <img 
-                    src={ownerInfo?.logo?.light}
-                    className=' h-full object-contain no-sellect'
-                  /> : 
-                activeTheme == "dark" ?
-                  <img 
-                    src={ownerInfo?.logo?.dark}
-                    className=' h-full object-contain no-sellect'
-                  /> :
-                null
-              }
+
+              <div 
+                className=' h-[50%] cursor-pointer'
+                onClick={() => router.replace('/')}
+              >
+                {
+                  activeTheme == "light" ? 
+                    <img 
+                      src={ownerInfo?.logo?.light}
+                      className=' h-full object-contain no-sellect'
+                    /> : 
+                  activeTheme == "dark" ?
+                    <img 
+                      src={ownerInfo?.logo?.dark}
+                      className=' h-full object-contain no-sellect'
+                    /> :
+                  null
+                }
+              </div>
+
             </div>
 
           </div>
 
-        </div>
+          <div
+            className='h-full flex justify-between items-center gap-2 '
+          >
 
-        <div
-          className='h-full flex justify-between items-center gap-2 '
-        >
+              <img 
+                  className='w-14 h-14 p-4 rounded-sm cursor-pointer'
+                  src={ activeTheme == "dark" ? "/icons/searchWhite.png" : "/icons/searchBlack.png" }
+                  alt="" 
+                  style={{
+                      backgroundColor: colors.light[100]
+                  }}
+                  onClick={() => setSearchBarActive(!searchBarActive)}
+              />
 
-          <img 
-              className='w-14 h-14 p-4 rounded-sm cursor-pointer'
-              src={ activeTheme == "dark" ? "/icons/searchWhite.png" : "/icons/searchBlack.png" }
-              alt="" 
-              style={{
-                  backgroundColor: colors.light[100]
-              }}
-          />
-          <ShoppingCart/>
+            <ShoppingCart/>
 
-        </div>
+          </div>
 
       </div>
+
+      <div className={`
+        w-full h-full absolute left-0 
+        ${searchBarActive ? "top-[100%] visible py-1 px-2" : "top-[0%] invisible"} 
+        z-0 duration-300 
+      `}
+        style={{
+          backgroundColor: colors.light[100]
+        }}
+      >
+          <SearchBar
+            containerClassName='w-full px-5- my-2- h-full'
+            className='w-20 border-[0.5px] border-gray-100 h-full'
+            inputClassName='w-20 bg-transparent'
+            style={{
+                borderColor: colors.light[300],
+                backgroundColor: colors.light[100]
+            }}
+            inputStyle={{
+                borderColor: colors.light[300],
+                color: colors.dark[300],
+            }}
+            searchIcon={ activeTheme == "dark" ? "/icons/searchBlack.png" : "/icons/searchWhite.png" }
+            searchIconStyle={{
+                backgroundColor: colors.dark[100],
+                color: colors.light[100]
+            }}
+            resSectionStyle={{
+                backgroundColor: colors.light[100],
+                color: colors.dark[100],
+                borderRight: `0.02px solid ${colors.dark[900]}`,
+                borderBottom: `0.02px solid ${colors.dark[900]}`,
+                borderLeft: `0.02px solid ${colors.dark[900]}`,
+                borderTop: 'none'
+            }}
+          aiIconStyle={{
+              backgroundColor: colors.light[100],
+          }}
+          searchInput={searchInput}
+          searchIconClicked={() => setSearchBarActive(false)}
+        />
+      </div>
+
+      </div>
+
 
     )
 
