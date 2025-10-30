@@ -77,7 +77,7 @@ const FilterBar = ({
                 backgroundColor: colors.light[100],
                 boxShadow: filteBarActive ? '0 0px 15px rgba(13, 13, 13, 0.07)' : '',
                 border: !filteBarActive ? `0.025px solid ${colors.light[300]}` : `0.025px solid ${colors.light[300]}`,
-                height: filteBarActive ?  screenWidth > 1250 ? filterBarHeight + "px" : "700px" : "65px",
+                height: filteBarActive ?  screenWidth > 1250 ? filterBarHeight + "px" : "500px" : "65px",
                 top: screenWidth > 1250 ? headerHeight + "px" : headerHeightForPhones + "px" 
             }}
             ref={filterBarRef}
