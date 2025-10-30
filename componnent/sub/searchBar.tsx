@@ -148,7 +148,7 @@ const SearchBar = ({
 
     return(
         <div 
-            className={`w-[60%] flex flex-col overflow-hidden relative rounded-sm p-[1.5px] ${containerClassName} `}
+            className={`w-[60%] flex flex-col ${aiModeActive && "overflow-hidden"} relative rounded-sm p-[1.5px] ${containerClassName} `}
             ref={searchRef}
         >
 
@@ -201,7 +201,7 @@ const SearchBar = ({
                 aiModeActive ?
 
                     <div 
-                        className={`w-full max-h-[500px] absolute top-full rounded-sm overflow-y-scroll scrollbar-hidden ${!resSecVisible && "invisible"}`}
+                        className={`w-full max-h-[500px] absolute top-full rounded-sm overflow-y-scroll scrollbar-hidden z-[999] ${!resSecVisible && "invisible"}`}
                         style={{
                             ...resSectionStyle
                             
@@ -273,14 +273,14 @@ const SearchBar = ({
 
             }
 
-            {/* <div className='absolute top-0 left-0 w-full h-full'>
+            {aiModeActive && <div className='absolute top-0 left-0 w-full h-full'>
                 <video 
                     src="/AIBg.webm"
                     className=" w-full  rounded-sm"
                     loop={true}
                     autoPlay={true}
                 ></video>
-            </div> */}
+            </div>}
 
 
 
