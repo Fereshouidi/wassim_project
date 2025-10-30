@@ -64,6 +64,8 @@ export default function Home() {
   //   fetchData();
   // }, [])
 
+  if (!ownerInfo) return <div>loading</div>
+
   return (
     <div 
       className="page h-auto"

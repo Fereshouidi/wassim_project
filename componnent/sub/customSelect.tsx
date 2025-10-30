@@ -66,7 +66,7 @@ const CustomSelect = ({
             </div>
 
             <div 
-                className={`w-full max-h-[200px] overflow-y-scroll absolute top-full left-0 z-[999] duration-300 ${!optionsOpen && 'invisible'}`}
+                className={`w-full max-h-[200px] overflow-y-scroll scrollbar-hidden absolute top-full left-0 z-[999] duration-300 ${!optionsOpen && 'invisible'}`}
                 style={{
                     border: `0.002px solid ${colors.light[400]}`,
                     backgroundColor: colors.light[150]
@@ -77,7 +77,7 @@ const CustomSelect = ({
                     options.map((option, index) => (
                         <p
                             key={index}
-                            className='px-1 cursor-pointer text-[14px]'
+                            className='px-1 py-1 cursor-pointer text-[14px]'
                             ref={(el) => {
                                 if (optionsRef.current) {
                                     optionsRef.current[index] = el;

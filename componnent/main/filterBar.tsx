@@ -32,7 +32,7 @@ const FilterBar = ({
     availableTypes
 }: FilterBarType) => {
 
-    const { screenWidth } = useScreen();
+    const { screenWidth, screenHeight } = useScreen();
     const { activeLanguage } = useLanguage();
     const { colors, activeTheme } = useTheme();
     // const [min, setMin] = useState<number>(filtration.price.from);
@@ -57,7 +57,8 @@ const FilterBar = ({
     return (
         <div 
             className={`
-                filter-bar w-full overflow-y-scroll scrollbar-hidden
+                filter-bar w-full 
+                ${screenHeight < 300 && "overflow-y-scroll scrollbar-hidden"}
                 ${!filteBarActive && "filter-bar-inactive"}
                 ${filteBarActive ? "sticky" : `sticky-`} 
                 h-fit left-0 flex flex-col
@@ -133,7 +134,7 @@ const FilterBar = ({
                     <div className='arrangement max-w-[350px] flex flex-1- flex-wrap justify-center items-center gap-4 py-5 text-sm sm:text-md'>
 
                         <div className='w-full'>
-                            <h4 className='m-5 font-extrabold'>{activeLanguage.sideMatter.priceZone + " : "}</h4>
+                            <h4 className='m-5 font-extrabold'>{ "Arrangement : "}</h4>
                         </div>
 
                         <div className='min-w-[120px] flex flex-row justify-center items-center'>
