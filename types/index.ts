@@ -108,7 +108,8 @@ export type LanguageStracture = {
         min: string,
         priceZone: string
         all: string,
-        filter: string
+        filter: string,
+        SortBy: string
     }
 }
 
@@ -213,12 +214,12 @@ export type FiltrationType = {
         from: number
         to: number
     }
-    collections: CollectionType[]
+    collections: string[]
     colors: string[]
     types: string[]
     sizes: string[]
 
-    Ranking: {
+    sortBy: {
         price: "asc" | "desc"
         name: "asc" | "desc"
         date: "asc" | "desc"
@@ -230,6 +231,15 @@ export type CustomSelectType = {
     options: OptionType[]
     currentOption: OptionType
     setCurrentOption: (value: OptionType) => void
+    className?: string
+    style?: CSSProperties
+}
+
+export type CustomSelectManyType = {
+    label: string
+    options: OptionType[]
+    currentOptions: OptionType[]
+    setCurrentOptions: (value: OptionType[]) => void
     className?: string
     style?: CSSProperties
 

@@ -9,6 +9,7 @@ import FilterColor from '../sub/filterSearch/filterColor'
 import { useScreen } from '@/contexts/screenProvider'
 import FilterSize from '../sub/filterSearch/filterSize'
 import FilterType from '../sub/filterSearch/filterType'
+import SortBy from '../sub/filterSearch/sortBy'
 
 type FilterBarType = {
     filtration: FiltrationType
@@ -49,6 +50,7 @@ const FilterBar = ({
     useEffect(() => {console.log("Component rendered");
         setFiltrationCopy(filtration)
     }, [filtration])
+
 
 
 
@@ -110,58 +112,39 @@ const FilterBar = ({
                         
                     />
 
-                    <div className='min-w-[300px] flex flex-1 flex-row flex-wrap justify-center items-center m-2'>
+                    <div className='min-w-[300px] flex flex-1 flex-row flex-wrap justify-center items-center m-2 my-5'>
                         <FilterCollection
                             allCollections={allCollections}
+                            filtrationCopy={filtrationCopy}
+                            setFiltrationCopy={setFiltrationCopy}
                         />
 
                         <FilterColor
                             availableColors={availableColors}
+                            filtrationCopy={filtrationCopy}
+                            setFiltrationCopy={setFiltrationCopy}
                         />
 
                         <FilterSize
                             availableSizes={availableSizes}
+                            filtrationCopy={filtrationCopy}
+                            setFiltrationCopy={setFiltrationCopy}
                         />
 
                         <FilterType
                             availableType={availableTypes}
+                            filtrationCopy={filtrationCopy}
+                            setFiltrationCopy={setFiltrationCopy}
                         />
                     </div>
                     
                         
                     {/* </div> */}
 
-                    <div className='arrangement max-w-[350px] flex flex-1- flex-wrap justify-center items-center gap-4 py-5 text-sm sm:text-md'>
+                    <SortBy
+                    
+                    />
 
-                        <div className='w-full'>
-                            <h4 className='m-5 font-extrabold'>{ "Arrangement : "}</h4>
-                        </div>
-
-                        <div className='min-w-[120px] flex flex-row justify-center items-center'>
-                            <h4>{activeLanguage.sideMatter.price + ' : '}</h4>
-                            <select name="" id="">
-                                <option value="asc">{activeLanguage.sideMatter.cheapest}</option>
-                                <option value="desc">{activeLanguage.sideMatter.mostExpensive}</option>
-                            </select>
-                        </div>
-
-                        <div className='min-w-[120px] flex flex-row justify-center items-center '>
-                            <h4>{activeLanguage.sideMatter.date + ' : '}</h4>
-                            <select name="" id="">
-                                <option value="Oldest">{activeLanguage.sideMatter.Oldest}</option>
-                                <option value="newest">{activeLanguage.sideMatter.newest}</option>
-                            </select>
-                        </div>
-
-                        <div className='min-w-[220px] flex flex-row justify-center items-center '>
-                            <h4>{activeLanguage.sideMatter.name + ' : '}</h4>
-                            <select name="" id="">
-                                <option value="asc">a-z</option>
-                                <option value="desc">z-a</option>
-                            </select>
-                        </div>
-
-                    </div>
 
                     
                 {/* </div> */}
@@ -197,8 +180,12 @@ const FilterBar = ({
             }
 
             <div 
-                className='h-full flex flex-row justify-center items-center gap-2 cursor-pointer no-sellect'
+                className='h-full flex flex-row justify-center items-center gap-2 cursor-pointer no-sellect px-4 rounded-sm'
                 onClick={() => setFilterBarActive(!filteBarActive)}
+                style={{
+                    border: `0.025px solid ${colors.light[300]}`,
+                    boxShadow: '0 0px 15px rgba(13, 13, 13, 0.07)'
+                }}
             >
               {!filteBarActive && <h4>{activeLanguage.sideMatter.filter}</h4>}
               <img 

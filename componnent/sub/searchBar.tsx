@@ -45,7 +45,7 @@ const SearchBar = ({
     const { screenWidth } = useScreen();
     const [aiModeActive, setAiModeActive] = useState<boolean>(false);
     const [resSecVisible, setResSecVisible] = useState<boolean>(false);
-    const searchRef = useRef<HTMLDivElement | null>(null);
+    const searchRef = useRef<HTMLInputElement | null>(null);
     const router = useRouter();
 
     useEffect(() => {
@@ -128,6 +128,7 @@ const SearchBar = ({
             return;
 
         } else {
+
             router.push(`/search?searchInput=${input}`)
         }
 
@@ -169,6 +170,7 @@ const SearchBar = ({
                     }} 
                     defaultValue={searchInput?? ''}
                     onChange={(e) => setInput(e.target.value)}
+                    ref={searchRef}
                 />
                 
                 <div

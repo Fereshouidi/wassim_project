@@ -42,7 +42,8 @@ export const english = {
         min: "Min",
         priceZone: "Price zone",
         all: "all",
-        filter: "filter"
+        filter: "filter",
+        SortBy: "Sort by"
 
     }
 } as LanguageStracture;
@@ -89,7 +90,9 @@ export const frensh = {
         min: "Min",
         priceZone: "Zone de prix",
         all: "tout les",
-        filter: "filter"
+        filter: "filter",
+        SortBy: "Trier par"
+
     },
 
 } as LanguageStracture;

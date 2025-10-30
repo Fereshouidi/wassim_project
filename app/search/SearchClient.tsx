@@ -35,7 +35,7 @@ const Page = () => {
 
   const [productsFound, setProductsFound] = useState<ProductType[]>([]);
   const [productsCount, setProductsCount] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(5);
+  const [limit, setLimit] = useState<number>(10);
   const [skip, setSkip] = useState<number>(0);
 
 
@@ -74,7 +74,9 @@ const Page = () => {
         throw err;
       })
     }
+
     fetchProductBySearch();
+    localStorage.setItem('searchFilter', JSON.stringify(filtration));
     
   }, [filtration, searchText])
 
@@ -104,13 +106,6 @@ const Page = () => {
     fetchProductBySearch();
     
   }, [skip])
-
-  useEffect(() => {
-    console.log({availableColors, availableSizes, availableTypes});
-    console.log({filtration});
-    
-    
-  }, [availableColors, availableSizes, availableTypes, filtration])
 
   useEffect(() => {console.log("Component rendered");
 
@@ -142,18 +137,23 @@ const Page = () => {
 
   }, [])
 
-  useEffect(() => {console.log("Component rendered");
+  useEffect(() => {
+
+    const savedFilter = localStorage.getItem("searchFilter");
+
+    if (savedFilter) return setFiltration(JSON.parse(savedFilter))
+
     setFiltration({
         price: {
             from: 0,
             to: mostProductExpensive?.specifications[0].price ?? 9999999999
         },
-        collections: allCollections,
+        collections: allCollections.map(collection => (collection._id?? '')),
         colors: availableColors,
         types: availableTypes,
         sizes: availableTypes,
 
-        Ranking: {
+        sortBy: {
             price: "asc",
             name: "asc",
             date: "asc"
@@ -173,8 +173,8 @@ const Page = () => {
     fetchData();
   }, [])
 
-  useEffect(() => {console.log("Component rendered");
-
+  useEffect(() => {
+    // localStorage.removeItem("searchFilter");
   }, [searchText ])
 
     useEffect(() => {

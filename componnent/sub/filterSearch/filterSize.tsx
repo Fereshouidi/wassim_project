@@ -2,23 +2,28 @@ import { useLanguage } from '@/contexts/languageContext';
 import { useTheme } from '@/contexts/themeProvider';
 import React, { useEffect, useState } from 'react'
 import CustomSelect from '../customSelect';
-import { CollectionType, OptionType } from '@/types';
+import { CollectionType, FiltrationType, OptionType } from '@/types';
+import CustomSelectMany from '../customSelectMany';
 
 type FilterCollection = {
     availableSizes: string[]
+    filtrationCopy: FiltrationType
+    setFiltrationCopy: (value: FiltrationType) => void
 }
 
 const FilterSize = ({
-    availableSizes
+    availableSizes,
+    filtrationCopy,
+    setFiltrationCopy
 }: FilterCollection) => {
 
     const { activeLanguage } = useLanguage();
     const { colors, activeTheme } = useTheme();
     const [options, setOptions] = useState<OptionType[]>([]);
-    const [currentOptions, setCurrentOptions] = useState<OptionType>({
+    const [currentOptions, setCurrentOptions] = useState<OptionType[]>([{
         label: activeLanguage.sideMatter.all + " " + activeLanguage.sideMatter.sizes, 
         value: "all"
-    });
+    }]);
 
     useEffect(() => {
 
@@ -41,6 +46,19 @@ const FilterSize = ({
 
     }, [availableSizes])
 
+
+    useEffect(() => {
+
+        setFiltrationCopy({
+            ...filtrationCopy,
+            sizes: currentOptions.flatMap(option => 
+                option.value === 'all' ? 
+                options.map(opt => opt.value) : 
+                [option.value]
+            )
+        })
+    }, [currentOptions])
+
     useEffect(() => {
         console.log({options});
         
@@ -50,13 +68,14 @@ const FilterSize = ({
         <div className='w-fit h-full m-2- p-2'>
             
             <h4 
-                className='m-5 mb-4 font-extrabold'
+                className='sm:m-5 mb-4 font-extrabold'
             >{activeLanguage.sideMatter.sizes + " : "}</h4>
 
-            <CustomSelect
+            <CustomSelectMany
+            label={activeLanguage.sideMatter.sizes}
                 options={options}
-                currentOption={currentOptions}
-                setCurrentOption={setCurrentOptions}
+                currentOptions={currentOptions}
+                setCurrentOptions={setCurrentOptions}
             />
         </div>
     )

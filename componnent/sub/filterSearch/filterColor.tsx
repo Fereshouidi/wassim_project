@@ -2,23 +2,28 @@ import { useLanguage } from '@/contexts/languageContext';
 import { useTheme } from '@/contexts/themeProvider';
 import React, { useEffect, useState } from 'react'
 import CustomSelect from '../customSelect';
-import { CollectionType, OptionType } from '@/types';
+import { CollectionType, FiltrationType, OptionType } from '@/types';
+import CustomSelectMany from '../customSelectMany';
 
 type FilterCollection = {
     availableColors: string[]
+    filtrationCopy: FiltrationType
+    setFiltrationCopy: (value: FiltrationType) => void
 }
 
 const FilterColor = ({
-    availableColors
+    availableColors,
+    filtrationCopy,
+    setFiltrationCopy
 }: FilterCollection) => {
 
     const { activeLanguage } = useLanguage();
     const { colors, activeTheme } = useTheme();
     const [options, setOptions] = useState<OptionType[]>([]);
-    const [currentOptions, setCurrentOptions] = useState<OptionType>({
+    const [currentOptions, setCurrentOptions] = useState<OptionType[]>([{
         label: activeLanguage.sideMatter.all + " " + activeLanguage.sideMatter.colors, 
         value: "all"
-    });
+    }]);
 
     useEffect(() => {
 
@@ -42,6 +47,18 @@ const FilterColor = ({
     }, [availableColors])
 
     useEffect(() => {
+
+        setFiltrationCopy({
+            ...filtrationCopy,
+            colors: currentOptions.flatMap(option => 
+                option.value === 'all' ? 
+                options.map(opt => opt.value) : 
+                [option.value]
+            )
+        })
+    }, [currentOptions])
+
+    useEffect(() => {
         console.log({options});
         
     }, [options])
@@ -50,13 +67,14 @@ const FilterColor = ({
         <div className='w-fit h-full m-2- p-2'>
             
             <h4 
-                className='m-5 mb-4 font-extrabold'
+                className='sm:m-5 mb-4 font-extrabold'
             >{activeLanguage.sideMatter.colors + " : "}</h4>
 
-            <CustomSelect
+            <CustomSelectMany
+                label={activeLanguage.sideMatter.color}
                 options={options}
-                currentOption={currentOptions}
-                setCurrentOption={setCurrentOptions}
+                currentOptions={currentOptions}
+                setCurrentOptions={setCurrentOptions}
             />
         </div>
     )
