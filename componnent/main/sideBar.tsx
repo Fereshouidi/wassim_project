@@ -69,8 +69,11 @@ const SideBar = ({
                 </div>
 
                 <SearchBar
-                    containerClassName='w-full'
-                    className='w-20 border-[0.5px] border-gray-100 h-14'
+                    containerClassName='w-full border-[0.5px]'
+                    containerStyle={{
+                        borderColor: colors.dark[300],
+                    }}
+                    className='w-20 border-[0.5px]- border-gray-100 h-14'
                     inputClassName='w-20 bg-transparent'
                     style={{
                         borderColor: colors.dark[300],
@@ -98,6 +101,7 @@ const SideBar = ({
                         backgroundColor: colors.dark[100],
                         // color: colors.light[200]
                     }}
+                    importedFrom='sidBar'
                     // aiIconContentStyle={{
                     //     color: colors.light[200]
                     // }}

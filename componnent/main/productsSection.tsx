@@ -50,6 +50,8 @@ const ProductsSection = ({
                 
                 setLoading(true);
 
+                if (collection._id?.length && collection._id?.length < 3) return setProducts(productsLoading);
+
                 await axios.get(backEndUrl + "/getProductsByCollection", { params: { 
                     collectionId: collection._id, 
                     limit, 

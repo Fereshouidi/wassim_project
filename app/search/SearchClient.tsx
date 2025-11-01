@@ -18,7 +18,7 @@ import React, { useEffect, useState } from 'react'
 const Page = () => {
 
   const params = useSearchParams();
-  const collectionId = params.get('collectionId');
+  const filter = params.get('filter');
   const searchText = params.get('searchInput');
   const [sideBarActive, setSideBarActive] = useState<boolean>(false);
   const { colors, activeTheme } = useTheme();
@@ -40,9 +40,14 @@ const Page = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const [storedSearchText, setStoredSearchText] = useState<string>('');
+  const [firstRender, setFirstRender] = useState<boolean>(true);
+  
 
 
   const [filtration, setFiltration] = useState<FiltrationType | undefined>(undefined);
+  // const [filtrationCopy, setFiltrationCopy] = useState<FiltrationType>(filtration);
+
+  const [filteBarActive, setFilterBarActive] = useState<boolean>(false);
 
 
   useEffect(() => {
@@ -58,12 +63,17 @@ const Page = () => {
         filtration
       })
       .then(({ data }) => {
+
+        // if (firstRender && filter) return setFirstRender(false);
+
         setProductsFound(data.products);
         setProductsCount(data.productsCount);
         setAvailableColors(data.availableColors);
         setAvailableSizes(data.availableSizes);
         setAvailableTypes(data.availableTypes);
+        
         setLoading(false);
+
       })
       .catch(( err ) => {
         setLoading(false);
@@ -72,14 +82,14 @@ const Page = () => {
     }
 
     fetchProductBySearch();
-    localStorage.setItem('searchFilter', JSON.stringify(filtration));
-    localStorage.setItem('searchText', searchText);
+    // localStorage.setItem('searchFilter', JSON.stringify(filtration));
+    // localStorage.setItem('searchText', searchText);
     
   }, [filtration, searchText])
 
   useEffect(() => {console.log("Component rendered");
 
-    if (!searchText || !filtration) return;
+    if (!searchText || !filtration || skip < limit ) return;
     
     const fetchProductBySearch = async () => {
       setLoading(true);
@@ -138,28 +148,34 @@ const Page = () => {
 
   useEffect(() => {
 
-    // const savedFilter = localStorage.getItem("searchFilter");
-
-    // alert(savedFilter)
-    // if (savedFilter) return setFiltration(JSON.parse(savedFilter))
-
-    setFiltration({
-        price: {
-            from: 0,
-            to: mostProductExpensive?.specifications[0].price ?? 100
-        },
-        collections: allCollections.map(collection => (collection._id?? '')),
-        colors: availableColors,
-        types: availableTypes,
-        sizes: availableTypes,
-
-        sortBy: {
-            price: "asc",
-            name: "asc",
-            date: "asc"
-        }
+    // console.log({filter: JSON.parse(decodeURIComponent(filter))});
     
-    })
+    if (filter) {
+      setFiltration(JSON.parse(decodeURIComponent(filter)))
+      // alert(JSON.parse(decodeURIComponent(filter)))
+    } else {
+
+      alert('hhhh')
+      setFiltration({
+          price: {
+              from: 0,
+              to: mostProductExpensive?.specifications[0].price ?? 100
+          },
+          collections: allCollections.map(collection => (collection._id?? '')),
+          colors: availableColors,
+          types: availableTypes,
+          sizes: availableTypes,
+
+          sortBy: {
+              price: "asc",
+              name: "asc",
+              date: "asc"
+          }
+      
+      })
+
+    }
+
   }, [mostProductExpensive, allCollections])
 
   useEffect(() => {console.log("Component rendered");
@@ -220,6 +236,9 @@ const Page = () => {
           availableSizes={availableSizes}
           availableTypes={availableTypes}
           searchText={searchText?? ''}
+          importedFrom='searchPage'
+          filteBarActive={filteBarActive}
+          setFilterBarActive={setFilterBarActive}
         />
 
       }

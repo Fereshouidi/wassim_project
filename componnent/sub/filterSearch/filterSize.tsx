@@ -9,12 +9,14 @@ type FilterCollection = {
     availableSizes: string[]
     filtrationCopy: FiltrationType
     setFiltrationCopy: (value: FiltrationType) => void
+    defaultOptions?: string[]
 }
 
 const FilterSize = ({
     availableSizes,
     filtrationCopy,
-    setFiltrationCopy
+    setFiltrationCopy,
+    defaultOptions
 }: FilterCollection) => {
 
     const { activeLanguage } = useLanguage();
@@ -53,7 +55,7 @@ const FilterSize = ({
             ...filtrationCopy,
             sizes: currentOptions.flatMap(option => 
                 option.value === 'all' ? 
-                options.map(opt => opt.value) : 
+                availableSizes: 
                 [option.value]
             )
         })
@@ -63,6 +65,27 @@ const FilterSize = ({
         console.log({options});
         
     }, [options])
+
+    useEffect(() => {
+        
+        if (!defaultOptions) return;
+
+        setCurrentOptions(
+            
+            defaultOptions.length == options.length ?
+                [{
+                    label: activeLanguage.sideMatter.all + " " + activeLanguage.sideMatter.sizes, 
+                    value: "all"
+                }]
+            :
+            defaultOptions.map(
+            (size): OptionType => ({
+                label: `${filtrationCopy.sizes.length} ${activeLanguage.sideMatter.sizes}`,
+                value: size
+            })
+            )
+        );
+    }, [defaultOptions]);
     
     return (
         <div className='w-fit h-full m-2- p-2'>

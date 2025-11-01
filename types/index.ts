@@ -48,6 +48,8 @@ export type SearchBarProps = {
     aiIconContentStyle?: CSSProperties
     searchInput?: string | null
     searchIconClicked?: Function
+    importedFrom?: 'header' | 'sidBar' | 'phoneHeader'
+    containerStyle?: CSSProperties
 }
 
 export type Themes = "system" | "dark" | "light"

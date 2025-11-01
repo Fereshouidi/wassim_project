@@ -114,8 +114,12 @@ const Header = ({
         }}
       >
           <SearchBar
-            containerClassName='w-full px-5- my-2- h-full'
-            className='w-20 border-[0.5px] border-gray-100 h-full'
+            containerClassName='w-full px-5- my-2- h-full border-[0.5px]'
+            containerStyle={{
+              backgroundColor: colors.light[100],
+              borderColor: colors.light[300],
+            }}
+            className='w-20 border-l-[0.5px] border-gray-100 h-full rounded-none'
             inputClassName='w-20 bg-transparent'
             style={{
                 borderColor: colors.light[300],
@@ -205,8 +209,12 @@ const Header = ({
 
           <SearchBar
             searchInput={searchInput}
-            containerClassName="h-14"
-            className='h-full border-[0.02px]'
+            containerClassName="h-14 border-[0.5px]"
+            containerStyle={{
+              borderColor: colors.light[300],
+              backgroundColor: colors.light[200]
+            }}
+            className='h-full border-l-[0.02px]'
             style={{
               backgroundColor: colors.light[200],
               borderColor: colors.light[300]

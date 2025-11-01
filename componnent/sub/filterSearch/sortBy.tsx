@@ -12,7 +12,7 @@ const SortBy = () => {
 
     return (
 
-        <div className='arrangement max-w-[350px] flex flex-col justify-center items-center gap-4 py-2 mb-4 text-sm sm:text-md'>
+        <div className='arrangement max-w-[350px] sm:w-[350px] flex flex-col justify-center items-center gap-4 py-2 mb-4 text-sm sm:text-md'>
 
             <div className='w-full'>
                 <h4 className='sm:mx-5 font-extrabold'>{ activeLanguage.sideMatter.SortBy + " : "}</h4>

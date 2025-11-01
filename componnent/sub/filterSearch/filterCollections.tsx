@@ -9,12 +9,14 @@ type FilterCollection = {
     allCollections: CollectionType[]
     filtrationCopy: FiltrationType
     setFiltrationCopy: (value: FiltrationType) => void
+    defaultOptions?: string[]
 }
 
 const FilterCollection = ({
     allCollections,
     filtrationCopy,
-    setFiltrationCopy
+    setFiltrationCopy,
+    defaultOptions
 }: FilterCollection) => {
 
     const { activeLanguage } = useLanguage();
@@ -47,21 +49,44 @@ const FilterCollection = ({
     }, [allCollections])
 
     useEffect(() => {
+        const hasAll = currentOptions.some(opt => opt.value === "all");
 
+        if (!allCollections) return 
+        
         setFiltrationCopy({
             ...filtrationCopy,
-            collections: currentOptions.flatMap(option => 
-                option.value === 'all' ? 
-                options.map(opt => opt.value) : 
-                [option.value]
-            )
-        })
-    }, [currentOptions])
+            collections: hasAll
+            ? allCollections.map(col => col._id?? "")
+            : currentOptions.map(opt => opt.value)
+        });
+    }, [currentOptions, allCollections]);
+
 
     useEffect(() => {
         console.log({options});
         
     }, [options])
+
+    useEffect(() => {
+        
+    if (!defaultOptions) return;
+
+    setCurrentOptions(
+        
+        defaultOptions.length == options.length ?
+            [{
+                label: activeLanguage.sideMatter.all + " " + activeLanguage.nav.collections, 
+                value: "all"
+            }]
+        :
+        defaultOptions.map(
+        (collection): OptionType => ({
+            label: `${filtrationCopy.collections.length} ${activeLanguage.nav.collections}`,
+            value: collection
+        })
+        )
+    );
+    }, [defaultOptions]);
     
     return (
         <div className='w-fit h-full m-2- p-2'>

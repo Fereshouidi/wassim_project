@@ -9,12 +9,14 @@ type FilterCollection = {
     availableColors: string[]
     filtrationCopy: FiltrationType
     setFiltrationCopy: (value: FiltrationType) => void
+    defaultOptions?:string[]
 }
 
 const FilterColor = ({
     availableColors,
     filtrationCopy,
-    setFiltrationCopy
+    setFiltrationCopy,
+    defaultOptions
 }: FilterCollection) => {
 
     const { activeLanguage } = useLanguage();
@@ -52,7 +54,7 @@ const FilterColor = ({
             ...filtrationCopy,
             colors: currentOptions.flatMap(option => 
                 option.value === 'all' ? 
-                options.map(opt => opt.value) : 
+                availableColors : 
                 [option.value]
             )
         })
@@ -62,6 +64,29 @@ const FilterColor = ({
         console.log({options});
         
     }, [options])
+
+    useEffect(() => {
+        
+        if (!defaultOptions) return;
+
+        setCurrentOptions(
+            
+            defaultOptions.length == options.length ?
+                [{
+                    label: activeLanguage.sideMatter.all + " " + activeLanguage.sideMatter.colors, 
+                    value: "all"
+                }]
+            :
+            defaultOptions.map(
+            (color): OptionType => ({
+                label: `${filtrationCopy.colors.length} ${activeLanguage.sideMatter.colors}`,
+                value: color
+            })
+            )
+        );
+    }, [defaultOptions]);
+
+
     
     return (
         <div className='w-fit h-full m-2- p-2'>

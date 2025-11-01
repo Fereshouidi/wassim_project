@@ -22,6 +22,9 @@ type FilterBarType = {
     availableSizes: string[]
     availableTypes: string[]
     searchText?: string
+    importedFrom?: "searchPage" | "anotherPage"
+    filteBarActive: boolean, 
+    setFilterBarActive: (value: boolean) => void
 }
 
 const FilterBar = ({
@@ -33,7 +36,10 @@ const FilterBar = ({
     availableColors,
     availableSizes,
     availableTypes,
-    searchText
+    searchText,
+    importedFrom,
+    filteBarActive,
+    setFilterBarActive
 }: FilterBarType) => {
 
     const { screenWidth, screenHeight } = useScreen();
@@ -42,15 +48,17 @@ const FilterBar = ({
     // const [min, setMin] = useState<number>(filtration.price.from);
     // const [max, setMax] = useState<number>(mostProductExpensive);
     const [filtrationCopy, setFiltrationCopy] = useState<FiltrationType>(filtration);
-    const [filteBarActive, setFilterBarActive] = useState<boolean>(false);
+    // const [filteBarActive, setFilterBarActive] = useState<boolean>(false);
     const filterBarRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         console.log({filtrationCopy});
+
+
         
     }, [filtrationCopy])
 
-    useEffect(() => {console.log("Component rendered");
+    useEffect(() => {console.log(filtration);
         setFiltrationCopy(filtration)
     }, [filtration])
 
@@ -60,6 +68,16 @@ const FilterBar = ({
     //     alert(filtrationCopy.price.to)
     // }, [filtrationCopy])
 
+
+    useEffect(() => {
+        setFiltrationCopy({
+            ...filtrationCopy,
+            colors: filtrationCopy.colors.length == 0 ? availableColors : filtrationCopy.colors,
+            sizes: filtrationCopy.sizes.length == 0 ? availableSizes : filtrationCopy.sizes,
+            types: filtrationCopy.types.length == 0 ? availableTypes : filtrationCopy.types
+
+        })
+    }, [availableColors, availableSizes, availableTypes])
 
 
     return (
@@ -77,7 +95,7 @@ const FilterBar = ({
                 backgroundColor: colors.light[100],
                 boxShadow: filteBarActive ? '0 0px 15px rgba(13, 13, 13, 0.07)' : '',
                 border: !filteBarActive ? `0.025px solid ${colors.light[300]}` : `0.025px solid ${colors.light[300]}`,
-                height: filteBarActive ?  screenWidth > 1250 ? filterBarHeight + "px" : "700px" : "65px",
+                height: filteBarActive ?  screenWidth > 1250 ? filterBarHeight + "px" : "500px" : "65px",
                 top: screenWidth > 1250 ? headerHeight + "px" : headerHeightForPhones + "px" 
             }}
             ref={filterBarRef}
@@ -164,24 +182,28 @@ const FilterBar = ({
                         allCollections={allCollections}
                         filtrationCopy={filtrationCopy}
                         setFiltrationCopy={setFiltrationCopy}
+                        defaultOptions={filtration.collections}
                     />
 
                     <FilterColor
                         availableColors={availableColors}
                         filtrationCopy={filtrationCopy}
                         setFiltrationCopy={setFiltrationCopy}
+                        defaultOptions={filtration.colors}
                     />
 
                     <FilterSize
                         availableSizes={availableSizes}
                         filtrationCopy={filtrationCopy}
                         setFiltrationCopy={setFiltrationCopy}
+                        defaultOptions={filtration.sizes}
                     />
 
                     <FilterType
                         availableType={availableTypes}
                         filtrationCopy={filtrationCopy}
                         setFiltrationCopy={setFiltrationCopy}
+                        defaultOptions={filtration.types}
                     />
                 </div>
                 
@@ -227,7 +249,7 @@ const FilterBar = ({
                         }}
                         onClick={() => {
                             setFiltration(filtrationCopy);
-                            setFilterBarActive(false)
+                            importedFrom == "searchPage" && setFilterBarActive(false)
                         }}
                     >validation</button>
                 </div>
