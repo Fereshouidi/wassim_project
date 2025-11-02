@@ -220,7 +220,7 @@ const Header = ({
               borderColor: colors.light[300]
             }}
             inputStyle={{
-                color: colors.dark[700],
+                color: colors.dark[200],
             }}
             searchIcon={ activeTheme == "dark" ? "/icons/searchBlack.png" : "/icons/searchWhite.png" }
             searchIconStyle={{

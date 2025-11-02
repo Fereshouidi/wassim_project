@@ -45,28 +45,18 @@ const FilterBar = ({
     const { screenWidth, screenHeight } = useScreen();
     const { activeLanguage } = useLanguage();
     const { colors, activeTheme } = useTheme();
-    // const [min, setMin] = useState<number>(filtration.price.from);
-    // const [max, setMax] = useState<number>(mostProductExpensive);
     const [filtrationCopy, setFiltrationCopy] = useState<FiltrationType>(filtration);
-    // const [filteBarActive, setFilterBarActive] = useState<boolean>(false);
     const filterBarRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         console.log({filtrationCopy});
 
-
-        
     }, [filtrationCopy])
 
     useEffect(() => {console.log(filtration);
         setFiltrationCopy(filtration)
     }, [filtration])
 
-
-
-    // useEffect(() => {
-    //     alert(filtrationCopy.price.to)
-    // }, [filtrationCopy])
 
 
     useEffect(() => {
@@ -92,6 +82,7 @@ const FilterBar = ({
             `}
             style={{
                 // position: 'sticky',
+                color: colors.dark[200],
                 backgroundColor: colors.light[100],
                 boxShadow: filteBarActive ? '0 0px 15px rgba(13, 13, 13, 0.07)' : '',
                 border: !filteBarActive ? `0.025px solid ${colors.light[300]}` : `0.025px solid ${colors.light[300]}`,
@@ -110,11 +101,6 @@ const FilterBar = ({
             overflow-y-scroll scrollbar-hidden
             items-center z-10 duration-300
         `}>
-            {/* <img 
-                src={activeTheme == "dark" ? "/icons/up-White.png" : "/icons/up-Black.png"}
-                className='w-4 h-4 absolute right-10 bottom-4'
-                onClick={() => setFilterBarActive(!filteBarActive)}
-            /> */}
 
             <div 
                 className='w-full flex justify-center sticky top-0 z-20'
@@ -127,47 +113,6 @@ const FilterBar = ({
                     <p>{activeLanguage.sideMatter.resultsFound}</p>
                 </div>
             </div>
-
-
-            {/* <div className=' resNum flex flex-wrap bg-blue-500'> */}
-
-                {/* <div className='filter min-w-[200px] bg-green-500 flex flex-3 flex-wrap justify-center '> */}
-
-                {/* {screenWidth < 1000 && <SearchBar
-                    containerClassName='w-full px-5 my-2'
-                    className='w-20 border-[0.5px] border-gray-100 h-14'
-                    inputClassName='w-20 bg-transparent'
-                    style={{
-                        borderColor: colors.light[300],
-                        backgroundColor: colors.light[100]
-                    }}
-                    inputStyle={{
-                        borderColor: colors.light[300],
-                        color: colors.dark[300],
-                    }}
-                    searchIcon={ activeTheme == "dark" ? "/icons/searchBlack.png" : "/icons/searchWhite.png" }
-                    searchIconStyle={{
-                        backgroundColor: colors.dark[100],
-                        color: colors.light[100]
-                    }}
-                    resSectionStyle={{
-                        backgroundColor: colors.light[100],
-                        color: colors.dark[100],
-                        borderRight: `0.02px solid ${colors.dark[900]}`,
-                        borderBottom: `0.02px solid ${colors.dark[900]}`,
-                        borderLeft: `0.02px solid ${colors.dark[900]}`,
-                        borderTop: 'none'
-                    }}
-                    // aiIcon=""
-                    aiIconStyle={{
-                        backgroundColor: colors.light[100],
-                        // color: colors.light[200]
-                    }}
-                    searchInput={searchText}
-                    // aiIconContentStyle={{
-                    //     color: colors.light[200]
-                    // }}
-                />} */}
 
                 {mostProductExpensive && <FilterPriceRange
                     filtration={filtration}
@@ -211,7 +156,8 @@ const FilterBar = ({
                 {/* </div> */}
 
                 <SortBy
-                
+                    filtrationCopy={filtrationCopy}
+                    setFiltrationCopy={setFiltrationCopy}
                 />
 
 

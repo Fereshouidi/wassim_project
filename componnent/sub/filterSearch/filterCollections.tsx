@@ -73,7 +73,7 @@ const FilterCollection = ({
 
     setCurrentOptions(
         
-        defaultOptions.length == options.length ?
+        defaultOptions.length == options.length - 1 ?
             [{
                 label: activeLanguage.sideMatter.all + " " + activeLanguage.nav.collections, 
                 value: "all"

@@ -123,13 +123,6 @@ const Page = () => {
       await axios.get(backEndUrl + '/getMostProductExpensive')
       .then(({ data }) => {
         setMostProductExpensive(data.product)
-        // setFiltration({
-        //   ...filtration, 
-        //   price: {
-        //     ...filtration.price,
-        //     to: data.product.specifications[0].price
-        //   }
-        // })
       })
       .catch( (err) => {throw err})
 
@@ -147,12 +140,9 @@ const Page = () => {
   }, [])
 
   useEffect(() => {
-
-    // console.log({filter: JSON.parse(decodeURIComponent(filter))});
     
     if (filter) {
       setFiltration(JSON.parse(decodeURIComponent(filter)))
-      // alert(JSON.parse(decodeURIComponent(filter)))
     } else {
 
       alert('hhhh')
@@ -166,11 +156,8 @@ const Page = () => {
           types: availableTypes,
           sizes: availableTypes,
 
-          sortBy: {
-              price: "asc",
-              name: "asc",
-              date: "asc"
-          }
+          sortBy: "name",
+          sortDirection: "asc"
       
       })
 
@@ -188,21 +175,6 @@ const Page = () => {
     }
     fetchData();
   }, [])
-
-  useEffect(() => {
-
-    // const storedSearchText = localStorage.getItem('searchText');
-    // // setStoredSearchText(storedSearchText);
-    // if (storedSearchText != searchText) 
-      
-      // localStorage.removeItem("searchFilter");
-    
-  }, [searchText ])
-
-    useEffect(() => {
-    console.log({ownerInfo});
-    
-  }, [ownerInfo])
 
   return (
     <div 

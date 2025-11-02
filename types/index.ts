@@ -222,11 +222,8 @@ export type FiltrationType = {
     types: string[]
     sizes: string[]
 
-    sortBy: {
-        price: "asc" | "desc"
-        name: "asc" | "desc"
-        date: "asc" | "desc"
-    }
+    sortBy: 'price' | 'name' | 'date'
+    sortDirection: 'asc' | 'desc'
 
 }
 

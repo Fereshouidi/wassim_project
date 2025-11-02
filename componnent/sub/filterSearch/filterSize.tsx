@@ -72,7 +72,7 @@ const FilterSize = ({
 
         setCurrentOptions(
             
-            defaultOptions.length == options.length ?
+            defaultOptions.length == options.length - 1 ?
                 [{
                     label: activeLanguage.sideMatter.all + " " + activeLanguage.sideMatter.sizes, 
                     value: "all"

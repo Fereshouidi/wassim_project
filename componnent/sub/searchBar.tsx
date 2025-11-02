@@ -176,11 +176,8 @@ const SearchBar = ({
         types: availableTypes,
         sizes: availableTypes,
 
-        sortBy: {
-            price: "asc",
-            name: "asc",
-            date: "asc"
-        }
+        sortBy: "name",
+        sortDirection: "desc"
     
     })
   }, [mostProductExpensive, allCollections])

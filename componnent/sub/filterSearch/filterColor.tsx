@@ -69,9 +69,11 @@ const FilterColor = ({
         
         if (!defaultOptions) return;
 
+        console.log(defaultOptions.length,  options.length - 1);
+        
         setCurrentOptions(
             
-            defaultOptions.length == options.length ?
+            defaultOptions.length == options.length - 1  ?
                 [{
                     label: activeLanguage.sideMatter.all + " " + activeLanguage.sideMatter.colors, 
                     value: "all"
