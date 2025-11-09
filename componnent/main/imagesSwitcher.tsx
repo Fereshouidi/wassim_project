@@ -2,6 +2,7 @@
 import { useScreen } from '@/contexts/screenProvider';
 import { useTheme } from '@/contexts/themeProvider';
 import React, { CSSProperties, useEffect, useRef, useState } from 'react'
+import SkeletonLoading from '../sub/SkeletonLoading';
 
 type ImagesSwitcherType = {
     className?: string
@@ -53,35 +54,39 @@ const ImagesSwitcher = ({
 
   return (
     <div 
-        className={`h-full no-sellect bg-transparent ${className}`} 
+        className={`h-full min-w-[300px] sm:min-w-[600px] min-h-[300px] sm:min-h-[600px] bg-yellow-500- w-[600px]- flex flex-col justify-center items-center bg-yellow-500- pt-10- no-sellect bg-transparent- ${className}`} 
         style={{ 
             ...style 
         }}
     >
       
       <div 
-        className='w-full h-[300px] sm:h-[500px] rounded-sm flex flex-1 justify-center items-center px-5 sm:px-10 scrollbar-hidden'
+        className={`bg-red-500- h-[500px]- ${screenWidth > 500 ? "w-[600px]- h-[500px]" : "w-[400px]- h-[400px]"}  bg-red-500- rounded-sm flex flex-1 justify-center items-center p-5 sm:px-10- scrollbar-hidden`}
         style={{
             paddingBottom: 2,
             // minHeight: imageDisplayWidth / 2
         }}
     >
-        <img 
-            src={images[currentImageIndex]} 
-            alt="" 
-            className='w-full h-full object-content rounded-sm'
-            style={{
-                maxHeight: imageDisplayWidth,
-            }}
-            ref={imageDisplayRef}
-        />
+        {
+            images[currentImageIndex] ? <img 
+                src={images[currentImageIndex]} 
+                alt="" 
+                className='w-full h-full bg-blue-500- object-content rounded-sm'
+                style={{
+                    maxHeight: "90vh",
+                }}
+                ref={imageDisplayRef}
+            />
+        :
+            <SkeletonLoading/>
+        }
       </div>
 
 
-        <div className='w-full h-[100px]- flex flex-row justify-center items-center'>
+        {images && <div className='w-full h-[100px]- flex flex-row justify-center items-center'>
 
             {/* left arrow */}
-            {screenWidth > 1000 && <div 
+            {images.length > 3 && screenWidth > 1000 && <div 
                 className={`w-14 h-14 flex justify-center items-center rounded-full mx-10- cursor-pointer duration-300`}
                 onMouseEnter={() => setLeftArrowHover(true)}
                 onMouseLeave={() => setLeftArrowHover(false)}
@@ -117,7 +122,7 @@ const ImagesSwitcher = ({
                         }}
                     >
                         <img
-                            className='w-full h-full object-cover cursor-pointer rounded-full'
+                            className='w-full h-full object-cover cursor-pointer rounded-sm'
                             src={img}
                             style={{
                                 border: currentImageIndex == index ? `2px solid ${colors.dark[100]}` : `2px solid transparent`
@@ -131,7 +136,7 @@ const ImagesSwitcher = ({
         </div>
 
             {/* right arrow */}
-            {screenWidth > 1000 && <div 
+            {images.length > 3 && screenWidth > 1000 && <div 
                 className={`w-14 h-14 flex justify-center items-center rounded-full mx-10- cursor-pointer duration-300`}
                 onMouseEnter={() => setRightArrowHover(true)}
                 onMouseLeave={() => setRightArrowHover(false)}
@@ -143,7 +148,7 @@ const ImagesSwitcher = ({
                     className='w-6 h-6'
                 />
             </div>}
-        </div>
+        </div>}
 
 
     </div>

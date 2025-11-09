@@ -49,11 +49,14 @@ const SearchBar = ({
     const { screenWidth } = useScreen();
     const [aiModeActive, setAiModeActive] = useState<boolean>(false);
     const [resSecVisible, setResSecVisible] = useState<boolean>(false);
+    // const [filterSecVisible, setFilterSecVisible] = useState<boolean>(false);
     const searchRef = useRef<HTMLInputElement | null>(null);
+    const filterBarRef = useRef<HTMLInputElement | null>(null);
+    
     const router = useRouter();
     const [filteBarActive, setFilterBarActive] = useState<boolean>(false);
     const [searchText, setSeachText] = useState<string>('');
-    const [loading, setLoading] = useState<boolean>(false);
+    // const [loading, setLoading] = useState<boolean>(false);
 
     const [mostProductExpensive, setMostProductExpensive] = useState<ProductType | undefined>(undefined);
     const [availableColors, setAvailableColors] = useState<string[]>([]);
@@ -78,7 +81,7 @@ const SearchBar = ({
     // }
     
     const fetchProductBySearch = async () => {
-      setLoading(true);
+      setIsLoading(true);
       await axios.post( backEndUrl + "/getProductsBySearch", {
         searchText: input,
         limit,
@@ -91,15 +94,18 @@ const SearchBar = ({
         setAvailableColors(data.availableColors);
         setAvailableSizes(data.availableSizes);
         setAvailableTypes(data.availableTypes);
-        setLoading(false);
+        setIsLoading(false);
       })
       .catch(( err ) => {
-        setLoading(false);
+        setIsLoading(false);
         throw err;
       })
     }
 
+    setResSecVisible(true);
+
     fetchProductBySearch();
+    
     localStorage.setItem('searchFilter', JSON.stringify(filtration));
     localStorage.setItem('searchText', searchText);
     
@@ -276,23 +282,30 @@ const SearchBar = ({
 
     }
 
-    useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-        if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-        setResSecVisible(false);
+    function handleClickOutside(event: any) {
+        const ResSecEl = searchResultDivRef.current;
+        const filterEl = filterBarRef.current;
+        const target = (event as any).target as Node;
+
+        const clickedOutsideSearch = !ResSecEl?.contains(target);
+        const clickedOutsideFilter = !filterEl?.contains(target);
+
+        if (clickedOutsideSearch && clickedOutsideFilter) {
+            setResSecVisible(false);
+            setFilterBarActive(false);
         }
     }
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-    };
+
+    useEffect(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
+
 
     return(
         <div 
-            className={`relative w-[60%] flex flex-row items-center justify-center ${aiModeActive && "overflow-hidden-"} relative rounded-sm p-[1.5px] ${containerClassName} `}
-            ref={searchRef}
+            className={`relative w-[60%] flex flex-row items-center justify-center ${aiModeActive && "overflow-hidden-"} relative rounded-sm p-[1.5px] no-sellect ${containerClassName} `}
             style={{
                 ...containerStyle
             }}
@@ -300,13 +313,15 @@ const SearchBar = ({
 
             {importedFrom != "sidBar" && 
             
-            <div className='w-14 h-14 flex justify-center items-center'>
+            <div 
+                className='w-14 h-14 flex justify-center items-center cursor-pointer'
+                onClick={() => filteBarActive ? null : setFilterBarActive(true)}
+            >
                 <img 
                     src={
                         activeTheme == 'dark' ? "/icons/filter-white.png" : "/icons/filter-black.png"
                     }
-                    className='w-5 h-5 cursor-pointer'
-                    onClick={() => setFilterBarActive(!filteBarActive)}
+                    className='w-5 h-5'
                 />
             </div>
             
@@ -379,18 +394,19 @@ const SearchBar = ({
                 :
 
                 <div 
-                    className={`w-full max-h-[500px] absolute top-full rounded-sm overflow-y-scroll scrollbar-hidden ${resSecVisible && !filteBarActive ? "visible" : "invisible"} `}
+                    className={`w-full max-h-[500px] absolute top-full rounded-sm overflow-y-scroll scrollbar-hidden ${resSecVisible && !filteBarActive ? "visible" : "invisible"}`}
                     style={{
                         
                         ...resSectionStyle,
                     }}
                     ref={searchResultDivRef}
                     onScroll={handleScroll}
+                    // onMouseDown={(e) => handleClickOutside(e)}
                 >
                     {
-                        searchResult.length > 0 && input.length > 0 ?
+                        productsFound.length > 0 && input.length > 0 ?
 
-                            searchResult.map((product, index) => (
+                            productsFound.map((product, index) => (
                                 <p 
                                     key={product._id}
                                     ref={(el: HTMLParagraphElement | null) => {
@@ -427,7 +443,7 @@ const SearchBar = ({
                                     }
                                 </p>
                             ))
-                        : input.length > 0 && searchResult.length == 0 ?
+                        : input.length > 0 && productsFound.length == 0 ?
 
                             isLoading ? 
                                 <p className='p-5 text-sm'>{activeLanguage.sideMatter.loading + "..."}</p>
@@ -444,7 +460,11 @@ const SearchBar = ({
             filtration && 
             mostProductExpensive?.specifications[0].price && 
 
-            <div className='w-full absolute top-full'>
+            <div 
+                className='w-full absolute top-full'
+                onClick={(e) => e.stopPropagation()}
+                ref={filterBarRef}
+            >
                 <FilterBar
                     filtration={filtration}
                     setFiltration={setFiltration}

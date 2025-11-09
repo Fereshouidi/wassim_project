@@ -8,28 +8,38 @@ import React, { CSSProperties, useEffect, useState } from 'react'
 import SkeletonLoading from '../sub/SkeletonLoading'
 import InputForm from './inputForm'
 import ChoseQuantity from '../sub/choseQuantity'
+import { useScreen } from '@/contexts/screenProvider'
+import ProductActionPanel from '../sub/ProductActionPanel'
 
 type ProductDetailsType = {
   className?: string
   style: CSSProperties
   product: ProductType
   loadingGettingProduct: boolean
+  quantity: number,
+  setQuantity: (value: number) => void
+  activeSpecifications: ProductSpecification | undefined | null
+  setActiveSpecifications: (value: ProductSpecification | undefined | null) =>void
 }
 
 const ProductDetails = ({
   className,
   style,
   product,
-  loadingGettingProduct
+  loadingGettingProduct,
+  quantity,
+  setQuantity,
+  activeSpecifications,
+  setActiveSpecifications
 }: ProductDetailsType) => {
 
+  const { screenWidth } = useScreen();
   const { activeLanguage } = useLanguage();
   const { colors } = useTheme();
 
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedType, setSelectedType] = useState<string | null>(null);
-  const [activeSpecifications, setActiveSpecifications] = useState<ProductSpecification | null>(null);
 
   const [colorsDispo, setColorsDispo] = useState<string[]>([]);
   const [sizessDispo, setSizesDispo] = useState<string[]>([]);
@@ -42,7 +52,6 @@ const ProductDetails = ({
   const [collections, setCollections] = useState<CollectionType[]>([]);
   const [loadingGettingCollection, setLoadingGettingCollection] = useState<boolean>(true);
 
-  const [quantity, setQuantity] = useState<number>(1);
 
   const [clientForm, setClientForm] = useState<ClientFormType>({
     fullName: '',
@@ -73,9 +82,10 @@ const ProductDetails = ({
             (s) =>
               (!selectedSize || s.size === selectedSize) &&
               (!selectedType || s.type === selectedType) &&
-              s.quantity! > 0
+              (s.quantity ?? 0) > 0
           )
-          .map((s) => s.color!)
+          .map((s) => s.color ?? "")
+          .filter((c) => c !== "")
       )
     );
 
@@ -86,11 +96,13 @@ const ProductDetails = ({
             (s) =>
               (!selectedColor || s.color === selectedColor) &&
               (!selectedType || s.type === selectedType) &&
-              s.quantity! > 0
+              (s.quantity ?? 0) > 0
           )
-          .map((s) => s.size!)
+          .map((s) => s.size ?? "")
+          .filter((sz) => sz !== "")
       )
     );
+
 
     const types = Array.from(
       new Set(
@@ -99,11 +111,13 @@ const ProductDetails = ({
             (s) =>
               (!selectedColor || s.color === selectedColor) &&
               (!selectedSize || s.size === selectedSize) &&
-              s.quantity! > 0
+              (s.quantity ?? 0) > 0
           )
-          .map((s) => s.type!)
+          .map((s) => s.type ?? "")
+          .filter((t) => t !== "")
       )
     );
+
 
     setAvailableColors(colors);
     setAvailableSizes(sizes);
@@ -150,13 +164,13 @@ const ProductDetails = ({
   }, [activeSpecifications]);
 
   useEffect(() => {
-    console.log({product});
+    console.log({availableTypes});
     
-  }, [product])
+  }, [availableTypes])
 
   return (
     <div
-      className={`h-full p-5 overflow-y-scroll scrollbar-hidden ${className}`}
+      className={`h-full max-w-[600px] bg-green-500- overflow-y-scroll scrollbar-hidden p-5 ${screenWidth > 1000 ? "overflow-y-scroll scrollbar-hidden" : "overflow-y-scroll scrollbar-hidden"} ${className}`}
       style={{
         ...style
       }}
@@ -179,6 +193,7 @@ const ProductDetails = ({
         }
 
         <h4 className='font-bold text-md m-2'>{activeLanguage.nav.collections + " :"}</h4>
+
         <div className='w-full flex flex-row gap-2'>
           {
             loadingGettingCollection ?
@@ -260,7 +275,7 @@ const ProductDetails = ({
 
 
             {
-                availableTypes.length > 0 && <div>
+                availableTypes?.length > 0 && <div>
                     <h4 className='font-bold text-md m-2'>{activeLanguage.sideMatter.types}</h4>
                     <div className='w-full flex flex-row gap-2'>
                     {
@@ -303,23 +318,14 @@ const ProductDetails = ({
             setClientForm={setClientForm}
         />
 
-        <div className='flex flex-row my-5 mx-2 gap-4'>
-
-            <ChoseQuantity
-                quantity={quantity}
-                setQuantity={setQuantity}
-                max={activeSpecifications?.quantity?? 1}
-            />
-
-            <button 
-                className='flex flex-1 justify-center items-center w-12 h-12 rounded-sm cursor-pointer'
-                style={{
-                    backgroundColor: colors.dark[100],
-                    color: colors.light[200]
-                }}
-            >acheter</button>
-
+        <div className='my-5'>
+          <ProductActionPanel
+            quantity={quantity}
+            setQuantity={setQuantity}
+            activeSpecifications={activeSpecifications}
+          />
         </div>
+
 
 
       </div>

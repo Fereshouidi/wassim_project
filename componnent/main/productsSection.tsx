@@ -26,7 +26,7 @@ const ProductsSection = ({
     const { colors } = useTheme();
     const { activeLanguage } = useLanguage();
     const { screenWidth } = useScreen();
-    const [limit, setLimit] = useState<number>(6);
+    const [limit, setLimit] = useState<number>(8);
     const [skip, setSkip] = useState<number>(0);
     const [productsCount, setProductsCount] = useState<number>(0);
     const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
@@ -47,6 +47,8 @@ const ProductsSection = ({
             
 
                 // isFirstRender && setProducts(productsLoading);
+
+                if (loading) return;
                 
                 setLoading(true);
 

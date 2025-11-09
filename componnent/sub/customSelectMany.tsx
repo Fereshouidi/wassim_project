@@ -1,6 +1,7 @@
 import { useTheme } from '@/contexts/themeProvider'
 import { CustomSelectManyType, CustomSelectType, OptionType } from '@/types'
 import React, { CSSProperties, useEffect, useRef, useState } from 'react'
+import { twMerge } from 'tailwind-merge';
 
 
 
@@ -68,7 +69,10 @@ const CustomSelectMany = ({
 
     return (
         <div 
-            className={`min-w-[150px] relative cursor-pointer no-sellect border-[0.02px] rounded-sm duration-300 ${className}`}
+            className={twMerge(
+                "w-[150px]- w-full- h-[200px]- relative cursor-pointer select-none border rounded-sm duration-300 z-[50]-",
+                className
+            )}
             style={{
                 border: `0.002px solid ${colors.light[400]}`,
                 backgroundColor: colors.light[150],
@@ -93,7 +97,7 @@ const CustomSelectMany = ({
             </div>
 
             <div 
-                className={`w-full max-h-[200px] overflow-y-scroll scrollbar-hidden absolute top-full left-0 z-[999] duration-300 ${!optionsOpen && 'invisible'}`}
+                className={`w-full max-h-[200px] overflow-y-scroll scrollbar-hidden absolute top-full left-0 z-[999] duration-300 ${!optionsOpen && 'hidden'}`}
                 style={{
                     border: `0.002px solid ${colors.light[400]}`,
                     backgroundColor: colors.light[150]

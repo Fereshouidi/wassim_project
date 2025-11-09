@@ -78,6 +78,8 @@ export type LanguageStracture = {
         collection: string,
         collections: string,
         contact: string,
+        favorite: string,
+        askAi: string
     },
     sideMatter: {
         search: string,
@@ -112,7 +114,8 @@ export type LanguageStracture = {
         priceZone: string
         all: string,
         filter: string,
-        SortBy: string
+        SortBy: string,
+        confirm: string
     }
 }
 
@@ -152,22 +155,24 @@ export type PubType = {
     updatedAt?: Date;
 }
 
-export type OwnerInfoType = {
-    _id?: string;
-    name?: string;
-    logo?: {
-        dark?: string;
-        light?: string;
-    };
-    socialMedia?: {
-        facebook?: string;
-        instagram?: string;
-        gmail?: string;
-    };
-    homeCollections?: CollectionType[]
-    createdAt?: Date;
-    updatedAt?: Date;
+export interface OwnerInfoType {
+  _id?: string ;
+  name?: string;
+  logo?: {
+    dark?: string;
+    light?: string;
+  };
+  socialMedia?: {
+    platform?: string;
+    icon?: string;
+    link?: string;
+  }[];
+  homeCollections?: CollectionType[];
+  topCollections?: CollectionType[];
+  createdAt?: Date;
+  updatedAt?: Date;
 }
+
 
 export type ProductType = {
   _id?: string | null;

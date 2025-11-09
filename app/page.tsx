@@ -71,7 +71,7 @@ export default function Home() {
     <div 
       className="page h-auto"
       style={{
-        backgroundColor: colors.light[150]
+        backgroundColor: colors.light[100]
       }}
     >
 

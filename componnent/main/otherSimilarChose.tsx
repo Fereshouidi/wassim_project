@@ -35,6 +35,8 @@ const OtherSimilarChose = ({
 
   return (
     <div className='w-full h-[500px] flex justify-center items-center'>
+
+        لهنا مش يكون فما اقتراحات مشابهة
       {/* {
         collections.map((collection) => (
             <ProductsSection

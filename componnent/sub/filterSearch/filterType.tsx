@@ -67,8 +67,13 @@ const FilterType = ({
 
     useEffect(() => {
         
-        if (!defaultOptions) return;
-
+        if (!defaultOptions || defaultOptions?.length == 0 ) {
+            return setCurrentOptions([{
+                label: activeLanguage.sideMatter.all + " " + activeLanguage.sideMatter.colors, 
+                value: "all"
+            }])
+        }
+        
         setCurrentOptions(
             
             defaultOptions.length == options.length - 1 ?
@@ -87,7 +92,7 @@ const FilterType = ({
     }, [defaultOptions]);
     
     return (
-        <div className='w-fit h-full m-2- p-2'>
+        <div className='w-fit- h-fit m-2- p-2 bg-red-500-'>
             
             <h4 
                 className='sm:m-5 mb-4 font-extrabold'
@@ -98,6 +103,7 @@ const FilterType = ({
                 options={options}
                 currentOptions={currentOptions}
                 setCurrentOptions={setCurrentOptions}
+                // className={`sm:w-32`}
             />
         </div>
     )

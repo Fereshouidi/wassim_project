@@ -74,11 +74,10 @@ const FilterBar = ({
         <div 
             className={`
                 filter-bar w-full sticky 
-                ${filteBarActive ? "overflow-y-scroll scrollbar-hidden" : ""}
                 ${!filteBarActive && "filter-bar-inactive"}
                 h-fit- left-0 flex flex-col
                 ${screenWidth > 1250 ? "justify-between" : "justify-center"} 
-                items-center p-2 z-10 transition-all duration-300
+                items-center p-2 z-10 rounded-sm transition-all duration-300
             `}
             style={{
                 // position: 'sticky',
@@ -86,8 +85,10 @@ const FilterBar = ({
                 backgroundColor: colors.light[100],
                 boxShadow: filteBarActive ? '0 0px 15px rgba(13, 13, 13, 0.07)' : '',
                 border: !filteBarActive ? `0.025px solid ${colors.light[300]}` : `0.025px solid ${colors.light[300]}`,
-                height: filteBarActive ?  screenWidth > 1250 ? filterBarHeight + "px" : "500px" : "65px",
-                top: screenWidth > 1250 ? headerHeight + "px" : headerHeightForPhones + "px" 
+                height: filteBarActive ?  
+                    (filterBarRef.current?.offsetWidth || 0) > 650 ? filterBarHeight + "px" : "500px" 
+                    : "65px",
+                top: screenWidth > 1100 ? headerHeight + "px" : headerHeightForPhones + "px" 
             }}
             ref={filterBarRef}
         >
@@ -96,14 +97,13 @@ const FilterBar = ({
         <div className={`
             w-full 
             ${filteBarActive ? "sticky- visible" : `invisible absolute- top-[${filterBarRef.current?.offsetHeight}px]`} 
-            h-fit left-0 flex flex-row flex-wrap
-            ${screenWidth > 1250 ? "justify-around" : "justify-center"} 
-            overflow-y-scroll scrollbar-hidden
+            h-full left-0 flex flex-row flex-wrap
+            overflow-x-hidden- overflow-y-scroll scrollbar-hidden-
             items-center z-10 duration-300
         `}>
 
             <div 
-                className='w-full flex justify-center sticky top-0 z-20'
+                className='w-full flex justify-center sticky top-0 z-50'
                 style={{
                     backgroundColor: colors.light[100]
                 }}
@@ -114,55 +114,201 @@ const FilterBar = ({
                 </div>
             </div>
 
-                {mostProductExpensive && <FilterPriceRange
-                    filtration={filtration}
-                    mostProductExpensive={mostProductExpensive}
-                    filtrationCopy={filtrationCopy}
-                    setFiltrationCopy={setFiltrationCopy}
+
+            {
+                (filterBarRef.current?.offsetWidth || 0) > 1100 ?
+
+                    <div className='w-full h-[90%] flex flex-row flex-wrap justify-center bg-green-500- bg-blue-500-'>
+
+                        <div className={`h-full bg-blue-500- flex justify-center items-center`}>
+
+                            {mostProductExpensive && <FilterPriceRange
+                                filtration={filtration}
+                                mostProductExpensive={mostProductExpensive}
+                                filtrationCopy={filtrationCopy}
+                                setFiltrationCopy={setFiltrationCopy}
+                                
+                            />}
+
+                        </div>
+
+
+                        <div 
+                            className={`w-[400px] h-full bg-red-500-
+                                bg-red-500- flex flex-1- flex-row flex-wrap justify-center items-center mx-2- my-5- overflow-hidden-
+                            `}
+
+                        >
+                            {/* {filterBarRef.current?.offsetWidth} */}
+                                <div className='w-[150px]'>
+                                    <FilterCollection
+                                        allCollections={allCollections}
+                                        filtrationCopy={filtrationCopy}
+                                        setFiltrationCopy={setFiltrationCopy}
+                                        defaultOptions={filtration.collections}
+                                />
+                                </div>
+
+                                <div className='w-[150px]'>
+                                    <FilterColor
+                                        availableColors={availableColors}
+                                        filtrationCopy={filtrationCopy}
+                                        setFiltrationCopy={setFiltrationCopy}
+                                        defaultOptions={filtration.colors}
+                                    />
+                                </div>
+
+                                <div className='w-[150px]'>
+                                    <FilterSize
+                                        availableSizes={availableSizes}
+                                        filtrationCopy={filtrationCopy}
+                                        setFiltrationCopy={setFiltrationCopy}
+                                        defaultOptions={filtration.sizes}
+                                    />
+                                </div>
+
+
+                                <div className='w-[150px]'>
+                                    <FilterType
+                                        availableType={availableTypes}
+                                        filtrationCopy={filtrationCopy}
+                                        setFiltrationCopy={setFiltrationCopy}
+                                        defaultOptions={filtration.types}
+                                    />
+                                </div>
+                        </div>
+                        
+                            
+                        <SortBy
+                            filtrationCopy={filtrationCopy}
+                            setFiltrationCopy={setFiltrationCopy}
+                            filterBarWidth={filterBarRef.current?.offsetWidth?? 0}
+                        />
+                    </div>
+
+                : (filterBarRef.current?.offsetWidth || 0) > 650 && (filterBarRef.current?.offsetWidth || 0) < 1100 ?
                     
-                />}
+                    <div className='w-full h-full flex flex-row flex-wrap justify-between bg-green-500-'>
 
-                <div className='min-w-[300px] flex flex-1 flex-row flex-wrap justify-center items-center m-2 my-5-'>
-                    <FilterCollection
-                        allCollections={allCollections}
+                        <div className={`w-[45%] h-[90%] bg-blue-500- flex justify-center items-center`}>
+
+                            {mostProductExpensive && <FilterPriceRange
+                                filtration={filtration}
+                                mostProductExpensive={mostProductExpensive}
+                                filtrationCopy={filtrationCopy}
+                                setFiltrationCopy={setFiltrationCopy}
+                                
+                            />}
+
+                        </div>
+
+
+                        <div 
+                            className={`w-[50%]
+                                bg-red-500- flex flex-1- flex-row flex-wrap justify-center items-center mx-2- my-5- z-[999] overflow-hidden-
+                            `}
+
+                        >
+                            {/* {filterBarRef.current?.offsetWidth} */}
+
+                            <div className='w-[145px]'>
+                                <FilterCollection
+                                    allCollections={allCollections}
+                                    filtrationCopy={filtrationCopy}
+                                    setFiltrationCopy={setFiltrationCopy}
+                                    defaultOptions={filtration.collections}
+                                />
+                            </div>
+
+                            <div className='w-[145px]'>
+                                <FilterColor
+                                    availableColors={availableColors}
+                                    filtrationCopy={filtrationCopy}
+                                    setFiltrationCopy={setFiltrationCopy}
+                                    defaultOptions={filtration.colors}
+                                />
+                            </div>
+
+                            <div className='w-[145px]'>
+                                <FilterSize
+                                    availableSizes={availableSizes}
+                                    filtrationCopy={filtrationCopy}
+                                    setFiltrationCopy={setFiltrationCopy}
+                                    defaultOptions={filtration.sizes}
+                                />
+                            </div>
+
+
+                            <div className='w-[145px]'>
+                                <FilterType
+                                    availableType={availableTypes}
+                                    filtrationCopy={filtrationCopy}
+                                    setFiltrationCopy={setFiltrationCopy}
+                                    defaultOptions={filtration.types}
+                                />
+                            </div>
+
+                        </div>
+                        
+                            
+                        <SortBy
+                            filtrationCopy={filtrationCopy}
+                            setFiltrationCopy={setFiltrationCopy}
+                            filterBarWidth={filterBarRef.current?.offsetWidth?? 0}
+                        />
+                    </div>
+
+                :
+
+                <div className='w-full flex flex-col items-center justify-center'>
+                    {mostProductExpensive && <FilterPriceRange
+                        filtration={filtration}
+                        mostProductExpensive={mostProductExpensive}
                         filtrationCopy={filtrationCopy}
                         setFiltrationCopy={setFiltrationCopy}
-                        defaultOptions={filtration.collections}
-                    />
+                        
+                    />}
 
-                    <FilterColor
-                        availableColors={availableColors}
+                    <div className='min-w-[300px] flex flex-1 flex-row flex-wrap justify-center items-center m-2 my-5-'>
+                        <FilterCollection
+                            allCollections={allCollections}
+                            filtrationCopy={filtrationCopy}
+                            setFiltrationCopy={setFiltrationCopy}
+                            defaultOptions={filtration.collections}
+                        />
+
+                        <FilterColor
+                            availableColors={availableColors}
+                            filtrationCopy={filtrationCopy}
+                            setFiltrationCopy={setFiltrationCopy}
+                            defaultOptions={filtration.colors}
+                        />
+
+                        <FilterSize
+                            availableSizes={availableSizes}
+                            filtrationCopy={filtrationCopy}
+                            setFiltrationCopy={setFiltrationCopy}
+                            defaultOptions={filtration.sizes}
+                        />
+
+                        <FilterType
+                            availableType={availableTypes}
+                            filtrationCopy={filtrationCopy}
+                            setFiltrationCopy={setFiltrationCopy}
+                            defaultOptions={filtration.types}
+                        />
+                    </div>
+                    
+                        
+                    <SortBy
                         filtrationCopy={filtrationCopy}
                         setFiltrationCopy={setFiltrationCopy}
-                        defaultOptions={filtration.colors}
-                    />
-
-                    <FilterSize
-                        availableSizes={availableSizes}
-                        filtrationCopy={filtrationCopy}
-                        setFiltrationCopy={setFiltrationCopy}
-                        defaultOptions={filtration.sizes}
-                    />
-
-                    <FilterType
-                        availableType={availableTypes}
-                        filtrationCopy={filtrationCopy}
-                        setFiltrationCopy={setFiltrationCopy}
-                        defaultOptions={filtration.types}
+                        filterBarWidth={filterBarRef.current?.offsetWidth?? 0}
                     />
                 </div>
-                
-                    
-                {/* </div> */}
 
-                <SortBy
-                    filtrationCopy={filtrationCopy}
-                    setFiltrationCopy={setFiltrationCopy}
-                />
+            }
 
-
-                
-            {/* </div> */}
 
         </div>
           
@@ -188,16 +334,17 @@ const FilterBar = ({
 
                 <div className='h-full absolute  left-[50%] translate-x-[-50%] cursor-pointer flex justify-end items-end'>
                     <button
-                        className=' mb-1 mx-2 rounded-sm p-2 text-sm '
+                        className=' mb-1 mx-2 rounded-sm p-2 text-sm cursor-pointer'
                         style={{
                             backgroundColor: colors.dark[100],
                             color: colors.light[100]
                         }}
                         onClick={() => {
                             setFiltration(filtrationCopy);
+                            localStorage.setItem('searchFilter', JSON.stringify(filtrationCopy));
                             importedFrom == "searchPage" && setFilterBarActive(false)
                         }}
-                    >validation</button>
+                    >{activeLanguage.sideMatter.confirm}</button>
                 </div>
 
             }

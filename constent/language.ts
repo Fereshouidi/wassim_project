@@ -7,7 +7,9 @@ export const english = {
         home: "Home",
         collection: "Collection",
         collections: "Collections",
-        contact: "Contact Us"
+        contact: "Contact Us",
+        askAi: "AskAi",
+        favorite: "Favorite"
     },
     sideMatter: {
         search: "Search",
@@ -43,7 +45,8 @@ export const english = {
         priceZone: "Price zone",
         all: "all",
         filter: "filter",
-        SortBy: "Sort by"
+        SortBy: "Sort by",
+        confirm: "confirm"
 
     }
 } as LanguageStracture;
@@ -55,7 +58,9 @@ export const frensh = {
         home: "Accueil",
         collections: "Collections",
         collection: "Collection",
-        contact: "Contactez Nous"
+        contact: "Contactez Nous",
+        askAi: "Demande IA",
+        favorite: "Favori"
     },
     sideMatter: {
         search: "Recherche",
@@ -91,7 +96,8 @@ export const frensh = {
         priceZone: "Zone de prix",
         all: "tout les",
         filter: "filter",
-        SortBy: "Trier par"
+        SortBy: "Trier par",
+        confirm: "confirmer"
 
     },
 

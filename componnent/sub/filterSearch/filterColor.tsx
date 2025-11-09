@@ -67,13 +67,18 @@ const FilterColor = ({
 
     useEffect(() => {
         
-        if (!defaultOptions) return;
+        if (!defaultOptions || defaultOptions?.length == 0 ) {
+            return setCurrentOptions([{
+                label: activeLanguage.sideMatter.all + " " + activeLanguage.sideMatter.colors, 
+                value: "all"
+            }])
+        }
 
         console.log(defaultOptions.length,  options.length - 1);
         
         setCurrentOptions(
             
-            defaultOptions.length == options.length - 1  ?
+            defaultOptions?.length == options.length - 1  ?
                 [{
                     label: activeLanguage.sideMatter.all + " " + activeLanguage.sideMatter.colors, 
                     value: "all"
@@ -91,7 +96,7 @@ const FilterColor = ({
 
     
     return (
-        <div className='w-fit h-full m-2- p-2'>
+        <div className='w-full- h-full m-2- p-2'>
             
             <h4 
                 className='sm:m-5 mb-4 font-extrabold'
@@ -102,6 +107,7 @@ const FilterColor = ({
                 options={options}
                 currentOptions={currentOptions}
                 setCurrentOptions={setCurrentOptions}
+                // className={`sm:w-32`}
             />
         </div>
     )

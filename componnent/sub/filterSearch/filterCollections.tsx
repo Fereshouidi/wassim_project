@@ -69,8 +69,15 @@ const FilterCollection = ({
 
     useEffect(() => {
         
-    if (!defaultOptions) return;
+    if (!defaultOptions || defaultOptions?.length == 0 || !options || options?.length == 0 ) {
+        return setCurrentOptions([{
+            label: activeLanguage.sideMatter.all + " " + activeLanguage.sideMatter.colors, 
+            value: "all"
+        }])
+    }
 
+    console.log(defaultOptions.length, options.length - 1)
+    
     setCurrentOptions(
         
         defaultOptions.length == options.length - 1 ?
@@ -89,7 +96,7 @@ const FilterCollection = ({
     }, [defaultOptions]);
     
     return (
-        <div className='w-fit h-full m-2- p-2'>
+        <div className='w-fit- h-full m-2- p-2 bg-yellow-500- '>
             
             <h4 
                 className='sm:m-5 mb-4 font-extrabold'
@@ -100,6 +107,7 @@ const FilterCollection = ({
                 options={options}
                 currentOptions={currentOptions}
                 setCurrentOptions={setCurrentOptions}
+                // className={`sm:w-32`}
             />
         </div>
     )

@@ -68,7 +68,12 @@ const FilterSize = ({
 
     useEffect(() => {
         
-        if (!defaultOptions) return;
+        if (!defaultOptions || defaultOptions?.length == 0 ) {
+            return setCurrentOptions([{
+                label: activeLanguage.sideMatter.all + " " + activeLanguage.sideMatter.sizes, 
+                value: "all"
+            }])
+        }
 
         setCurrentOptions(
             
@@ -88,7 +93,7 @@ const FilterSize = ({
     }, [defaultOptions]);
     
     return (
-        <div className='w-fit h-full m-2- p-2'>
+        <div className='w-fit- h-full m-2- p-2'>
             
             <h4 
                 className='sm:m-5 mb-4 font-extrabold'
@@ -99,6 +104,7 @@ const FilterSize = ({
                 options={options}
                 currentOptions={currentOptions}
                 setCurrentOptions={setCurrentOptions}
+                // className={`sm:w-32`}
             />
         </div>
     )

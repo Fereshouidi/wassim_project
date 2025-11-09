@@ -22,6 +22,7 @@
 *{
   font-family:'Times New Roman', Times, serif;
   scroll-behavior: smooth;
+  user-select: none;
   /* border-radius: 4px; */
   /* transition: 1s; */
 }

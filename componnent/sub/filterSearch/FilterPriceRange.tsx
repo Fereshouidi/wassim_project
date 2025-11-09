@@ -49,7 +49,7 @@ const FilterPriceRange = ({
 
   return (
     // <div>
-        <div className='sm:h-full- flex flex-1- flex-col justify-center w-fit mx-2 px-2'>
+        <div className=' flex flex-1- flex-col justify-center w-fit mx-2- px-2- bg-blue-500-'>
 
             <h4 
                 className='m-5 font-extrabold'
@@ -60,15 +60,16 @@ const FilterPriceRange = ({
             
             <div className='h-full flex flex-col justify-center items-center mx-2 relative '>
                 
-                <div className='flex flex-rox my-[8px]'>
+                <div className='flex flex-rox my-[9px]'>
 
                     <h5
+                        className='inline-block"'
                         style={{
-                            color: colors.dark[200]
+                            color: colors.dark[200],
                         }}
-                    >{activeLanguage.sideMatter.min + ' : '}</h5>
+                    >{activeLanguage.sideMatter.min + ': '}</h5>
                     
-                    <div className=' w-[300px] flex flex-row justify-center items-center'>
+                    <div className=' w-[250px] flex flex-row justify-center items-center'>
                         <span 
                             className='text-[12px] w-[70px] text-center'
                             style={{
@@ -116,15 +117,15 @@ const FilterPriceRange = ({
 
                 </div>
 
-                <div className='flex flex-rox my-[8px]'>
+                <div className='flex flex-rox my-[9px]'>
 
                     <h5
                         style={{
                             color: colors.dark[200]
                         }}
-                    >{activeLanguage.sideMatter.max + ' : '}</h5>
+                    >{activeLanguage.sideMatter.max + ': '}</h5>
 
-                    <div className=' w-[300px] flex flex-row justify-center items-center'>
+                    <div className=' w-[250px] flex flex-row justify-center items-center'>
                         <span 
                             className='text-[12px] w-[70px] text-center'
                             style={{
