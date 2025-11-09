@@ -12,3 +12,4 @@ export const backEndUrl = fromVercel;
 export const socket = io(socketFromVercel, {
   autoConnect: true,
 });
+
