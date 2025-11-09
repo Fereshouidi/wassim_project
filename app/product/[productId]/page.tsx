@@ -137,7 +137,7 @@ export default function ProductPage() {
                     media.platform == "Facebook" ? handleShareOnFacebook(window.location.href)
                     : null
                   }}
-                  className="w-10 h-10"
+                  className="w-10 h-10 cursor-pointer"
                 />
               ))}
             </div>
