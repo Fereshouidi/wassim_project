@@ -33,11 +33,6 @@ export default function RootLayout({
 
       <head>
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-        <meta property="og:title" content="Product Name" />
-        <meta property="og:description" content="Short description of the product" />
-        <meta property="og:image" content="https://yourdomain.com/path-to-product-image.jpg" />
-        <meta property="og:url" content="https://yourdomain.com/product-page" />
-        <meta property="og:type" content="product" />
       </head>
 
       <body
