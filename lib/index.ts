@@ -2,7 +2,7 @@ export const handleShareOnFacebook = (shareUrl: string) => {
     console.log({shareUrl});
     
   const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
-  window.open(facebookShareUrl, "_blank", "noopener,noreferrer");
+  window.open(facebookShareUrl, "_blank", "noopener,noreferrer,width=600,height=400");
 };
 
 export const handleShareOnInstagram = (shareUrl: string) => {
