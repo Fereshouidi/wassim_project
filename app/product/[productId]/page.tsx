@@ -65,12 +65,12 @@ export default function ProductPage() {
   useEffect(() => {
     socket.on("connect", () => {
       console.log("Socket connected:", socket.id);
-      socket.emit("hh", "hhhhhhh");
+      // socket.emit("hh", "hhhhhhh");
     });
 
-    socket.on("connectConfirm", (msg) => {
-      alert("msg");
-    });
+    // socket.on("connectConfirm", (msg) => {
+    //   alert("msg");
+    // });
 
     return () => {
       socket.off("connect");
