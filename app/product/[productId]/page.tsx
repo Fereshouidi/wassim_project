@@ -173,7 +173,7 @@ export default function ProductPage() {
           />}
 
           <div 
-            className="w-full h-fit fixed bottom-0 left-0 flex justify-center items-center py-2"
+            className="w-full h-fit fixed bottom-0 left-0 flex justify-center items-center p-2"
             style={{
               backgroundColor: colors.light[100]
             }}
