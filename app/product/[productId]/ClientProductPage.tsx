@@ -64,7 +64,7 @@ export default function ClientProductPage({ product, ownerInfo }: Props) {
           ))}
         </div>
 
-        <div className={`flex flex-1 ${screenWidth > 1000 ? "h-[90vh] flex-row justify-center" : "flex-col items-center"}`}>
+        {/* <div className={`flex flex-1 ${screenWidth > 1000 ? "h-[90vh] flex-row justify-center" : "flex-col items-center"}`}>
           {product.images?.length ? <ImagesSwitcher images={product.images} /> : <div>Loading images...</div>}
           <ProductDetails
             product={product}
@@ -73,7 +73,7 @@ export default function ClientProductPage({ product, ownerInfo }: Props) {
             activeSpecifications={activeSpecifications}
             setActiveSpecifications={setActiveSpecifications}
           />
-        </div>
+        </div> */}
       </div>
 
       {product._id && <OtherSimilarChose product={product} />}
