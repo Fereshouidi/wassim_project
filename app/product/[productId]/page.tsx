@@ -92,6 +92,7 @@ export default function ProductPage() {
   }, [])
 
 
+  if (!product) return <div>loading</div>
 
   return (
 
