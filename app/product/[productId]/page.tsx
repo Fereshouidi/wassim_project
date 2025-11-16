@@ -5,8 +5,12 @@ import { backEndUrl } from "@/api";
 import { ProductType, OwnerInfoType } from "@/types";
 
 // Metadata ديناميكية
-export async function generateMetadata({ params }: { params: Record<string, string> }): Promise<Metadata> {
-  const productId = params.productId;
+export async function generateMetadata({ 
+  params 
+}: { 
+  params: Promise<{ productId: string }> 
+}): Promise<Metadata> {
+  const { productId } = await params;
 
   try {
     const { data } = await axios.get<{ product: ProductType }>(`${backEndUrl}/getProductById`, {
@@ -34,8 +38,12 @@ export async function generateMetadata({ params }: { params: Record<string, stri
 }
 
 // الصفحة الرئيسية
-export default async function ProductPage({ params }: { params: Record<string, string> }) {
-  const productId = params.productId;
+export default async function ProductPage({ 
+  params 
+}: { 
+  params: Promise<{ productId: string }> 
+}) {
+  const { productId } = await params;
 
   try {
     const { data } = await axios.get<{ product: ProductType }>(`${backEndUrl}/getProductById`, {
