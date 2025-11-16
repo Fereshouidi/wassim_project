@@ -4,11 +4,6 @@ import axios from "axios";
 import { backEndUrl } from "@/api";
 import { ProductType, OwnerInfoType } from "@/types";
 
-interface Params {
-  productId: string;
-}
-
-// Metadata function
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const productId = params.productId;
 
@@ -25,11 +20,11 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
       title: product.name.en,
       description: product.description.en,
       openGraph: {
-        title: product.name.en?? "hhh",
-        description: product.description.en?? "hhh",
-        images: [product.thumbNail?? "hhh"],
+        title: product.name.en,
+        description: product.description.en,
+        images: [product.thumbNail],
         url: `https://silver-way.vercel.app/product/${product._id}`,
-        type: "website", // valid OpenGraph type
+        type: "website",
       },
     };
   } catch (err) {
@@ -38,9 +33,9 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   }
 }
 
-// Server page
-export default async function ProductPage({ params }: { params: Params }) {
-  const productId = params.productId;
+// ✅ Wrap props in a generic Record<string, any> to satisfy Next.js typing
+export default async function ProductPage(props: { params: Record<string, string> }) {
+  const productId = props.params.productId;
 
   try {
     const { data } = await axios.get<{ product: ProductType }>(backEndUrl + "/getProductById", {
@@ -53,7 +48,6 @@ export default async function ProductPage({ params }: { params: Params }) {
 
     if (!product) return <div>Product not found</div>;
 
-    // **Pass data directly to client component**
     return <ClientProductPage product={product} ownerInfo={ownerInfo} />;
   } catch (err) {
     console.error(err);
