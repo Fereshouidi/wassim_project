@@ -25,7 +25,7 @@ const CollectionCard = ({
 
   return (
     <div 
-        className='w-[300px] rounded-sm cursor-pointer duration-300 overflow-hidden'
+        className='w-[250px] rounded-sm cursor-pointer duration-300 overflow-hidden'
         style={{
             backgroundColor: colors.light[100],
             boxShadow: isHover ? '0 0px 10px rgba(13, 13, 13, 0.15)' : "0 0px 10px rgba(13, 13, 13, 0.02)",
@@ -45,7 +45,7 @@ const CollectionCard = ({
         >
             {collection.thumbNail ?
                 <img 
-                    src="/" 
+                    src={collection.thumbNail} 
                     alt="" 
                     className='w-full h-full'
                 /> :

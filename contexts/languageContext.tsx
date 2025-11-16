@@ -9,10 +9,6 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [activeLanguage, setActiveLanguage] = useState<LanguageStracture>(frensh);
 
-//   const language = useMemo(() => {
-//     return activeLanguage.language === "en" ? english : frensh;
-//   }, [activeLanguage]);
-
   return (
     <LanguageContext.Provider value={{ activeLanguage, setActiveLanguage }}>
       {children}

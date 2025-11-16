@@ -5,6 +5,13 @@ import "./globals.css";
 import { ScreenProvider } from "@/contexts/screenProvider";
 import { ThemeProvider } from "@/contexts/themeProvider";
 import { LanguageProvider } from "@/contexts/languageContext";
+import RegisterSection from "@/componnent/main/register/register";
+import { RegisterSectionProvider } from "@/contexts/registerSec";
+import LayoutContent from "./LayoutContent";
+import { StatusBannerProvider } from "@/contexts/StatusBanner";
+import { LoadingScreenProvider } from "@/contexts/loadingScreen";
+import { ClientProvider } from "@/contexts/client";
+import { SocketProvider } from "@/contexts/soket";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -28,6 +35,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  // const { registerSectionExist, setRegisterSectionExist } = useRegisterSection();
+
   return (
     <html lang="en">
 
@@ -41,7 +51,17 @@ export default function RootLayout({
         <ScreenProvider>
             <LanguageProvider>
               <ThemeProvider>
-                {children}
+                <RegisterSectionProvider>
+                  <StatusBannerProvider>
+                    <LoadingScreenProvider>
+                      <ClientProvider>
+                        <SocketProvider>
+                          <LayoutContent>{children}</LayoutContent>
+                        </SocketProvider>
+                      </ClientProvider>
+                    </LoadingScreenProvider>
+                  </StatusBannerProvider>
+                </RegisterSectionProvider>
               </ThemeProvider>
             </LanguageProvider>
         </ScreenProvider>

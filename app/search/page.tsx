@@ -3,7 +3,7 @@ import SearchClient from './SearchClient'
 
 export default function Page() {
   return (
-    <Suspense fallback={<p>Loading search results...</p>}>
+    <Suspense>
       <SearchClient />
     </Suspense>
   )

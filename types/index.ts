@@ -79,7 +79,8 @@ export type LanguageStracture = {
         collections: string,
         contact: string,
         favorite: string,
-        askAi: string
+        askAi: string,
+        order: string
     },
     sideMatter: {
         search: string,
@@ -99,6 +100,8 @@ export type LanguageStracture = {
         fullName: string
         adress: string
         phone: string
+        password: string
+        rePassword: string
         note: string
         resultsFound: string
         price: string
@@ -116,7 +119,27 @@ export type LanguageStracture = {
         filter: string,
         SortBy: string,
         confirm: string
-    }
+    },
+    register: string
+    signIn: string
+    signUp: string
+    inputYourName: string
+    inputYourPhone: string
+    inputYourPassword: string
+    inputYourPasswordAgain: string
+    AlreadyHaveAnAccount: string
+    DontHaveAnAccount: string
+    connection: string
+    welcomeMr: string
+    welcomeBackMr: string
+    thanksForJoining: string
+    thanksForComingBack: string
+    somethingWentWrongWhileSignUp: string
+    AccountWithTheseNameAndPasswordNotFound: string
+    allFildAreRequired: string
+    // fullName: string
+    // adress: string,
+    // phone: number,
 }
 
 export type LanguageContextType = {
@@ -217,6 +240,16 @@ export type ClientFormType = {
     note: string
 }
 
+export type ClientType = {
+  fullName?: string;
+  email?: string;
+  token: number;
+  phone?: number;
+  password?: string;
+  adress?: string;
+  aiNote?: string;
+};
+
 export type FiltrationType = {
     price: {
         from: number
@@ -255,3 +288,17 @@ export type OptionType = {
     value: string,
     label: string
 }
+
+
+export type SignUpForm = {
+  fullName: string
+  phone: string
+  password: string
+  retypePassword: string
+}
+
+export type SignInForm = {
+  fullName: string
+  password: string
+}
+

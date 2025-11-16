@@ -1,6 +1,6 @@
 "use client";
 import Head from "next/head";
-import { backEndUrl, socket } from "@/api";
+import { backEndUrl } from "@/api";
 import Footer from "@/componnent/main/footer";
 import Header from "@/componnent/main/header";
 import ImagesSwitcher from "@/componnent/main/imagesSwitcher";
@@ -20,6 +20,9 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { useLanguage } from "@/contexts/languageContext";
+import SkeletonLoading from "@/componnent/sub/SkeletonLoading";
+import { useLoadingScreen } from "@/contexts/loadingScreen";
+
 
 export default function ProductPage() {
 
@@ -32,6 +35,7 @@ export default function ProductPage() {
   const [product, setProduct] = useState<ProductType | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(true);
   const { colors } = useTheme();
+  const { setLoadingScreen } = useLoadingScreen();
   const [quantity, setQuantity] = useState<number>(1);
   const [activeSpecifications, setActiveSpecifications] = useState<ProductSpecification | null | undefined>(null);
 
@@ -64,23 +68,28 @@ export default function ProductPage() {
     fetchProduct(); 
   }, [productId])
 
+  // useEffect(() => {
+  //   const socket = io(backEndUrl, {
+  //     transports: ["websocket"],
+  //     withCredentials: true,
+  //   });
+
+  //   socket.on("connect", () => {
+  //     console.log("Socket connected:", socket.id);
+  //   });
+
+  //   socket.on("connect_error", (err) => {
+  //     console.error("Socket connection error:", err.message);
+  //   });
+
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
+
   useEffect(() => {
-    socket.on("connect", () => {
-      console.log("Socket connected:", socket.id);
-      // socket.emit("hh", "hhhhhhh");
-    });
-
-    // socket.on("connectConfirm", (msg) => {
-    //   alert("msg");
-    // });
-
-    return () => {
-      socket.off("connect");
-      socket.off("connectConfirm");
-      // socket.disconnect();
-    };
-  }, []);
-
+    setLoadingScreen(false);
+  }, [])
 
 
 
@@ -98,7 +107,7 @@ export default function ProductPage() {
 
       {/* <Main> */}
         <div 
-            className="page bg-transparent"
+            className="page bg-transparent pb-16"
             style={{
                 backgroundColor: colors.light[100],
                 color: colors.dark[150]
@@ -143,14 +152,22 @@ export default function ProductPage() {
             </div>
             
             <div className={`flex flex-1 ${screenWidth > 1000 ? 'h-[90vh] flex-row justify-center' : 'flex-col items-center'}`}>
-              <ImagesSwitcher
-                  images={product?.images || []}
-                  className=""
-                  style={{
-                      // width: screenWidth > 1000 ? "500px" : "90%",
-                      // backgroundColor: 'red'
-                  }}
-              />
+              
+
+              { product?.images ?
+                <ImagesSwitcher
+                    images={product?.images || []}
+                    className=""
+                    style={{
+                        // width: screenWidth > 1000 ? "500px" : "90%",
+                        // backgroundColor: 'red'
+                    }}
+                />
+                :
+                <div className="w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] rounded-sm overflow-hidden">
+                  <SkeletonLoading/>
+                </div>
+              }
 
               <ProductDetails
                   product={product?? fakeProducts[0]}
@@ -173,7 +190,7 @@ export default function ProductPage() {
           />}
 
           <div 
-            className="w-full h-fit fixed bottom-0 left-0 flex justify-center items-center p-2"
+            className="w-full h-16 fixed bottom-0 left-0 flex justify-center items-center py-2 px-5"
             style={{
               backgroundColor: colors.light[100]
             }}

@@ -83,7 +83,7 @@ const CollectionsSection = ({
         }
       </h4>
 
-      <div className='w-full flex flex-wrap justify-center sm:justify-start gap-5 sm:p-10'>
+      <div className='w-full flex flex-wrap justify-center sm:justify-start- gap-5 sm:p-10'>
 
         {collections?.map((collection) => (
 

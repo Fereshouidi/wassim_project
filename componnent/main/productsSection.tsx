@@ -26,7 +26,7 @@ const ProductsSection = ({
     const { colors } = useTheme();
     const { activeLanguage } = useLanguage();
     const { screenWidth } = useScreen();
-    const [limit, setLimit] = useState<number>(8);
+    const [limit, setLimit] = useState<number>(20);
     const [skip, setSkip] = useState<number>(0);
     const [productsCount, setProductsCount] = useState<number>(0);
     const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
@@ -87,7 +87,7 @@ const ProductsSection = ({
 
         {collection.name[activeLanguage.language] ?
             <h2 
-                className='text-2xl sm:text-5xl sm:m-20 m-10'
+                className='text-xl sm:text-4xl sm:m-20 m-10'
                 style={{
                     color: colors.dark[100]
                 }}
@@ -103,7 +103,7 @@ const ProductsSection = ({
         {
             collection.display == "vertical" ?
 
-                <div className='w-full sm:px-24 flex flex-col justify-center items-center'>
+                <div className='w-full sm:px-14 flex flex-col justify-center items-center'>
 
                     <div className='w-full flex flex-wrap justify-center gap-2 sm:gap-10'>
 
@@ -112,7 +112,7 @@ const ProductsSection = ({
                                 <ProductCard
                                     key={index}
                                     product={product}
-                                    className="w-[185px] sm:w-[250px] min-h-[185px] sm:min-h-[250px] my-3"
+                                    className="w-[165px] sm:w-[225px] min-h-[185px] sm:min-h-[250px] my-3"
                                 />
                             ))
                         }

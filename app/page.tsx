@@ -7,6 +7,7 @@ import HomeCollections from "@/componnent/main/homeCollections";
 import SideBar from "@/componnent/main/sideBar";
 import AnnouncementBar from "@/componnent/sub/AnnouncementBar";
 import SkeletonLoading from "@/componnent/sub/SkeletonLoading";
+import { useLoadingScreen } from "@/contexts/loadingScreen";
 import { useScreen } from "@/contexts/screenProvider";
 import { useTheme } from "@/contexts/themeProvider";
 import { OwnerInfoType, PubType } from "@/types";
@@ -20,6 +21,7 @@ export default function Home() {
   const { colors } = useTheme();
   // const [pub, setPub] = useState<PubType | undefined>(undefined);
   const { screenWidth } = useScreen();
+  const { setLoadingScreen } = useLoadingScreen();
   const [ownerInfo, setOwnerInfo] = useState<OwnerInfoType | undefined>(undefined);
   const [pub, setPub] = useState<PubType | undefined>(undefined);
 
@@ -48,9 +50,8 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    console.log({ownerInfo});
-    
-  }, [ownerInfo])
+    setLoadingScreen(false);
+  }, [])
 
 
   // useEffect(() => {
@@ -94,7 +95,7 @@ export default function Home() {
         {pub?.heroBanner ?
           <img 
             src={screenWidth < 1000 ? pub?.heroBanner?.sm : pub?.heroBanner?.md}
-            className="w-full h-full object-cover max-h-[70vh]" 
+            className="w-full h-full object-cover object-top max-h-[70vh]" 
             style={{
               backgroundColor: colors.dark[800]
             }}
@@ -111,6 +112,26 @@ export default function Home() {
       <CollectionsSections
         importedFrom="homePage"
       />
+
+      <div 
+        className="w-full my-10"
+        style={{
+          backgroundColor: colors.dark[800]
+        }}
+      >
+        {pub?.bottomBanner ?
+          <img 
+            src={screenWidth < 1000 ? pub?.bottomBanner?.sm : pub?.bottomBanner?.md}
+            className="w-full h-full object-cover object-top max-h-[60vh]" 
+            style={{
+              backgroundColor: colors.dark[800]
+            }}
+          />
+          : <div className="h-[250px]">
+              <SkeletonLoading/>
+          </div>
+        }
+      </div>
 
       <Footer/>
 

@@ -11,6 +11,9 @@ import { useLanguage } from '@/contexts/languageContext';
 import LanguageSelectorForMobile from '../sub/languageSelectorForMobile';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useRegisterSection } from '@/contexts/registerSec';
+import { useLoadingScreen } from '@/contexts/loadingScreen';
+import { useClient } from '@/contexts/client';
 
 const SideBar = ({
     isActive,
@@ -23,6 +26,9 @@ const SideBar = ({
     const { activeTheme, colors } = useTheme();
     const { activeLanguage } = useLanguage();
     const router = useRouter();
+    const { setRegisterSectionExist } = useRegisterSection();
+    const { setLoadingScreen } = useLoadingScreen();
+    const { setClient, client } = useClient();
 
 
   return (
@@ -46,7 +52,7 @@ const SideBar = ({
             onClick={(e) => e.stopPropagation()}
         >
 
-            <div className='w-full flex flex-1 flex-col items-center  gap-4 '>
+            <div className='w-full flex flex-1- flex-col items-center gap-4 '>
                 <div 
                     className='  w-3xs  flex items-center justify-center  p-7'
                     style={{
@@ -96,15 +102,10 @@ const SideBar = ({
                         borderLeft: `0.02px solid ${colors.light[900]}`,
                         borderTop: 'none'
                     }}
-                    // aiIcon=""
                     aiIconStyle={{
                         backgroundColor: colors.dark[100],
-                        // color: colors.light[200]
                     }}
                     importedFrom='sidBar'
-                    // aiIconContentStyle={{
-                    //     color: colors.light[200]
-                    // }}
                 />
 
                 <ul className='w-full mt-5'>
@@ -114,11 +115,13 @@ const SideBar = ({
                             borderBottomColor: colors.dark[200]
                         }}
                     >
-                        <Link href="/" 
+                        <Link 
+                            href="/" 
                             className='w-full h-ful flex items-center px-7'
                             style={{
                                 color: colors.light[200]
                             }}    
+                            onClick={() => setLoadingScreen(true)}
                         >{activeLanguage.nav.home}</Link>
                     </li>
                     <li
@@ -160,9 +163,22 @@ const SideBar = ({
                             style={{
                                 color: colors.light[200]
                             }}    
-                        >{activeLanguage.nav.contact}</a>
+                        >{activeLanguage.nav.order}</a>
                     </li>
                     <li
+                        className='flex h-14 border-b-[1px] border-b-gray-100 text-sm'
+                        style={{
+                            borderBottomColor: colors.dark[200]
+                        }}
+                    >
+                        <a href="#" 
+                            className='w-full h-full flex items-center px-7'
+                            style={{
+                                color: colors.light[200]
+                            }}    
+                        >{activeLanguage.nav.contact}</a>
+                    </li>
+                    {/* <li
                         className='flex h-14 border-b-[1px] border-b-gray-100 text-sm'
                         style={{
                             borderBottomColor: colors.dark[200]
@@ -175,17 +191,49 @@ const SideBar = ({
                                 color: colors.light[200]
                             }}    
                         >{activeLanguage.nav.askAi}</Link>
-                    </li>
+                    </li> */}
                 </ul>
             </div>
             
 
-            {swreenWidth < 1000 && <div className='h-[30vh] flex flex-col justify-start items-center gap-10 py-5'>
-                <ThemeModeSelectorForMobiles/>
-                <LanguageSelectorForMobile
-                    className="w-full p-2"
-                />
-            </div>}
+            <div className='w-full h-fit flex flex-col'>
+                
+                {swreenWidth < 1000 && <div className='h-[30vh]- flex flex-col justify-start items-center gap-10 py-5-'>
+                    <ThemeModeSelectorForMobiles/>
+                    <LanguageSelectorForMobile
+                        className="w-full p-2 bg-red-500-"
+                    />
+                </div>}
+
+                <div 
+                    className='w-[90%] bg-red-500- mb-5 p-3 pt-8- rounded-sm flex justify-start items-end fixed- bottom-5- cursor-pointer'
+                    style={{
+                        color: colors.light[150],
+                        // border: `1px solid ${colors.dark[300]}`,
+                        // boxShadow: `0 0px 15px ${colors.dark[250]}`
+                    }}
+                    onClick={() => {
+                        if (client && client.token) {
+                            setLoadingScreen(true)
+                            router.push('/account')
+                        } else { 
+                            setRegisterSectionExist(true);
+                        }
+                    }}
+                >
+                    <img 
+                        src={activeTheme == "dark" ? '/icons/user-black.png' : '/icons/user-white.png'} 
+                        className='w-6 h-6 p-[3px] mr-2 bg-red-500-'
+                        alt="" 
+                    />
+                    <h4 className='text-sm bg-red-500- text-end'>
+                        {   
+                            client?.fullName ??
+                            activeLanguage.connection
+                        }
+                    </h4>
+                </div>
+            </div>
 
 
         </div>

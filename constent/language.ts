@@ -9,7 +9,8 @@ export const english = {
         collections: "Collections",
         contact: "Contact Us",
         askAi: "AskAi",
-        favorite: "Favorite"
+        favorite: "Favorite",
+        order: "Orders"
     },
     sideMatter: {
         search: "Search",
@@ -27,9 +28,11 @@ export const english = {
         sizes: "Sizes",
         types: "Types",
         fillOutTheForm: "Fill out this form",
-        fullName: "FULL Name",
+        fullName: "Full Name",
         adress: "City ​​and address",
         phone: "Phone Number",
+        password: "Password",
+        rePassword: "Retype Password",
         note: "Note",
         resultsFound: "Results found",
         color: "color",
@@ -46,9 +49,26 @@ export const english = {
         all: "all",
         filter: "filter",
         SortBy: "Sort by",
-        confirm: "confirm"
+        confirm: "confirm",
+    },
+    register: "Register",
+    signIn: "sign In",
+    signUp: "sign Up",
+    inputYourName: "inter your first and last name",
+    inputYourPhone: "inter your phone",
+    inputYourPassword: "inter your Password",
+    inputYourPasswordAgain: "input your password again",
+    AlreadyHaveAnAccount: "Already have an account ",
+    DontHaveAnAccount: "Dont have an account",
+    connection: "connection",
+    welcomeMr: "Welcome, Mr.",
+    welcomeBackMr: "Welcome back, Mr.",
+    thanksForJoining: "Thank you for joining SilverWay! 😊",
+    thanksForComingBack: "Thank you for coming back to SilverWay! 😊",
+    somethingWentWrongWhileSignUp: "Something went wrong during sign-up!",
+    AccountWithTheseNameAndPasswordNotFound: "No account found with this name and password.",
+    allFildAreRequired: "All the field are required !"
 
-    }
 } as LanguageStracture;
 
 export const frensh = {
@@ -60,7 +80,8 @@ export const frensh = {
         collection: "Collection",
         contact: "Contactez Nous",
         askAi: "Demande IA",
-        favorite: "Favori"
+        favorite: "Favori",
+        order: "commandes"
     },
     sideMatter: {
         search: "Recherche",
@@ -81,6 +102,8 @@ export const frensh = {
         fullName: "Nom & Prénom",
         adress: "ville & adresse",
         phone: "Numéro de Téléphone",
+        password: "Mot de passe",
+        rePassword: "Retaper le mot de passe",
         note: "Note",
         resultsFound: "Résultats trouvés",
         color: "couleur",
@@ -97,9 +120,25 @@ export const frensh = {
         all: "tout les",
         filter: "filter",
         SortBy: "Trier par",
-        confirm: "confirmer"
-
+        confirm: "confirmer",
     },
+    register: "Registre",
+    signIn: "Se connecter",
+    signUp: "S'inscrire",
+    inputYourName: "Entrez votre nom",
+    inputYourPhone: "Entrez votre telephone",
+    inputYourPassword: "Entrez votre mot de passe",
+    inputYourPasswordAgain: "Etrez à nouveau votre mot de passe",
+    AlreadyHaveAnAccount: "Vous avez déjà un compte",
+    DontHaveAnAccount: "Vous n'avez pas de compte",
+    connection: "connection",
+    welcomeMr: "Bienvenue, Monsieur.",
+    welcomeBackMr: "Bon retour, Monsieur ",
+    thanksForJoining: "Merci d’avoir rejoint SilverWay ! 😊",
+    thanksForComingBack: "Merci de revenir sur SilverWay ! 😊",
+    somethingWentWrongWhileSignUp: "Une erreur s’est produite lors de l’inscription !",
+    AccountWithTheseNameAndPasswordNotFound: "Aucun compte trouvé avec ce nom et ce mot de passe.",
+    allFildAreRequired: "Tous les champs sont requis !"
 
 } as LanguageStracture;
 

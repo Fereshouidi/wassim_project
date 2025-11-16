@@ -306,7 +306,7 @@ const ProductDetails = ({
         </div>
 
         <p 
-            className='p-2 sm:p-5 mt-2 sm:mt-5 text-md opacity-90'
+            className='p-2 sm:p-5 mt-2 sm:mt-5 text-md opacity-90 whitespace-pre-line'
             style={{
                 borderTop: `0.5px solid ${colors.light[300]}`,
                 borderBottom: `0.5px solid ${colors.light[300]}`,

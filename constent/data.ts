@@ -325,6 +325,36 @@ export const productsLoading: ProductType[] = [
     createdAt: new Date(),
     updatedAt: new Date(),
   },
+  {
+    _id: "9",
+    name: { fr: null, en: null },
+    price: null,
+    thumbNail: null,
+    images: [],
+    description: { fr: null, en: null },
+    collections: [],
+    stock: null,
+    specifications: [
+      { color: null, size: null, type: null, price: null, quantity: null },
+    ],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    _id: "10",
+    name: { fr: null, en: null },
+    price: null,
+    thumbNail: null,
+    images: [],
+    description: { fr: null, en: null },
+    collections: [],
+    stock: null,
+    specifications: [
+      { color: null, size: null, type: null, price: null, quantity: null },
+    ],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
 ];
 
 export const collectionsLoading: CollectionType[] = [
@@ -340,6 +370,46 @@ export const collectionsLoading: CollectionType[] = [
   },
   {
     _id: '2',
+    name: {
+      en: null,
+      fr: null
+    },
+    thumbNail: null,
+    type: "private",
+    display: "vertical"
+  },
+  {
+    _id: '3',
+    name: {
+      en: null,
+      fr: null
+    },
+    thumbNail: null,
+    type: "private",
+    display: "vertical"
+  },
+  {
+    _id: '4',
+    name: {
+      en: null,
+      fr: null
+    },
+    thumbNail: null,
+    type: "private",
+    display: "vertical"
+  },
+  {
+    _id: '5',
+    name: {
+      en: null,
+      fr: null
+    },
+    thumbNail: null,
+    type: "private",
+    display: "vertical"
+  },
+  {
+    _id: '6',
     name: {
       en: null,
       fr: null

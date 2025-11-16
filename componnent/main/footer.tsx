@@ -8,7 +8,7 @@ const Footer = () => {
 
     return (
         <div 
-            className='w-full min-h-52 p-5 sm:p-10'
+            className='w-full min-h-[250px] p-5 sm:p-10'
             style={{
                 backgroundColor: "black",
                 color: colors.light[200]
