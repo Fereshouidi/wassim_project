@@ -4,6 +4,7 @@ import CustomInputText from '@/componnent/sub/customInputText';
 import WelcomeIcon from '@/componnent/sub/welcomeIcon';
 import { useClient } from '@/contexts/client';
 import { useLanguage } from '@/contexts/languageContext';
+import { useLoadingScreen } from '@/contexts/loadingScreen';
 import { useRegisterSection } from '@/contexts/registerSec';
 import { useStatusBanner } from '@/contexts/StatusBanner';
 import { useTheme } from '@/contexts/themeProvider';
@@ -32,6 +33,7 @@ const SignIn = ({
     const { colors } = useTheme();
     const { client, setClient } = useClient();
     const { setStatusBanner } = useStatusBanner();
+    const { setLoadingScreen } = useLoadingScreen();
     // const [ signInButtonWorks, setSignInButtonWorks ] = useState<boolean>(false);
 
     const getClient = async () => {
@@ -98,7 +100,9 @@ const SignIn = ({
             </div>
         )
 
+        setLoadingScreen(true);
         await getClient();
+        setLoadingScreen(false);
     }
 
     useEffect(() => {
