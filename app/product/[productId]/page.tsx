@@ -1,15 +1,18 @@
+// app/product/[productId]/page.tsx
 import ClientProductPage from "./ClientProductPage";
 import { Metadata } from "next";
 import axios from "axios";
 import { backEndUrl } from "@/api";
 import { ProductType, OwnerInfoType } from "@/types";
-import { Params } from "next/dist/server/request/params";
 
-export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+// ------------------------
+// Metadata ديناميكية
+// ------------------------
+export async function generateMetadata({ params }: { params: { productId: string } }): Promise<Metadata> {
   const productId = params.productId;
 
   try {
-    const { data } = await axios.get<{ product: ProductType }>(backEndUrl + "/getProductById", {
+    const { data } = await axios.get<{ product: ProductType }>(`${backEndUrl}/getProductById`, {
       params: { productId },
     });
 
@@ -21,9 +24,9 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
       title: product.name.en,
       description: product.description.en,
       openGraph: {
-        title: product.name.en?? "",
-        description: product.description.en?? "",
-        images: [product.thumbNail?? ""],
+        title: product.name.en ?? "",
+        description: product.description.en ?? "",
+        images: [product.thumbNail ?? ""],
         url: `https://silver-way.vercel.app/product/${product._id}`,
         type: "website",
       },
@@ -34,21 +37,28 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   }
 }
 
-// ✅ Wrap props in a generic Record<string, any> to satisfy Next.js typing
-export default async function ProductPage(props: { params: Record<string, string> }) {
-  const productId = props.params.productId;
+// ------------------------
+// الصفحة الرئيسية
+// ------------------------
+export default async function ProductPage({ params }: { params: { productId: string } }) {
+  const productId = params.productId;
 
   try {
-    const { data } = await axios.get<{ product: ProductType }>(backEndUrl + "/getProductById", {
+    // جلب بيانات المنتج
+    const { data } = await axios.get<{ product: ProductType }>(`${backEndUrl}/getProductById`, {
       params: { productId },
     });
     const product = data.product;
 
-    const ownerRes = await axios.get<{ ownerInfo: OwnerInfoType }>(backEndUrl + "/getOwnerInfo");
+    // جلب بيانات صاحب المنتج
+    const ownerRes = await axios.get<{ ownerInfo: OwnerInfoType }>(`${backEndUrl}/getOwnerInfo`, {
+      params: { productId }, // إذا تحتاج تحديد المنتج
+    });
     const ownerInfo = ownerRes.data.ownerInfo;
 
     if (!product) return <div>Product not found</div>;
 
+    // تمرير البيانات إلى Client Component للتفاعل
     return <ClientProductPage product={product} ownerInfo={ownerInfo} />;
   } catch (err) {
     console.error(err);
