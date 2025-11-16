@@ -98,10 +98,10 @@ export default function ProductPage() {
     <>
       <Head>
         <title>{product?.name[activeLanguage.language]}</title>
-        <meta property="og:title" content={product?.name[activeLanguage.language]?? "aaa"} />
-        <meta property="og:description" content={product?.description[activeLanguage.language]?? "aaa"} />
-        <meta property="og:image" content={product?.thumbNail?? "aaa"} />
-        <meta property="og:url" content={`/product/${product?._id}`} />
+        <meta property="og:title" content={product?.name[activeLanguage.language]?? ""} />
+        <meta property="og:description" content={product?.description[activeLanguage.language]?? ""} />
+        <meta property="og:image" content={product?.thumbNail?? ""} />
+        <meta property="og:url" content={`https://yourdomain.com/product/${product?._id}`} />
         <meta property="og:type" content="product" />
       </Head>
 
