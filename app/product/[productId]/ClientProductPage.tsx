@@ -66,13 +66,13 @@ export default function ClientProductPage({ product, ownerInfo }: Props) {
 
         <div className={`flex flex-1 ${screenWidth > 1000 ? "h-[90vh] flex-row justify-center" : "flex-col items-center"}`}>
           {product.images?.length ? <ImagesSwitcher images={product.images} /> : <div>Loading images...</div>}
-          {<ProductDetails
+          <ProductDetails
             product={product}
             quantity={quantity}
             setQuantity={setQuantity}
             activeSpecifications={activeSpecifications}
             setActiveSpecifications={setActiveSpecifications}
-          />}
+          />
         </div>
       </div>
 

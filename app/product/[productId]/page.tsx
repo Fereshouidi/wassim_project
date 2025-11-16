@@ -25,9 +25,9 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
       title: product.name.en,
       description: product.description.en,
       openGraph: {
-        title: product.name.en?? "",
-        description: product.description.en?? "",
-        images: [product.thumbNail?? ""],
+        title: product.name.en?? "hhh",
+        description: product.description.en?? "hhh",
+        images: [product.thumbNail?? "hhh"],
         url: `https://silver-way.vercel.app/product/${product._id}`,
         type: "website", // valid OpenGraph type
       },
