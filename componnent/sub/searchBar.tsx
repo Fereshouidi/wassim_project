@@ -11,6 +11,7 @@ import AiMode from './aiMode';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { useRouter } from 'next/navigation';
 import FilterBar from '../main/filterBar';
+import { useLoadingScreen } from '@/contexts/loadingScreen';
 // import english from '@/app/languages/english.json';
 // import arabic from '@/app/languages/arabic.json';
 // import { LanguageSelectorContext } from "@/app/contexts/LanguageSelectorContext";
@@ -37,6 +38,7 @@ const SearchBar = ({
 
     const [focus, setFocus] = useState(false);
     const { activeTheme, colors } = useTheme();
+    const { setLoadingScreen } = useLoadingScreen();
     const { activeLanguage } = useLanguage();
     const [input, setInput] = useState<string>('');
     const [searchResult, setSearchResult] = useState<ProductType[]>([]);
@@ -111,35 +113,6 @@ const SearchBar = ({
     
   }, [filtration, input])
 
-//   useEffect(() => {console.log("Component rendered");
-
-//     if (!searchText || !filtration) return;
-    
-//     const fetchProductBySearch = async () => {
-//       setLoading(true);
-//       await axios.post( backEndUrl + "/getProductsBySearch", {
-//         searchText,
-//         limit,
-//         skip,
-//         filtration
-//       })
-//       .then(({ data }) => {
-//         setProductsFound([...productsFound, ...data.products]);
-//         setProductsCount(data.productsCount);
-//         setAvailableColors(data.availableColors);
-//         setAvailableSizes(data.availableSizes);
-//         setAvailableTypes(data.availableTypes);
-//         setLoading(false);
-//       })
-//       .catch(( err ) => {
-//         setLoading(false);
-//         throw err;
-//       })
-//     }
-//     fetchProductBySearch();
-    
-//   }, [skip])
-
   useEffect(() => {console.log("Component rendered");
 
     const fetchDefaultFiltration = async () => {
@@ -187,70 +160,6 @@ const SearchBar = ({
     
     })
   }, [mostProductExpensive, allCollections])
-
-    // useEffect(() => {
-
-    //     const fetchData = async () => {
-    //         setIsLoading(true);
-    //         await axios.post(backEndUrl + "/getProductsBySearch", { 
-    //             searchText: input, 
-    //             limit, 
-    //             skip,
-    //             filtration: undefined
-    //         })
-    //         .then(({ data }) => {
-    //             setSearchResult(prev => {
-    //                 const map = new Map();
-
-    //                 [...prev, ...data.products].forEach(product => {
-    //                     map.set(product._id, product);
-    //                 });
-
-    //                 return Array.from(map.values());
-    //             })
-    //             setSearchResultCount(data.productsCount);
-    //             setIsLoading(false);
-    //         })
-    //         .catch(( err ) => {
-    //             throw err;
-    //         })
-    //     }
-
-    //     input && fetchData();
-
-    // }, [skip])
-
-    // useEffect(() => {
-
-    //     if (loading) return;
-        
-    //     setIsLoading(true);
-    //     const fetchData = async () => {
-    //         await axios.post(backEndUrl + "/getProductsBySearch", { 
-    //             searchText: input, 
-    //             limit, 
-    //             skip,
-    //             filtration: undefined
-    //         })
-    //         .then(({ data }) => {
-    //             setSearchResult(data.products);  
-    //             setSearchResultCount(data.productsCount);
-    //             setIsLoading(false);
-    //         })
-    //         .catch(( err ) => {
-    //             setLoading(false);
-    //             throw err;
-    //         })
-    //     }
-
-    //     if (input.length > 0) {
-    //         setSkip(0);
-    //         fetchData(); 
-    //     }    
-        
-    //     setResSecVisible(input ? true : false);
-
-    // }, [input])
     
     const handleScroll = () => {
 
@@ -267,6 +176,7 @@ const SearchBar = ({
 
     const handleSearchIconClicked = () => {
 
+        setLoadingScreen(true);
         setFilterBarActive(false);
 
         if (aiModeActive) {

@@ -131,7 +131,7 @@ const SideBar = ({
                         }}
                     >
                         <Link href="/collections" 
-                            // onClick={() => router.replace('/pages/collections')}
+                            onClick={() => setLoadingScreen(true)}
                             className='w-full h-full flex items-center px-7'
                             style={{
                                 color: colors.light[200]
@@ -144,8 +144,8 @@ const SideBar = ({
                             borderBottomColor: colors.dark[200]
                         }}
                     >
-                        <Link href="/collections" 
-                            // onClick={() => router.replace('/pages/collections')}
+                        <Link href="#" 
+                            onClick={() => setLoadingScreen(true)}
                             className='w-full h-full flex items-center px-7'
                             style={{
                                 color: colors.light[200]
@@ -159,39 +159,13 @@ const SideBar = ({
                         }}
                     >
                         <a href="#" 
-                            className='w-full h-full flex items-center px-7'
-                            style={{
-                                color: colors.light[200]
-                            }}    
-                        >{activeLanguage.nav.order}</a>
-                    </li>
-                    <li
-                        className='flex h-14 border-b-[1px] border-b-gray-100 text-sm'
-                        style={{
-                            borderBottomColor: colors.dark[200]
-                        }}
-                    >
-                        <a href="#" 
+                            onClick={() => setLoadingScreen(true)}
                             className='w-full h-full flex items-center px-7'
                             style={{
                                 color: colors.light[200]
                             }}    
                         >{activeLanguage.nav.contact}</a>
                     </li>
-                    {/* <li
-                        className='flex h-14 border-b-[1px] border-b-gray-100 text-sm'
-                        style={{
-                            borderBottomColor: colors.dark[200]
-                        }}
-                    >
-                        <Link href="/collections" 
-                            // onClick={() => router.replace('/pages/collections')}
-                            className='w-full h-full flex items-center px-7'
-                            style={{
-                                color: colors.light[200]
-                            }}    
-                        >{activeLanguage.nav.askAi}</Link>
-                    </li> */}
                 </ul>
             </div>
             

@@ -8,6 +8,7 @@ import MoreBotton from '@/componnent/sub/moreBotton';
 import ProductCard from '@/componnent/sub/productCard';
 import { filterBarHeight } from '@/constent';
 import { useLanguage } from '@/contexts/languageContext';
+import { useLoadingScreen } from '@/contexts/loadingScreen';
 import { useScreen } from '@/contexts/screenProvider';
 import { useTheme } from '@/contexts/themeProvider';
 import { CollectionType, FiltrationType, OwnerInfoType, ProductSpecification, ProductType, PubType } from '@/types';
@@ -41,6 +42,8 @@ const Page = () => {
 
   const [storedSearchText, setStoredSearchText] = useState<string>('');
   const [firstRender, setFirstRender] = useState<boolean>(true);
+  const { setLoadingScreen } = useLoadingScreen();
+
   
 
 
@@ -174,6 +177,10 @@ const Page = () => {
       })
     }
     fetchData();
+  }, [])
+
+  useEffect(() => {
+    setLoadingScreen(false);
   }, [])
 
   return (

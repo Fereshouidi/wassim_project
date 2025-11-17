@@ -4,6 +4,8 @@ import { ProductType } from '@/types'
 import React, { CSSProperties } from 'react'
 import SkeletonLoading from './SkeletonLoading'
 import { useRouter } from 'next/navigation'
+import { useScreen } from '@/contexts/screenProvider'
+import { useLoadingScreen } from '@/contexts/loadingScreen'
 
 type productCardType = {
     product: ProductType
@@ -20,6 +22,7 @@ const ProductCard = ({
     const { colors } = useTheme();
     const { activeLanguage } = useLanguage();
     const router = useRouter();
+    const { setLoadingScreen } = useLoadingScreen();
 
   return (
     <div 
@@ -28,7 +31,10 @@ const ProductCard = ({
             ...style
             // backgroundColor: colors.light[100]
         }}
-        onClick={() => router.push(`/product/${product._id}`)}
+        onClick={() => {
+            setLoadingScreen(true);
+            router.push(`/product/${product._id}`)}
+        }
     >
         
         <div 

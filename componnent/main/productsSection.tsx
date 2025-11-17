@@ -1,6 +1,6 @@
 "use client";
 import { CollectionType, ProductType } from '@/types'
-import React, { useEffect, useState } from 'react'
+import React, { CSSProperties, useEffect, useState } from 'react'
 import ProductCard from '../sub/productCard'
 import { useTheme } from '@/contexts/themeProvider'
 import { useLanguage } from '@/contexts/languageContext'
@@ -17,10 +17,20 @@ import SkeletonLoading from '../sub/SkeletonLoading';
 
 type ProductsSectionType = {
     collection: CollectionType
+    autoScroll: boolean
+    product?: ProductType
+    tittleStyle?: CSSProperties
+    isThereProducts: boolean
+    setIsThereProducts: (value: boolean) => void
 }
 
 const ProductsSection = ({
-    collection
+    collection,
+    autoScroll,
+    product,
+    tittleStyle,
+    isThereProducts, 
+    setIsThereProducts
 }: ProductsSectionType) => {
 
     const { colors } = useTheme();
@@ -34,11 +44,11 @@ const ProductsSection = ({
 
     const [products, setProducts] = useState<ProductType[]>(productsLoading);
 
-    // useEffect(() => {
-    //     console.log({productsCount});
-    //     console.log({products});
-        
-    // }, [products])
+    useEffect(() => {
+        setIsThereProducts && setIsThereProducts(products.length > 0)
+            // alert(isThereProducts)
+
+    }, [products])
 
 
     useEffect(() => {
@@ -62,11 +72,13 @@ const ProductsSection = ({
 
                 .then(({data}) => {
 
-                    !isFirstRender && data.products ?
-                        setProducts([...products, ...data.products]) : 
-                        setProducts(data.products);
+                    const filterTheProduct = data.products?.filter((product_: ProductType) => product_._id != product?._id)
 
-                    setProductsCount(data.productsCount);
+                    !isFirstRender && data.products ?
+                        setProducts([...products, ...filterTheProduct]) : 
+                        setProducts(filterTheProduct);
+
+                    setProductsCount(data.productsCount - 1);
                     setIsFirstRender(false);
                     setLoading(false);
                     
@@ -81,6 +93,8 @@ const ProductsSection = ({
 
     }, [collection, skip])
 
+    if (!isThereProducts) return
+
   return (
 
     <div className='w-full flex flex-col justify-center items-center'>
@@ -89,7 +103,8 @@ const ProductsSection = ({
             <h2 
                 className='text-xl sm:text-4xl sm:m-20 m-10'
                 style={{
-                    color: colors.dark[100]
+                    color: colors.dark[100],
+                    ...tittleStyle
                 }}
             >
                 {collection.name[activeLanguage.language]}
@@ -146,6 +161,7 @@ const ProductsSection = ({
                         skip={skip}
                         setSkip={setSkip}
                         limit={limit}
+                        autoScroll={autoScroll}
                     /> 
                 :
                     <SliderForPhones

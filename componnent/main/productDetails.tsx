@@ -20,6 +20,10 @@ type ProductDetailsType = {
   setQuantity: (value: number) => void
   activeSpecifications: ProductSpecification | undefined | null
   setActiveSpecifications: (value: ProductSpecification | undefined | null) =>void
+  collections: CollectionType[],
+  setCollections: (value: CollectionType[]) => void
+  loadingGettingCollection: boolean
+  setLoadingGettingCollection: (value: boolean) => void
 }
 
 const ProductDetails = ({
@@ -30,7 +34,11 @@ const ProductDetails = ({
   quantity,
   setQuantity,
   activeSpecifications,
-  setActiveSpecifications
+  setActiveSpecifications,
+  collections,
+  setCollections,
+  loadingGettingCollection, 
+  setLoadingGettingCollection
 }: ProductDetailsType) => {
 
   const { screenWidth } = useScreen();
@@ -49,8 +57,8 @@ const ProductDetails = ({
   const [availableSizes, setAvailableSizes] = useState<string[]>([]);
   const [availableTypes, setAvailableTypes] = useState<string[]>([]);
 
-  const [collections, setCollections] = useState<CollectionType[]>([]);
-  const [loadingGettingCollection, setLoadingGettingCollection] = useState<boolean>(true);
+  // const [collections, setCollections] = useState<CollectionType[]>([]);
+  // const [loadingGettingCollection, setLoadingGettingCollection] = useState<boolean>(true);
 
 
   const [clientForm, setClientForm] = useState<ClientFormType>({
@@ -133,40 +141,6 @@ const ProductDetails = ({
     if (matched) setActiveSpecifications(matched);
   }, [selectedColor, selectedSize, selectedType, product]);
 
-  useEffect(() => {
-    const fetchCollections = async () => {
-      try {
-        setLoadingGettingCollection(true);
-        const { data } = await axios.get(`${backEndUrl}/getCollectionsByProduct`, {
-          params: { productId: product._id },
-        });
-
-        const filtered = data.collections.filter(
-          (collection: CollectionType) =>
-            collection.type === "public"
-        );
-
-        setCollections(filtered);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoadingGettingCollection(false);
-      }
-    };
-
-    if (product?._id && product._id.length > fakeProducts.length) {
-      fetchCollections();
-    }
-  }, [product?._id]);
-
-  useEffect(() => {
-    console.log({ activeSpecifications });
-  }, [activeSpecifications]);
-
-  useEffect(() => {
-    console.log({availableTypes});
-    
-  }, [availableTypes])
 
   return (
     <div
@@ -313,10 +287,10 @@ const ProductDetails = ({
             }}
         >{product.description[activeLanguage.language]}</p>
 
-        <InputForm
+        {/* <InputForm
             clientForm={clientForm}
             setClientForm={setClientForm}
-        />
+        /> */}
 
         <div className='my-5'>
           <ProductActionPanel

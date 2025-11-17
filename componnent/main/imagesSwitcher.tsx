@@ -54,19 +54,33 @@ const ImagesSwitcher = ({
 
   return (
     <div 
-        className={`h-full min-w-[300px] sm:min-w-[600px] min-h-[300px] sm:min-h-[600px] bg-yellow-500- w-[600px]- flex flex-col justify-center items-center bg-yellow-500- pt-10- no-sellect bg-transparent- ${className}`} 
+        className={` relative h-full top-0 min-w-[300px] sm:min-w-[600px] min-h-[300px] sm:min-h-[600px] bg-yellow-500- w-[600px]- flex flex-col justify-center items-center bg-yellow-500- pt-10- no-sellect bg-transparent- ${className}`} 
         style={{ 
             ...style 
         }}
     >
+
       
       <div 
-        className={`bg-red-500- h-[500px]- ${screenWidth > 500 ? "w-[600px]- h-[500px]" : "w-[400px]- h-[400px]"}  bg-red-500- rounded-sm flex flex-1 justify-center items-center p-5 sm:px-10- scrollbar-hidden`}
+        className={`bg-red-500- relative h-[500px]- ${screenWidth > 500 ? "w-[600px]- h-[500px]" : "w-[400px]- h-[400px]"}  bg-red-500- rounded-sm flex flex-1 justify-center items-center p-5 sm:px-10- scrollbar-hidden`}
         style={{
             paddingBottom: 2,
             // minHeight: imageDisplayWidth / 2
         }}
     >
+        <div 
+            className='absolute top-7 right-7 rounded-full p-2 bg-gray-400 w-10 h-10 cursor-pointer'
+            style={{
+                boxShadow: `0 5px 15px ${colors.dark[700]}`
+            }}
+        >
+            <img 
+                src={activeTheme == "dark" ? "/icons/heart-white.png" : "/icons/heart-white.png"} 
+                className='w-full h-full'
+                alt="" 
+            />
+        </div>
+
         {
             images[currentImageIndex] ? <img 
                 src={images[currentImageIndex]} 

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { ProductType, OwnerInfoType, ProductSpecification } from "@/types";
+import { useEffect, useState } from "react";
+import { ProductType, OwnerInfoType, ProductSpecification, CollectionType } from "@/types";
 import ImagesSwitcher from "@/componnent/main/imagesSwitcher";
 import ProductDetails from "@/componnent/main/productDetails";
 import OtherSimilarChose from "@/componnent/main/otherSimilarChose";
@@ -15,6 +15,10 @@ import { useTheme } from "@/contexts/themeProvider";
 import { handleShareOnFacebook } from "@/lib";
 import { headerHeight } from "@/constent";
 import { fakeProducts } from "@/constent/data";
+import { useLoadingScreen } from "@/contexts/loadingScreen";
+import { useSocket } from "@/contexts/soket";
+import axios from "axios";
+import { backEndUrl } from "@/api";
 
 interface Props {
   product: ProductType;
@@ -22,12 +26,67 @@ interface Props {
 }
 
 export default function ClientProductPage({ product, ownerInfo }: Props) {
-  const { screenWidth, screenHeight } = useScreen();
-  const { colors } = useTheme();
+    const { screenWidth, screenHeight } = useScreen();
+    const { colors } = useTheme();
+    const socket = useSocket();
 
-  const [quantity, setQuantity] = useState(1);
-  const [activeSpecifications, setActiveSpecifications] = useState<ProductSpecification>(product.specifications[0]);
-  const [sideBarActive, setSideBarActive] = useState(false);
+    const [quantity, setQuantity] = useState(1);
+    const [activeSpecifications, setActiveSpecifications] = useState<ProductSpecification>(product.specifications[0]);
+    const [loadingGettingCollection, setLoadingGettingCollection] = useState<boolean>(true);
+    const [sideBarActive, setSideBarActive] = useState(false);
+    const { setLoadingScreen } = useLoadingScreen();
+    const [collections, setCollections] = useState<CollectionType[]>([]);
+
+
+    useEffect(() => {
+    setLoadingScreen(false);
+    }, [])
+
+
+    useEffect(() => {
+        const fetchCollections = async () => {
+        try {
+            setLoadingGettingCollection(true);
+            await axios.get(`${backEndUrl}/getCollectionsByProduct`, {
+                params: { productId: product._id },
+            })
+            .then(({ data }) => {
+                const filtered = data.collections.filter(
+                (collection: CollectionType) =>
+                    collection.type === "public"
+                );
+                
+                const toSlider = filtered.map((collection: CollectionType) => { return {...collection, display: "horizontal"} })
+
+                setCollections(toSlider);            
+            })
+
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoadingGettingCollection(false);
+        }
+        };
+
+        if (product?._id && product._id.length > fakeProducts.length) {
+        fetchCollections();
+        }
+    }, [product?._id]);
+
+    useEffect(() => {
+        if (!socket) return;
+
+        socket.emit("greating", "hi")
+
+        socket.on("greatingBack", (data: any) => {
+            alert(data)
+        });
+
+        // Clean up
+        return () => {
+            socket.off("greatingBack");
+        };
+    }, [socket]);
 
  return (
 
@@ -98,6 +157,10 @@ export default function ClientProductPage({ product, ownerInfo }: Props) {
                   quantity={quantity}
                   setQuantity={setQuantity}
                   activeSpecifications={activeSpecifications}
+                  collections={collections}
+                  setCollections={setCollections}
+                  loadingGettingCollection={loadingGettingCollection}
+                  setLoadingGettingCollection={setLoadingGettingCollection}
                   setActiveSpecifications={(value) => {
                     if (value !== null && value !== undefined) {
                       setActiveSpecifications(value);
@@ -108,9 +171,12 @@ export default function ClientProductPage({ product, ownerInfo }: Props) {
 
           </div>
 
-          {product?._id && <OtherSimilarChose
-            product={product}
-          />}
+          <div className="w-full h-[500px]- my-24">
+            {product?._id && <OtherSimilarChose
+                collections={collections}
+                product={product}
+            />}
+          </div>
 
           <div 
             className="w-full h-fit fixed bottom-0 left-0 flex justify-center items-center p-2"

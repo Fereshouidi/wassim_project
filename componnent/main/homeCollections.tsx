@@ -11,6 +11,8 @@ const HomeCollections = () => {
 
     const [collections, setCollections] = useState<CollectionType[] | undefined>(collectionsLoading);
     const { colors } = useTheme();
+    const [isThereProducts, setIsThereProducts] = useState<boolean>(false);
+
 
     useEffect(() => {
         
@@ -43,6 +45,9 @@ const HomeCollections = () => {
                 <ProductsSection
                     key={collection._id}
                     collection={collection}
+                    autoScroll={true}
+                    isThereProducts={isThereProducts}
+                    setIsThereProducts={setIsThereProducts}
                 />
             ))}
 

@@ -225,6 +225,15 @@ export type CollectionType = {
     display: "vertical" | "horizontal"
 }
 
+export type CollectionWithProductsType = {
+    _id?: string | null;
+    name: language;
+    thumbNail?: string | null;
+    type: "private" | "public";
+    display: "vertical" | "horizontal";
+    products: ProductType[]
+}
+
 export type ProductSpecification = {
   color?: string | null;
   size?: string | null;

@@ -4,6 +4,7 @@ import CollectionsSections from '@/componnent/main/collectionsSection';
 import Footer from '@/componnent/main/footer';
 import Header from '@/componnent/main/header';
 import SideBar from '@/componnent/main/sideBar';
+import { useLoadingScreen } from '@/contexts/loadingScreen';
 import { useTheme } from '@/contexts/themeProvider'
 import { OwnerInfoType } from '@/types';
 import axios from 'axios';
@@ -14,6 +15,11 @@ const Page = () => {
     const { colors } = useTheme();
     const [sideBarActive, setSideBarActive] = useState<boolean>(false);
     const [ownerInfo, setOwnerInfo] = useState<OwnerInfoType | undefined>(undefined);
+    const { setLoadingScreen } = useLoadingScreen();
+
+    useEffect(() => {
+        setLoadingScreen(false);
+    }, [])
 
     useEffect(() => {
         const fetchData = async () => {
