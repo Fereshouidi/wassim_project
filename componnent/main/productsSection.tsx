@@ -172,6 +172,7 @@ const ProductsSection = ({
                         skip={skip}
                         setSkip={setSkip}
                         limit={limit}
+                        autoScroll={autoScroll}
                     />
             
         }

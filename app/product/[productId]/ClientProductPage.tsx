@@ -171,7 +171,7 @@ export default function ClientProductPage({ product, ownerInfo }: Props) {
 
           </div>
 
-          <div className="w-full h-[500px]- my-24">
+          <div className="w-full h-[500px]- my-10 sm:my-24">
             {product?._id && <OtherSimilarChose
                 collections={collections}
                 product={product}

@@ -14,6 +14,7 @@ type sliderProps = {
     skip: number,
     setSkip: (value: number) => void,
     limit: number
+    autoScroll: boolean
 }
 
 const SliderForPhones = ({
@@ -23,7 +24,8 @@ const SliderForPhones = ({
     setIsFirstRender,
     skip,
     setSkip,
-    limit
+    limit,
+    autoScroll
 }: sliderProps) => {
 
     const [cardWidth, setCardWidth] = useState<number>(170);
@@ -80,15 +82,17 @@ const SliderForPhones = ({
             return () => {};
         }
 
-        const timer = setInterval(() => {
-            const slider = sliderRef.current;
-            if (!slider) return;
-            slider.scrollLeft += 5;
-        }, 100);
+        if (autoScroll) {
+            const timer = setInterval(() => {
+                const slider = sliderRef.current;
+                if (!slider) return;
+                slider.scrollLeft += 5;
+            }, 100);
 
-        return () => {
-            clearInterval(timer);
-        };
+            return () => {
+                clearInterval(timer);
+            };
+        }
 
     }, [ productLoadingVisible, userScroll]);
 
