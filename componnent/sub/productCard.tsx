@@ -33,8 +33,7 @@ const ProductCard = ({
         }}
         onClick={() => {
             setLoadingScreen(true);
-            router.push(`/product/${product._id}`)}
-        }
+            router.push(`/product/${product._id}`)}}
     >
         
         <div 

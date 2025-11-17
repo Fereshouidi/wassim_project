@@ -85,7 +85,7 @@ const ImagesSwitcher = ({
             images[currentImageIndex] ? <img 
                 src={images[currentImageIndex]} 
                 alt="" 
-                className='w-full h-full bg-blue-500- object-content rounded-sm bg-red-500'
+                className='w-full h-full bg-blue-500- object-content rounded-sm'
                 style={{
                     maxHeight: "90vh",
                 }}
