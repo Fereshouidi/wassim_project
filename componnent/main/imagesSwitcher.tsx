@@ -62,7 +62,7 @@ const ImagesSwitcher = ({
 
       
       <div 
-        className={`bg-red-500- relative h-[500px]- ${screenWidth > 500 ? "w-[600px]- h-[500px]" : "w-[400px]- h-[400px]"}  bg-red-500- rounded-sm flex flex-1 justify-center items-center p-5 sm:px-10- scrollbar-hidden`}
+        className={`bg-red-500- relative min-h-full- min-w-full ${screenWidth > 500 ? "w-[600px]- h-[500px]" : "w-[400px]- h-[400px]"}  bg-red-500- rounded-sm flex flex-1 justify-center items-center p-5 sm:px-10- scrollbar-hidden`}
         style={{
             paddingBottom: 2,
             // minHeight: imageDisplayWidth / 2
@@ -85,7 +85,7 @@ const ImagesSwitcher = ({
             images[currentImageIndex] ? <img 
                 src={images[currentImageIndex]} 
                 alt="" 
-                className='w-full h-full bg-blue-500- object-content rounded-sm'
+                className='w-full h-full bg-blue-500- object-content rounded-sm bg-red-500'
                 style={{
                     maxHeight: "90vh",
                 }}
