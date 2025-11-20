@@ -54,7 +54,7 @@ const ShoppingCart = () => {
     <div
         className='w-6 h-6 sm:w-7 sm:h-7 relative no-sellect cursor-pointer'
         onClick={() => {
-            screenWidth > 1000 && setCartSideIsActive(!cartSideIsActive);
+            setCartSideIsActive(!cartSideIsActive);
         }}
     >
 
