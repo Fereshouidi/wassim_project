@@ -67,7 +67,12 @@ export const english = {
     thanksForComingBack: "Thank you for coming back to SilverWay! 😊",
     somethingWentWrongWhileSignUp: "Something went wrong during sign-up!",
     AccountWithTheseNameAndPasswordNotFound: "No account found with this name and password.",
-    allFildAreRequired: "All the field are required !"
+    allFildAreRequired: "All the field are required !",
+    inCart: "In cart",
+    addToCart: "Add to cart",
+    askAi: "Ask AI",
+    contact: "Contact Us",
+    aboutUs: "About Us" 
 
 } as LanguageStracture;
 
@@ -138,7 +143,13 @@ export const frensh = {
     thanksForComingBack: "Merci de revenir sur SilverWay ! 😊",
     somethingWentWrongWhileSignUp: "Une erreur s’est produite lors de l’inscription !",
     AccountWithTheseNameAndPasswordNotFound: "Aucun compte trouvé avec ce nom et ce mot de passe.",
-    allFildAreRequired: "Tous les champs sont requis !"
+    allFildAreRequired: "Tous les champs sont requis !",
+    inCart: "Dans le panier",
+    addToCart: "Ajouter au panier",
+    askAi: "Demander à l'IA",
+    contact: "Contactez-nous",
+    aboutUs: "À propos de nous"
+
 
 } as LanguageStracture;
 

@@ -137,6 +137,11 @@ export type LanguageStracture = {
     somethingWentWrongWhileSignUp: string
     AccountWithTheseNameAndPasswordNotFound: string
     allFildAreRequired: string
+    addToCart: string
+    inCart: string
+    askAi: string
+    contact: string
+    aboutUs: string
     // fullName: string
     // adress: string,
     // phone: number,
@@ -225,6 +230,26 @@ export type CollectionType = {
     display: "vertical" | "horizontal"
 }
 
+export interface PurchaseType {
+  _id?: string;
+  client?: ProductType | string | null;
+  product?: string | null;
+  evaluation?: string | null;
+  like?: boolean | null;
+  quantity?: number | null;
+  cart?: string | null;
+  status?: "viewed" | "inCart" | "ordered" | 'delivered'
+  createdAt?: Date | null;
+  updatedAt?: Date | null;
+}
+
+export interface CartType {
+  _id?: string;
+  client?: string | null;
+  createdAt?: Date | null;
+  updatedAt?: Date | null;
+}
+
 export type CollectionWithProductsType = {
     _id?: string | null;
     name: language;
@@ -250,6 +275,7 @@ export type ClientFormType = {
 }
 
 export type ClientType = {
+  _id?: string | null;
   fullName?: string;
   email?: string;
   token: number;

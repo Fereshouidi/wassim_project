@@ -3,16 +3,22 @@ import { useScreen } from '@/contexts/screenProvider';
 import { useTheme } from '@/contexts/themeProvider';
 import React, { CSSProperties, useEffect, useRef, useState } from 'react'
 import SkeletonLoading from '../sub/SkeletonLoading';
+import { useClient } from '@/contexts/client';
+import { useRegisterSection } from '@/contexts/registerSec';
 
 type ImagesSwitcherType = {
     className?: string
     style?: CSSProperties
-    images: string[]
+    images: string[],
+    like: boolean
+    setLike: (value: boolean) => void
 }
 const ImagesSwitcher = ({
     className,
     style,
-    images
+    images,
+    like,
+    setLike
 }: ImagesSwitcherType) => { 
 
     const imageDisplayRef = useRef<HTMLImageElement>(null);
@@ -24,6 +30,8 @@ const ImagesSwitcher = ({
     const { colors, activeTheme } = useTheme();
     const [imgWidth, setimgWidth] = useState<number>(100);
     const { screenWidth } = useScreen();
+    const { client } = useClient();
+    const { setRegisterSectionExist } = useRegisterSection();
 
 
     useEffect(() => {
@@ -54,7 +62,7 @@ const ImagesSwitcher = ({
 
   return (
     <div 
-        className={` relative h-full top-0 min-w-[300px] sm:min-w-[600px] min-h-[300px] sm:min-h-[600px] bg-yellow-500- w-[600px]- flex flex-col justify-center items-center bg-yellow-500- pt-10- no-sellect bg-transparent- ${className}`} 
+        className={` relative h-full top-0 min-w-[300px] sm:min-w-[550px] min-h-[300px] sm:min-h-[500px] bg-yellow-500- w-[600px]- flex flex-col justify-center items-center bg-yellow-500- pt-10- no-sellect bg-transparent- ${className}`} 
         style={{ 
             ...style 
         }}
@@ -69,9 +77,17 @@ const ImagesSwitcher = ({
         }}
     >
         <div 
-            className='absolute top-7 right-7 rounded-full p-2 bg-gray-400 w-10 h-10 cursor-pointer'
+            className={`absolute top-7 right-7 rounded-full p-2 ${like ? "bg-red-500" : "bg-gray-400"} w-10 h-10 cursor-pointer`}
             style={{
-                boxShadow: `0 5px 15px ${colors.dark[700]}`
+                boxShadow: `0 5px 15px ${colors.dark[700]}`,
+                // backgroundColor: like ? "" : 
+            }}
+            onClick={() => {
+                if (client) {
+                    setLike(!like)
+                } else {
+                    setRegisterSectionExist(true)
+                }
             }}
         >
             <img 

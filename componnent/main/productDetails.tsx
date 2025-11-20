@@ -2,7 +2,7 @@ import { backEndUrl } from '@/api'
 import { fakeProducts } from '@/constent/data'
 import { useLanguage } from '@/contexts/languageContext'
 import { useTheme } from '@/contexts/themeProvider'
-import { ClientFormType, CollectionType, ProductSpecification, ProductType } from '@/types'
+import { CartType, ClientFormType, CollectionType, ProductSpecification, ProductType, PurchaseType } from '@/types'
 import axios from 'axios'
 import React, { CSSProperties, useEffect, useState } from 'react'
 import SkeletonLoading from '../sub/SkeletonLoading'
@@ -24,6 +24,9 @@ type ProductDetailsType = {
   setCollections: (value: CollectionType[]) => void
   loadingGettingCollection: boolean
   setLoadingGettingCollection: (value: boolean) => void
+  purchase: PurchaseType
+  setPurchase: (value: PurchaseType) => void
+  cart: CartType
 }
 
 const ProductDetails = ({
@@ -38,7 +41,10 @@ const ProductDetails = ({
   collections,
   setCollections,
   loadingGettingCollection, 
-  setLoadingGettingCollection
+  setLoadingGettingCollection,
+  purchase,
+  setPurchase,
+  cart
 }: ProductDetailsType) => {
 
   const { screenWidth } = useScreen();
@@ -144,7 +150,7 @@ const ProductDetails = ({
 
   return (
     <div
-      className={`h-full max-w-[600px] bg-green-500- overflow-y-scroll scrollbar-hidden p-5 ${screenWidth > 1000 ? "overflow-y-scroll scrollbar-hidden" : "overflow-y-scroll scrollbar-hidden"} ${className}`}
+      className={`h-full max-w-[600px]- sm:w-[650px] bg-green-500- overflow-y-scroll scrollbar-hidden p-5 ${screenWidth > 1000 ? "overflow-y-scroll scrollbar-hidden" : "overflow-y-scroll scrollbar-hidden"} ${className}`}
       style={{
         ...style
       }}
@@ -297,6 +303,9 @@ const ProductDetails = ({
             quantity={quantity}
             setQuantity={setQuantity}
             activeSpecifications={activeSpecifications}
+            purchase={purchase}
+            setPurchase={setPurchase}
+            cart={cart}
           />
         </div>
 

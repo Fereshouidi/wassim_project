@@ -264,7 +264,9 @@ const Page = () => {
 
       <div className='h-10'></div>
 
-      <Footer/>
+      <Footer
+        ownerInfo={ownerInfo}
+      />
 
         
       <SideBar

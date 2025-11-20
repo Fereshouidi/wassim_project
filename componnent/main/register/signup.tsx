@@ -74,7 +74,7 @@ const SignUp = ({
                 setStatusBanner(true, null, 
                     <div>
                         <WelcomeIcon
-                            title={activeLanguage.welcomeMr +  signUpForm.fullName.slice(0, signUpForm.fullName.indexOf(' ')) + '🖐️'}
+                            title={activeLanguage.welcomeBackMr + (signUpForm.fullName.includes(' ') ? signUpForm.fullName.slice(0, signUpForm.fullName.indexOf(' ')) : signUpForm.fullName) + '🖐️'}
                             subtitle={activeLanguage.thanksForJoining}
                         />
                     </div>

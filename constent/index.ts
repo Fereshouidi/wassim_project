@@ -1,6 +1,7 @@
 export const headerHeight = 80;
 export const headerHeightForPhones =  headerHeight/1.2
 export const filterBarHeight = 350;
+export const productActionPanelHeight = 70;
 
 export const colorsInsLightMode = {
 

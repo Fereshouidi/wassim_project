@@ -51,7 +51,9 @@ const Page = () => {
                 importedFrom="collectionsPage"
             />
 
-            <Footer/>
+            <Footer
+                ownerInfo={ownerInfo}
+            />
         
             <SideBar
                 isActive={sideBarActive}

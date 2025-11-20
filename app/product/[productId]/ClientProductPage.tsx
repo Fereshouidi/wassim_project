@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ProductType, OwnerInfoType, ProductSpecification, CollectionType } from "@/types";
+import { ProductType, OwnerInfoType, ProductSpecification, CollectionType, PurchaseType, CartType } from "@/types";
 import ImagesSwitcher from "@/componnent/main/imagesSwitcher";
 import ProductDetails from "@/componnent/main/productDetails";
 import OtherSimilarChose from "@/componnent/main/otherSimilarChose";
@@ -13,12 +13,14 @@ import ProductActionPanel from "@/componnent/sub/ProductActionPanel";
 import { useScreen } from "@/contexts/screenProvider";
 import { useTheme } from "@/contexts/themeProvider";
 import { handleShareOnFacebook } from "@/lib";
-import { headerHeight } from "@/constent";
+import { headerHeight, productActionPanelHeight } from "@/constent";
 import { fakeProducts } from "@/constent/data";
 import { useLoadingScreen } from "@/contexts/loadingScreen";
 import { useSocket } from "@/contexts/soket";
 import axios from "axios";
 import { backEndUrl } from "@/api";
+import { useClient } from "@/contexts/client";
+import { useStatusBanner } from "@/contexts/StatusBanner";
 
 interface Props {
   product: ProductType;
@@ -29,18 +31,46 @@ export default function ClientProductPage({ product, ownerInfo }: Props) {
     const { screenWidth, screenHeight } = useScreen();
     const { colors } = useTheme();
     const socket = useSocket();
+    const { client } = useClient()
+    const { setStatusBanner } = useStatusBanner();
 
-    const [quantity, setQuantity] = useState(1);
+    // const [quantity, setQuantity] = useState<number>(1);
+    // const [like, setLike] = useState<boolean>(false);
+
     const [activeSpecifications, setActiveSpecifications] = useState<ProductSpecification>(product.specifications[0]);
     const [loadingGettingCollection, setLoadingGettingCollection] = useState<boolean>(true);
     const [sideBarActive, setSideBarActive] = useState(false);
     const { setLoadingScreen } = useLoadingScreen();
     const [collections, setCollections] = useState<CollectionType[]>([]);
+    const [purchase, setPurchase] = useState<PurchaseType>({});
+    const [cart, setCart] = useState<CartType>({});
+    const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
 
 
     useEffect(() => {
-    setLoadingScreen(false);
+        setLoadingScreen(false);
     }, [])
+
+    useEffect(() => {
+
+        setPurchase({
+            client: client?._id ?? undefined,
+            product: product._id ?? undefined,
+            quantity: 1,
+            like: false
+            
+        })
+        
+    }, [client, product])
+
+
+    useEffect(() => {
+
+        if (!purchase._id) return;
+
+        refreshPurchase();
+        console.log({purchase});
+    }, [purchase])
 
 
     useEffect(() => {
@@ -56,7 +86,7 @@ export default function ClientProductPage({ product, ownerInfo }: Props) {
                     collection.type === "public"
                 );
                 
-                const toSlider = filtered.map((collection: CollectionType) => { return {...collection, display: "horizontal"} })
+                const toSlider = filtered.map((collection: CollectionType) => { return {...collection, display: "vertical"} })
 
                 setCollections(toSlider);            
             })
@@ -68,25 +98,80 @@ export default function ClientProductPage({ product, ownerInfo }: Props) {
         }
         };
 
-        if (product?._id && product._id.length > fakeProducts.length) {
-        fetchCollections();
+        const fetchPurchase = async () => {
+            await axios.get( backEndUrl + "/getPurchaseByClientAndProduct", {
+                params: {
+                    clientId: client?._id,
+                    productId: product._id
+                }
+            })
+            .then(({ data }) => {
+                data.purchase && setPurchase(data.purchase);
+            })
+            .catch(( err ) => {
+                console.log( {err} );
+            })
         }
-    }, [product?._id]);
+
+        const fetchCart = async () => {
+            await axios.get( backEndUrl + "/getCartByClient", {
+                params: {clientId: client?._id}
+            })
+            .then(({ data }) => {
+                setCart(data.cart);
+                console.log({cart: data.cart})
+            })
+            .catch( err => {
+                console.log({err})
+            })
+        }
+
+        if (product?._id && product._id.length > fakeProducts.length) {
+            fetchCollections();
+        }
+
+        if (client?._id && product?._id && product._id.length > fakeProducts.length) {
+            fetchPurchase();
+            fetchCart();
+        }
+        
+        setIsFirstRender(false);
+
+    }, [product?._id, client?._id]);
 
     useEffect(() => {
         if (!socket) return;
 
-        socket.emit("greating", "hi")
-
-        socket.on("greatingBack", (data: any) => {
-            alert(data)
+        socket.on("receive_update_purchase_result", (data: any) => {
+            console.log(data)
         });
 
         // Clean up
         return () => {
-            socket.off("greatingBack");
+            socket.off("receive_update_purchase_result");
         };
     }, [socket]);
+
+
+    const handlePurchaseLike = (like: boolean) => {
+        setPurchase({
+            ...purchase,
+            like
+        })
+    }
+
+    const handlePurchaseQuantity = (quantity: number) => {
+        setPurchase({
+            ...purchase,
+            quantity
+        })
+    }
+
+    const refreshPurchase = () => {
+        if (!socket) return;
+
+        socket.emit("update_purchase", purchase)
+    }
 
  return (
 
@@ -96,7 +181,8 @@ export default function ClientProductPage({ product, ownerInfo }: Props) {
             className="page bg-transparent"
             style={{
                 backgroundColor: colors.light[100],
-                color: colors.dark[150]
+                color: colors.dark[150],
+                paddingBottom: productActionPanelHeight
             }}
             
         >
@@ -140,6 +226,8 @@ export default function ClientProductPage({ product, ownerInfo }: Props) {
             <div className={`flex flex-1 ${screenWidth > 1000 ? 'h-[90vh] flex-row justify-center' : 'flex-col items-center'}`}>
               <ImagesSwitcher
                   images={product?.images || []}
+                  like={purchase.like?? false}
+                  setLike={handlePurchaseLike}
                   className=""
                   style={{
                       // width: screenWidth > 1000 ? "500px" : "90%",
@@ -154,8 +242,8 @@ export default function ClientProductPage({ product, ownerInfo }: Props) {
                       // width: screenWidth > 1000 ? "40%" : "90%",
                       height: screenWidth > 1000 ? "" : "100%",
                   }}
-                  quantity={quantity}
-                  setQuantity={setQuantity}
+                  quantity={purchase.quantity?? 1}
+                  setQuantity={handlePurchaseQuantity}
                   activeSpecifications={activeSpecifications}
                   collections={collections}
                   setCollections={setCollections}
@@ -166,6 +254,9 @@ export default function ClientProductPage({ product, ownerInfo }: Props) {
                       setActiveSpecifications(value);
                     }
                   }}
+                  purchase={purchase}
+                  setPurchase={setPurchase}
+                  cart={cart}
               />
             </div>
 
@@ -181,7 +272,8 @@ export default function ClientProductPage({ product, ownerInfo }: Props) {
           <div 
             className="w-full h-fit fixed bottom-0 left-0 flex justify-center items-center p-2"
             style={{
-              backgroundColor: colors.light[100]
+              backgroundColor: colors.light[100],
+              height: productActionPanelHeight
             }}
           >
             {screenWidth > 1000 && 
@@ -202,14 +294,21 @@ export default function ClientProductPage({ product, ownerInfo }: Props) {
 
             <div className="w-[500px] bg-red-500-">
               <ProductActionPanel
-                quantity={quantity}
-                setQuantity={setQuantity}
+                quantity={purchase.quantity?? 1}
+                setQuantity={handlePurchaseQuantity}
                 activeSpecifications={activeSpecifications}     
+                purchase={purchase}
+                setPurchase={setPurchase}
+                cart={cart}
               />
             </div>
           </div>
 
-          <Footer/>
+          <Footer
+            ownerInfo={ownerInfo}
+          />
+
+          {/* <div style={{ height: productActionPanelHeight}}></div> */}
 
           <SideBar
             isActive={sideBarActive}

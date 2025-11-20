@@ -43,7 +43,7 @@ const SideBar = ({
         <div    
             className={`
                 w-[320px] h-full bg-white absolute top-0 ${isActive ? "left-0" : "left-[-320px]"} 
-                flex flex-col items-center justify-between p-2 overflow-y-scroll scrollbar-hidden transition-[left, right]  duration-300
+                flex flex-col items-center justify-between p-2 overflow-y-scroll scrollbar-hidden transition-[left, right] duration-300
             `}
             style={{
                 boxShadow: '0 0px 10px rgba(13, 13, 13, 0.02)',

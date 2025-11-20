@@ -12,6 +12,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { productId } = await params;
 
+  console.log({productId});
+  
+
   try {
     const { data } = await axios.get<{ product: ProductType }>(`${backEndUrl}/getProductById`, {
       params: { productId },
@@ -37,7 +40,6 @@ export async function generateMetadata({
   }
 }
 
-// الصفحة الرئيسية
 export default async function ProductPage({ 
   params 
 }: { 

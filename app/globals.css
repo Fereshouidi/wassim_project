@@ -151,3 +151,12 @@ a {
   background-color: rgba(199, 13, 13, 0.3);
   z-index: 50;
 }
+
+.x{
+  color: #bbbbbb54;
+}
+
+a {
+  /* background-color: violet; */
+  width: fit-content;
+}

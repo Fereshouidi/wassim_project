@@ -133,7 +133,9 @@ export default function Home() {
         }
       </div>
 
-      <Footer/>
+      <Footer
+        ownerInfo={ownerInfo}
+      />
 
         {/* <div 
           className="h-[5000px]"
