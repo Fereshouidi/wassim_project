@@ -86,7 +86,7 @@ export default function ClientProductPage({ product, ownerInfo }: Props) {
                     collection.type === "public"
                 );
                 
-                const toSlider = filtered.map((collection: CollectionType) => { return {...collection, display: "vertical"} })
+                const toSlider = filtered.map((collection: CollectionType) => { return {...collection, display: "horizental"} })
 
                 setCollections(toSlider);            
             })

@@ -65,7 +65,7 @@ const ProductActionPanel = ({
             />
 
             <button 
-                className='flex flex-1 justify-center items-center w-12 h-12 rounded-sm cursor-pointer'
+                className='flex flex-1 justify-center items-center w-12 h-12 text-sm sm:text-md rounded-sm cursor-pointer'
                 style={{
                     backgroundColor: colors.dark[100],
                     color: colors.light[200]

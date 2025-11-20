@@ -19,7 +19,7 @@ const Footer = ({
 
     return (
         <div 
-            className='w-full min-h-[250px] p-5 sm:p-10 overflow-hidden-'
+            className='w-full min-h-[250px] p-14 sm:p-14 overflow-hidden-'
             style={{
                 backgroundColor: "black",
                 color: colorsInsLightMode.light[200]
