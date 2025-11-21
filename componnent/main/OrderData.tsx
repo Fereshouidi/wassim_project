@@ -5,7 +5,7 @@ import { OwnerInfoType, PurchaseType } from '@/types'
 import React, { useEffect } from 'react'
 
 type Props = {
-    ownerInfo: OwnerInfoType
+    ownerInfo?: OwnerInfoType
     purchases?: PurchaseType[]
 }
 const OrderData = ({ 
