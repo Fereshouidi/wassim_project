@@ -142,6 +142,8 @@ export type LanguageStracture = {
     askAi: string
     contact: string
     aboutUs: string
+    myCart: string
+    cancel: string
     // fullName: string
     // adress: string,
     // phone: number,
@@ -270,7 +272,7 @@ export type ProductSpecification = {
 export type ClientFormType = {
     fullName: string,
     adress: string,
-    phone: number,
+    phone: string,
     note: string
 }
 

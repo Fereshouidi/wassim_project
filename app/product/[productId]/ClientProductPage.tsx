@@ -46,6 +46,10 @@ export default function ClientProductPage({ product, ownerInfo }: Props) {
     const [cart, setCart] = useState<CartType>({});
     const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
 
+    // useEffect(() => {
+    //     console.log({product});
+        
+    // }, [product])
 
     useEffect(() => {
         setLoadingScreen(false);

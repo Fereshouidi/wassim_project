@@ -67,12 +67,12 @@ const ProductDetails = ({
   // const [loadingGettingCollection, setLoadingGettingCollection] = useState<boolean>(true);
 
 
-  const [clientForm, setClientForm] = useState<ClientFormType>({
-    fullName: '',
-    phone: NaN,
-    adress: '',
-    note: ''
-  });
+  // const [clientForm, setClientForm] = useState<ClientFormType>({
+  //   fullName: '',
+  //   phone: NaN,
+  //   adress: '',
+  //   note: ''
+  // });
 
   useEffect(() => {
     if (
@@ -150,7 +150,7 @@ const ProductDetails = ({
 
   return (
     <div
-      className={`h-full max-w-[600px]- sm:w-[650px] bg-green-500- overflow-y-scroll scrollbar-hidden p-5 ${screenWidth > 1000 ? "overflow-y-scroll scrollbar-hidden" : "overflow-y-scroll scrollbar-hidden"} ${className}`}
+      className={` h-full max-w-[600px]- sm:w-[650px] bg-green-500- overflow-y-scroll scrollbar-hidden p-5 ${screenWidth > 1000 ? "overflow-y-scroll scrollbar-hidden" : "overflow-y-scroll scrollbar-hidden"} ${className}`}
       style={{
         ...style
       }}

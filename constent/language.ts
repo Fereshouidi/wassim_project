@@ -72,7 +72,9 @@ export const english = {
     addToCart: "Add to cart",
     askAi: "Ask AI",
     contact: "Contact Us",
-    aboutUs: "About Us" 
+    aboutUs: "About Us",
+    myCart: "My Cart",
+    cancel: "Cancel"
 
 } as LanguageStracture;
 
@@ -148,8 +150,9 @@ export const frensh = {
     addToCart: "Ajouter au panier",
     askAi: "Demander à l'IA",
     contact: "Contactez-nous",
-    aboutUs: "À propos de nous"
-
+    aboutUs: "À propos de nous",
+    myCart: "Mon Panier",
+    cancel: "Annuler"
 
 } as LanguageStracture;
 

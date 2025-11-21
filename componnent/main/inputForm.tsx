@@ -15,6 +15,15 @@ const InputForm = ({
     const { activeLanguage } = useLanguage();
     const { colors } = useTheme();
 
+    const handleInputPhone = (phone: string) => {
+        if (
+            phone.length > 8
+            || isNaN(Number(phone))
+        ) return;
+
+        setClientForm({...clientForm, phone: phone})
+    }
+
   return (
     <div>
 
@@ -29,6 +38,7 @@ const InputForm = ({
 
                 <input 
                     type="text" 
+                    value={clientForm.fullName}
                     placeholder={activeLanguage.sideMatter.fullName}
                     className='flex flex-1 rounded-sm h-12 p-2 text-[14px]'
                     style={{
@@ -38,6 +48,7 @@ const InputForm = ({
                 />
                 <input 
                     type="text" 
+                    value={clientForm.adress}
                     placeholder={activeLanguage.sideMatter.adress}
                     className='flex flex-1 rounded-sm h-12 p-2 text-[14px]'
                     style={{
@@ -46,16 +57,18 @@ const InputForm = ({
                     onChange={(e) => setClientForm({...clientForm, adress: e.target.value})}
                 />
                 <input 
-                    type="text" 
+                    type="tel" 
+                    value={clientForm.phone}
                     placeholder={activeLanguage.sideMatter.phone}
                     className='flex flex-1 rounded-sm h-12 p-2 text-[14px]'
                     style={{
                         border: `1px solid ${colors.light[300]}`
                     }}
-                    onChange={(e) => setClientForm({...clientForm, phone: Number(e.target.value)})}
+                    onChange={(e) => handleInputPhone(e.target.value)}
                 />
                 <input 
                     type="text" 
+                    value={clientForm.note}
                     placeholder={activeLanguage.sideMatter.note}
                     className='flex flex-1 rounded-sm h-12 p-2 text-[14px]'
                     style={{

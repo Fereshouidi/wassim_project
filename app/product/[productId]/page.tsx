@@ -51,6 +51,8 @@ export default async function ProductPage({
     const { data } = await axios.get<{ product: ProductType }>(`${backEndUrl}/getProductById`, {
       params: { productId },
     });
+    console.log({product: data.product});
+    
     const product = data.product;
 
     const ownerRes = await axios.get<{ ownerInfo: OwnerInfoType }>(`${backEndUrl}/getOwnerInfo`);
