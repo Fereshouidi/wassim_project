@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 
-export const socketFromVercel = "https://wassim-project-back-end.onrender.com";
+export const socketFromVercel = "https://wassim-project-back-end.vercel.app";
 export const socketFromCodeIp = "http://192.168.10.148:3001"
 export const socketFromLocalHost = "http://localhost:3001"
 
