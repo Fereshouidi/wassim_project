@@ -9,6 +9,7 @@ import ProductCard from '@/componnent/sub/productCard';
 import { filterBarHeight } from '@/constent';
 import { useLanguage } from '@/contexts/languageContext';
 import { useLoadingScreen } from '@/contexts/loadingScreen';
+import { useOwner } from '@/contexts/ownerInfo';
 import { useScreen } from '@/contexts/screenProvider';
 import { useTheme } from '@/contexts/themeProvider';
 import { CollectionType, FiltrationType, OwnerInfoType, ProductSpecification, ProductType, PubType } from '@/types';
@@ -26,7 +27,8 @@ const Page = () => {
   const {activeLanguage } = useLanguage();
   const [pub, setPub] = useState<PubType | undefined>(undefined);
   const { screenWidth } = useScreen();
-  const [ownerInfo, setOwnerInfo] = useState<OwnerInfoType | undefined>(undefined);
+  // const [ownerInfo, setOwnerInfo] = useState<OwnerInfoType | undefined>(undefined);
+  const { ownerInfo, setOwnerInfo } = useOwner();
 
   const [mostProductExpensive, setMostProductExpensive] = useState<ProductType | undefined>(undefined);
   const [availableColors, setAvailableColors] = useState<string[]>([]);
@@ -57,7 +59,7 @@ const Page = () => {
 
     if (!searchText || !filtration) return;
     
-    const fetchProductBySearch = async () => {
+    const fetchProductsBySearch = async () => {
       setLoading(true);
       await axios.post( backEndUrl + "/getProductsBySearch", {
         searchText,
@@ -68,6 +70,9 @@ const Page = () => {
       .then(({ data }) => {
 
         // if (firstRender && filter) return setFirstRender(false);
+
+        console.log(data.availableColors);
+        
 
         setProductsFound(data.products);
         setProductsCount(data.productsCount);
@@ -84,7 +89,7 @@ const Page = () => {
       })
     }
 
-    fetchProductBySearch();
+    fetchProductsBySearch();
     // localStorage.setItem('searchFilter', JSON.stringify(filtration));
     // localStorage.setItem('searchText', searchText);
     
@@ -168,20 +173,22 @@ const Page = () => {
 
   }, [mostProductExpensive, allCollections])
 
-  useEffect(() => {console.log("Component rendered");
-    const fetchData = async () => {
-      await axios.get(backEndUrl + "/getOwnerInfo")
-      .then(({ data }) => setOwnerInfo(data.ownerInfo))
-      .catch((err) => {
-        throw err
-      })
-    }
-    fetchData();
-  }, [])
+  // useEffect(() => {console.log("Component rendered");
+  //   const fetchData = async () => {
+  //     await axios.get(backEndUrl + "/getOwnerInfo")
+  //     .then(({ data }) => setOwnerInfo(data.ownerInfo))
+  //     .catch((err) => {
+  //       throw err
+  //     })
+  //   }
+  //   fetchData();
+  // }, [])
 
   useEffect(() => {
     setLoadingScreen(false);
   }, [])
+
+  if (!ownerInfo) return <div>Loading...</div>;
 
   return (
     <div 

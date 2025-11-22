@@ -12,6 +12,7 @@ import { StatusBannerProvider } from "@/contexts/StatusBanner";
 import { LoadingScreenProvider } from "@/contexts/loadingScreen";
 import { ClientProvider } from "@/contexts/client";
 import { SocketProvider } from "@/contexts/soket";
+import { OwnerProvider } from "@/contexts/ownerInfo";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -56,7 +57,9 @@ export default function RootLayout({
                     <LoadingScreenProvider>
                       <ClientProvider>
                         <SocketProvider>
-                          <LayoutContent>{children}</LayoutContent>
+                          <OwnerProvider>
+                            <LayoutContent>{children}</LayoutContent>
+                          </OwnerProvider>
                         </SocketProvider>
                       </ClientProvider>
                     </LoadingScreenProvider>

@@ -56,11 +56,11 @@ export default async function ProductPage({
     const product = data.product;
 
     const ownerRes = await axios.get<{ ownerInfo: OwnerInfoType }>(`${backEndUrl}/getOwnerInfo`);
-    const ownerInfo = ownerRes.data.ownerInfo;
+    // const ownerInfo = ownerRes.data.ownerInfo;
 
     if (!product) return <div>Product not found</div>;
 
-    return <ClientProductPage product={product} ownerInfo={ownerInfo} />;
+    return <ClientProductPage product={product}/>;
   } catch (err) {
     console.error(err);
     return <div>Failed to load product.</div>;

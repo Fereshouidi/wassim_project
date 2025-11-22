@@ -71,6 +71,10 @@ const SearchBar = ({
       
     const [filtration, setFiltration] = useState<FiltrationType | undefined>(undefined);
 
+    useEffect(() => {
+        console.log({filtration});
+        
+    }, [filtration])
 
   useEffect(() => {
 
@@ -91,6 +95,8 @@ const SearchBar = ({
         filtration
       })
       .then(({ data }) => {
+        console.log(data.availableColors);
+        
         setProductsFound(data.products);
         setProductsCount(data.productsCount);
         setAvailableColors(data.availableColors);
@@ -119,6 +125,8 @@ const SearchBar = ({
 
       await axios.get(backEndUrl + '/getMostProductExpensive')
       .then(({ data }) => {
+        console.log({ data });
+        
         setMostProductExpensive(data.product)
         // setFiltration({
         //   ...filtration, 
@@ -159,7 +167,7 @@ const SearchBar = ({
         sortDirection: "desc"
     
     })
-  }, [mostProductExpensive, allCollections])
+  }, [mostProductExpensive, allCollections, input])
     
     const handleScroll = () => {
 

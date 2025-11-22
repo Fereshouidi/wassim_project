@@ -21,13 +21,14 @@ import axios from "axios";
 import { backEndUrl } from "@/api";
 import { useClient } from "@/contexts/client";
 import { useStatusBanner } from "@/contexts/StatusBanner";
+import { useOwner } from "@/contexts/ownerInfo";
 
 interface Props {
   product: ProductType;
-  ownerInfo: OwnerInfoType;
+  // ownerInfo: OwnerInfoType;
 }
 
-export default function ClientProductPage({ product, ownerInfo }: Props) {
+export default function ClientProductPage({ product }: Props) {
     const { screenWidth, screenHeight } = useScreen();
     const { colors } = useTheme();
     const socket = useSocket();
@@ -45,6 +46,7 @@ export default function ClientProductPage({ product, ownerInfo }: Props) {
     const [purchase, setPurchase] = useState<PurchaseType>({});
     const [cart, setCart] = useState<CartType>({});
     const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
+    const { ownerInfo } = useOwner();
 
     // useEffect(() => {
     //     console.log({product});
@@ -176,6 +178,9 @@ export default function ClientProductPage({ product, ownerInfo }: Props) {
 
         socket.emit("update_purchase", purchase)
     }
+
+
+    if (!ownerInfo) return <div>Loading...</div>
 
  return (
 

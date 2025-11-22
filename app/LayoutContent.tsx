@@ -10,6 +10,7 @@ import { number } from "framer-motion";
 import axios from "axios";
 import { backEndUrl } from "@/api";
 import { useClient } from "@/contexts/client";
+import { useOwner } from "@/contexts/ownerInfo";
 
 
 export default function LayoutContent({
@@ -23,6 +24,7 @@ export default function LayoutContent({
     const { loadingScreen } = useLoadingScreen();
     const [clientToken, setClientToken] = useState<string | null>(null);
     const { setClient } = useClient();
+    const { setOwnerInfo } = useOwner();
 
 
     useEffect(() => {
@@ -36,9 +38,19 @@ export default function LayoutContent({
         setClientToken(token);
     }, []);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios.get(backEndUrl + "/getOwnerInfo")
+      .then(({ data }) => setOwnerInfo(data.ownerInfo))
+      .catch((err) => {
+        throw err
+      })
+    }
+    fetchData();
+  }, [])
  
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchClient = async () => {
             await axios.get( backEndUrl + "/getClientByToken", {
                 params: { token: clientToken}
             })
@@ -49,7 +61,17 @@ export default function LayoutContent({
             })
             .catch((err) => {throw err})
         }
-        clientToken && fetchData();
+
+        const fetchOwner = async () => {
+          await axios.get(backEndUrl + "/getOwnerInfo")
+          .then(({ data }) => setOwnerInfo(data.ownerInfo))
+          .catch((err) => {
+            throw err
+          })
+        }
+        
+        fetchOwner();
+        clientToken && fetchClient();
     }, [clientToken])
 
   return (

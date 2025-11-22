@@ -8,6 +8,7 @@ import SideBar from "@/componnent/main/sideBar";
 import AnnouncementBar from "@/componnent/sub/AnnouncementBar";
 import SkeletonLoading from "@/componnent/sub/SkeletonLoading";
 import { useLoadingScreen } from "@/contexts/loadingScreen";
+import { useOwner } from "@/contexts/ownerInfo";
 import { useScreen } from "@/contexts/screenProvider";
 import { useTheme } from "@/contexts/themeProvider";
 import { OwnerInfoType, PubType } from "@/types";
@@ -22,7 +23,8 @@ export default function Home() {
   // const [pub, setPub] = useState<PubType | undefined>(undefined);
   const { screenWidth } = useScreen();
   const { setLoadingScreen } = useLoadingScreen();
-  const [ownerInfo, setOwnerInfo] = useState<OwnerInfoType | undefined>(undefined);
+  // const [ownerInfo, setOwnerInfo] = useState<OwnerInfoType | undefined>(undefined);
+  const { ownerInfo, setOwnerInfo } = useOwner();
   const [pub, setPub] = useState<PubType | undefined>(undefined);
 
 
@@ -38,16 +40,16 @@ export default function Home() {
     fetchData();
   }, [])
 
-  useEffect(() => {
-    const fetchData = async () => {
-      await axios.get(backEndUrl + "/getOwnerInfo")
-      .then(({ data }) => setOwnerInfo(data.ownerInfo))
-      .catch((err) => {
-        throw err
-      })
-    }
-    fetchData();
-  }, [])
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     await axios.get(backEndUrl + "/getOwnerInfo")
+  //     .then(({ data }) => setOwnerInfo(data.ownerInfo))
+  //     .catch((err) => {
+  //       throw err
+  //     })
+  //   }
+  //   fetchData();
+  // }, [])
 
   useEffect(() => {
     setLoadingScreen(false);
@@ -67,6 +69,8 @@ export default function Home() {
   // }, [])
 
   // if (!ownerInfo) return <div>loading</div>
+
+  if (!ownerInfo) return <div>Loading...</div>
 
   return (
     <div 
