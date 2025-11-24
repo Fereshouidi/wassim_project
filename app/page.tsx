@@ -6,6 +6,7 @@ import Header from "@/componnent/main/header";
 import HomeCollections from "@/componnent/main/homeCollections";
 import SideBar from "@/componnent/main/sideBar";
 import AnnouncementBar from "@/componnent/sub/AnnouncementBar";
+import LoadingScreen from "@/componnent/sub/loading/loadingScreen";
 import SkeletonLoading from "@/componnent/sub/SkeletonLoading";
 import { useLoadingScreen } from "@/contexts/loadingScreen";
 import { useOwner } from "@/contexts/ownerInfo";
@@ -70,7 +71,7 @@ export default function Home() {
 
   // if (!ownerInfo) return <div>loading</div>
 
-  if (!ownerInfo) return <div>Loading...</div>
+  if (!ownerInfo) return <LoadingScreen/>
 
   return (
     <div 
@@ -137,9 +138,7 @@ export default function Home() {
         }
       </div>
 
-      <Footer
-        ownerInfo={ownerInfo}
-      />
+      <Footer />
 
         {/* <div 
           className="h-[5000px]"

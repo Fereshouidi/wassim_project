@@ -1,21 +1,23 @@
 "use client";
 import { colorsInsLightMode } from '@/constent';
 import { useLanguage } from '@/contexts/languageContext';
+import { useOwner } from '@/contexts/ownerInfo';
 import { useScreen } from '@/contexts/screenProvider';
 import { useTheme } from '@/contexts/themeProvider';
 import { OwnerInfoType } from '@/types';
 import React from 'react';
 
 type PropsInfo = {
-    ownerInfo: OwnerInfoType | undefined
+    // ownerInfo: OwnerInfoType | undefined
 }
 const Footer = ({
-    ownerInfo
+    // ownerInfo
 }: PropsInfo) => {
 
     const { colors } = useTheme();
     const { activeLanguage } = useLanguage();
     const { screenWidth } = useScreen();
+    const { ownerInfo } = useOwner();
 
     return (
         <div 

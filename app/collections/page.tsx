@@ -4,34 +4,38 @@ import CollectionsSections from '@/componnent/main/collectionsSection';
 import Footer from '@/componnent/main/footer';
 import Header from '@/componnent/main/header';
 import SideBar from '@/componnent/main/sideBar';
+import LoadingScreen from '@/componnent/sub/loading/loadingScreen';
 import { useLoadingScreen } from '@/contexts/loadingScreen';
+import { useOwner } from '@/contexts/ownerInfo';
 import { useTheme } from '@/contexts/themeProvider'
 import { OwnerInfoType } from '@/types';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 
 const Page = () => {
 
     const { colors } = useTheme();
     const [sideBarActive, setSideBarActive] = useState<boolean>(false);
-    const [ownerInfo, setOwnerInfo] = useState<OwnerInfoType | undefined>(undefined);
+    const { ownerInfo, setOwnerInfo } = useOwner();
     const { setLoadingScreen } = useLoadingScreen();
 
     useEffect(() => {
         setLoadingScreen(false);
     }, [])
 
-    useEffect(() => {
-        const fetchData = async () => {
-        await axios.get(backEndUrl + "/getOwnerInfo")
-        .then(({ data }) => setOwnerInfo(data.ownerInfo))
-        .catch((err) => {
-            throw err
-        })
-        }
-        fetchData();
-    }, [])
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //     await axios.get(backEndUrl + "/getOwnerInfo")
+    //     .then(({ data }) => setOwnerInfo(data.ownerInfo))
+    //     .catch((err) => {
+    //         throw err
+    //     })
+    //     }
+    //     fetchData();
+    // }, [])
 
+    if (!ownerInfo) return <LoadingScreen/>
+    
     return (
         <div
             className="page min-h-screen"
@@ -51,9 +55,7 @@ const Page = () => {
                 importedFrom="collectionsPage"
             />
 
-            <Footer
-                ownerInfo={ownerInfo}
-            />
+            <Footer/>
         
             <SideBar
                 isActive={sideBarActive}

@@ -79,10 +79,13 @@ const ProductDetails = ({
         product?.specifications &&
         product?.specifications?.length > 1
     ) return;
-    setSelectedColor(product.specifications[0]?.color || null);
-    setSelectedSize(product.specifications[0]?.size || null);
-    setSelectedType(product.specifications[0]?.type || null);
-  }, [product])
+    // @ts-ignore
+    setSelectedColor(purchase.specification?.color || product.specifications[0]?.color || null);
+    // @ts-ignore
+    setSelectedSize(purchase.specification?.size || product.specifications[0]?.size || null);
+    // @ts-ignore
+    setSelectedType(purchase.specification?.type || product.specifications[0]?.type || null);
+  }, [product, purchase])
 
   useEffect(() => {
     if (!product?.specifications) return;

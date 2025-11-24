@@ -9,6 +9,7 @@ import PurchaseItem from '../sub/purchaseItem'
 import InputForm from './inputForm'
 import { useClient } from '@/contexts/client'
 import OrderData from './OrderData'
+import { span } from 'framer-motion/m'
 
 type Props = {
     isActive: boolean
@@ -33,6 +34,7 @@ const CartSide = ({
         phone: "",
         note: ""
     });
+    const [confirmBTNWorks, setConfirmBTNWorks] = useState<boolean>(false);
 
     useEffect(() => {
         setClientForm({
@@ -45,6 +47,14 @@ const CartSide = ({
 
     useEffect(() => {
         console.log("clientForm :", clientForm);
+    }, [clientForm])
+
+    useEffect(() => {
+        if (clientForm.fullName && clientForm.adress && clientForm.phone && clientForm.phone.length == 8) {
+            setConfirmBTNWorks(true);
+        } else {
+            setConfirmBTNWorks(false);
+        }
     }, [clientForm])
 
   return (
@@ -87,30 +97,60 @@ const CartSide = ({
                 <img 
                     src={`/icons/close-${activeTheme === "dark" ? "white" : "black"}.png`} 
                     alt="" 
-                    className='w-5 h-5 absolute right-5 top-5- cursor-pointer'
+                    className='w-4 h-4 absolute right-5 top-5- cursor-pointer'
                     onClick={() => setIsActive(false)}
                 />
             </div>
 
-            <div className='w-full flex flex-col items-center gap-4 mb-10'>
-                {purchases.map((purchase) => (
-                    <PurchaseItem
-                        key={purchase._id}
-                        purchase={purchase}
-                        setPurchases={setPurchases}
+            {
+                purchases.length === 0 ? 
+
+                <div 
+                    className='w-full h-full flex justify-center items-center text-md'
+                    style={{
+                        color: colors.dark[500]
+                    }}
+                >
+                    <p> your cart is empty </p>
+                    <p>go fil it from 
+                        <a href="/" className='mx-2 text-[15px]- underline' style={{ color: colors.dark[100] }}>here</a>
+                    </p>
+                </div>
+
+                :
+
+                <div>
+
+                    <div className='w-full flex flex-col items-center gap-4 mb-10'>
+                        {purchases.map((purchase) => (
+                            <PurchaseItem
+                                key={purchase._id}
+                                purchase={purchase}
+                                setPurchases={setPurchases}
+                            />
+                        ))}
+                    </div>
+
+                    <OrderData
+                        // ownerInfo={}
+                        purchases={purchases}
                     />
-                ))}
-            </div>
 
-            <OrderData
-                // ownerInfo={}
-                purchases={purchases}
-            />
+                    <InputForm
+                        clientForm={clientForm}
+                        setClientForm={setClientForm}
+                    />
 
-            <InputForm
-                clientForm={clientForm}
-                setClientForm={setClientForm}
-            />
+                    <button
+                        className={`w-full py-3 mt-5 text-white font-medium text-lg rounded-md ${confirmBTNWorks ? "cursor-pointer" : "cursor-not-allowed"}`}
+                        style={{
+                            backgroundColor: confirmBTNWorks ? colors.dark[100] : colors.dark[500]
+                        }}
+                    >
+                        {activeLanguage.confirmOrder}
+                    </button>
+                </div>
+            }
 
         </div>
     </div>

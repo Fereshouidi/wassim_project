@@ -6,6 +6,8 @@ import { useTheme } from '@/contexts/themeProvider'
 import { useScreen } from '@/contexts/screenProvider'
 import { useClient } from '@/contexts/client'
 import { useRegisterSection } from '@/contexts/registerSec'
+import { useLoadingScreen } from '@/contexts/loadingScreen'
+import { useSocket } from '@/contexts/soket'
 
 type Props = {
     quantity: number,
@@ -25,15 +27,20 @@ const ProductActionPanel = ({
     cart
 }: Props) => {
 
+    const socket = useSocket();
     const { screenWidth } = useScreen();
     const { activeLanguage } = useLanguage();
     const { colors, activeTheme } = useTheme();
     const { client } = useClient();
     const { setRegisterSectionExist } = useRegisterSection();
+    const { loadingScreen, setLoadingScreen } = useLoadingScreen();
 
     const handlePuttingInCart = () => {
 
         if (!client) return setRegisterSectionExist(true);
+        if (!socket) return;
+
+        setLoadingScreen(true);
 
         if (purchase.cart) {
             setPurchase({
@@ -41,12 +48,22 @@ const ProductActionPanel = ({
                 cart: null,
                 status: 'viewed'
             })
+            socket?.emit("update_purchase", {
+                ...purchase, 
+                cart: null,
+                status: 'viewed'
+            });
         } else {
             setPurchase({
                 ...purchase, 
                 cart: cart._id,
                 status: 'inCart'
             })
+            socket?.emit("update_purchase", {
+                ...purchase, 
+                cart: cart._id,
+                status: 'inCart'
+            });
         }
 
 

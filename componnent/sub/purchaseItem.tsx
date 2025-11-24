@@ -46,7 +46,7 @@ const PurchaseItem = ({
                     }</p>
                     <p className='font-bold'>{
                         // @ts-ignore
-                        purchase.product?.price + " T.D"
+                        purchase.specification?.price + " T.D"
                     }</p>
                 </div>
 

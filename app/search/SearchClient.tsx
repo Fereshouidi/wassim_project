@@ -4,6 +4,7 @@ import FilterBar from '@/componnent/main/filterBar';
 import Footer from '@/componnent/main/footer';
 import Header from '@/componnent/main/header';
 import SideBar from '@/componnent/main/sideBar';
+import LoadingScreen from '@/componnent/sub/loading/loadingScreen';
 import MoreBotton from '@/componnent/sub/moreBotton';
 import ProductCard from '@/componnent/sub/productCard';
 import { filterBarHeight } from '@/constent';
@@ -188,7 +189,7 @@ const Page = () => {
     setLoadingScreen(false);
   }, [])
 
-  if (!ownerInfo) return <div>Loading...</div>;
+  if (!ownerInfo) return <LoadingScreen/>
 
   return (
     <div 
@@ -271,9 +272,7 @@ const Page = () => {
 
       <div className='h-10'></div>
 
-      <Footer
-        ownerInfo={ownerInfo}
-      />
+      <Footer/>
 
         
       <SideBar

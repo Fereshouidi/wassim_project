@@ -22,6 +22,7 @@ import { backEndUrl } from "@/api";
 import { useClient } from "@/contexts/client";
 import { useStatusBanner } from "@/contexts/StatusBanner";
 import { useOwner } from "@/contexts/ownerInfo";
+import LoadingScreen from "@/componnent/sub/loading/loadingScreen";
 
 interface Props {
   product: ProductType;
@@ -62,6 +63,7 @@ export default function ClientProductPage({ product }: Props) {
         setPurchase({
             client: client?._id ?? undefined,
             product: product._id ?? undefined,
+            specification: product.specifications[0] ?? null,
             quantity: 1,
             like: false
             
@@ -70,13 +72,13 @@ export default function ClientProductPage({ product }: Props) {
     }, [client, product])
 
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        if (!purchase._id) return;
+    //     if (!purchase._id) return;
 
-        refreshPurchase();
-        console.log({purchase});
-    }, [purchase])
+    //     refreshPurchase();
+    //     console.log({purchase});
+    // }, [purchase])
 
 
     useEffect(() => {
@@ -113,6 +115,7 @@ export default function ClientProductPage({ product }: Props) {
             })
             .then(({ data }) => {
                 data.purchase && setPurchase(data.purchase);
+                setActiveSpecifications(data.purchase?.specification as ProductSpecification);
             })
             .catch(( err ) => {
                 console.log( {err} );
@@ -150,6 +153,7 @@ export default function ClientProductPage({ product }: Props) {
 
         socket.on("receive_update_purchase_result", (data: any) => {
             console.log(data)
+            setLoadingScreen(false);
         });
 
         // Clean up
@@ -158,12 +162,23 @@ export default function ClientProductPage({ product }: Props) {
         };
     }, [socket]);
 
+    useEffect(() => {
+        setPurchase({
+          ...purchase,
+          specification: activeSpecifications
+        })
+    }, [activeSpecifications])
 
     const handlePurchaseLike = (like: boolean) => {
         setPurchase({
             ...purchase,
             like
         })
+        socket.emit("update_purchase", {
+            ...purchase,
+            like
+        });
+        setLoadingScreen(true);
     }
 
     const handlePurchaseQuantity = (quantity: number) => {
@@ -173,14 +188,15 @@ export default function ClientProductPage({ product }: Props) {
         })
     }
 
-    const refreshPurchase = () => {
-        if (!socket) return;
+    // const refreshPurchase = () => {
+    //     if (!socket) return;
 
-        socket.emit("update_purchase", purchase)
-    }
+    //     socket.emit("update_purchase", purchase);
+    //     setLoadingScreen(true);
+    // }
 
 
-    if (!ownerInfo) return <div>Loading...</div>
+    if (!ownerInfo) return <LoadingScreen/>
 
  return (
 
@@ -313,9 +329,7 @@ export default function ClientProductPage({ product }: Props) {
             </div>
           </div>
 
-          <Footer
-            ownerInfo={ownerInfo}
-          />
+          <Footer/>
 
           {/* <div style={{ height: productActionPanelHeight}}></div> */}
 

@@ -144,6 +144,7 @@ export type LanguageStracture = {
     aboutUs: string
     myCart: string
     cancel: string
+    confirmOrder: string
     // fullName: string
     // adress: string,
     // phone: number,
@@ -199,6 +200,7 @@ export interface OwnerInfoType {
   }[];
   homeCollections?: CollectionType[];
   topCollections?: CollectionType[];
+  shippingCost?: number;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -237,6 +239,7 @@ export interface PurchaseType {
   client?: ProductType | string | null;
   product?: string | null;
   evaluation?: string | null;
+  specification?: ProductSpecification | string | null;
   like?: boolean | null;
   quantity?: number | null;
   cart?: string | null;
@@ -262,6 +265,7 @@ export type CollectionWithProductsType = {
 }
 
 export type ProductSpecification = {
+  _id?: string | null;
   color?: string | null;
   size?: string | null;
   type?: string | null;

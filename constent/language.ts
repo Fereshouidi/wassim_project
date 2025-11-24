@@ -74,7 +74,8 @@ export const english = {
     contact: "Contact Us",
     aboutUs: "About Us",
     myCart: "My Cart",
-    cancel: "Cancel"
+    cancel: "Cancel",
+    confirmOrder: "Confirm Order"
 
 } as LanguageStracture;
 
@@ -152,7 +153,8 @@ export const frensh = {
     contact: "Contactez-nous",
     aboutUs: "À propos de nous",
     myCart: "Mon Panier",
-    cancel: "Annuler"
+    cancel: "Annuler",
+    confirmOrder: "Confirmer la commande"
 
 } as LanguageStracture;
 
