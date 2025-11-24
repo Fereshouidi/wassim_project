@@ -25,7 +25,14 @@ const InputForm = ({
     }
 
   return (
-    <div>
+    <div
+    // className='border-t-[0.5px]'
+        style={{
+            // borderTop: `0.5px solid ${colors.light[300]}`,
+            borderTop: `0.5px solid ${colors.light[300]}`
+        }}
+        
+    >
 
         <h4 
             className='font-bold text-md mx-2 my-4'

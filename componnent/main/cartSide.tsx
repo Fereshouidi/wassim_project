@@ -121,7 +121,7 @@ const CartSide = ({
 
                 <div>
 
-                    <div className='w-full flex flex-col items-center gap-4 mb-10'>
+                    <div className='w-full flex flex-col items-center gap-4 mb-2'>
                         {purchases.map((purchase) => (
                             <PurchaseItem
                                 key={purchase._id}
