@@ -68,7 +68,7 @@ const CartSide = ({
     >
 
         <div 
-            className={`w-full sm:w-[400px] h-full absolute ${isActive ? "right-0" : "right-[-400px]"} top-0 duration-300 transition-[left, right] overflow-y-scroll scrollbar-hidden cursor-auto flex flex-col items-center p-5`}
+            className={`w-[90vw] sm:w-[400px] h-full absolute ${isActive ? "right-0" : "right-[-400px]"} top-0 duration-300 transition-[left, right] overflow-y-scroll scrollbar-hidden cursor-auto flex flex-col items-center p-5`}
             style={{
                 backgroundColor: colors.light[100],
             }}
