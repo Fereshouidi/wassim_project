@@ -142,7 +142,7 @@ const CartSide = ({
                     />
 
                     <button
-                        className={`w-full py-3 mt-5 text-white font-medium text-lg rounded-md ${confirmBTNWorks ? "cursor-pointer" : "cursor-not-allowed"}`}
+                        className={`w-full py-3 mt-5 text-white font-medium text-md rounded-md ${confirmBTNWorks ? "cursor-pointer" : "cursor-not-allowed"}`}
                         style={{
                             backgroundColor: confirmBTNWorks ? colors.dark[100] : colors.dark[500]
                         }}
