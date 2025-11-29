@@ -4,9 +4,10 @@ export const socketFromVercel = "https://wassim-project-back-end-three.vercel.ap
 export const socketFromCodeIp = "http://192.168.1.104:3001"
 export const socketFromLocalHost = "http://localhost:3001"
 
-const socket = io(socketFromCodeIp, {
+const socket = io(socketFromVercel, {
   autoConnect: true,
   // transports: ["websocket"]
 });
 
 export default socket;
+
