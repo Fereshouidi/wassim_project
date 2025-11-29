@@ -1,8 +1,11 @@
 import { useLanguage } from '@/contexts/languageContext'
+import { useLoadingScreen } from '@/contexts/loadingScreen'
+import { useSocket } from '@/contexts/soket'
 import { useTheme } from '@/contexts/themeProvider'
 import { PurchaseType } from '@/types'
 import { a } from 'framer-motion/client'
-import React from 'react'
+import { useRouter } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
 
 type Props = {
     purchase: PurchaseType
@@ -10,28 +13,61 @@ type Props = {
 }
 const PurchaseItem = ({ 
     purchase, 
-    setPurchases 
+    setPurchases
 }: Props) => {
 
     const { activeLanguage } = useLanguage();
     const { colors, activeTheme } = useTheme();
+    const [purchase_, setPurchase_] = useState<PurchaseType | null>(null);
+    const socket = useSocket();
+    const { loadingScreen, setLoadingScreen } = useLoadingScreen();
+    const router = useRouter();
+
+    useEffect(() => {
+        setPurchase_(purchase);
+    }, [purchase])
+
+    // useEffect(() => {
+    //     if (!purchase_) return;
+    //     socket.emit("update_purchase", {purchase: purchase_});
+    //     // setPurchases((prev: PurchaseType[]) => [...prev, purchase_] as unknown as PurchaseType[])
+    //     // setLoadingScreen(true);
+    // }, [purchase_])
+
+    const updatePurchase = (updatedData: PurchaseType) => {
+        if (!updatedData) return;
+        socket.emit("update_purchase", updatedData);
+
+        if (!updatedData.cart) {
+            // @ts-ignore
+            setPurchases((prev: PurchaseType[]) => { return [...prev.filter(purchase => purchase._id != updatedData._id)]})
+        }
+        setLoadingScreen(true);
+    }
+
+    if (!purchase_ || !purchase) return;
     
     return (
         <div 
-            className='m-2- rounded-sm p-2 w-full h-32-'
+            className='m-2- rounded-sm p-2 w-full h-32- cursor-pointer'
             style={{
                 backgroundColor: colors.light[100],
                 color: colors.dark[200],
                 // boxShadow: activeTheme === "dark" ? "0 0 10px 0 rgba(0,0,0,0.01)" : "0 0 10px 0 rgba(0,0,0,0.1)", 
                 border: `0.2px solid ${colors.light[300]}`
             }}
+            onClick={() => {
+                localStorage.setItem('purchaseId', purchase._id?? "")
+                // @ts-ignore
+                router.push(`/product/${purchase.product?._id}`)
+            }}
         >
 
-            <div className='w-[75%]- flex flex-row gap-4 items-center'>
+            <div className='w-[75%]- flex flex-row gap-4 items-start'>
                 <img 
                     // @ts-ignore
                     src={purchase.product?.thumbNail} 
-                    className='w-20 rounded-sm bg-blue-500'
+                    className='w-20 h-fit rounded-sm bg-blue-500-'
                     alt="" 
                 />
                 
@@ -48,13 +84,57 @@ const PurchaseItem = ({
                         // @ts-ignore
                         purchase.specification?.price + " T.D"
                     }</p>
+            
+                    <div 
+                        className='flex flex-col gap-2- text-[12px] '
+                        style={{
+                            color: colors.dark[500]
+                        }}
+                    >
+                        {
+                            // @ts-ignore
+                            purchase?.specification?.color && <div className='flex flex-row gap-2'>
+                                <h4>{activeLanguage.sideMatter.color + " : "}</h4>
+                                <span>{// @ts-ignore
+                                    purchase.specification.color
+                                }</span>
+                            </div>
+                        }
+                        {
+                            // @ts-ignore
+                            purchase?.specification?.size && <div className='flex flex-row gap-2'>
+                                <h4>{activeLanguage.sideMatter.size + " : "}</h4>
+                                <span>{// @ts-ignore
+                                    purchase.specification.size
+                                }</span>
+                            </div>
+                        }
+                        {
+                            // @ts-ignore
+                            purchase?.specification?.type && <div className='flex flex-row gap-2'>
+                                <h4>{activeLanguage.sideMatter.type + " : "}</h4>
+                                <span>{// @ts-ignore
+                                    purchase.specification.type
+                                }</span>
+                            </div>
+                        }
+
+                    </div>
+
                 </div>
+
 
             </div>
 
             <div className='w-[25%]- flex flex-1 justify-between items-end h-full- bg-blue-500-'>
 
-                <div className='flex flex-row bg-blue-500- justify-center items-center gap-1 cursor-pointer'>
+                <div 
+                    className='flex flex-row bg-blue-500- justify-center items-center gap-1 cursor-pointer'
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        updatePurchase({...purchase, cart: null, status: "viewed"});
+                    }}
+                >
                     <img 
                         src="/icons/trash.png" 
                         alt="" 
@@ -76,6 +156,10 @@ const PurchaseItem = ({
                             backgroundColor: colors.light[300],
                             padding: '6px'
                         }}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            purchase.quantity && updatePurchase({...purchase, quantity: purchase.quantity - 1});
+                        }}
                     />
                     <span>{purchase.quantity}</span>
                     <img 
@@ -85,6 +169,10 @@ const PurchaseItem = ({
                         style={{
                             backgroundColor: colors.light[300],
                             padding: '6px'
+                        }}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            purchase.quantity && updatePurchase({...purchase, quantity: purchase.quantity + 1});
                         }}
                     />
                 </div>

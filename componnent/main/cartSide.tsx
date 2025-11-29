@@ -10,6 +10,8 @@ import InputForm from './inputForm'
 import { useClient } from '@/contexts/client'
 import OrderData from './OrderData'
 import { span } from 'framer-motion/m'
+import { useSocket } from '@/contexts/soket'
+import { useLoadingScreen } from '@/contexts/loadingScreen'
 
 type Props = {
     isActive: boolean
@@ -28,6 +30,8 @@ const CartSide = ({
     const { activeLanguage } = useLanguage();
     const { client } = useClient();
     const { colors, activeTheme } = useTheme();
+    const socket = useSocket();
+    const { setLoadingScreen } = useLoadingScreen();
     const [clientForm, setClientForm] = useState<ClientFormType>({
         fullName: "",
         adress: "",
@@ -56,6 +60,15 @@ const CartSide = ({
             setConfirmBTNWorks(false);
         }
     }, [clientForm])
+
+    useEffect(() => {
+        if (!socket) return;
+        
+        socket.on('receive_update_purchase_result', async () => {
+            // setPurchases()
+            setLoadingScreen(false);
+        })
+    }, [socket])
 
   return (
     <div 

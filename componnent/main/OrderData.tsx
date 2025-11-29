@@ -26,9 +26,7 @@ const OrderData = ({
         let total = 0;
         purchases?.map((purchase) =>{
             // @ts-ignore
-            purchase.specification?.price || 0
-            // @ts-ignore
-            total += purchase.specification?.price || 0;
+            total += ( purchase.specification?.price * purchase.quantity ) || 0;
         })
         setPricesList(Number(total.toFixed(2)));
     }, [purchases]);

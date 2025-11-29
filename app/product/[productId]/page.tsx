@@ -2,7 +2,7 @@ import ClientProductPage from "./ClientProductPage";
 import { Metadata } from "next";
 import axios from "axios";
 import { backEndUrl } from "@/api";
-import { ProductType, OwnerInfoType } from "@/types";
+import { ProductType, OwnerInfoType, PurchaseType } from "@/types";
 
 // Metadata ديناميكية
 export async function generateMetadata({ 
@@ -51,16 +51,18 @@ export default async function ProductPage({
     const { data } = await axios.get<{ product: ProductType }>(`${backEndUrl}/getProductById`, {
       params: { productId },
     });
-    console.log({product: data.product});
+
+    // console.log({product: data.product});
     
     const product = data.product;
 
-    const ownerRes = await axios.get<{ ownerInfo: OwnerInfoType }>(`${backEndUrl}/getOwnerInfo`);
+
+    // const ownerRes = await axios.get<{ ownerInfo: OwnerInfoType }>(`${backEndUrl}/getOwnerInfo`);
     // const ownerInfo = ownerRes.data.ownerInfo;
 
     if (!product) return <div>Product not found</div>;
 
-    return <ClientProductPage product={product}/>;
+    return <ClientProductPage product={product}  />;
   } catch (err) {
     console.error(err);
     return <div>Failed to load product.</div>;

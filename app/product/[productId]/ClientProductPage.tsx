@@ -54,20 +54,48 @@ export default function ClientProductPage({ product }: Props) {
         
     // }, [product])
 
+    // const getPurchaseById = async (purchaseId: string) => {
+    //   await axios.get<{ purchase: PurchaseType }>(`${backEndUrl}/getPurchaseById`, {
+    //       params: { purchaseId },
+    //     })
+    //     .then(({ data }) => {return data.purchase;})
+    //     .catch((err) => {})
+    //   }
+
     useEffect(() => {
         setLoadingScreen(false);
     }, [])
 
     useEffect(() => {
 
-        setPurchase({
-            client: client?._id ?? undefined,
-            product: product._id ?? undefined,
-            specification: product.specifications[0] ?? null,
-            quantity: 1,
-            like: false
-            
-        })
+      // const fetchPurchase = async () => {
+
+      //   const purchaseId = localStorage.getItem('purchaseId');
+
+      //   const purchase_ = await axios.get<{ purchase: PurchaseType }>(`${backEndUrl}/getPurchaseById`, {
+      //     params: { purchaseId },
+      //   })
+      //   .then(({ data }) => {return data.purchase;})
+      //   .catch((err) => {})
+
+      //   if (purchase_) {
+
+      //     setPurchase(purchase_);
+      //     console.log({purchase_});
+          
+
+      //   }
+      // }
+      // fetchPurchase();
+
+      setPurchase({
+          client: client?._id ?? undefined,
+          product: product._id ?? undefined,
+          specification: product.specifications[0] ?? null,
+          quantity: 1,
+          like: false
+          
+      })
         
     }, [client, product])
 
@@ -106,21 +134,40 @@ export default function ClientProductPage({ product }: Props) {
         }
         };
 
-        const fetchPurchase = async () => {
-            await axios.get( backEndUrl + "/getPurchaseByClientAndProduct", {
-                params: {
-                    clientId: client?._id,
-                    productId: product._id
-                }
-            })
-            .then(({ data }) => {
-                data.purchase && setPurchase(data.purchase);
-                setActiveSpecifications(data.purchase?.specification as ProductSpecification);
-            })
-            .catch(( err ) => {
-                console.log( {err} );
-            })
+        // const fetchPurchase = async () => {
+        //     await axios.get( backEndUrl + "/getPurchaseByClientAndProduct", {
+        //         params: {
+        //             clientId: client?._id,
+        //             productId: product._id
+        //         }
+        //     })
+        //     .then(({ data }) => {
+        //         data.purchase && setPurchase(data.purchase);
+        //         setActiveSpecifications(data.purchase?.specification as ProductSpecification);
+        //     })
+        //     .catch(( err ) => {
+        //         console.log( {err} );
+        //     })
+        // }
+
+      const fetchPurchase = async () => {
+
+        const purchaseId = localStorage.getItem('purchaseId');
+
+        const purchase_ = await axios.get<{ purchase: PurchaseType }>(`${backEndUrl}/getPurchaseById`, {
+          params: { purchaseId },
+        })
+        .then(({ data }) => {return data.purchase;})
+        .catch((err) => {})
+
+        if (purchase_) {
+
+          setPurchase(purchase_);
+          console.log({purchase_});
+          
+
         }
+      }
 
         const fetchCart = async () => {
             await axios.get( backEndUrl + "/getCartByClient", {

@@ -106,6 +106,8 @@ export type LanguageStracture = {
         resultsFound: string
         price: string
         color: string
+        size: string
+        type: string
         name: string
         date: string
         Oldest: string

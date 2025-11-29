@@ -22,7 +22,7 @@ const ProductLoading = ({
   return (
 
     <div 
-        className={`w-[175px] sm:w-[250px] min-h-[185px] sm:min-h-[250px] flex flex-col items-center gap-3 overflow-hidden cursor-pointer ${className}`}
+        className={`w-[175px] sm:w-[250px] h-[180px]- sm:h-[280px]- flex flex-col items-center gap-3 overflow-hidden cursor-pointer ${className}`}
         style={{
             ...style
         }}
@@ -30,7 +30,7 @@ const ProductLoading = ({
     >
         
         <div 
-            className='w-full h-[180px] sm:h-[250px] overflow-hidden'
+            className='w-full h-[180px] rounded-sm sm:h-[220px] overflow-hidden'
             style={{
                 backgroundColor: colors.light[300]
             }}
@@ -40,7 +40,7 @@ const ProductLoading = ({
 
 
         <div 
-            className='w-full h-5 text-sm sm:text-lg text-center px-2 sm:px-0'
+            className='w-full h-5 text-sm sm:text-lg rounded-sm overflow-hidden text-center px-2 sm:px-0'
             style={{
                 backgroundColor: colors.light[300]
             }}
@@ -49,7 +49,7 @@ const ProductLoading = ({
         </div>
 
         <div 
-            className='min-w-[50%] h-5 text-lg sm:text-lg font-bold text-center'
+            className='min-w-[50%] h-5 text-lg sm:text-lg rounded-sm overflow-hidden font-bold text-center'
             style={{
                 backgroundColor: colors.light[300]
             }}

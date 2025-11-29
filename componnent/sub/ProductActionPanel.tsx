@@ -84,8 +84,9 @@ const ProductActionPanel = ({
             <button 
                 className='flex flex-1 justify-center items-center w-12 h-12 text-sm sm:text-md rounded-sm cursor-pointer'
                 style={{
-                    backgroundColor: colors.dark[100],
-                    color: colors.light[200]
+                    backgroundColor: purchase.cart ? "transparent" : colors.dark[100],
+                    border: purchase.cart ? `1px solid ${colors.dark[100]}` : "none",
+                    color: purchase.cart ? colors.dark[200] : colors.light[200]
                 }}
                 onClick={handlePuttingInCart}
             >

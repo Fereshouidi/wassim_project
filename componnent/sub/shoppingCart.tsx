@@ -64,10 +64,11 @@ const ShoppingCart = () => {
         />
 
         <span 
-            className='absolute top-[-7px] right-[-7px] bg-black text-white rounded-full w-5 h-5 flex justify-center items-center sm:p-2 text-[10px] sm:text-sm'
+            className='absolute top-[-7px] rounded-full right-[-7px] bg-black text-white w-5 h-5 flex justify-center items-center sm:p-2 text-[10px] sm:text-sm'
             style={{
                 backgroundColor: colors.dark[100],
-                color: colors.light[100]
+                color: colors.light[100],
+                borderRadius: "50%"
             }}
         >{purchases.length}</span>
 

@@ -79,7 +79,7 @@ const ImagesSwitcher = ({
         <div 
             className={`absolute top-7 right-7 rounded-full p-2 ${like ? "bg-red-500" : "bg-gray-400"} w-10 h-10 cursor-pointer`}
             style={{
-                boxShadow: `0 5px 15px ${colors.dark[700]}`,
+                boxShadow: `0 5px 15px ${colors.dark[400]}`,
                 // backgroundColor: like ? "" : 
             }}
             onClick={() => {
