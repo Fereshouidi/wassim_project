@@ -200,6 +200,10 @@ export interface OwnerInfoType {
     icon?: string;
     link?: string;
   }[];
+  contact: {
+    email: string,
+    phone: number
+  },
   homeCollections?: CollectionType[];
   topCollections?: CollectionType[];
   shippingCost?: number;

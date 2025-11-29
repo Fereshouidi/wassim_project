@@ -47,28 +47,28 @@ const Footer = ({
                     >
                     
                     <a
-                        href="mailto:silverwayshop@gmail.com"
+                        href={`mailto:${ownerInfo?.contact?.email}`}
                         className="flex flex-row justify-center items-center gap-2"
                     >
                         {/* <img
                             src={'/icons/phone.png'}
                             className="w-6 h-6"
                         /> */}
-                        <p>silverwayshop@gmail.com</p>
+                        <p>{ownerInfo?.contact.email}</p>
                     </a>
 
                     <a
-                        href="tel:+21690353752"
+                        href={`tel:+216${ownerInfo?.contact.phone}`}
                         className="flex flex-row justify-center items-center gap-2-"
                     >
                         {/* <img
                             src={'/icons/email.png'}
                             className="w-6 h-6 p-3"
                         /> */}
-                        <p>+21690353752</p>
+                        <p>{"+216" + ownerInfo?.contact.phone}</p>
                     </a>
 
-                        <p className='text-sm '>{activeLanguage.askAi}</p>
+                        <p className='text-sm cursor-pointer'>{activeLanguage.askAi}</p>
                     </div>
                 </div>
 
@@ -103,7 +103,7 @@ const Footer = ({
                     <h2 className='font-bold'>{'Social Media : '}</h2>
 
                     <div 
-                        className='flex flex-col gap-2 text-center-'
+                        className={`flex ${screenWidth > 1000 ? "flex-col" : "flex-row justify-center items-center"} text-center-  gap-2 `}
                         style={{
                             color: colorsInsLightMode.light[350]
                         }}
@@ -112,7 +112,7 @@ const Footer = ({
                             <a 
                                 key={index}
                                 href={social.link}
-                                className={`bg-red-500- flex ${screenWidth > 1000 ? " justify-start" : " justify-center"} items-center gap-2 sm:px-10`}
+                                className={`bg-red-500- flex ${screenWidth > 1000 ? " justify-start gap-2 sm:px-10" : " justify-center"} items-center`}
                                 // style={{
                                 //     width: '200px'
                                 // }}
@@ -122,7 +122,7 @@ const Footer = ({
                                     alt="" 
                                     className='w-5 h-5'
                                 />
-                                <p className='text-sm font-[1px] '>{social.platform}</p>
+                                {screenWidth > 1000 && <p className='text-sm font-[1px] '>{social.platform}</p>}
                             </a>
                         ))}
                         {/* <a 
