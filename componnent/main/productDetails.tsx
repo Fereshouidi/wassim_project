@@ -50,6 +50,7 @@ const ProductDetails = ({
   const { screenWidth } = useScreen();
   const { activeLanguage } = useLanguage();
   const { colors } = useTheme();
+  const [firstRender, setFirstRender] = useState<boolean>(true);
 
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
@@ -63,29 +64,32 @@ const ProductDetails = ({
   const [availableSizes, setAvailableSizes] = useState<string[]>([]);
   const [availableTypes, setAvailableTypes] = useState<string[]>([]);
 
-  // const [collections, setCollections] = useState<CollectionType[]>([]);
-  // const [loadingGettingCollection, setLoadingGettingCollection] = useState<boolean>(true);
-
-
-  // const [clientForm, setClientForm] = useState<ClientFormType>({
-  //   fullName: '',
-  //   phone: NaN,
-  //   adress: '',
-  //   note: ''
-  // });
 
   useEffect(() => {
-    if (
-        product?.specifications &&
-        product?.specifications?.length > 1
-    ) return;
+
+    if (!firstRender) return;
+    if (!purchase || !purchase.cart) {
+        return;
+    }
+
+    const spec = purchase.specification || product.specifications[0];
+
     // @ts-ignore
-    setSelectedColor(purchase.specification?.color || product.specifications[0]?.color || null);
+    setSelectedColor(spec?.color ?? null);
     // @ts-ignore
-    setSelectedSize(purchase.specification?.size || product.specifications[0]?.size || null);
+    setSelectedSize(spec?.size ?? null);
     // @ts-ignore
-    setSelectedType(purchase.specification?.type || product.specifications[0]?.type || null);
+    setSelectedType(spec?.type ?? null);
+
+    setFirstRender(false);
+
+
   }, [product, purchase])
+
+  useEffect(() => {
+    console.log({selectedColor});
+    
+  }, [selectedColor])
 
   useEffect(() => {
     if (!product?.specifications) return;
@@ -153,7 +157,7 @@ const ProductDetails = ({
 
   return (
     <div
-      className={` h-full max-w-[600px]- sm:w-[650px] bg-green-500- overflow-y-scroll scrollbar-hidden p-5 ${screenWidth > 1000 ? "overflow-y-scroll scrollbar-hidden" : "overflow-y-scroll scrollbar-hidden"} ${className}`}
+      className={` h-full max-w-[600px]- sm:w-[650px]- bg-green-500- overflow-y-scroll scrollbar-hidden p-5 ${screenWidth > 1000 ? "overflow-y-scroll scrollbar-hidden max-w-[45%]" : "overflow-y-scroll scrollbar-hidden"} ${className}`}
       style={{
         ...style
       }}

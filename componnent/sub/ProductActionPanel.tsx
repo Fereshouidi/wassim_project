@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ChoseQuantity from './choseQuantity'
 import { CartType, ProductSpecification, PurchaseType } from '@/types'
 import { useLanguage } from '@/contexts/languageContext'
@@ -43,22 +43,22 @@ const ProductActionPanel = ({
         setLoadingScreen(true);
 
         if (purchase.cart) {
-            setPurchase({
-                ...purchase, 
-                cart: null,
-                status: 'viewed'
-            })
+            // setPurchase({
+            //     ...purchase, 
+            //     cart: null,
+            //     status: 'viewed'
+            // })
             socket?.emit("update_purchase", {
                 ...purchase, 
                 cart: null,
                 status: 'viewed'
             });
         } else {
-            setPurchase({
-                ...purchase, 
-                cart: cart._id,
-                status: 'inCart'
-            })
+            // setPurchase({
+            //     ...purchase, 
+            //     cart: cart._id,
+            //     status: 'inCart'
+            // })
             socket?.emit("update_purchase", {
                 ...purchase, 
                 cart: cart._id,
@@ -68,6 +68,16 @@ const ProductActionPanel = ({
 
 
     }
+
+    useEffect(() => {
+        socket.on('receive_update_purchase_result', async (data: {message: string, purchase: PurchaseType}) => {
+            setPurchase(data.purchase);
+            setLoadingScreen(false);
+        })
+        return () => {
+            socket.off('receive_update_purchase_result');
+        }
+    }, [])
 
   return (
 

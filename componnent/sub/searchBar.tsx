@@ -325,7 +325,7 @@ const SearchBar = ({
                         productsFound.length > 0 && input.length > 0 ?
 
                             productsFound.map((product, index) => (
-                                <p 
+                                <div
                                     key={product._id}
                                     ref={(el: HTMLParagraphElement | null) => {
                                         resRef.current[index] = el;
@@ -340,26 +340,40 @@ const SearchBar = ({
                                             resRef.current[index].style.backgroundColor = 'transparent'
                                         }
                                     }}
-                                    className='px-4 py-2 text-sm cursor-pointer'
+                                    className='px-4 py-2 text-sm cursor-pointer flex flex-row items-center gap-2'
                                     style={{
                                         color: resSectionStyle?.color
                                     }}
+                                    onClick={() => {
+                                        setLoadingScreen(true);
+                                        localStorage.removeItem('purchaseId');
+                                        router.push(`/product/${product._id}`)
+                                    }}
                                 >
-                                    {
-                                        screenWidth > 1000 ?
+                                    <img 
+                                        src={product.thumbNail?? ''} 
+                                        className='w-10 h-10 rounded-sm'
+                                        alt="" 
+                                    />
+                                    <p 
+                                    >
+                                        {
+                                            screenWidth > 1000 ?
 
-                                            (product.name[activeLanguage.language]?.length ?? 0) > 80 ? 
-                                                (product.name[activeLanguage.language]?.slice(0, 80) ?? "") + "..." :
-                                                (product.name[activeLanguage.language] ?? "")
+                                                (product.name[activeLanguage.language]?.length ?? 0) > 80 ? 
+                                                    (product.name[activeLanguage.language]?.slice(0, 80) ?? "") + "..." :
+                                                    (product.name[activeLanguage.language] ?? "")
 
-                                        : 
+                                            : 
 
-                                            (product.name[activeLanguage.language]?.length ?? 0) > 30 ? 
-                                                (product.name[activeLanguage.language]?.slice(0, 30) ?? "") + "..." :
-                                                (product.name[activeLanguage.language] ?? "")
+                                                (product.name[activeLanguage.language]?.length ?? 0) > 30 ? 
+                                                    (product.name[activeLanguage.language]?.slice(0, 30) ?? "") + "..." :
+                                                    (product.name[activeLanguage.language] ?? "")
 
-                                    }
-                                </p>
+                                        }
+                                    </p>
+                                </div>
+
                             ))
                         : input.length > 0 && productsFound.length == 0 ?
 

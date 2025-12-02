@@ -34,7 +34,8 @@ const ProductCard = ({
         onClick={() => {
             setLoadingScreen(true);
             localStorage.removeItem('purchaseId');
-            router.push(`/product/${product._id}`)}}
+            router.push(`/product/${product._id}`)
+        }}
     >
         
         <div 

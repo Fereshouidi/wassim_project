@@ -1,7 +1,7 @@
 import { io } from "socket.io-client";
 
 const fromVercel = "https://wassim-project-back-end-three.vercel.app/api";
-const fromCodeIp = "http://192.168.1.104:3001/api"
+const fromCodeIp = "http://192.168.10.201:3001/api"
 const fromLocalHost = "http://localhost:3001/api"
 
 // export const socketFromVercel = "https://wassim-project-back-end.vercel.app";

@@ -244,7 +244,7 @@ const SignUp = ({
                             color: colors.dark[100]
                         }}
                     >
-                        {activeLanguage.signUp}
+                        {activeLanguage.signIn}
                     </span>
                 </p>
 

@@ -77,7 +77,14 @@ export const english = {
     aboutUs: "About Us",
     myCart: "My Cart",
     cancel: "Cancel",
-    confirmOrder: "Confirm Order"
+    confirmOrder: "Confirm Order",
+    totalPrice: "Total price",
+    shippingCoast: "Shipping coast",
+    totalAmmount: "Total Ammount",
+    emptyCart: "your cart is empty",
+    filYourCart: "go fil it from",
+    here: "here",
+    recommended: "Recommended"
 
 } as LanguageStracture;
 
@@ -158,7 +165,16 @@ export const frensh = {
     aboutUs: "À propos de nous",
     myCart: "Mon Panier",
     cancel: "Annuler",
-    confirmOrder: "Confirmer la commande"
+    confirmOrder: "Confirmer la commande",
+    totalPrice: "Prix total",
+    shippingCoast: "Frais de livraison",
+    totalAmmount: "Montant total",
+    emptyCart: "votre panier est vide",
+    filYourCart: "allez le remplir depuis",
+    here: "ici",
+    recommended: "Recommandé"
+
+
 
 } as LanguageStracture;
 

@@ -42,15 +42,15 @@ const OrderData = ({
             }}
         >
             <div className={`flex justify-between border-b-[0.5px] border-[${colors.light[800]}] p-2 gap-2`}>
-                <h4>{"List de prix : "}</h4>
+                <h4>{activeLanguage.totalPrice +  " : "}</h4>
                 <p>{pricesList + " D.T"}</p>
             </div>
             <div className={`flex justify-between border-b-[0.5px] border-[${colors.light[800]}] p-2 gap-2`}>
-                <h4>{"shipping cost : "}</h4>
+                <h4>{activeLanguage.shippingCoast + " : "}</h4>
                 <p>{ownerInfo?.shippingCost + " D.T"}</p>
             </div>
             <div className={`flex justify-between border-b-[0.5px] border-[${colors.light[800]}] p-2 gap-2`}>
-                <h4>{"total prix : "}</h4>
+                <h4>{activeLanguage.totalAmmount + " : "}</h4>
                 <p>{ Number(pricesList)  + Number(ownerInfo?.shippingCost || 0) + " D.T"}</p>
             </div>
 

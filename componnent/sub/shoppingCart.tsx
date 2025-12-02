@@ -40,7 +40,25 @@ const ShoppingCart = () => {
         if (!socket || !client) return;
 
         socket.on("receive_update_purchase_result", async (data: any) => {
-            fetchPurchasesInCart();            
+
+            // if (purchases.some(purchase => purchase._id === data.purchase._id)) {
+
+            //     const updatedPurchases = purchases.map((purchase) =>
+            //         purchase._id === data.purchase._id ? data.purchase : purchase
+            //     );
+            //     setPurchases(updatedPurchases);
+            //     return;
+
+            // } else {
+
+            //     console.log({data});
+                
+            //     setPurchases((prevPurchases) => [...prevPurchases, data.purchase]);
+            //     return;
+
+            // }
+            const purchases = await fetchPurchasesInCart();
+          
         });
 
         // Clean up

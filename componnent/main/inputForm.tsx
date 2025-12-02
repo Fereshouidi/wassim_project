@@ -76,7 +76,7 @@ const InputForm = ({
                 <input 
                     type="text" 
                     value={clientForm.note}
-                    placeholder={activeLanguage.sideMatter.note}
+                    placeholder={activeLanguage.sideMatter.note + ' (' + activeLanguage.recommended + ' )'}
                     className='flex flex-1 rounded-sm h-12 p-2 text-[14px]'
                     style={{
                         border: `1px solid ${colors.light[300]}`

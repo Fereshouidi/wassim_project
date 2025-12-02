@@ -49,44 +49,11 @@ export default function ClientProductPage({ product }: Props) {
     const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
     const { ownerInfo } = useOwner();
 
-    // useEffect(() => {
-    //     console.log({product});
-        
-    // }, [product])
-
-    // const getPurchaseById = async (purchaseId: string) => {
-    //   await axios.get<{ purchase: PurchaseType }>(`${backEndUrl}/getPurchaseById`, {
-    //       params: { purchaseId },
-    //     })
-    //     .then(({ data }) => {return data.purchase;})
-    //     .catch((err) => {})
-    //   }
-
     useEffect(() => {
         setLoadingScreen(false);
     }, [])
 
     useEffect(() => {
-
-      // const fetchPurchase = async () => {
-
-      //   const purchaseId = localStorage.getItem('purchaseId');
-
-      //   const purchase_ = await axios.get<{ purchase: PurchaseType }>(`${backEndUrl}/getPurchaseById`, {
-      //     params: { purchaseId },
-      //   })
-      //   .then(({ data }) => {return data.purchase;})
-      //   .catch((err) => {})
-
-      //   if (purchase_) {
-
-      //     setPurchase(purchase_);
-      //     console.log({purchase_});
-          
-
-      //   }
-      // }
-      // fetchPurchase();
 
       setPurchase({
           client: client?._id ?? undefined,
@@ -99,14 +66,6 @@ export default function ClientProductPage({ product }: Props) {
         
     }, [client, product])
 
-
-    // useEffect(() => {
-
-    //     if (!purchase._id) return;
-
-    //     refreshPurchase();
-    //     console.log({purchase});
-    // }, [purchase])
 
 
     useEffect(() => {
@@ -133,22 +92,6 @@ export default function ClientProductPage({ product }: Props) {
             setLoadingGettingCollection(false);
         }
         };
-
-        // const fetchPurchase = async () => {
-        //     await axios.get( backEndUrl + "/getPurchaseByClientAndProduct", {
-        //         params: {
-        //             clientId: client?._id,
-        //             productId: product._id
-        //         }
-        //     })
-        //     .then(({ data }) => {
-        //         data.purchase && setPurchase(data.purchase);
-        //         setActiveSpecifications(data.purchase?.specification as ProductSpecification);
-        //     })
-        //     .catch(( err ) => {
-        //         console.log( {err} );
-        //     })
-        // }
 
       const fetchPurchase = async () => {
 
@@ -277,8 +220,8 @@ export default function ClientProductPage({ product }: Props) {
             <div 
               className={`
                 ${screenWidth > 1000 ? 
-                    "w-24 h-[90%] flex flex-col gap-2 justify-center items-end bg-red-500-"
-                  : "w-full flex flex-row gap-2 justify-center items-end bg-red-500-"
+                    "w-24 h-[90%] flex flex-col gap-2 justify-center items-end bg-red-500- bg-red-500- mr-10-"
+                  : "w-full flex flex-row gap-2 justify-center items-end"
                 }
               `}
             >
@@ -290,12 +233,12 @@ export default function ClientProductPage({ product }: Props) {
                     media.platform == "Facebook" ? handleShareOnFacebook(window.location.href)
                     : null
                   }}
-                  className="w-10 h-10 cursor-pointer"
+                  className="w-10 h-10 cursor-pointer bg-red-500-"
                 />
               ))}
             </div>
             
-            <div className={`flex flex-1 ${screenWidth > 1000 ? 'h-[90vh] flex-row justify-center' : 'flex-col items-center'}`}>
+            <div className={`flex flex-1 ${screenWidth > 1000 ? 'h-[90vh] flex-row justify-center items-center' : 'flex-col items-center'}`}>
               <ImagesSwitcher
                   images={product?.images || []}
                   like={purchase.like?? false}
@@ -345,6 +288,7 @@ export default function ClientProductPage({ product }: Props) {
             className="w-full h-fit fixed bottom-0 left-0 flex justify-center items-center p-2"
             style={{
               backgroundColor: colors.light[100],
+              boxShadow: `0 5px 15px ${colors.dark[900]}`,
               height: productActionPanelHeight
             }}
           >

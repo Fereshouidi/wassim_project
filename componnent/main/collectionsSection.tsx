@@ -1,6 +1,6 @@
 import { backEndUrl } from '@/api';
 import { useLanguage } from '@/contexts/languageContext';
-import { CollectionType } from '@/types';
+import { CollectionType, ProductType } from '@/types';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import CollectionCard from '../sub/collectionCard';
@@ -9,10 +9,18 @@ import { useTheme } from '@/contexts/themeProvider';
 
 type CollectionsSectionType = {
     importedFrom: "collectionsPage" | "homePage"
+    // mostProductExpensive: ProductType
+    // availableColors: string[]
+    // availableTypes: string[]
+    // availableSizes: string[]
 }
 
 const CollectionsSection = ({
-    importedFrom
+    importedFrom,
+    // mostProductExpensive,
+    // availableColors,
+    // availableSizes,
+    // availableTypes
 }: CollectionsSectionType) => {
 
     const { activeLanguage } = useLanguage();
@@ -91,6 +99,10 @@ const CollectionsSection = ({
                 key={collection._id}
                 collection={collection}
                 isLoading={isLoading}
+                // mostProductExpensive={mostProductExpensive}
+                // availableColors={availableColors}
+                // availableSizes={availableSizes}
+                // availableTypes={availableTypes}
             />
 
         ))}

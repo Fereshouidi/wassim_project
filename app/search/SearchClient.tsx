@@ -58,12 +58,14 @@ const Page = () => {
 
   useEffect(() => {
 
-    if (!searchText || !filtration) return;
+    console.log({searchText});
+    
+    if (!filtration) return;
     
     const fetchProductsBySearch = async () => {
-      setLoading(true);
+      setLoadingScreen(true);
       await axios.post( backEndUrl + "/getProductsBySearch", {
-        searchText,
+        searchText: searchText?? '',
         limit,
         skip: 0,
         filtration
@@ -81,11 +83,11 @@ const Page = () => {
         setAvailableSizes(data.availableSizes);
         setAvailableTypes(data.availableTypes);
         
-        setLoading(false);
+        setLoadingScreen(false);
 
       })
       .catch(( err ) => {
-        setLoading(false);
+        setLoadingScreen(false);
         throw err;
       })
     }

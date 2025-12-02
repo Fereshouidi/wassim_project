@@ -66,7 +66,7 @@ const CartSide = ({
         
         socket.on('receive_update_purchase_result', async () => {
             // setPurchases()
-            setLoadingScreen(false);
+            // setLoadingScreen(false);
         })
     }, [socket])
 
@@ -124,9 +124,9 @@ const CartSide = ({
                         color: colors.dark[500]
                     }}
                 >
-                    <p> your cart is empty </p>
-                    <p>go fil it from 
-                        <a href="/" className='mx-2 text-[15px]- underline' style={{ color: colors.dark[100] }}>here</a>
+                    <p className='mr-1'>{activeLanguage.emptyCart + ","}</p>
+                    <p>{activeLanguage.filYourCart} 
+                        <a href="/" className='mx-2 text-[15px]- underline' style={{ color: colors.dark[100] }}>{activeLanguage.here}</a>
                     </p>
                 </div>
 

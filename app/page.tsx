@@ -116,6 +116,7 @@ export default function Home() {
 
       <CollectionsSections
         importedFrom="homePage"
+        // mostProductExpensive={}
       />
 
       <div 

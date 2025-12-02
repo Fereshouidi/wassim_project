@@ -1,18 +1,27 @@
 import { useLanguage } from '@/contexts/languageContext'
 import { useTheme } from '@/contexts/themeProvider'
-import { CollectionType } from '@/types'
+import { CollectionType, FiltrationType, ProductType } from '@/types'
 import React, { useRef, useState } from 'react'
 import SkeletonLoading from './SkeletonLoading'
 import { useRouter } from 'next/navigation'
+import { useLoadingScreen } from '@/contexts/loadingScreen'
 
 type CollectionCardType = {
     collection: CollectionType
     isLoading: boolean
+    // mostProductExpensive: ProductType
+    // availableColors: string[]
+    // availableTypes: string[]
+    // availableSizes: string[]
 }
 
 const CollectionCard = ({
     collection,
-    isLoading
+    isLoading,
+    // mostProductExpensive,
+    // availableColors,
+    // availableSizes,
+    // availableTypes
 }: CollectionCardType) => {
 
     const { colors } = useTheme();
@@ -20,8 +29,35 @@ const CollectionCard = ({
     const cardRef = useRef<HTMLDivElement>(null);
     const [isHover, setIsHover] = useState<boolean>(false);
     const router = useRouter();
+    const { setLoadingScreen } = useLoadingScreen();
 
 
+
+    const handleCardClicked = () => {
+
+        let filter = null;
+        try {
+            filter = JSON.parse(localStorage.getItem("searchFilter")?? "") as unknown as FiltrationType;
+        } catch (err) {
+            console.log({err});
+        }
+
+        if (!filter) return;
+
+        setLoadingScreen(true);
+        
+        const updatedFilter = {
+            ...filter,
+            collections: [collection._id]
+        } as FiltrationType;
+
+        localStorage.setItem("searchFilter", JSON.stringify(updatedFilter));
+
+        router.push(
+            `/search?searchInput=${encodeURIComponent("")}&filter=${encodeURIComponent(JSON.stringify(updatedFilter))}`
+        );
+
+    }
 
   return (
     <div 
@@ -33,7 +69,7 @@ const CollectionCard = ({
         }}
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
-        onClick={() => collection.name && router.push(`/search?collectionId=${collection._id}`)}
+        onClick={handleCardClicked}
     >
 
         <div 

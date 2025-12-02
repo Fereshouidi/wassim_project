@@ -147,6 +147,14 @@ export type LanguageStracture = {
     myCart: string
     cancel: string
     confirmOrder: string
+    totalPrice: string
+    shippingCoast: string
+    totalAmmount: string
+    emptyCart: string
+    filYourCart: string
+    here: string
+    recommended: string
+
     // fullName: string
     // adress: string,
     // phone: number,
