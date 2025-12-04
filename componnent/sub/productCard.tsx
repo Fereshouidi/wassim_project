@@ -32,6 +32,7 @@ const ProductCard = ({
             // backgroundColor: colors.light[100]
         }}
         onClick={() => {
+            if ((product?._id?.length || 0) < 3) return;
             setLoadingScreen(true);
             localStorage.removeItem('purchaseId');
             router.push(`/product/${product._id}`)

@@ -84,7 +84,8 @@ export const english = {
     emptyCart: "your cart is empty",
     filYourCart: "go fil it from",
     here: "here",
-    recommended: "Recommended"
+    recommended: "Recommended",
+    forgotPassword: "Forgot Password!"
 
 } as LanguageStracture;
 
@@ -172,7 +173,8 @@ export const frensh = {
     emptyCart: "votre panier est vide",
     filYourCart: "allez le remplir depuis",
     here: "ici",
-    recommended: "Recommandé"
+    recommended: "Recommandé",
+    forgotPassword: "Mot de passe oublier!"
 
 
 

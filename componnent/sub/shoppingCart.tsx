@@ -39,29 +39,30 @@ const ShoppingCart = () => {
     useEffect(() => {
         if (!socket || !client) return;
 
-        socket.on("receive_update_purchase_result", async (data: any) => {
-
-            // if (purchases.some(purchase => purchase._id === data.purchase._id)) {
-
-            //     const updatedPurchases = purchases.map((purchase) =>
-            //         purchase._id === data.purchase._id ? data.purchase : purchase
-            //     );
-            //     setPurchases(updatedPurchases);
-            //     return;
-
-            // } else {
-
-            //     console.log({data});
+        socket.on("receive_update_purchase_result", (data: any) => {
+            setPurchases((prevPurchases) => {
                 
-            //     setPurchases((prevPurchases) => [...prevPurchases, data.purchase]);
-            //     return;
+                const exists = prevPurchases.some(
+                    (purchase) => purchase._id === data.purchase?._id
+                );
 
-            // }
-            const purchases = await fetchPurchasesInCart();
-          
+                if (exists) {
+                    if (!data.purchase.cart) {
+                        return prevPurchases.filter((p) => p._id !== data.purchase._id);
+                    }
+
+                    return prevPurchases.map((purchase) =>
+                        purchase._id === data.purchase._id ? data.purchase : purchase
+                    );
+                    
+                } else {
+                    if (!data.purchase?.cart) return prevPurchases;
+
+                    return [...prevPurchases, data.purchase];
+                }
+            });
         });
 
-        // Clean up
         return () => {
             socket.off("receive_update_purchase_result");
         };

@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { ProductType, OwnerInfoType, ProductSpecification, CollectionType, PurchaseType, CartType } from "@/types";
+import { useEffect, useRef, useState } from "react";
+import { ProductType, OwnerInfoType, ProductSpecification, CollectionType, PurchaseType, CartType, LikeType } from "@/types";
 import ImagesSwitcher from "@/componnent/main/imagesSwitcher";
 import ProductDetails from "@/componnent/main/productDetails";
 import OtherSimilarChose from "@/componnent/main/otherSimilarChose";
@@ -44,10 +44,18 @@ export default function ClientProductPage({ product }: Props) {
     const [sideBarActive, setSideBarActive] = useState(false);
     const { setLoadingScreen } = useLoadingScreen();
     const [collections, setCollections] = useState<CollectionType[]>([]);
-    const [purchase, setPurchase] = useState<PurchaseType>({});
+    const [purchase, setPurchase] = useState<PurchaseType>({
+        client: client?._id ?? undefined,
+        product: product._id ?? undefined,
+        specification: product.specifications[0] ?? null,
+        quantity: 1,
+        like: false
+    });
     const [cart, setCart] = useState<CartType>({});
     const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
+    const [like, setLike] = useState<boolean | null>(null);
     const { ownerInfo } = useOwner();
+    const newPurchaseCreated = useRef<boolean>(false);
 
     useEffect(() => {
         setLoadingScreen(false);
@@ -55,7 +63,7 @@ export default function ClientProductPage({ product }: Props) {
 
     useEffect(() => {
 
-      setPurchase({
+      !purchase._id && setPurchase({
           client: client?._id ?? undefined,
           product: product._id ?? undefined,
           specification: product.specifications[0] ?? null,
@@ -63,9 +71,40 @@ export default function ClientProductPage({ product }: Props) {
           like: false
           
       })
-        
+
     }, [client, product])
 
+    
+
+    // useEffect(() => {
+    //   console.log({purchase});
+
+    //   const createPurchase = async () => {
+    //     await axios.post(backEndUrl + "/addPurchase", {
+    //       purchaseData: {
+    //           client: client?._id ?? undefined,
+    //           product: product._id ?? undefined,
+    //           specification: product.specifications[0] ?? null,
+    //           quantity: 1,
+    //           like: false
+    //       }
+    //     })
+    //     .then(({ data }) => {     
+    //       newPurchaseCreated.current = true;
+    //       setPurchase(data.newPurchase);
+    //       return;
+    //     })
+    //     .catch(( err ) => console.error(err));
+    //   }
+
+    //   if (purchase.client && purchase.product && !purchase._id && !newPurchaseCreated) {
+    //     createPurchase();
+    //   } else {
+    //     console.log(purchase.client, purchase.product, !purchase._id);
+        
+    //   }
+
+    // }, [purchase])
 
 
     useEffect(() => {
@@ -93,24 +132,26 @@ export default function ClientProductPage({ product }: Props) {
         }
         };
 
-      const fetchPurchase = async () => {
+        const fetchPurchase = async () => {
 
-        const purchaseId = localStorage.getItem('purchaseId');
+          const purchaseId = localStorage.getItem('purchaseId');
 
-        const purchase_ = await axios.get<{ purchase: PurchaseType }>(`${backEndUrl}/getPurchaseById`, {
-          params: { purchaseId },
-        })
-        .then(({ data }) => {return data.purchase;})
-        .catch((err) => {})
+          if (!purchaseId) return;
 
-        if (purchase_) {
+          const purchase_ = await axios.get<{ purchase: PurchaseType }>(`${backEndUrl}/getPurchaseById`, {
+            params: { purchaseId },
+          })
+          .then(({ data }) => {return data.purchase;})
+          .catch((err) => {})
 
-          setPurchase(purchase_);
-          console.log({purchase_});
-          
+          if (purchase_) {
 
+            setPurchase(purchase_);
+            console.log({purchase_});
+            
+
+          }
         }
-      }
 
         const fetchCart = async () => {
             await axios.get( backEndUrl + "/getCartByClient", {
@@ -125,15 +166,33 @@ export default function ClientProductPage({ product }: Props) {
             })
         }
 
+        const fetchLike = async () => {
+          await axios.get( backEndUrl + "/getLikeByClientAndProduct", {
+              params: {
+                clientId: client?._id, 
+                productId: product._id
+              }
+          })
+          .then(({ data }) => {
+              setLike(data.like ?  true : false);
+              console.log({like: data.like})
+          })
+          .catch( err => {
+              console.error({err})
+          })
+          
+        }
+
         if (product?._id && product._id.length > fakeProducts.length) {
             fetchCollections();
         }
 
         if (client?._id && product?._id && product._id.length > fakeProducts.length) {
+            fetchLike();
             fetchPurchase();
             fetchCart();
         }
-        
+
         setIsFirstRender(false);
 
     }, [product?._id, client?._id]);
@@ -159,16 +218,43 @@ export default function ClientProductPage({ product }: Props) {
         })
     }, [activeSpecifications])
 
-    const handlePurchaseLike = (like: boolean) => {
-        setPurchase({
-            ...purchase,
-            like
-        })
-        socket.emit("update_purchase", {
-            ...purchase,
-            like
-        });
+    const handleLike = async (updatedLike: boolean) => {
+
+        if (!product || !client || like == null) return;
         setLoadingScreen(true);
+
+        if (!like) {
+
+          await axios.post( backEndUrl + "/addLike", {
+            likeData: {
+              client: client?._id,
+              product: product._id
+            }
+          })
+          .then(({ data }) => {setLike(true)})
+          .catch((err) => {
+            console.log(err);
+            
+            setStatusBanner(true, "something went wrong !");
+          })
+
+        } else {
+
+          await axios.delete( backEndUrl + "/deleteLike", {
+            data: {
+              clientId: client?._id,
+              productId: product._id
+            }
+          })
+          .then(({ data }) => {setLike(false)})
+          .catch((err) => {
+            setStatusBanner(true, "something went wrong !");
+          })
+
+        }
+
+        setLoadingScreen(false);
+
     }
 
     const handlePurchaseQuantity = (quantity: number) => {
@@ -177,13 +263,6 @@ export default function ClientProductPage({ product }: Props) {
             quantity
         })
     }
-
-    // const refreshPurchase = () => {
-    //     if (!socket) return;
-
-    //     socket.emit("update_purchase", purchase);
-    //     setLoadingScreen(true);
-    // }
 
 
     if (!ownerInfo) return <LoadingScreen/>
@@ -241,8 +320,8 @@ export default function ClientProductPage({ product }: Props) {
             <div className={`flex flex-1 ${screenWidth > 1000 ? 'h-[90vh] flex-row justify-center items-center' : 'flex-col items-center'}`}>
               <ImagesSwitcher
                   images={product?.images || []}
-                  like={purchase.like?? false}
-                  setLike={handlePurchaseLike}
+                  like={like?? false}
+                  setLike={handleLike}
                   className=""
                   style={{
                       // width: screenWidth > 1000 ? "500px" : "90%",
@@ -257,7 +336,7 @@ export default function ClientProductPage({ product }: Props) {
                       // width: screenWidth > 1000 ? "40%" : "90%",
                       height: screenWidth > 1000 ? "" : "100%",
                   }}
-                  quantity={purchase.quantity?? 1}
+                  quantity={purchase?.quantity?? 1}
                   setQuantity={handlePurchaseQuantity}
                   activeSpecifications={activeSpecifications}
                   collections={collections}
@@ -310,7 +389,7 @@ export default function ClientProductPage({ product }: Props) {
 
             <div className="w-[500px] bg-red-500-">
               <ProductActionPanel
-                quantity={purchase.quantity?? 1}
+                quantity={purchase?.quantity?? 1}
                 setQuantity={handlePurchaseQuantity}
                 activeSpecifications={activeSpecifications}     
                 purchase={purchase}

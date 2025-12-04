@@ -154,6 +154,7 @@ export type LanguageStracture = {
     filYourCart: string
     here: string
     recommended: string
+    forgotPassword: string
 
     // fullName: string
     // adress: string,
@@ -357,3 +358,10 @@ export type SignInForm = {
   password: string
 }
 
+export type LikeType = {
+  _id?: string
+  client: string;
+  product: string;
+  createdAt?: Date | null;
+  updatedAt?: Date | null;
+}

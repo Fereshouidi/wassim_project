@@ -154,6 +154,21 @@ const SignIn = ({
                 />
 
                 <p  
+                    className='text-[14px] w-full text-center- pl-4 pt-5- pb-2-  opacity-50- cursor-pointer'
+                    style={{
+                        color: colors.dark[400]
+                    }}
+                >                    
+                    {activeLanguage.forgotPassword} 
+                </p>
+
+                <CustomBotton
+                    label={activeLanguage.signIn}
+                    className='mt-2 h-12'
+                    onclick={handleSignInButtonClicked}
+                />
+
+                <p  
                     className='text-[14px] w-full text-center pt-5 pb-2  opacity-50-'
                     style={{
                         color: colors.dark[700]
@@ -170,12 +185,6 @@ const SignIn = ({
                         {activeLanguage.signUp}
                     </span>
                 </p>
-
-                <CustomBotton
-                    label={activeLanguage.signIn}
-                    className='mt-2 h-12'
-                    onclick={handleSignInButtonClicked}
-                />
 
             </div>
 

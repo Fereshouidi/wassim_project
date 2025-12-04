@@ -71,7 +71,7 @@ const ProductActionPanel = ({
 
     useEffect(() => {
         socket.on('receive_update_purchase_result', async (data: {message: string, purchase: PurchaseType}) => {
-            setPurchase(data.purchase);
+            data.purchase && setPurchase(data.purchase);
             setLoadingScreen(false);
         })
         return () => {
