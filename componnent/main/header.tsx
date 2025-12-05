@@ -163,7 +163,7 @@ const Header = ({
           style={{
               height: headerHeight,
               boxShadow: '0 0px 15px rgba(13, 13, 13, 0.07)',
-              backgroundColor: colors.light[700],
+              backgroundColor: colors.light[100],
               ...style
           }}
       >
