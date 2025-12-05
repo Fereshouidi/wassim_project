@@ -10,4 +10,3 @@ const socket = io(socketFromVercel, {
 });
 
 export default socket;
-
