@@ -201,13 +201,26 @@ export default function ClientProductPage({ product }: Props) {
         if (!socket) return;
 
         socket.on("receive_update_purchase_result", (data: any) => {
-            console.log(data)
+            // alert(data)
+            setLoadingScreen(false);
+        });
+
+        socket.on("receive_new_order", (data: any) => {
+            // alert('ffff')
+            setPurchase({
+                client: client?._id ?? undefined,
+                product: product._id ?? undefined,
+                specification: product.specifications[0] ?? null,
+                quantity: 1,
+                like: false
+            })
             setLoadingScreen(false);
         });
 
         // Clean up
         return () => {
             socket.off("receive_update_purchase_result");
+            socket.off("receive_new_order");
         };
     }, [socket]);
 

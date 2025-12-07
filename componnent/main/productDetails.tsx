@@ -94,6 +94,12 @@ const ProductDetails = ({
   useEffect(() => {
     if (!product?.specifications) return;
 
+    if (purchase.order) {
+      setSelectedColor(null);
+      setSelectedSize(null);
+      setSelectedType(null)
+    }
+
     const specs = product.specifications;
 
     const colors = Array.from(
@@ -152,7 +158,7 @@ const ProductDetails = ({
     );
 
     if (matched) setActiveSpecifications(matched);
-  }, [selectedColor, selectedSize, selectedType, product]);
+  }, [selectedColor, selectedSize, selectedType, product, purchase]);
 
 
   return (

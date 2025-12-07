@@ -100,6 +100,7 @@ export type LanguageStracture = {
         fullName: string
         adress: string
         phone: string
+        email: string
         password: string
         rePassword: string
         note: string
@@ -127,6 +128,7 @@ export type LanguageStracture = {
     signUp: string
     inputYourName: string
     inputYourPhone: string
+    inputYourEmail: string
     inputYourPassword: string
     inputYourPasswordAgain: string
     AlreadyHaveAnAccount: string
@@ -155,6 +157,7 @@ export type LanguageStracture = {
     here: string
     recommended: string
     forgotPassword: string
+    confirmedOrder : string
 
     // fullName: string
     // adress: string,
@@ -258,6 +261,7 @@ export interface PurchaseType {
   like?: boolean | null;
   quantity?: number | null;
   cart?: string | null;
+  order?: string | null;
   status?: "viewed" | "inCart" | "ordered" | 'delivered'
   createdAt?: Date | null;
   updatedAt?: Date | null;
@@ -348,7 +352,7 @@ export type OptionType = {
 
 export type SignUpForm = {
   fullName: string
-  phone: string
+  email: string
   password: string
   retypePassword: string
 }

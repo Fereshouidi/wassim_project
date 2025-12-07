@@ -35,7 +35,7 @@ const OrderData = ({
     
     return (
         <div 
-            className='bord w-full- p-4- pb-5 bg-red-500- flex flex-col my-10 pl-5- text-sm ml-[50%]-  px-5 translate-x-[-50%]-  gap-2'
+            className='bord w-full- p-4- pb-5 bg-red-500- flex flex-col my-10 pl-5- text-sm ml-[50%]-  px-2 translate-x-[-50%]-  gap-2'
             style={{
                 // borderTop: `0.5px solid ${colors.light[300]}`,
                 // borderBottom: `0.5px solid ${colors.light[300]}`

@@ -31,6 +31,7 @@ export const english = {
         fullName: "Full Name",
         adress: "City ​​and address",
         phone: "Phone Number",
+        email: "Email",
         password: "Password",
         rePassword: "Retype Password",
         note: "Note",
@@ -58,6 +59,7 @@ export const english = {
     signUp: "sign Up",
     inputYourName: "inter your first and last name",
     inputYourPhone: "inter your phone",
+    inputYourEmail: "inter your email",
     inputYourPassword: "inter your Password",
     inputYourPasswordAgain: "input your password again",
     AlreadyHaveAnAccount: "Already have an account ",
@@ -85,7 +87,8 @@ export const english = {
     filYourCart: "go fil it from",
     here: "here",
     recommended: "Recommended",
-    forgotPassword: "Forgot Password!"
+    forgotPassword: "Forgot Password!",
+    confirmedOrder: "Order has been confirmed successfully!"
 
 } as LanguageStracture;
 
@@ -120,6 +123,7 @@ export const frensh = {
         fullName: "Nom & Prénom",
         adress: "ville & adresse",
         phone: "Numéro de Téléphone",
+        email: "Email",
         password: "Mot de passe",
         rePassword: "Retaper le mot de passe",
         note: "Note",
@@ -147,6 +151,7 @@ export const frensh = {
     signUp: "S'inscrire",
     inputYourName: "Entrez votre nom",
     inputYourPhone: "Entrez votre telephone",
+    inputYourEmail: "Entrez votre email",
     inputYourPassword: "Entrez votre mot de passe",
     inputYourPasswordAgain: "Etrez à nouveau votre mot de passe",
     AlreadyHaveAnAccount: "Vous avez déjà un compte",
@@ -174,7 +179,8 @@ export const frensh = {
     filYourCart: "allez le remplir depuis",
     here: "ici",
     recommended: "Recommandé",
-    forgotPassword: "Mot de passe oublier!"
+    forgotPassword: "Mot de passe oublier!",
+    confirmedOrder: "La commande a été confirmée avec succès !"
 
 
 

@@ -120,7 +120,7 @@ const Footer = ({
                                 <img 
                                     src={social.icon} 
                                     alt="" 
-                                    className='w-5 h-5'
+                                    className={screenWidth > 1000 ? 'w-5 h-5' : 'w-7 h-7'}
                                 />
                                 {screenWidth > 1000 && <p className='text-sm font-[1px] '>{social.platform}</p>}
                             </a>

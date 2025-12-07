@@ -8,7 +8,7 @@ const fromLocalHost = "http://localhost:3001/api"
 // export const socketFromCodeIp = "http://192.168.1.104:3001"
 // export const socketFromLocalHost = "http://localhost:3001"
 
-export const backEndUrl = fromVercel;
+export const backEndUrl = fromCodeIp;
 // export const socket = io(socketFromVercel, {
 //   autoConnect: true,
 //   transports: ["websocket"]

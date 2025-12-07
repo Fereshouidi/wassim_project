@@ -12,6 +12,8 @@ import OrderData from './OrderData'
 import { span } from 'framer-motion/m'
 import { useSocket } from '@/contexts/soket'
 import { useLoadingScreen } from '@/contexts/loadingScreen'
+import { useStatusBanner } from '@/contexts/StatusBanner'
+import OrderConfirmedBanner from '../sub/banner_confirmedOrder'
 
 type Props = {
     isActive: boolean
@@ -32,6 +34,7 @@ const CartSide = ({
     const { colors, activeTheme } = useTheme();
     const socket = useSocket();
     const { setLoadingScreen } = useLoadingScreen();
+    const { setStatusBanner } = useStatusBanner();
     const [clientForm, setClientForm] = useState<ClientFormType>({
         fullName: "",
         adress: "",
@@ -65,10 +68,52 @@ const CartSide = ({
         if (!socket) return;
         
         socket.on('receive_update_purchase_result', async () => {
+            localStorage.removeItem('purchaseId');
             // setPurchases()
             // setLoadingScreen(false);
         })
+        socket.on('receive_new_order', async () => {
+            setLoadingScreen(false);
+            setStatusBanner(
+                true,
+                null,
+                <OrderConfirmedBanner show={true} />
+            )
+            const timer = setTimeout(() => {
+                setStatusBanner(false);
+            }, 3500);
+            return () => clearTimeout(timer);
+            
+        })
+
+        return () => {
+            socket.off('receive_update_purchase_result');
+            socket.off('receive_new_order');
+        }
+
     }, [socket])
+
+    const handleConfirn = async () => {
+        if (!confirmBTNWorks) return;
+
+        setLoadingScreen(true);      
+
+        const purchasesId: string[] = purchases
+            .map((purchase) => purchase._id)
+            .filter((id): id is string => typeof id === "string");
+
+        socket?.emit('add_order', { 
+            form: {
+                fullName: clientForm.fullName,
+                phone: clientForm.phone,
+                address: clientForm.adress,
+                clientNote: clientForm.note
+            }, 
+            purchasesId 
+        });
+
+    }
+    
 
   return (
     <div 
@@ -159,6 +204,7 @@ const CartSide = ({
                         style={{
                             backgroundColor: confirmBTNWorks ? colors.dark[100] : colors.dark[500]
                         }}
+                        onClick={handleConfirn}
                     >
                         {activeLanguage.confirmOrder}
                     </button>

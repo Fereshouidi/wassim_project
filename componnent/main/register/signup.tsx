@@ -43,13 +43,11 @@ const SignUp = ({
     useEffect(() => {
     console.log({ signUpForm });
 
-    const { fullName, password, retypePassword, phone } = signUpForm;
+    const { fullName, password, retypePassword, email } = signUpForm;
 
-    const isPhoneValid =
-        (phone.length === 8 && !phone.startsWith("+216")) || 
-        (phone.length === 12 && phone.startsWith("+216"));
+    const isPhoneValid = true
 
-    const canSignUp = fullName && password && retypePassword && phone && isPhoneValid;
+    const canSignUp = fullName && password && retypePassword && email && isPhoneValid;
 
     setSignUpButtonWorks(Boolean(canSignUp));
     }, [signUpForm]);
@@ -61,7 +59,7 @@ const SignUp = ({
 
             const clientData = {
                 ...signUpForm,
-                phone: Number(signUpForm.phone)
+                email: signUpForm.email
             }
 
             setLoadingScreen(true);
@@ -185,21 +183,21 @@ const SignUp = ({
                 />
 
                 <CustomInputText
-                    label={activeLanguage.sideMatter.phone}
-                    placeholder={activeLanguage.inputYourPhone + ' ...'}
+                    label={activeLanguage.sideMatter.email}
+                    placeholder={activeLanguage.inputYourEmail + ' ...'}
                     className='my-4'
-                    value={signUpForm.phone.toString()}
-                    type="tel"
-                    minLength={12}
+                    value={signUpForm.email}
+                    type="email"
+                    // minLength={12}
                     onChange={(e) => {
                     const value = e.target.value;
-                    const limitReached = e.target.value.length > 8;
+                    // const limitReached = e.target.value.length > 8;
 
                     // Allow only digits and leading '+'
-                    if (!limitReached && /^\+?\d*$/.test(value)) {
+                    if (true) {
                         setSignUpForm({
                         ...signUpForm,
-                        phone: value,
+                        email: value,
                         });
                     }
                     }}
@@ -231,7 +229,7 @@ const SignUp = ({
                 />
 
                 <p  
-                    className='text-[14px] w-full text-center pt-5 pb-2  opacity-50-'
+                    className='text-[13px] w-full text-center pt-5 pb-2  opacity-50-'
                     style={{
                         color: colors.dark[700]
                     }}

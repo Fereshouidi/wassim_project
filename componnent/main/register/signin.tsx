@@ -154,7 +154,7 @@ const SignIn = ({
                 />
 
                 <p  
-                    className='text-[14px] w-full text-center- pl-4 pt-5- pb-2-  opacity-50- cursor-pointer'
+                    className='text-[12px] w-full text-center- pl-4 pt-5- pb-2-  opacity-50- cursor-pointer'
                     style={{
                         color: colors.dark[400]
                     }}
@@ -169,7 +169,7 @@ const SignIn = ({
                 />
 
                 <p  
-                    className='text-[14px] w-full text-center pt-5 pb-2  opacity-50-'
+                    className='text-[13px] w-full text-center pt-5 pb-2  opacity-50-'
                     style={{
                         color: colors.dark[700]
                     }}

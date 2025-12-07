@@ -23,7 +23,7 @@ const RegisterSection = ({
     const { screenWidth } = useScreen();
     const [signUpForm, setSignUpForm] = useState<SignUpForm>({
         fullName: '',
-        phone: "",
+        email: "",
         password: '',
         retypePassword: ''
     });

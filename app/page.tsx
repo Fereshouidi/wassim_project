@@ -6,6 +6,7 @@ import Header from "@/componnent/main/header";
 import HomeCollections from "@/componnent/main/homeCollections";
 import SideBar from "@/componnent/main/sideBar";
 import AnnouncementBar from "@/componnent/sub/AnnouncementBar";
+import OrderConfirmedBanner from "@/componnent/sub/banner_confirmedOrder";
 import LoadingScreen from "@/componnent/sub/loading/loadingScreen";
 import SkeletonLoading from "@/componnent/sub/SkeletonLoading";
 import { useLoadingScreen } from "@/contexts/loadingScreen";
@@ -90,6 +91,8 @@ export default function Home() {
         ownerInfo={ownerInfo}
         setOwnerInfo={setOwnerInfo}
       />
+
+      <OrderConfirmedBanner/>
 
       <div 
         className="w-full"
