@@ -34,7 +34,7 @@ const SideBar = ({
 
   return (
     <div 
-        className={`w-screen h-screen z-50 fixed top-0 ${isActive ? "" : "invisible"} no-sellect`}
+        className={`w-screen h-dvh z-50 fixed top-0 ${isActive ? "" : "invisible"} no-sellect`}
         style={{
             backgroundColor: "rgba(74, 74, 74, 0.677)",
             // display: isExist ? "" : "none"
