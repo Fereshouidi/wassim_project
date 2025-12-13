@@ -35,21 +35,40 @@ const OrderData = ({
     
     return (
         <div 
-            className='bord w-full- p-4- pb-5 bg-red-500- flex flex-col my-10 pl-5- text-sm ml-[50%]-  px-2 translate-x-[-50%]-  gap-2'
+            className='bord pt-2 flex flex-col my-10 text-sm rounded-sm px-2 gap-2'
             style={{
                 // borderTop: `0.5px solid ${colors.light[300]}`,
-                // borderBottom: `0.5px solid ${colors.light[300]}`
+                border: `0.5px solid ${colors.light[300]}`,
+                backgroundColor: colors.light[100],
+                boxShadow: `0 0 15px ${colors.light[150]}`
             }}
         >
-            <div className={`flex justify-between border-b-[0.5px] border-[${colors.light[800]}] p-2 gap-2`}>
+            <div 
+                className={`flex justify-between border-b-[0.2px] border-[${colors.light[200]}]- p-2 gap-2`}
+                style={{
+                    borderBottom: `0.2px solid ${colors.light[200]}`
+                }}
+            >
                 <h4>{activeLanguage.totalPrice +  " : "}</h4>
                 <p>{pricesList + " D.T"}</p>
             </div>
-            <div className={`flex justify-between border-b-[0.5px] border-[${colors.light[800]}] p-2 gap-2`}>
+
+            <div 
+                className={`flex justify-between border-b-[0.2px] border-[${colors.light[200]}]- p-2 gap-2`}
+                style={{
+                    borderBottom: `0.2px solid ${colors.light[200]}`
+                }}
+            >                
                 <h4>{activeLanguage.shippingCoast + " : "}</h4>
                 <p>{ownerInfo?.shippingCost + " D.T"}</p>
             </div>
-            <div className={`flex justify-between border-b-[0.5px] border-[${colors.light[800]}] p-2 gap-2`}>
+
+            <div 
+                className={`flex justify-between border-b-[0.2px] border-[${colors.light[200]}]- p-2 gap-2`}
+                style={{
+                    borderBottom: `0.2px solid ${colors.light[200]}`
+                }}
+            >                
                 <h4>{activeLanguage.totalAmmount + " : "}</h4>
                 <p>{ Number(pricesList)  + Number(ownerInfo?.shippingCost || 0) + " D.T"}</p>
             </div>

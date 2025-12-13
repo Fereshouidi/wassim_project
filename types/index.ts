@@ -140,6 +140,7 @@ export type LanguageStracture = {
     thanksForComingBack: string
     somethingWentWrongWhileSignUp: string
     AccountWithTheseNameAndPasswordNotFound: string
+    wrongPassword: string
     allFildAreRequired: string
     addToCart: string
     inCart: string
@@ -158,6 +159,16 @@ export type LanguageStracture = {
     recommended: string
     forgotPassword: string
     confirmedOrder : string
+    invalidVerificationToken: string
+    invalidVerificationTokenParagraph: string
+    accounntVerified: string
+    accounntVerifiedParagraph: string
+    FailedToSendEmail: string
+    FailedToSendEmailParagraph: string
+    GetBackMyAccount: string,
+    GetBackMyAccountParagraph: string
+    sendingEmailParagraph: string
+    resend: string
 
     // fullName: string
     // adress: string,

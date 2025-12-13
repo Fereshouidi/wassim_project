@@ -145,12 +145,12 @@ const ThemeMode = () => {
                 className={`flex w-full h-full items-center gap-2 px-6`}
                 style={{
                   display: optionsListExist ? "" : "none",
-                  backgroundColor: activeChoise.label == theme.label ? colors.light[100] : colors.light[300]
+                  backgroundColor: activeChoise.label == theme.label ? colors.dark[100] : colors.light[100]
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = colors.light[400])}
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = colors.light[300])}
                 onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = activeChoise.label == theme.label ? 
-                  colors.light[100] : 
-                  colors.light[300]
+                  colors.dark[100] : 
+                  colors.light[100]
                 )}
                 onClick={() => setActiveChoise({
                   theme: theme.theme,
@@ -159,10 +159,21 @@ const ThemeMode = () => {
               >
                 <img 
                   className='w-5 h-5'
-                  src={activeTheme == "dark" ? theme.icon.dark : theme.icon.light }
+                  src={activeTheme == "dark" ? 
+
+                    activeChoise.label == theme.label ? theme.icon.light : theme.icon.dark
+                    :
+                    activeChoise.label == theme.label ? theme.icon.dark : theme.icon.light
+                     
+                  
+                  }
                   alt="" 
                 />
-                <h6>{theme.label}</h6>
+                <h6
+                  style={{
+                    color: activeChoise.label == theme.label ? colors.light[100] : colors.dark[100]
+                  }}
+                >{theme.label}</h6>
               </li>
 
             ))}

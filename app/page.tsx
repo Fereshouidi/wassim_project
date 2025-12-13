@@ -103,7 +103,7 @@ export default function Home() {
         {pub?.heroBanner ?
           <img 
             src={screenWidth < 1000 ? pub?.heroBanner?.sm : pub?.heroBanner?.md}
-            className="w-full h-full object-cover object-top max-h-[70vh]" 
+            className="w-full h-full object-cover object-top max-h-[60vh]" 
             style={{
               backgroundColor: colors.dark[800]
             }}

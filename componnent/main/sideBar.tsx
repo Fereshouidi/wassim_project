@@ -14,6 +14,7 @@ import Link from 'next/link';
 import { useRegisterSection } from '@/contexts/registerSec';
 import { useLoadingScreen } from '@/contexts/loadingScreen';
 import { useClient } from '@/contexts/client';
+import Collections from '../sub/sideBarItems/collections';
 
 const SideBar = ({
     isActive,
@@ -43,7 +44,7 @@ const SideBar = ({
         <div    
             className={`
                 w-[320px] h-full bg-white absolute top-0 ${isActive ? "left-0" : "left-[-320px]"} 
-                flex flex-col items-center justify-between p-2 overflow-y-scroll scrollbar-hidden transition-[left, right] duration-300
+                flex flex-col items-center justify-between p-2 overflow-y-scroll overflow-x-visible scrollbar-hidden transition-[left, right] duration-300
             `}
             style={{
                 boxShadow: '0 0px 10px rgba(13, 13, 13, 0.02)',
@@ -108,7 +109,7 @@ const SideBar = ({
                     importedFrom='sidBar'
                 />
 
-                <ul className='w-full mt-5'>
+                <ul className='w-full bg-green-100- mt-5'>
                     <li
                         className='flex h-14 border-b-[1px] border-b-gray-100 text-sm'
                         style={{
@@ -125,18 +126,23 @@ const SideBar = ({
                         >{activeLanguage.nav.home}</Link>
                     </li>
                     <li
-                        className='flex h-14 border-b-[1px] border-b-gray-100 text-sm'
+                        className='w-full bg-green-400- flex h-14 border-b-[1px] border-b-gray-100 text-sm'
                         style={{
                             borderBottomColor: colors.dark[200]
                         }}
                     >
-                        <Link href="/collections" 
-                            onClick={() => setLoadingScreen(true)}
-                            className='w-full h-full flex items-center px-7'
+                        <div  
+                            onClick={() => {
+                                setLoadingScreen(true);
+                                router.push('/collections')
+                            }}
+                            className='w-full min-w-full h-full flex items-center bg-blue-400- pl-7 pr-2'
                             style={{
                                 color: colors.light[200]
                             }}    
-                        >{activeLanguage.nav.collections}</Link>
+                        >
+                            <Collections sideBarActive={isActive}/>
+                        </div>
                     </li>
                     <li
                         className='flex h-14 border-b-[1px] border-b-gray-100 text-sm'

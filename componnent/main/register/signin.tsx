@@ -1,4 +1,5 @@
 import { backEndUrl } from '@/api';
+import WrongPasswordBanner from '@/componnent/sub/banners/wrongPasswordBanner';
 import CustomBotton from '@/componnent/sub/customBotton';
 import CustomInputText from '@/componnent/sub/customInputText';
 import WelcomeIcon from '@/componnent/sub/welcomeIcon';
@@ -8,7 +9,7 @@ import { useLoadingScreen } from '@/contexts/loadingScreen';
 import { useRegisterSection } from '@/contexts/registerSec';
 import { useStatusBanner } from '@/contexts/StatusBanner';
 import { useTheme } from '@/contexts/themeProvider';
-import { SignInForm, SignUpForm } from '@/types';
+import { ClientType, SignInForm, SignUpForm } from '@/types';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 
@@ -18,6 +19,9 @@ type props = {
     signInForm: SignInForm, 
     setSignInForm: (value: SignInForm) =>void
     setRegisterSectionExist: (value: boolean) =>void
+    clientFound?: ClientType, 
+    setClientFound?: (value: ClientType) => void
+    setVerificationAccountBannerVisible: (value: boolean) => void
 }
 
 const SignIn = ({
@@ -25,7 +29,10 @@ const SignIn = ({
     setActivePage,
     signInForm, 
     setSignInForm,
-    setRegisterSectionExist
+    setRegisterSectionExist,
+    clientFound,
+    setClientFound,
+    setVerificationAccountBannerVisible
 }: props) => {
 
     const { registerSectionExist } = useRegisterSection();
@@ -44,7 +51,7 @@ const SignIn = ({
             }
         })
         .then(({data}) => {
-            setRegisterSectionExist(false);
+
             setStatusBanner(true, null, 
                 <div>
                     <WelcomeIcon
@@ -58,8 +65,36 @@ const SignIn = ({
                 localStorage.setItem("clientToken", data.client.token.toString());
             }
             setClient(data.client);
+            setClientFound && setClientFound(data.client as ClientType);
+            setRegisterSectionExist(false);
         })
         .catch((err) => {
+
+            if (err.status == 401) {
+                
+                setClientFound && setClientFound(err.response.data.client);
+                setStatusBanner(
+                    true,
+                    null,
+                    <div 
+                        className='w-full h-full bg-red-500- p-10 rounded-sm flex flex-col justify-center items-center'
+                        style={{
+                            backgroundColor: colors.light[100]
+                        }}
+                    >
+                        <video  
+                            src="/icons/fail.webm"
+                            className='w-[200px] h-[200px]'
+                            autoPlay
+                        ></video>
+                        <p>{activeLanguage.wrongPassword}</p>
+                    </div>
+                )
+                return;
+                
+
+            }
+
             setStatusBanner(
                 true,
                 null,
@@ -109,6 +144,10 @@ const SignIn = ({
         console.log({ client });
 
     }, [client]);
+
+    const handleForgetPasswordClicked = async () => {
+        setVerificationAccountBannerVisible(true);
+    }
         
     return (
         <div 
@@ -158,6 +197,7 @@ const SignIn = ({
                     style={{
                         color: colors.dark[400]
                     }}
+                    onClick={handleForgetPasswordClicked}
                 >                    
                     {activeLanguage.forgotPassword} 
                 </p>

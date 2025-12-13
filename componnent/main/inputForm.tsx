@@ -29,7 +29,7 @@ const InputForm = ({
     // className='border-t-[0.5px]'
         style={{
             // borderTop: `0.5px solid ${colors.light[300]}`,
-            borderTop: `0.5px solid ${colors.light[300]}`
+            // borderTop: `0.5px solid ${colors.light[300]}`
         }}
         
     >

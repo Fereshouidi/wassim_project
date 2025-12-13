@@ -1,5 +1,14 @@
 import { LanguageStracture } from "@/types";
 
+
+
+
+
+
+
+
+
+
 export const english = {
     label: "english",
     language: "en",
@@ -71,6 +80,7 @@ export const english = {
     thanksForComingBack: "Thank you for coming back to SilverWay! 😊",
     somethingWentWrongWhileSignUp: "Something went wrong during sign-up!",
     AccountWithTheseNameAndPasswordNotFound: "No account found with this name and password.",
+    wrongPassword: "Your password is wrong !",
     allFildAreRequired: "All the field are required !",
     inCart: "In cart",
     addToCart: "Add to cart",
@@ -88,7 +98,17 @@ export const english = {
     here: "here",
     recommended: "Recommended",
     forgotPassword: "Forgot Password!",
-    confirmedOrder: "Order has been confirmed successfully!"
+    confirmedOrder: "Order has been confirmed successfully!",
+    invalidVerificationToken: "invalid Verification Token",
+    invalidVerificationTokenParagraph: "The verification link is invalid or has expired. \nPlease request a new link to verify your account.",
+    accounntVerified: "Account Verified Successfully",
+    accounntVerifiedParagraph: "Your email has been verified and your account is now active. \nYou can now start using all the features.",
+    FailedToSendEmail: "Failed To Send Email",
+    FailedToSendEmailParagraph: "We encountered an error while attempting to send the email. \nPlease check your email or connection and try again later.",
+    GetBackMyAccount: "Get back my account",
+    GetBackMyAccountParagraph: "send a verification code to the email you used to create your account.",
+    sendingEmailParagraph: "we have send you a verification code to this email",
+    resend: "Send again"
 
 } as LanguageStracture;
 
@@ -101,7 +121,7 @@ export const frensh = {
         collection: "Collection",
         contact: "Contactez Nous",
         askAi: "Demande IA",
-        favorite: "Favori",
+        favorite: "Favorite",
         order: "commandes"
     },
     sideMatter: {
@@ -163,6 +183,7 @@ export const frensh = {
     thanksForComingBack: "Merci de revenir sur SilverWay ! 😊",
     somethingWentWrongWhileSignUp: "Une erreur s’est produite lors de l’inscription !",
     AccountWithTheseNameAndPasswordNotFound: "Aucun compte trouvé avec ce nom et ce mot de passe.",
+    wrongPassword: "votre mot de passe est incorrect",
     allFildAreRequired: "Tous les champs sont requis !",
     inCart: "Dans le panier",
     addToCart: "Ajouter au panier",
@@ -180,11 +201,37 @@ export const frensh = {
     here: "ici",
     recommended: "Recommandé",
     forgotPassword: "Mot de passe oublier!",
-    confirmedOrder: "La commande a été confirmée avec succès !"
+    confirmedOrder: "La commande a été confirmée avec succès !",
+    invalidVerificationToken: "Jeton de vérification invalide",
+    invalidVerificationTokenParagraph: "Le lien de vérification est invalide ou a expiré.\nVeuillez demander un nouveau lien pour vérifier votre compte.",
+    accounntVerified: "Compte vérifié avec succès",
+    accounntVerifiedParagraph: "Votre e-mail a été vérifié et votre compte est maintenant actif.\nVous pouvez maintenant commencer à utiliser toutes les fonctionnalités.",
+    FailedToSendEmail: "Échec de l’envoi de l’e-mail",
+    FailedToSendEmailParagraph: "Une erreur s’est produite lors de la tentative d’envoi de l’e-mail.\nVeuillez vérifier votre adresse e-mail ou votre connexion, puis réessayer plus tard.",
+    GetBackMyAccount: "Récupérer mon compte",
+    GetBackMyAccountParagraph: "Envoyez un code de vérification à l’e-mail que vous avez utilisé pour créer votre compte.",
+    sendingEmailParagraph: "Nous vous avons envoyé un code de vérification à cet e-mail.",
+    resend: "Envoyer à nouveau"
 
 
 
 } as LanguageStracture;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export const languagesDispo = [frensh, english]
 

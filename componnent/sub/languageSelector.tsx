@@ -80,12 +80,13 @@ const LanguageSelector = ({
                         className={`flex w-full h-full justify-center items-center gap-2`}
                         style={{
                             display: optionsListExist ? "" : "none",
-                            backgroundColor: activeLanguage.language == language.language ? colors.light[100] : colors.light[300]
+                            backgroundColor: activeLanguage.language == language.language ? colors.dark[100] : colors.light[100],
+                            color: activeLanguage.label == language.label ? colors.light[100] : colors.dark[100]
                         }}
                         onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = colors.light[400])}
                         onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = activeLanguage.language == language.language ? 
-                            colors.light[100] : 
-                            colors.light[300]
+                            colors.dark[100] : 
+                            colors.light[100]
                         )}
                         onClick={() => handleChange(language)}
                     >

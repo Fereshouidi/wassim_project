@@ -1,12 +1,13 @@
 import { useLanguage } from '@/contexts/languageContext';
 import { useRegisterSection } from '@/contexts/registerSec'
 import { useTheme } from '@/contexts/themeProvider';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SignIn from './signin';
 import SignUp from './signup';
 import { useScreen } from '@/contexts/screenProvider';
-import { SignInForm, SignUpForm } from '@/types';
+import { ClientType, SignInForm, SignUpForm } from '@/types';
 import WelcomeIcon from '@/componnent/sub/welcomeIcon';
+import VerificationAccountBanner from '@/componnent/sub/banners/verificationAccountBanner';
 
 type props = {
     // setSideBarExist: (value: boolean) => void
@@ -21,6 +22,8 @@ const RegisterSection = ({
     const { colors, activeTheme } = useTheme();
     const [ activePage, setActivePage ] = useState<"signIn" | "signUp">("signIn");
     const { screenWidth } = useScreen();
+    const [verificationAccountBannerVisible, setVerificationAccountBannerVisible] = useState<boolean>(false);
+    const [clientFound, setClientFound] = useState<ClientType | undefined>(undefined)
     const [signUpForm, setSignUpForm] = useState<SignUpForm>({
         fullName: '',
         email: "",
@@ -32,6 +35,10 @@ const RegisterSection = ({
         password: ''
     });
 
+    useEffect(() => {
+        console.log({clientFound});
+        
+    }, [clientFound])
 
     return (
         <div 
@@ -62,6 +69,9 @@ const RegisterSection = ({
                             signInForm={signIpForm}
                             setSignInForm={setSignIpForm}
                             setRegisterSectionExist={setRegisterSectionExist}
+                            clientFound={clientFound}
+                            setClientFound={setClientFound}
+                            setVerificationAccountBannerVisible={setVerificationAccountBannerVisible}
                         />
                     :   <SignUp
                             activePage={activePage}
@@ -72,6 +82,14 @@ const RegisterSection = ({
                             // setSideBarExist={setSideBarExist}
                         />
                 }
+
+                {verificationAccountBannerVisible && <VerificationAccountBanner 
+                    client={clientFound} 
+                    verificationAccountBannerVisible={verificationAccountBannerVisible}
+                    setVerificationAccountBannerVisible={setVerificationAccountBannerVisible}
+                    clientFound={clientFound}
+                    setClientFound={setClientFound}
+                />}
 
             </div>
 
