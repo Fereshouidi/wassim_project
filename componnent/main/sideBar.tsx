@@ -186,7 +186,7 @@ const SideBar = ({
                 </div>}
 
                 <div 
-                    className='w-[90%] bg-red-500- mb-5 p-3 pt-8- rounded-sm flex justify-start items-end fixed- bottom-5- cursor-pointer'
+                    className='w-[90%] bg-red-500- mb-0 p-3 pt-8- rounded-sm flex justify-start items-end fixed- bottom-5- cursor-pointer'
                     style={{
                         color: colors.light[150],
                         // border: `1px solid ${colors.dark[300]}`,
