@@ -70,7 +70,7 @@ const OrderData = ({
                 }}
             >                
                 <h4>{activeLanguage.totalAmmount + " : "}</h4>
-                <p>{ Number(pricesList)  + Number(ownerInfo?.shippingCost || 0) + " D.T"}</p>
+                <p>{ ( Number(pricesList) + Number(ownerInfo?.shippingCost || 0) ).toFixed(2) + " D.T"}</p>
             </div>
 
             
