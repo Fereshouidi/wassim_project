@@ -39,7 +39,7 @@ const Page = () => {
 
   const [productsFound, setProductsFound] = useState<ProductType[]>([]);
   const [productsCount, setProductsCount] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(10);
+  const [limit, setLimit] = useState<number>(8);
   const [skip, setSkip] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
 

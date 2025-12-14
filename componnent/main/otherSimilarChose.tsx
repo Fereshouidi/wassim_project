@@ -95,7 +95,7 @@ const OtherSimilarChose = ({
 
         {isThereProducts && <h2 className='text-lg sm:text-xl font-semibold pb-5 sm:pb-10'>You may like : </h2>}
 
-        <div className='w-full h-full flex justify-center items-center overflow-scroll- scrollbar-hidden'>
+        <div className='w-full h-full flex flex-col justify-center items-center overflow-scroll- scrollbar-hidden'>
             {
                 collections.map((collection) => (
                     <ProductsSection

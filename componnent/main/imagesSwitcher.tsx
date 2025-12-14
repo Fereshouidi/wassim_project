@@ -62,7 +62,7 @@ const ImagesSwitcher = ({
 
   return (
     <div 
-        className={` relative h-full top-0 min-w-[300px] sm:min-w-[550px] min-h-[300px] sm:min-h-[500px] bg-yellow-500- w-[600px]- flex flex-col justify-center items-center bg-yellow-500- pt-10- no-sellect bg-transparent- ${className}`} 
+        className={` relative h-full top-0 min-w-[380px] sm:min-w-[550px] min-h-[300px] sm:min-h-[500px] bg-yellow-500- w-[600px]- flex flex-col justify-center items-center bg-yellow-500- pt-10- no-sellect bg-transparent- ${className}`} 
         style={{ 
             ...style 
         }}

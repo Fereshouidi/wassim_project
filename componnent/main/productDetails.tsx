@@ -163,7 +163,7 @@ const ProductDetails = ({
 
   return (
     <div
-      className={` h-full max-w-[600px]- sm:w-[650px]- bg-green-500- overflow-y-scroll scrollbar-hidden p-5 ${screenWidth > 1000 ? "overflow-y-scroll scrollbar-hidden max-w-[45%]" : "overflow-y-scroll scrollbar-hidden"} ${className}`}
+      className={` h-full max-w-[600px]- sm:w-[650px]- min-w-full sm:min-w-[500px] bg-green-500- overflow-y-scroll scrollbar-hidden p-5 ${screenWidth > 1000 ? "overflow-y-scroll scrollbar-hidden max-w-[45%]" : "overflow-y-scroll scrollbar-hidden"} ${className}`}
       style={{
         ...style
       }}
