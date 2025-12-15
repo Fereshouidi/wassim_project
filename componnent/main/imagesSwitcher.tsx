@@ -104,6 +104,7 @@ const ImagesSwitcher = ({
                 className='w-full h-full bg-blue-500- object-content rounded-sm'
                 style={{
                     maxHeight: "90vh",
+                    border: `0.5px solid ${colors.light[500]}`
                 }}
                 ref={imageDisplayRef}
             />

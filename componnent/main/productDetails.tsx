@@ -187,7 +187,7 @@ const ProductDetails = ({
 
         <h4 className='font-bold text-md m-2'>{activeLanguage.nav.collections + " :"}</h4>
 
-        <div className='w-full flex flex-row gap-2'>
+        <div className='w-full flex flex-wrap gap-2'>
           {
             loadingGettingCollection ?
               [1, 2, 3].map((x) => (
@@ -213,7 +213,7 @@ const ProductDetails = ({
             {
                 availableColors.length > 0 && <div>
                     <h4 className='font-bold text-md m-2'>{activeLanguage.sideMatter.colors}</h4>
-                    <div className='w-full flex flex-row gap-2'>
+                    <div className='w-full flex flex-wrap gap-2'>
                     {
                         !loadingGettingProduct ?
                             availableColors.map((color) => (
@@ -241,7 +241,7 @@ const ProductDetails = ({
             {
                 availableSizes.length > 0 && <div>
                     <h4 className='font-bold text-md m-2'>{activeLanguage.sideMatter.sizes}</h4>
-                    <div className='w-full flex flex-row gap-2'>
+                    <div className='w-full flex flex-wrap gap-2'>
                     {
                         !loadingGettingProduct ? 
                             availableSizes.map((size) => (
@@ -270,7 +270,7 @@ const ProductDetails = ({
             {
                 availableTypes?.length > 0 && <div>
                     <h4 className='font-bold text-md m-2'>{activeLanguage.sideMatter.types}</h4>
-                    <div className='w-full flex flex-row gap-2'>
+                    <div className='w-full flex flex-wrap gap-2'>
                     {
                         !loadingGettingProduct ?
                             availableTypes.map((type) => (
