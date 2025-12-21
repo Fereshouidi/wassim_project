@@ -154,9 +154,9 @@ const SliderForPhones = ({
 
                             <div className='w-max h-full flex flex-row justify-start smpx-5'>{
 
-                                products.map((product) => (
+                                products.map((product, index) => (
                                     <div 
-                                        key={product._id}
+                                        key={index}
                                         className=' min-h-[150px]'
                                         style={{
                                             width: cardWidth  + "px"

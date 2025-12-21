@@ -23,6 +23,8 @@ import { useClient } from "@/contexts/client";
 import { useStatusBanner } from "@/contexts/StatusBanner";
 import { useOwner } from "@/contexts/ownerInfo";
 import LoadingScreen from "@/componnent/sub/loading/loadingScreen";
+import SkeletonLoading from "@/componnent/sub/SkeletonLoading";
+import { useLanguage } from "@/contexts/languageContext";
 
 interface Props {
   product: ProductType;
@@ -32,6 +34,7 @@ interface Props {
 export default function ClientProductPage({ product }: Props) {
     const { screenWidth, screenHeight } = useScreen();
     const { colors } = useTheme();
+    const { activeLanguage } = useLanguage();
     const socket = useSocket();
     const { client } = useClient()
     const { setStatusBanner } = useStatusBanner();
@@ -303,21 +306,24 @@ export default function ClientProductPage({ product }: Props) {
           />
 
           <div 
-            className={`w-full bg-red-500- sm:min-h-[90vh]- relative flex bg-blue-500- ${screenWidth > 1000 ? 'h-[90vh] flex-row justify-center' : 'flex-col items-center'} pt-5`}
+            className={`w-full bg-red-500- sm:min-h-[90vh]- relative flex bg-blue-500- pb-16- ${screenWidth > 1000 ? 'h-[90vh] flex-row justify-center' : 'flex-col items-center'} pt-5`}
             style={{
-                minHeight: screenHeight - (headerHeight * 1.5) 
+                minHeight: screenHeight - (headerHeight * 1.5),
+                
+                // borderBottom: `0.2px solid ${colors.light[200]}`
             }}
         >
 
             <div 
               className={`
+                
                 ${screenWidth > 1000 ? 
-                    "w-24 h-[90%] flex flex-col gap-2 justify-center items-end bg-red-500- bg-red-500- mr-10-"
+                    "w-24 h-[90%] bg-red-500- flex flex-col gap-2 justify-center items-end bg-red-500- bg-red-500- mr-10-"
                   : "w-full flex flex-row gap-2 justify-center items-end"
                 }
               `}
             >
-              {ownerInfo?.socialMedia?.map((media) => (
+              {screenWidth > 1000 && ownerInfo?.socialMedia?.map((media) => (
                 <img 
                   key={media.platform}
                   src={media.icon}
@@ -331,6 +337,17 @@ export default function ClientProductPage({ product }: Props) {
             </div>
             
             <div className={`flex flex-1 ${screenWidth > 1000 ? 'h-[90vh] flex-row justify-center items-center' : 'flex-col items-center'}`}>
+              
+            { screenWidth < 1000 ?
+              product.name[activeLanguage.language] ?
+                <h4 className='font-bold text-lg sm:text-xl px-10'>
+                  {product.name[activeLanguage.language]}
+                </h4>
+                : <div className='w-[300px] h-7 rounded-sm'><SkeletonLoading /></div>
+              : null
+            }
+              
+              
               <ImagesSwitcher
                   images={product?.images || []}
                   like={like?? false}

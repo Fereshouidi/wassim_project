@@ -10,6 +10,8 @@ import InputForm from './inputForm'
 import ChoseQuantity from '../sub/choseQuantity'
 import { useScreen } from '@/contexts/screenProvider'
 import ProductActionPanel from '../sub/ProductActionPanel'
+import { handleShareOnFacebook } from '@/lib'
+import { useOwner } from '@/contexts/ownerInfo'
 
 type ProductDetailsType = {
   className?: string
@@ -51,15 +53,18 @@ const ProductDetails = ({
   const { activeLanguage } = useLanguage();
   const { colors } = useTheme();
   const [firstRender, setFirstRender] = useState<boolean>(true);
+  const { ownerInfo } = useOwner();
 
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedType, setSelectedType] = useState<string | null>(null);
 
-  const [colorsDispo, setColorsDispo] = useState<string[]>([]);
-  const [sizessDispo, setSizesDispo] = useState<string[]>([]);
-  const [typesDispo, setTypesDispo] = useState<string[]>([]);
+  // All possible values (to display)
+  const [allColors, setAllColors] = useState<string[]>([]);
+  const [allSizes, setAllSizes] = useState<string[]>([]);
+  const [allTypes, setAllTypes] = useState<string[]>([]);
 
+  // Available values (for availability check)
   const [availableColors, setAvailableColors] = useState<string[]>([]);
   const [availableSizes, setAvailableSizes] = useState<string[]>([]);
   const [availableTypes, setAvailableTypes] = useState<string[]>([]);
@@ -102,7 +107,37 @@ const ProductDetails = ({
 
     const specs = product.specifications;
 
-    const colors = Array.from(
+    // Get ALL possible values (to display all options)
+    const allColorsSet = Array.from(
+      new Set(
+        specs
+          .map((s) => s.color ?? "")
+          .filter((c) => c !== "")
+      )
+    );
+
+    const allSizesSet = Array.from(
+      new Set(
+        specs
+          .map((s) => s.size ?? "")
+          .filter((sz) => sz !== "")
+      )
+    );
+
+    const allTypesSet = Array.from(
+      new Set(
+        specs
+          .map((s) => s.type ?? "")
+          .filter((t) => t !== "")
+      )
+    );
+
+    setAllColors(allColorsSet);
+    setAllSizes(allSizesSet);
+    setAllTypes(allTypesSet);
+
+    // Get AVAILABLE values based on current selection
+    const availableColorsSet = Array.from(
       new Set(
         specs
           .filter(
@@ -116,7 +151,7 @@ const ProductDetails = ({
       )
     );
 
-    const sizes = Array.from(
+    const availableSizesSet = Array.from(
       new Set(
         specs
           .filter(
@@ -130,8 +165,7 @@ const ProductDetails = ({
       )
     );
 
-
-    const types = Array.from(
+    const availableTypesSet = Array.from(
       new Set(
         specs
           .filter(
@@ -145,10 +179,9 @@ const ProductDetails = ({
       )
     );
 
-
-    setAvailableColors(colors);
-    setAvailableSizes(sizes);
-    setAvailableTypes(types);
+    setAvailableColors(availableColorsSet);
+    setAvailableSizes(availableSizesSet);
+    setAvailableTypes(availableTypesSet);
 
     const matched = specs.find(
       (s) =>
@@ -169,12 +202,13 @@ const ProductDetails = ({
       }}
     >
       <div>
-        {
+        { screenWidth > 1000 ?
           product.name[activeLanguage.language] ?
             <h4 className='font-bold text-lg sm:text-xl'>
               {product.name[activeLanguage.language]}
             </h4>
             : <div className='w-[300px] h-7 rounded-sm'><SkeletonLoading /></div>
+          : null
         }
 
         {
@@ -185,52 +219,68 @@ const ProductDetails = ({
             : <div className='w-[100px] h-10 m-4 rounded-sm'><SkeletonLoading /></div>
         }
 
-        <h4 className='font-bold text-md m-2'>{activeLanguage.nav.collections + " :"}</h4>
+        <div className={`w-full flex ${collections.length == 0 ? "flex-row items-center" : "flex-col"}`}>
 
-        <div className='w-full flex flex-wrap gap-2'>
-          {
-            loadingGettingCollection ?
-              [1, 2, 3].map((x) => (
-                <div key={x} className='w-[70px] h-7 m-1 rounded-sm'><SkeletonLoading /></div>
-              ))
-              : collections.map((collection => (
-                <h4
-                  key={collection._id}
-                  className='p-2 text-sm rounded-sm'
-                  style={{
-                    backgroundColor: colors.light[250],
-                    color: colors.dark[500]
-                  }}
-                >
-                  {collection.name[activeLanguage.language]}
-                </h4>
-              )))
-          }
+          <h4 className='font-bold whitespace-nowrap text-md m-1'>{activeLanguage.nav.collections + " : "}</h4>
+
+          <div className='w-full flex flex-wrap gap-1 my-2 pl-2'>
+            {
+              loadingGettingCollection ?
+                [1, 2, 3].map((x) => (
+                  <div key={x} className='w-[70px] h-7 m-1- rounded-sm'><SkeletonLoading /></div>
+                ))
+                : collections?.length > 0 ? collections.map((collection => (
+                  <h4
+                    key={collection._id}
+                    className='p-2 text-sm rounded-sm'
+                    style={{
+                      backgroundColor: colors.light[250],
+                      color: colors.dark[500]
+                    }}
+                  >
+                    {collection.name[activeLanguage.language]}
+                  </h4>
+                )))
+                : <h4>null</h4>
+            }
+          </div>
         </div>
 
-        <div className='client-select'>
+
+        <div className='client-select flex flex-col gap-2'>
             
             {
-                availableColors.length > 0 && <div>
-                    <h4 className='font-bold text-md m-2'>{activeLanguage.sideMatter.colors}</h4>
-                    <div className='w-full flex flex-wrap gap-2'>
+                allColors.length > 0 && <div className={`${allColors.length > 2 ? "flex flex-col" : "flex flex-row"}`}>
+                    <h4 className='w-fit bg-red-500- whitespace-nowrap overflow-hidden- text-ellipsis- font-bold text-md m-2'>{activeLanguage.sideMatter.colors + " : "}</h4>
+                    <div className='w-full flex flex-wrap gap-2  pl-2'>
                     {
                         !loadingGettingProduct ?
-                            availableColors.map((color) => (
-                            <h4
-                                key={color}
-                                className='p-2 text-sm rounded-sm cursor-pointer'
-                                style={{
-                                backgroundColor: selectedColor === color ? colors.dark[150] : 'transparent',
-                                border: `1px solid ${colors.light[250]}`,
-                                color: selectedColor === color ? colors.light[200] : colors.dark[500],
-                                opacity: availableColors.includes(color) ? 1 : 0.3,
-                                }}
-                                onClick={() => selectedColor != color ? setSelectedColor(color) : setSelectedColor('')}
-                            >
-                                {color}
-                            </h4>
-                            ))
+                            allColors.map((color) => {
+                                const isAvailable = availableColors.includes(color);
+                                const isSelected = selectedColor === color;
+                                
+                                return (
+                                    <h4
+                                        key={color}
+                                        className='p-2 text-sm rounded-sm cursor-pointer transition-all'
+                                        style={{
+                                            backgroundColor: isSelected ? colors.dark[150] : 'transparent',
+                                            border: `1px solid ${colors.light[250]}`,
+                                            color: isSelected ? colors.light[200] : colors.dark[500],
+                                            opacity: isAvailable ? 1 : 0.3,
+                                            cursor: isAvailable ? 'pointer' : 'not-allowed',
+                                            textDecoration: !isAvailable ? 'line-through' : 'none'
+                                        }}
+                                        onClick={() => {
+                                            if (isAvailable) {
+                                                selectedColor !== color ? setSelectedColor(color) : setSelectedColor(null);
+                                            }
+                                        }}
+                                    >
+                                        {color}
+                                    </h4>
+                                );
+                            })
                         :
                             [1,2,3].map((x) => (<div key={x} className='w-16 h-7'><SkeletonLoading/></div>))
                     }
@@ -239,26 +289,37 @@ const ProductDetails = ({
             }
 
             {
-                availableSizes.length > 0 && <div>
-                    <h4 className='font-bold text-md m-2'>{activeLanguage.sideMatter.sizes}</h4>
-                    <div className='w-full flex flex-wrap gap-2'>
+                allSizes.length > 0 && <div className={`${allColors.length > 2 ? "flex flex-col" : "flex flex-row"}`}>
+                    <h4 className='font-bold text-md whitespace-nowrap m-2'>{activeLanguage.sideMatter.sizes + " : "}</h4>
+                    <div className='w-full flex flex-wrap gap-2  pl-2'>
                     {
                         !loadingGettingProduct ? 
-                            availableSizes.map((size) => (
-                            <h4
-                                key={size}
-                                className='p-2 text-sm rounded-sm cursor-pointer'
-                                style={{
-                                backgroundColor: selectedSize === size ? colors.dark[150] : 'transparent',
-                                border: `1px solid ${colors.light[250]}`,
-                                color: selectedSize === size ? colors.light[200] : colors.dark[500],
-                                opacity: availableSizes.includes(size) ? 1 : 0.3,
-                                }}
-                                onClick={() => selectedSize != size ? setSelectedSize(size) : setSelectedSize('')}
-                            >
-                                {size}
-                            </h4>
-                            ))
+                            allSizes.map((size) => {
+                                const isAvailable = availableSizes.includes(size);
+                                const isSelected = selectedSize === size;
+                                
+                                return (
+                                    <h4
+                                        key={size}
+                                        className='p-2 text-sm rounded-sm cursor-pointer transition-all'
+                                        style={{
+                                            backgroundColor: isSelected ? colors.dark[150] : 'transparent',
+                                            border: `1px solid ${colors.light[250]}`,
+                                            color: isSelected ? colors.light[200] : colors.dark[500],
+                                            opacity: isAvailable ? 1 : 0.3,
+                                            cursor: isAvailable ? 'pointer' : 'not-allowed',
+                                            textDecoration: !isAvailable ? 'line-through' : 'none'
+                                        }}
+                                        onClick={() => {
+                                            if (isAvailable) {
+                                                selectedSize !== size ? setSelectedSize(size) : setSelectedSize(null);
+                                            }
+                                        }}
+                                    >
+                                        {size}
+                                    </h4>
+                                );
+                            })
                         :
                             [1,2,3].map((x) => (<div key={x} className='w-16 h-7'><SkeletonLoading/></div>))
                     }
@@ -268,26 +329,37 @@ const ProductDetails = ({
 
 
             {
-                availableTypes?.length > 0 && <div>
-                    <h4 className='font-bold text-md m-2'>{activeLanguage.sideMatter.types}</h4>
-                    <div className='w-full flex flex-wrap gap-2'>
+                allTypes?.length > 0 && <div className={`${allColors.length > 2 ? "flex flex-col" : "flex flex-row"}`}>
+                    <h4 className='font-bold whitespace-nowrap text-md m-2'>{activeLanguage.sideMatter.types + " : "}</h4>
+                    <div className='w-full flex flex-wrap gap-2  pl-5'>
                     {
                         !loadingGettingProduct ?
-                            availableTypes.map((type) => (
-                            <h4
-                                key={type}
-                                className='p-2 text-sm rounded-sm cursor-pointer'
-                                style={{
-                                backgroundColor: selectedType === type ? colors.dark[150] : 'transparent',
-                                border: `1px solid ${colors.light[250]}`,
-                                color: selectedType === type ? colors.light[200] : colors.dark[500],
-                                opacity: availableTypes.includes(type) ? 1 : 0.3,
-                                }}
-                                onClick={() => selectedType != type ? setSelectedType(type) : setSelectedType('')}
-                            >
-                                {type}
-                            </h4>
-                            ))
+                            allTypes.map((type) => {
+                                const isAvailable = availableTypes.includes(type);
+                                const isSelected = selectedType === type;
+                                
+                                return (
+                                    <h4
+                                        key={type}
+                                        className='p-2 text-sm rounded-sm cursor-pointer transition-all'
+                                        style={{
+                                            backgroundColor: isSelected ? colors.dark[150] : 'transparent',
+                                            border: `1px solid ${colors.light[250]}`,
+                                            color: isSelected ? colors.light[200] : colors.dark[500],
+                                            opacity: isAvailable ? 1 : 0.3,
+                                            cursor: isAvailable ? 'pointer' : 'not-allowed',
+                                            textDecoration: !isAvailable ? 'line-through' : 'none'
+                                        }}
+                                        onClick={() => {
+                                            if (isAvailable) {
+                                                selectedType !== type ? setSelectedType(type) : setSelectedType(null);
+                                            }
+                                        }}
+                                    >
+                                        {type}
+                                    </h4>
+                                );
+                            })
                         :
                             [1,2,3].map((x) => (<div key={x} className='w-16 h-7'><SkeletonLoading/></div>))
                     }
@@ -299,7 +371,7 @@ const ProductDetails = ({
         </div>
 
         <p 
-            className='p-2 sm:p-5 mt-2 sm:mt-5 text-md opacity-90 whitespace-pre-line'
+            className='p-5 sm:p-5 mt-5 sm:mt-5 text-md opacity-90 whitespace-pre-line'
             style={{
                 borderTop: `0.5px solid ${colors.light[300]}`,
                 borderBottom: `0.5px solid ${colors.light[300]}`,
@@ -321,6 +393,20 @@ const ProductDetails = ({
             cart={cart}
           />
         </div>
+
+              <div className='w-full flex flex-row justify-center items-center gap-2 mt-10'>
+                {screenWidth < 1000 && ownerInfo?.socialMedia?.map((media) => (
+                  <img 
+                    key={media.platform}
+                    src={media.icon}
+                    onClick={() => {
+                      media.platform == "Facebook" ? handleShareOnFacebook(window.location.href)
+                      : null
+                    }}
+                    className="w-8 h-8 cursor-pointer bg-red-500-"
+                  />
+                ))}
+              </div>
 
 
 

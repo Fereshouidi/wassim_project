@@ -171,9 +171,9 @@ const Slider2 = ({
 
                             <div className='w-max h-full flex flex-row justify-start'>{
 
-                                products.map((product) => (
+                                products.map((product, index) => (
                                     <div 
-                                        key={product._id}
+                                        key={index}
                                         className=' min-h-[150px] sm:min-h-[220px] m-0 '
                                         style={{
                                             width: cardWidth  + "px",

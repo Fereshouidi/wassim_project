@@ -64,7 +64,8 @@ const ImagesSwitcher = ({
     <div 
         className={` relative h-full top-0 min-w-[380px] sm:min-w-[550px] min-h-[300px] sm:min-h-[500px] bg-yellow-500- w-[600px]- flex flex-col justify-center items-center bg-yellow-500- pt-10- no-sellect bg-transparent- ${className}`} 
         style={{ 
-            ...style 
+            ...style,
+            maxWidth: screenWidth > 700 ? "700px" : "100vw",
         }}
     >
 
@@ -73,6 +74,8 @@ const ImagesSwitcher = ({
         className={`bg-red-500- relative min-h-full- min-w-full ${screenWidth > 500 ? "w-[600px]- h-[500px]" : "w-[400px]- h-[400px]"}  bg-red-500- rounded-sm flex flex-1 justify-center items-center p-5 sm:px-10- scrollbar-hidden`}
         style={{
             paddingBottom: 2,
+            
+            // maxHeight: "90vh",
             // minHeight: imageDisplayWidth / 2
         }}
     >
@@ -101,9 +104,10 @@ const ImagesSwitcher = ({
             images[currentImageIndex] ? <img 
                 src={images[currentImageIndex]} 
                 alt="" 
-                className='w-full h-full bg-blue-500- object-content rounded-sm'
+                className='w-full h-full bg-blue-500- p-2- object-content rounded-sm'
                 style={{
-                    maxHeight: "90vh",
+                    // maxWidth: "100%",
+                    // maxHeight: "90vh",
                     border: `0.5px solid ${colors.light[500]}`
                 }}
                 ref={imageDisplayRef}
@@ -114,11 +118,11 @@ const ImagesSwitcher = ({
       </div>
 
 
-        {images && <div className='w-full h-[100px]- flex flex-row justify-center items-center'>
+        {images && <div className='w-[90%] h-[100px]- flex flex-row justify-center items-center'>
 
             {/* left arrow */}
             {images.length > 3 && screenWidth > 1000 && <div 
-                className={`w-14 h-14 flex justify-center items-center rounded-full mx-10- cursor-pointer duration-300`}
+                className={`w-14 h-14 flex justify-center items-center rounded-full mx-2 cursor-pointer duration-300`}
                 onMouseEnter={() => setLeftArrowHover(true)}
                 onMouseLeave={() => setLeftArrowHover(false)}
                 onClick={handleLeftArrowClick}
@@ -132,10 +136,11 @@ const ImagesSwitcher = ({
             
             {/* slider */}
         <div 
-            className='h-full- overflow-x-scroll scrollbar-hidden'
+            className='h-full- w-[100%] sm:w-[80%] overflow-x-scroll scrollbar-hidden'
             ref={sliderRef}
             style={{
-                width: imgWidth * 3 + "px"
+                // maxWidth: "90%",
+                // width: imgWidth * 3 + "px"
             }}
         >
 
@@ -145,7 +150,7 @@ const ImagesSwitcher = ({
             >{
                 images.map((img, index) => (
                     <div 
-                        className='flex justify-center items-center p-2 overflow-hidden '
+                        className='flex min-w-full- justify-center items-center p-2 overflow-hidden '
                         key={index}
                         style={{
                             width: imgWidth + 'px',
@@ -168,7 +173,7 @@ const ImagesSwitcher = ({
 
             {/* right arrow */}
             {images.length > 3 && screenWidth > 1000 && <div 
-                className={`w-14 h-14 flex justify-center items-center rounded-full mx-10- cursor-pointer duration-300`}
+                className={`w-14 h-14 flex justify-center items-center rounded-full mx-2 cursor-pointer duration-300`}
                 onMouseEnter={() => setRightArrowHover(true)}
                 onMouseLeave={() => setRightArrowHover(false)}
                 onClick={handleRightArrowClick}
