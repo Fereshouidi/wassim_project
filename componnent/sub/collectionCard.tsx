@@ -73,7 +73,7 @@ const CollectionCard = ({
     >
 
         <div 
-            className='w-full h-[270px] flex flex-1 '
+            className='w-full h-[270px] sm:h-[250px] flex flex-1 '
             style={{
                 backgroundColor: colors.light[300],
                 border: 'none'

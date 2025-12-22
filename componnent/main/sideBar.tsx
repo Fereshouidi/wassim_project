@@ -111,7 +111,7 @@ const SideBar = ({
 
                 <ul className='w-full bg-green-100- mt-5'>
                     <li
-                        className='flex h-14 border-b-[1px] border-b-gray-100 text-sm'
+                        className='flex h-14 border-b-[1px] border-b-gray-100 text-sm cursor-pointer'
                         style={{
                             borderBottomColor: colors.dark[200]
                         }}
@@ -126,7 +126,7 @@ const SideBar = ({
                         >{activeLanguage.nav.home}</Link>
                     </li>
                     <li
-                        className='w-full bg-green-400- flex h-14 border-b-[1px] border-b-gray-100 text-sm'
+                        className='w-full bg-green-400- flex h-14 border-b-[1px] border-b-gray-100 text-sm cursor-pointer'
                         style={{
                             borderBottomColor: colors.dark[200]
                         }}
@@ -144,22 +144,42 @@ const SideBar = ({
                             <Collections sideBarActive={isActive}/>
                         </div>
                     </li>
-                    <li
-                        className='flex h-14 border-b-[1px] border-b-gray-100 text-sm'
+                    {client?._id && <li
+                        className='flex h-14 border-b-[1px] border-b-gray-100 text-sm cursor-pointer'
                         style={{
                             borderBottomColor: colors.dark[200]
                         }}
                     >
-                        <Link href="#" 
-                            onClick={() => setLoadingScreen(true)}
+                        <div 
+                            onClick={() => {
+                                setLoadingScreen(true);
+                                router.push('/favorite')
+                            }}
                             className='w-full h-full flex items-center px-7'
                             style={{
                                 color: colors.light[200]
                             }}    
-                        >{activeLanguage.nav.favorite}</Link>
-                    </li>
+                        >{activeLanguage.nav.favorite}</div>
+                    </li>}
+                    {client?._id && <li
+                        className='flex h-14 border-b-[1px] border-b-gray-100 text-sm cursor-pointer'
+                        style={{
+                            borderBottomColor: colors.dark[200]
+                        }}
+                    >
+                        <div
+                            onClick={() => {
+                                setLoadingScreen(true);
+                                router.push('/orders')
+                            }}                            
+                            className='w-full h-full flex items-center px-7'
+                            style={{
+                                color: colors.light[200]
+                            }}    
+                        >{activeLanguage.nav.order}</div>
+                    </li>}
                     <li
-                        className='flex h-14 border-b-[1px] border-b-gray-100 text-sm'
+                        className='flex h-14 border-b-[1px] border-b-gray-100 text-sm cursor-pointer'
                         style={{
                             borderBottomColor: colors.dark[200]
                         }}

@@ -104,6 +104,7 @@ const CartSide = ({
 
         socket?.emit('add_order', { 
             form: {
+                client: client?._id,
                 fullName: clientForm.fullName,
                 phone: clientForm.phone,
                 address: clientForm.adress,

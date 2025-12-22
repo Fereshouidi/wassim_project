@@ -22,10 +22,8 @@ export default function Home() {
 
   const [sideBarActive, setSideBarActive] = useState<boolean>(false);
   const { colors } = useTheme();
-  // const [pub, setPub] = useState<PubType | undefined>(undefined);
   const { screenWidth } = useScreen();
   const { setLoadingScreen } = useLoadingScreen();
-  // const [ownerInfo, setOwnerInfo] = useState<OwnerInfoType | undefined>(undefined);
   const { ownerInfo, setOwnerInfo } = useOwner();
   const [pub, setPub] = useState<PubType | undefined>(undefined);
 
@@ -42,35 +40,10 @@ export default function Home() {
     fetchData();
   }, [])
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     await axios.get(backEndUrl + "/getOwnerInfo")
-  //     .then(({ data }) => setOwnerInfo(data.ownerInfo))
-  //     .catch((err) => {
-  //       throw err
-  //     })
-  //   }
-  //   fetchData();
-  // }, [])
-
   useEffect(() => {
     setLoadingScreen(false);
   }, [])
 
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const res = await axios.get(backEndUrl + "/getPub")
-  //     .then(({data}) => setPub(data.pub))
-  //     .catch((err) => {
-  //       console.log(err);
-        
-  //     })
-  //   }
-  //   fetchData();
-  // }, [])
-
-  // if (!ownerInfo) return <div>loading</div>
 
   if (!ownerInfo) return <LoadingScreen/>
 
@@ -92,8 +65,6 @@ export default function Home() {
         setOwnerInfo={setOwnerInfo}
       />
 
-      <OrderConfirmedBanner/>
-
       <div 
         className="w-full"
         style={{
@@ -103,7 +74,7 @@ export default function Home() {
         {pub?.heroBanner ?
           <img 
             src={screenWidth < 1000 ? pub?.heroBanner?.sm : pub?.heroBanner?.md}
-            className="w-full h-full object-cover object-top max-h-[60vh]" 
+            className="w-full h-full object-cover object-top max-h-[65vh]" 
             style={{
               backgroundColor: colors.dark[800]
             }}

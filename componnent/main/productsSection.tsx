@@ -97,11 +97,11 @@ const ProductsSection = ({
 
   return (
 
-    <div className='w-full flex flex-col justify-center items-center my-5'>
+    <div className='w-full flex flex-col justify-center items-center sm:my-5'>
 
         {collection.name[activeLanguage.language] ?
             <h2 
-                className='text-xl sm:text-4xl sm:m-20 m-10'
+                className='text-xl sm:text-4xl sm:mb-20 m-10'
                 style={{
                     color: colors.dark[100],
                     ...tittleStyle
@@ -120,7 +120,7 @@ const ProductsSection = ({
 
                 <div className='w-full sm:px-14 flex flex-col justify-center items-center'>
 
-                    <div className='w-full flex flex-wrap justify-center gap-2 sm:gap-10'>
+                    <div className='w-full flex flex-wrap wrap-break-word justify-center px-20- bg-red-500- gap-2 sm:gap-10'>
 
                         {
                             products?.map((product, index) => (

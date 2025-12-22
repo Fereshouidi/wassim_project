@@ -169,6 +169,8 @@ export type LanguageStracture = {
     GetBackMyAccountParagraph: string
     sendingEmailParagraph: string
     resend: string
+    myFavorites: string
+    myOrders: string
 
     // fullName: string
     // adress: string,
@@ -180,7 +182,16 @@ export type LanguageContextType = {
     setActiveLanguage: (value: LanguageStracture) => void
 }
 
-
+export interface OrderType {
+  _id?: string;
+  client?: string;
+  address?: string
+  clientNote?: string
+  status?: "pending" | "delivered" | "failed";
+  purchases: PurchaseType[]
+  createdAt?: Date | null;
+  updatedAt?: Date | null;
+}
 
 export type Colors = {
   light: Record<

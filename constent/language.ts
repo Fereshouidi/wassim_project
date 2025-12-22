@@ -108,7 +108,9 @@ export const english = {
     GetBackMyAccount: "Get back my account",
     GetBackMyAccountParagraph: "send a verification code to the email you used to create your account.",
     sendingEmailParagraph: "we have send you a verification code to this email",
-    resend: "Send again"
+    resend: "Send again",
+    myFavorites: "My Favorites",
+    myOrders: "My Orders"
 
 } as LanguageStracture;
 
@@ -121,7 +123,7 @@ export const frensh = {
         collection: "Collection",
         contact: "Contactez Nous",
         askAi: "Demande IA",
-        favorite: "Favorite",
+        favorite: "Favorit",
         order: "commandes"
     },
     sideMatter: {
@@ -211,7 +213,9 @@ export const frensh = {
     GetBackMyAccount: "Récupérer mon compte",
     GetBackMyAccountParagraph: "Envoyez un code de vérification à l’e-mail que vous avez utilisé pour créer votre compte.",
     sendingEmailParagraph: "Nous vous avons envoyé un code de vérification à cet e-mail.",
-    resend: "Envoyer à nouveau"
+    resend: "Envoyer à nouveau",
+    myFavorites: "Mes Favoris",
+    myOrders: "Mes Commandes"
 
 
 
