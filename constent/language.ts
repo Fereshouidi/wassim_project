@@ -110,7 +110,13 @@ export const english = {
     sendingEmailParagraph: "we have send you a verification code to this email",
     resend: "Send again",
     myFavorites: "My Favorites",
-    myOrders: "My Orders"
+    myOrders: "My Orders",
+    pending: "pending",
+    delivered: "delivered",
+    failed: "failed",
+    pendingOrders: "Pending Orders",
+    failedgOrders: "FailedgOrders",
+    deliveredOrders: "DeliveredOrders"
 
 } as LanguageStracture;
 
@@ -215,9 +221,13 @@ export const frensh = {
     sendingEmailParagraph: "Nous vous avons envoyé un code de vérification à cet e-mail.",
     resend: "Envoyer à nouveau",
     myFavorites: "Mes Favoris",
-    myOrders: "Mes Commandes"
-
-
+    myOrders: "Mes Commandes",
+    pending: "En attente",
+    delivered: "Livré",
+    failed: "Échoué",
+    pendingOrders: "Commandes en attente",
+    failedgOrders: "Commandes échouées",
+    deliveredOrders: "Commandes livrées"
 
 } as LanguageStracture;
 

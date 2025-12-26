@@ -43,6 +43,23 @@ export function timeAgo(date: string | number | Date): string {
   return `${Math.floor(years)} years ago`;
 }
 
+export const showTimeWithTranslate = (date: Date | string, activeLanguage: "en" | "fr") => {
+    const d = new Date(date);
+
+    const options: Intl.DateTimeFormatOptions = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit', 
+        minute: '2-digit',
+        hour12: false    
+    };
+
+    const locale = activeLanguage === "en" ? "en-US" : "fr-FR";
+
+    return d.toLocaleString(locale, options);
+};
+
 export const calcTotalPrice = (order: OrderType) => {
     let totalPrice = 0;
 

@@ -6,7 +6,7 @@ import { calcTotalPrice, timeAgo } from '@/lib'
 import { OrderType } from '@/types'
 import React, { useEffect, useState } from 'react'
 import PurshasesTable from './purshasesTable'
-import ClientTable from './clientTable'
+import MoreDetailsTable from './moreDetailsTable'
 
 type Props = {
     order: OrderType;
@@ -83,7 +83,9 @@ const OrderCart = ({
                         purchases={order.purchases ?? []}
                     />
 
-                    <ClientTable/>
+                    <MoreDetailsTable
+                        order={order}
+                    />
                 </div>
             }
         </div>

@@ -1,20 +1,30 @@
 import { useClient } from '@/contexts/client';
 import { useLanguage } from '@/contexts/languageContext';
+import { useOwner } from '@/contexts/ownerInfo';
 import { useTheme } from '@/contexts/themeProvider';
+import { showTimeWithTranslate } from '@/lib';
+import { OrderType } from '@/types';
 import React from 'react'
 
-const ClientTable = () => {
+type props = {
+    order: OrderType
+}
+
+const MoreDetailsTable = ({
+    order
+}: props) => {
 
     const { client } = useClient();
     const { activeLanguage } = useLanguage();
     const { colors } = useTheme();
+    const { ownerInfo } = useOwner();
 
     return (
         <div 
-            className='w-full'
+            className='w-full cursor-auto'
             onClick={(e) => e.stopPropagation()}
         >
-            <h2 className='font-bold text-[12px] m-2'>{"Client details : "}</h2>
+            <h2 className='font-bold text-[12px] m-2'>{"More details : "}</h2>
 
             <table className='w-full bord-collapse'>
                 <thead>
@@ -22,19 +32,19 @@ const ClientTable = () => {
                         <th 
                             className='p-2 text-[10px] sm:text-[12px] bord text-center'
                             style={{ border: `0.5px solid ${colors.light[300]}` }}
-                        >{activeLanguage.sideMatter.fullName}</th>
-                        <th 
-                            className='p-2 text-[10px] sm:text-[12px] bord text-center'
-                            style={{ border: `0.5px solid ${colors.light[300]}` }}
-                        >{activeLanguage.sideMatter.email}</th>
-                        <th 
-                            className='p-2 text-[10px] sm:text-[12px] bord text-center'
-                            style={{ border: `0.5px solid ${colors.light[300]}` }}
-                        >{activeLanguage.sideMatter.phone}</th>
+                        >{"Delivered to"}</th>
                         <th 
                             className='p-2 text-[10px] sm:text-[12px] bord text-center'
                             style={{ border: `0.5px solid ${colors.light[300]}` }}
                         >{activeLanguage.sideMatter.adress}</th>
+                        <th 
+                            className='p-2 text-[10px] sm:text-[12px] bord text-center'
+                            style={{ border: `0.5px solid ${colors.light[300]}` }}
+                        >{"Driver's Phone"}</th>
+                        <th 
+                            className='p-2 text-[10px] sm:text-[12px] bord text-center'
+                            style={{ border: `0.5px solid ${colors.light[300]}` }}
+                        >{"Ordered At"}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -46,15 +56,15 @@ const ClientTable = () => {
                         <td 
                             className='p-2 text-[10px] sm:text-[12px] bord text-center'
                             style={{ border: `0.5px solid ${colors.light[300]}` }}
-                        >{client?.email}</td>
+                        >{order?.address}</td>
                         <td 
                             className='p-2 text-[10px] sm:text-[12px] bord text-center'
                             style={{ border: `0.5px solid ${colors.light[300]}` }}
-                        >{client?.phone}</td>
+                        >{ "+216" + ownerInfo?.contact.phone}</td>
                         <td 
                             className='p-2 text-[10px] sm:text-[12px] bord text-center'
                             style={{ border: `0.5px solid ${colors.light[300]}` }}
-                        >{client?.adress}</td>
+                        >{order.createdAt && showTimeWithTranslate(order.createdAt, activeLanguage.language)}</td>
                     </tr>
                 </tbody>
             </table>
@@ -62,4 +72,4 @@ const ClientTable = () => {
     )
 }
 
-export default ClientTable
+export default MoreDetailsTable

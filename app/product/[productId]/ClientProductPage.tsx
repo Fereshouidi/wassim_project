@@ -234,7 +234,7 @@ export default function ClientProductPage({ product }: Props) {
         })
     }, [activeSpecifications])
 
-    const handleLike = async (updatedLike: boolean) => {
+    const handleLike = async () => {
 
         if (!product || !client || like == null) return;
         setLoadingScreen(true);

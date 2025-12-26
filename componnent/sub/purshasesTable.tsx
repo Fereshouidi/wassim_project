@@ -22,7 +22,7 @@ const PurshasesTable = ({ purchases }: Props) => {
 
     return (
         <div 
-            className='w-full'
+            className='w-full cursor-auto'
             onClick={(e) => e.stopPropagation()}
         >
 

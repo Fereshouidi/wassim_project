@@ -171,6 +171,13 @@ export type LanguageStracture = {
     resend: string
     myFavorites: string
     myOrders: string
+    pending: string
+    delivered: string
+    failed: string
+    pendingOrders: string
+    failedgOrders: string
+    deliveredOrders: string
+    
 
     // fullName: string
     // adress: string,

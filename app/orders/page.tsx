@@ -16,6 +16,7 @@ import { useScreen } from '@/contexts/screenProvider';
 import { useTheme } from '@/contexts/themeProvider';
 import { OrdersByStatusType, OrderType, OwnerInfoType, ProductType } from '@/types';
 import axios from 'axios';
+import { skip } from 'node:test';
 import React, { useEffect, useState } from 'react'
 
 const OrdersPage = () => {
@@ -30,6 +31,12 @@ const OrdersPage = () => {
     const  [pendingOrdersCount, setPendingOrdeCount ] = useState<number>(0);
     const  [failedOrdersCount, setFailedgOrdeCount ] = useState<number>(0);
     const  [deliveredOrdersCount, setdeliveredOrdeCount ] = useState<number>(0);
+
+    const [limit, setLimit] = useState<number>(3);
+
+    const [pendingSkip, setPendingSkip] = useState<number>(limit);
+    const [failedSkip, setFailedSkip] = useState<number>(limit);
+    const [deliveredSkip, setDeliveredSkip] = useState<number>(limit);
 
                     
     const [ orders, setOrders ] = useState<OrdersByStatusType>({
@@ -52,9 +59,11 @@ const OrdersPage = () => {
 
             await axios.get(backEndUrl + "/getInationalOrdeByClient", { params : {
                 clientId: client?._id,
-                limit: 10
+                limit
             }})
             .then(({ data }) => {
+                console.log({data});
+                
                 setOrders(data.orders)
                 setPendingOrdeCount(data.pendingOrdersCount);
                 setFailedgOrdeCount(data.failedOrdersCount);
@@ -72,6 +81,179 @@ const OrdersPage = () => {
     useEffect(() => {
         console.log({orders})
     }, [orders])
+
+    const getMorePendingOrder = async () => {
+
+        setLoadingScreen(true);
+
+        await axios.get( backEndUrl + "/getOrdersByClientAndStatus", {
+            params: {
+                clientId: client?._id,
+                status: "pending",
+                limit,
+                skip: pendingSkip
+            }
+        })
+        .then(({ data }) => {
+            setOrders({
+                ...orders,
+                pendingOrders: [
+                    ...data.orders
+                ]
+            })
+            setPendingSkip(pendingSkip + limit);
+        })
+        .catch(( err ) => {
+            console.log({err});
+        })
+        setLoadingScreen(false);
+    }
+
+    const getMoreFailedOrder = async () => {
+
+        setLoadingScreen(true);
+
+        await axios.get( backEndUrl + "/getOrdersByClientAndStatus", {
+            params: {
+                clientId: client?._id,
+                status: "failed",
+                limit,
+                skip: failedSkip
+            }
+        })
+        .then(({ data }) => {
+            setOrders({
+                ...orders,
+                failedOrders: [
+                    // ...orders.failedOrders,
+                    ...data.orders
+                ]
+            })
+            setFailedSkip(failedSkip + limit);
+        })
+        .catch(( err ) => {
+            console.log({err});
+        })
+
+        setLoadingScreen(false);
+    }
+
+    const getMoreDeliveredOrder = async () => {
+
+        setLoadingScreen(true);
+
+        await axios.get( backEndUrl + "/getOrdersByClientAndStatus", {
+            params: {
+                clientId: client?._id,
+                status: "delivered",
+                limit,
+                skip: deliveredSkip
+            }
+        })
+        .then(({ data }) => {
+            setOrders({
+                ...orders,
+                deliveredOrders: [
+                    // ...orders.deliveredOrders,
+                    ...data.orders
+                ]
+            })
+            setDeliveredSkip(deliveredSkip + limit);
+        })
+        .catch(( err ) => {
+            console.log({err});
+        })
+
+        setLoadingScreen(false);
+    }
+
+
+    const getLessPendingOrders = async () => {
+
+        if (pendingSkip <= limit) return;
+
+        const newSkip = pendingSkip - limit;
+
+        setLoadingScreen(true);
+        try {
+            const { data } = await axios.get(backEndUrl + "/getOrdersByClientAndStatus", {
+                params: {
+                    clientId: client?._id,
+                    status: "pending",
+                    limit,
+                    skip: newSkip - limit
+                }
+            });
+
+            setOrders({
+                ...orders,
+                pendingOrders: data.orders
+            });
+            setPendingSkip(newSkip);
+        } catch (err) {
+            console.log({ err });
+        } finally {
+            setLoadingScreen(false);
+        }
+    };
+
+    const getLessFailedOrders = async () => {
+
+        if (failedSkip <= limit) return;
+
+        const newSkip = failedSkip - limit;
+
+        setLoadingScreen(true);
+        try {
+            const { data } = await axios.get(backEndUrl + "/getOrdersByClientAndStatus", {
+                params: {
+                    clientId: client?._id,
+                    status: "failed",
+                    limit,
+                    skip: newSkip - limit
+                }
+            });
+
+            setOrders({
+                ...orders,
+                failedOrders: data.orders
+            });
+            setFailedSkip(newSkip);
+        } catch (err) {
+            console.log({ err });
+        } finally {
+            setLoadingScreen(false);
+        }
+    };
+
+    const getLessDeliveredOrders = async () => {
+
+        if (deliveredSkip <= limit) return;
+
+        const newSkip = deliveredSkip - limit;
+
+        setLoadingScreen(true);
+        try {
+            const { data } = await axios.get(backEndUrl + "/getOrdersByClientAndStatus", {
+                params: {
+                    clientId: client?._id,
+                    status: "delivered",
+                    limit,
+                    skip: newSkip - limit
+                }
+            });
+
+            setOrders({
+                ...orders,
+                deliveredOrders: data.orders
+            });
+            setDeliveredSkip(newSkip);
+        } catch (err) {
+            console.log({ err });
+        } finally {
+            setLoadingScreen(false);
+        }
+    };
   
     if (!ownerInfo) return;
 
@@ -105,9 +287,35 @@ const OrdersPage = () => {
                     screenWidth > 1200 ?
                         <OrdersSectionForLargeScreens
                             orders={orders}
+                            pendingOrdersCount={pendingOrdersCount}
+                            failedOrdersCount={failedOrdersCount}
+                            deliveredOrdersCount={deliveredOrdersCount}
+                            limit={limit}
+                            pendingOrdersSkip={pendingSkip}
+                            failedOrdersSkip={failedSkip}
+                            deliveredOrdersSkip={deliveredSkip}
+                            getMorePendingOrder={getMorePendingOrder}
+                            getMoreFailedOrder={getMoreFailedOrder}
+                            getMoreDeliveredOrder={getMoreDeliveredOrder}
+                            getLessPendingOrders={getLessPendingOrders}
+                            getLessFailedOrders={getLessFailedOrders}
+                            getLessDeliveredOrders={getLessDeliveredOrders}
                         />
                     :   <OrdersSectionForSmallScreens
                             orders={orders}
+                            pendingOrdersCount={pendingOrdersCount}
+                            failedOrdersCount={failedOrdersCount}
+                            deliveredOrdersCount={deliveredOrdersCount}
+                            limit={limit}
+                            pendingOrdersSkip={pendingSkip}
+                            failedOrdersSkip={failedSkip}
+                            deliveredOrdersSkip={deliveredSkip}
+                            getMorePendingOrder={getMorePendingOrder}
+                            getMoreFailedOrder={getMoreFailedOrder}
+                            getMoreDeliveredOrder={getMoreDeliveredOrder}
+                            getLessPendingOrders={getLessPendingOrders}
+                            getLessFailedOrders={getLessFailedOrders}
+                            getLessDeliveredOrders={getLessDeliveredOrders}
                         />
                 }
           </div>

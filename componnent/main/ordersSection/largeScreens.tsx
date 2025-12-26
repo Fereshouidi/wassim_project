@@ -8,10 +8,37 @@ import OrdersListSection from './ordersListSection'
 
 type props = {
   orders: OrdersByStatusType
+  pendingOrdersCount: number
+  failedOrdersCount: number
+  deliveredOrdersCount: number
+  pendingOrdersSkip: number
+  failedOrdersSkip: number
+  deliveredOrdersSkip: number
+  limit: number
+  getMorePendingOrder: () => void
+  getMoreFailedOrder:  () => void
+  getMoreDeliveredOrder:  () => void
+  getLessPendingOrders:  () => void
+  getLessFailedOrders:  () => void
+  getLessDeliveredOrders:  () => void
 }
 
 const OrdersSection = ({ 
-  orders 
+  orders,
+  pendingOrdersCount,
+  failedOrdersCount,
+  deliveredOrdersCount,
+  pendingOrdersSkip,
+  failedOrdersSkip,
+  deliveredOrdersSkip,
+  limit,
+  getLessDeliveredOrders,
+  getLessFailedOrders,
+  getLessPendingOrders,
+  getMoreDeliveredOrder,
+  getMoreFailedOrder,
+  getMorePendingOrder
+  
 }: props) => {
 
   const { screenWidth, screenHeight } = useScreen();
@@ -41,32 +68,35 @@ const OrdersSection = ({
             : activePage == "delivered" ? orders.deliveredOrders
             : []
           }
+          totalOrdersCount={
+              activePage == "pending" ? pendingOrdersCount
+              : activePage == "failed" ? failedOrdersCount
+              : activePage == "delivered" ? deliveredOrdersCount
+              : 0
+          }
           activePage={activePage}
           setActivePage={setActivePage}
+          limit={limit}
+          skip={
+              activePage == "pending" ? pendingOrdersSkip
+              : activePage == "failed" ? failedOrdersSkip
+              : activePage == "delivered" ? deliveredOrdersSkip
+              : 0
+          }
+          getMore={
+              activePage == "pending" ? getMorePendingOrder
+              : activePage == "failed" ? getMoreFailedOrder
+              : activePage == "delivered" ? getMoreDeliveredOrder
+              : () => {}
+          }
+          getLess={
+              activePage == "pending" ? getLessPendingOrders
+              : activePage == "failed" ? getLessFailedOrders
+              : activePage == "delivered" ? getLessDeliveredOrders
+              : () => {alert('hi')}
+          }
         />
       </div>
-
-      {/* <div className='h-full bg-red-500- flex flex-1 rounded-sm p-4'
-        style={{
-          border: `0.2px solid ${colors.light[200]}`,
-          boxShadow: `0 0px 10px rgba(13, 13, 13, 0.05)`
-        }}
-      >
-        <FailedOrders
-          orders={orders.failedOrders}
-        />
-      </div>
-
-      <div className='h-full bg-green-500- flex flex-1 rounded-sm p-4'
-        style={{
-          border: `0.2px solid ${colors.light[200]}`,
-          boxShadow: `0 0px 10px rgba(13, 13, 13, 0.05)`
-        }}
-      >
-        <DeliveredOrders
-          orders={orders.deliveredOrders}
-        />  
-      </div> */}
 
     </div>
   )

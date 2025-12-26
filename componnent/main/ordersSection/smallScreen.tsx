@@ -7,10 +7,37 @@ import { useScreen } from '@/contexts/screenProvider'
 
 type props = {
   orders: OrdersByStatusType
+  pendingOrdersCount: number
+  failedOrdersCount: number
+  deliveredOrdersCount: number
+  pendingOrdersSkip: number
+  failedOrdersSkip: number
+  deliveredOrdersSkip: number
+  limit: number
+  getMorePendingOrder: () => void
+  getMoreFailedOrder:  () => void
+  getMoreDeliveredOrder:  () => void
+  getLessPendingOrders:  () => void
+  getLessFailedOrders:  () => void
+  getLessDeliveredOrders:  () => void
 }
 
-const OrdersSection = ({
-    orders
+const OrdersSection = ({ 
+  orders,
+  pendingOrdersCount,
+  failedOrdersCount,
+  deliveredOrdersCount,
+  pendingOrdersSkip,
+  failedOrdersSkip,
+  deliveredOrdersSkip,
+  limit,
+  getLessDeliveredOrders,
+  getLessFailedOrders,
+  getLessPendingOrders,
+  getMoreDeliveredOrder,
+  getMoreFailedOrder,
+  getMorePendingOrder
+  
 }: props) => {
 
     const { colors } = useTheme();
@@ -26,6 +53,7 @@ const OrdersSection = ({
                     boxShadow: `0 0px 10px rgba(13, 13, 13, 0.05)`
                 }}
             >
+                
                 <OrdersListSection
                     orders={
                         activePage == "pending" ? orders.pendingOrders
@@ -33,8 +61,33 @@ const OrdersSection = ({
                         : activePage == "delivered" ? orders.deliveredOrders
                         : []
                     }
+                    totalOrdersCount={
+                        activePage == "pending" ? pendingOrdersCount
+                        : activePage == "failed" ? failedOrdersCount
+                        : activePage == "delivered" ? deliveredOrdersCount
+                        : 0
+                    }
                     activePage={activePage}
                     setActivePage={setActivePage}
+                    limit={limit}
+                    skip={
+                        activePage == "pending" ? pendingOrdersSkip
+                        : activePage == "failed" ? failedOrdersSkip
+                        : activePage == "delivered" ? deliveredOrdersSkip
+                        : 0
+                    }
+                    getMore={
+                        activePage == "pending" ? getMorePendingOrder
+                        : activePage == "failed" ? getMoreFailedOrder
+                        : activePage == "delivered" ? getMoreDeliveredOrder
+                        : () => {}
+                    }
+                    getLess={
+                        activePage == "pending" ? getLessPendingOrders
+                        : activePage == "failed" ? getLessFailedOrders
+                        : activePage == "delivered" ? getLessDeliveredOrders
+                        : () => {}
+                    }
                 />
             </div>
         </div>
