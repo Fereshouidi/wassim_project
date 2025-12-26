@@ -32,7 +32,7 @@ const OrdersPage = () => {
     const  [failedOrdersCount, setFailedgOrdeCount ] = useState<number>(0);
     const  [deliveredOrdersCount, setdeliveredOrdeCount ] = useState<number>(0);
 
-    const [limit, setLimit] = useState<number>(3);
+    const [limit, setLimit] = useState<number>(10);
 
     const [pendingSkip, setPendingSkip] = useState<number>(limit);
     const [failedSkip, setFailedSkip] = useState<number>(limit);
