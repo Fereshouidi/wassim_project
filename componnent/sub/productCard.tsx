@@ -72,28 +72,28 @@ const ProductCard = ({
 
     }
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        if (!client?._id || (product._id?.length || 0) < 4) return;
+    //     if (!client?._id || (product._id?.length || 0) < 4) return;
 
-        const fetchLike = async () => {
-          await axios.get( backEndUrl + "/getLikeByClientAndProduct", {
-              params: {
-                clientId: client._id, 
-                productId: product._id
-              }
-          })
-          .then(({ data }) => {
-              setLike(data.like ?  true : false);
-              console.log({like: data.like})
-          })
-          .catch( err => {
-              console.error({err})
-          })
+    //     const fetchLike = async () => {
+    //       await axios.get( backEndUrl + "/getLikeByClientAndProduct", {
+    //           params: {
+    //             clientId: client._id, 
+    //             productId: product._id
+    //           }
+    //       })
+    //       .then(({ data }) => {
+    //           setLike(data.like ?  true : false);
+    //           console.log({like: data.like})
+    //       })
+    //       .catch( err => {
+    //           console.error({err})
+    //       })
           
-        }
-        fetchLike();
-    }, [client?._id, product._id])
+    //     }
+    //     fetchLike();
+    // }, [client?._id, product._id])
 
   return (
     <div 
