@@ -36,7 +36,7 @@ const ProductsSection = ({
     const { colors } = useTheme();
     const { activeLanguage } = useLanguage();
     const { screenWidth } = useScreen();
-    const [limit, setLimit] = useState<number>(8);
+    const [limit, setLimit] = useState<number>(10);
     const [skip, setSkip] = useState<number>(0);
     const [productsCount, setProductsCount] = useState<number>(0);
     const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
@@ -134,8 +134,10 @@ const ProductsSection = ({
 
                     </div>
 
+                    {/* <div>{products?.length}, {productsCount}</div> */}
+
                     { 
-                        products?.length != productsCount &&  
+                        products?.length < productsCount &&  
 
                             <MoreBotton
                                 skip={skip}

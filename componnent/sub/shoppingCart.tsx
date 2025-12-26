@@ -20,6 +20,8 @@ const ShoppingCart = () => {
 
   
     const fetchPurchasesInCart = async () => {
+
+        if (!client?._id) return;
         await axios.get( backEndUrl + "/getPurchasesInCartByClient", {
             params: {clientId: client?._id}
         })

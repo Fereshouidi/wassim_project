@@ -2,14 +2,19 @@
 import { backEndUrl } from '@/api';
 import Footer from '@/componnent/main/footer';
 import Header from '@/componnent/main/header';
+import OrdersSectionForLargeScreens from '@/componnent/main/ordersSection/largeScreens';
+import OrdersSectionForSmallScreens from '@/componnent/main/ordersSection/smallScreen';
 import SideBar from '@/componnent/main/sideBar';
 import AnnouncementBar from '@/componnent/sub/AnnouncementBar';
 import ProductCard from '@/componnent/sub/productCard';
+import { headerHeight } from '@/constent';
 import { useClient } from '@/contexts/client';
 import { useLanguage } from '@/contexts/languageContext';
 import { useLoadingScreen } from '@/contexts/loadingScreen';
 import { useOwner } from '@/contexts/ownerInfo';
-import { OrderType, OwnerInfoType, ProductType } from '@/types';
+import { useScreen } from '@/contexts/screenProvider';
+import { useTheme } from '@/contexts/themeProvider';
+import { OrdersByStatusType, OrderType, OwnerInfoType, ProductType } from '@/types';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 
@@ -18,17 +23,16 @@ const OrdersPage = () => {
 
     const { setLoadingScreen } = useLoadingScreen();
     const { activeLanguage } = useLanguage();
+    const { screenWidth, screenHeight } = useScreen();
+    const { colors } = useTheme();
+
 
     const  [pendingOrdersCount, setPendingOrdeCount ] = useState<number>(0);
     const  [failedOrdersCount, setFailedgOrdeCount ] = useState<number>(0);
     const  [deliveredOrdersCount, setdeliveredOrdeCount ] = useState<number>(0);
 
                     
-    const [ orders, setOrders ] = useState<{
-            pendingOrders: OrderType[],
-            failedOrders: OrderType[],
-            deliveredOrders: OrderType[]
-    }>({
+    const [ orders, setOrders ] = useState<OrdersByStatusType>({
         pendingOrders: [],
         failedOrders: [],
         deliveredOrders: []
@@ -73,7 +77,7 @@ const OrdersPage = () => {
 
     return (
         <div
-            className='page flex flex-col items-center'
+            className='page min-h-screen'
         >
 
           <AnnouncementBar/>
@@ -90,21 +94,23 @@ const OrdersPage = () => {
             setOwnerInfo={() => {}}
           />
 
-          <div className='pageContent  min-h-[100vh]'>
-
+          <div 
+            className='pageContent w-full min-h-[100vh]- flex flex-col justify-center- items-center'
+            style={{
+                // maxHeight: screenHeight - headerHeight + "px",
+                backgroundColor: colors.light[100],
+                color: colors.dark[200]
+            }}>
+                {
+                    screenWidth > 1200 ?
+                        <OrdersSectionForLargeScreens
+                            orders={orders}
+                        />
+                    :   <OrdersSectionForSmallScreens
+                            orders={orders}
+                        />
+                }
           </div>
-{/*             
-            <h2 className='mt-10 text-2xl sm:text-3xl'>{`${activeLanguage.myOrders} (${products.length})`}</h2>
-
-            <div className='w-full flex flex-wrap justify-center gap-5 py-10 sm:py-12 sm:p-10'>
-                {products.map((product, index) => (
-                    <ProductCard 
-                        key={index}
-                        product={product}
-                        className={`w-[175px] sm:w-[250px]`}
-                    />
-                ))}
-            </div> */}
 
             <Footer/>
             

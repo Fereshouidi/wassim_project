@@ -184,6 +184,7 @@ export type LanguageContextType = {
 
 export interface OrderType {
   _id?: string;
+  orderNumber?: number;
   client?: string;
   address?: string
   clientNote?: string
@@ -191,6 +192,12 @@ export interface OrderType {
   purchases: PurchaseType[]
   createdAt?: Date | null;
   updatedAt?: Date | null;
+}
+
+export interface OrdersByStatusType {
+  pendingOrders: OrderType[];
+  failedOrders: OrderType[];
+  deliveredOrders: OrderType[];
 }
 
 export type Colors = {

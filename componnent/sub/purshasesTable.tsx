@@ -1,0 +1,193 @@
+import { useLanguage } from '@/contexts/languageContext';
+import { useOwner } from '@/contexts/ownerInfo';
+import { useTheme } from '@/contexts/themeProvider';
+import { calculPurshaseTotalPrice } from '@/lib';
+import { PurchaseType } from '@/types';
+import React, { useEffect, useState } from 'react'
+
+type Props = {
+  purchases: PurchaseType[];
+}
+
+const PurshasesTable = ({ purchases }: Props) => {
+
+    const { activeLanguage } = useLanguage();
+    const { colors } = useTheme();
+    const { ownerInfo } = useOwner();
+    const [ totalPrice, setTotalPrice ] = useState<number>(0);
+
+    useEffect(() => {
+        setTotalPrice(Number(calculPurshaseTotalPrice(purchases)));
+    }, [purchases]);
+
+    return (
+        <div className='w-full'>
+
+            <h2 className='font-bold text-[12px] m-2'>{"purchases details : "}</h2>
+
+            <table 
+                className='w-full'
+                style={{
+                    border: `0.2px solid ${colors.light[250]}`
+                }}
+            >
+                <thead>
+                    <tr>
+                        <th 
+                            className='text-center text-[10px] sm:text-[12px] p-2'
+                            style={{
+                                border: `0.2px solid ${colors.light[250]}`
+                            }}
+                        >Product</th>
+                        <th 
+                            className='text-center text-[10px] sm:text-[12px] min-w-[70px] p-2'
+                            style={{
+                                border: `0.2px solid ${colors.light[250]}`
+                            }}
+                        >Specification</th>
+                        <th 
+                            className='text-center text-[10px] sm:text-[12px] min-w-[20px] p-2'
+                            style={{
+                                border: `0.2px solid ${colors.light[250]}`
+                            }}
+                        >Quantity</th>
+                        <th 
+                            className='text-center text-[10px] sm:text-[12px] min-w-[70px] p-2'
+                            style={{
+                                border: `0.2px solid ${colors.light[250]}`
+                            }}
+                        >Price</th>
+                    </tr>
+                </thead>
+                <tbody 
+                    style={{
+                        border: `0.2px solid ${colors.light[250]}`
+                    }}
+                >
+                    {purchases.map((purchase, index) => (
+                        <tr 
+                            key={index} 
+                            className=''
+                            style={{
+                                border: `0.2px solid ${colors.light[250]}`
+                            }}
+                        >
+                            <td 
+                                className=' max-w-[10%] bg-red-500- p-2'
+                                style={{ border: `0.2px solid ${colors.light[250]}` }}
+                            >
+                                <div className='w-full flex flex-row items-center gap-2 bg-red-500-'>
+                                    <img
+                                        src={
+                                            //@ts-ignore
+                                            purchase.product?.thumbNail ?? ""
+                                        }
+                                        alt="product"
+                                        className='w-5 h-5 rounded-full object-cover'
+                                    />
+                                    <span className='text-[10px] sm:text-[12px]'>{
+                                        //@ts-ignore
+                                        purchase.product?.name[activeLanguage.language]
+                                    }</span>
+                                </div>
+                            </td>
+                            <td 
+                                className=' text-[10px] sm:text-[12px] text-center line p-2'
+                                style={{ border: `0.2px solid ${colors.light[250]}` }}
+                            >
+                                <p className='w-full break-words whitespace-pre-line'>
+                                    {
+                                        //@ts-ignore
+                                        purchase?.specification?.color
+                                    }, 
+                                </p>
+                                <p className='w-full break-words whitespace-pre-line'>
+                                    {
+                                        //@ts-ignore
+                                        purchase?.specification?.size
+                                    }, 
+                                </p>
+                                <p className='w-full break-words whitespace-pre-line'>
+                                    {
+                                        //@ts-ignore
+                                        purchase?.specification?.type
+                                    }
+                                </p>
+
+                            </td>
+
+                            <td 
+                                className='text-[10px] sm:text-[12px] text-center p-2'
+                                style={{ border: `0.2px solid ${colors.light[250]}` }}
+                            >{purchase.quantity}</td>
+
+                            <td 
+                                className='text-[10px] sm:text-[12px] text-center  p-2'
+                                style={{ border: `0.2px solid ${colors.light[250]}` }}
+                            >
+                                {
+                                    //@ts-ignore
+                                    (purchase.specification.price * purchase.quantity).toFixed(2)
+                                } D.T</td>
+
+                        </tr>
+                    ))}
+                </tbody>
+
+                <tfoot className='w-full'>
+
+                    <tr>
+                        <td 
+                            colSpan={3}
+                            className=' text-center text-[10px] sm:text-[12px] p-2'
+                            style={{ border: `0.2px solid ${colors.light[250]}` }}
+                        >
+                            <p className='text-center'>{activeLanguage.totalPrice}</p>
+                        </td>
+                        <td 
+                            className='text-[10px] sm:text-[12px] text-center p-2'
+                            style={{ border: `0.2px solid ${colors.light[250]}` }}
+                        >
+                            {totalPrice + " D.T"}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td 
+                            colSpan={3}
+                            className='text-center text-[10px] sm:text-[12px] p-2'
+                            style={{ border: `0.2px solid ${colors.light[250]}` }}
+                        >
+                            {activeLanguage.shippingCoast}
+                        </td>
+                        <td 
+                            className='text-[10px] sm:text-[12px] text-center p-2'
+                            style={{ border: `0.2px solid ${colors.light[250]}` }}
+                        >
+                            {ownerInfo?.shippingCost || 0} D.T
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td 
+                            colSpan={3}
+                            className='text-center text-[10px] sm:text-[12px] p-2'
+                            style={{ border: `0.2px solid ${colors.light[250]}` }}
+                        >
+                            {activeLanguage.totalAmmount}
+                        </td>
+                        <td 
+                            className='text-[10px] sm:text-[12px] text-center p-2'
+                            style={{ border: `0.2px solid ${colors.light[250]}` }}
+                        >
+                            {totalPrice + (ownerInfo?.shippingCost || 0)} D.T
+                        </td>
+                    </tr>
+
+                </tfoot>
+            </table>
+        </div>
+    )
+}
+
+export default PurshasesTable

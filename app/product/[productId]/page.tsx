@@ -4,7 +4,6 @@ import axios from "axios";
 import { backEndUrl } from "@/api";
 import { ProductType, OwnerInfoType, PurchaseType } from "@/types";
 
-// Metadata ديناميكية
 export async function generateMetadata({ 
   params 
 }: { 

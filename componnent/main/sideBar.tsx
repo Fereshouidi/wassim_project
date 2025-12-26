@@ -101,7 +101,8 @@ const SideBar = ({
                         borderRight: `0.02px solid ${colors.light[900]}`,
                         borderBottom: `0.02px solid ${colors.light[900]}`,
                         borderLeft: `0.02px solid ${colors.light[900]}`,
-                        borderTop: 'none'
+                        borderTop: 'none',
+                        zIndex: 999
                     }}
                     aiIconStyle={{
                         backgroundColor: colors.dark[100],
