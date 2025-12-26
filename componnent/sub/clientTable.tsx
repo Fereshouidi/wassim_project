@@ -12,6 +12,7 @@ const ClientTable = () => {
     return (
         <div 
             className='w-full'
+            onClick={(e) => e.stopPropagation()}
         >
             <h2 className='font-bold text-[12px] m-2'>{"Client details : "}</h2>
 

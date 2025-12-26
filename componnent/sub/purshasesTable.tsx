@@ -21,7 +21,10 @@ const PurshasesTable = ({ purchases }: Props) => {
     }, [purchases]);
 
     return (
-        <div className='w-full'>
+        <div 
+            className='w-full'
+            onClick={(e) => e.stopPropagation()}
+        >
 
             <h2 className='font-bold text-[12px] m-2'>{"purchases details : "}</h2>
 
