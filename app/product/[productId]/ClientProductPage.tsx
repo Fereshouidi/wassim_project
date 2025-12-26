@@ -394,7 +394,7 @@ export default function ClientProductPage({ product }: Props) {
           </div>
 
           <div 
-            className="w-full h-fit fixed bottom-0 left-0 flex justify-center items-center p-2"
+            className="w-full h-fit fixed bottom-0 left-0 flex justify-center items-center p-2 z-20"
             style={{
               backgroundColor: colors.light[100],
               boxShadow: `0 5px 15px ${colors.dark[900]}`,

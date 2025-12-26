@@ -27,7 +27,7 @@ const SliderForPhones = ({
     autoScroll
 }: sliderProps) => {
 
-    const [cardWidth, setCardWidth] = useState<number>(170);
+    const [cardWidth, setCardWidth] = useState<number>(180);
     const [userScroll, setUserScroll] = useState<boolean>(false);
 
     const sliderRef = useRef<HTMLDivElement>(null);

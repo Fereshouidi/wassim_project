@@ -120,12 +120,12 @@ const Slider = ({
     }
 
     return ( 
-        <div className={`w-full- ${screenWidth < 1000 && 'px-5-'}`}>
+        <div className={`w-full- max-w-full- bg-red-500- ${screenWidth < 1000 && 'px-5-'}`}>
             <div className={`w-full flex flex-row items-center justify-between `}>
 
                 {/* Left Arrow */}
                 <div 
-                    className={`w-32 h-32 flex justify-center items-center rounded-full mx-10 cursor-pointer duration-300`}
+                    className={`w-20 h-20 flex justify-center items-center rounded-full mx-10 cursor-pointer duration-300`}
                     onMouseEnter={() => setLeftArrowHover(true)}
                     onMouseLeave={() => setLeftArrowHover(false)}
                     onClick={handleLeftArrowClick}
@@ -133,7 +133,7 @@ const Slider = ({
                 >
                     <img 
                         src={activeTheme == "dark" ? "/icons/left-arrow-white.png" : "/icons/left-arrow-black.png"}
-                        className='w-12 h-12'
+                        className='w-10 h-10'
                     />
                 </div>
                 
@@ -145,7 +145,11 @@ const Slider = ({
                     onTouchStart={() => setUserScroll(true)}             
                     onMouseEnter={() => setUserScroll(true)}
                     style={{
-                        width: cardWidth * 4 + "px"
+                        width: screenWidth > 1500 ? 
+                                cardWidth * 4 + "px" 
+                            : screenWidth < 1600 && screenWidth > 1100 ?
+                                cardWidth * 3 + "px"
+                            : cardWidth * 2 + "px"
                     }}
                 >
                     <div 
@@ -183,7 +187,7 @@ const Slider = ({
 
                 {/* Right Arrow */}
                 <div 
-                    className={`w-32 h-32 flex justify-center items-center rounded-full mx-10 cursor-pointer duration-300`}
+                    className={`w-20 h-20 flex justify-center items-center rounded-full mx-10 cursor-pointer duration-300`}
                     onMouseEnter={() => setRightArrowHover(true)}
                     onMouseLeave={() => setRightArrowHover(false)}
                     onClick={handleRightArrowClick}
@@ -191,7 +195,7 @@ const Slider = ({
                 >
                     <img 
                         src={activeTheme == "dark" ? "/icons/right-arrow-white.png" : "/icons/right-arrow-black.png"}
-                        className='w-12 h-12'
+                        className='w-10 h-10'
                     />
                 </div>
             </div>

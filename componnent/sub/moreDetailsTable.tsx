@@ -31,39 +31,39 @@ const MoreDetailsTable = ({
                     <tr>
                         <th 
                             className='p-2 text-[10px] sm:text-[12px] bord text-center'
-                            style={{ border: `0.5px solid ${colors.light[300]}` }}
+                            style={{ border: `0.5px solid ${colors.light[250]}` }}
                         >{"Delivered to"}</th>
                         <th 
                             className='p-2 text-[10px] sm:text-[12px] bord text-center'
-                            style={{ border: `0.5px solid ${colors.light[300]}` }}
+                            style={{ border: `0.5px solid ${colors.light[250]}` }}
                         >{activeLanguage.sideMatter.adress}</th>
                         <th 
                             className='p-2 text-[10px] sm:text-[12px] bord text-center'
-                            style={{ border: `0.5px solid ${colors.light[300]}` }}
+                            style={{ border: `0.5px solid ${colors.light[250]}` }}
                         >{"Driver's Phone"}</th>
                         <th 
                             className='p-2 text-[10px] sm:text-[12px] bord text-center'
-                            style={{ border: `0.5px solid ${colors.light[300]}` }}
+                            style={{ border: `0.5px solid ${colors.light[250]}` }}
                         >{"Ordered At"}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td 
+                        <td
                             className='p-2 text-[10px] sm:text-[12px] bord text-center'
-                            style={{ border: `0.5px solid ${colors.light[300]}` }}
+                            style={{ border: `0.5px solid ${colors.light[250]}` }}
                         >{client?.fullName}</td>
                         <td 
                             className='p-2 text-[10px] sm:text-[12px] bord text-center'
-                            style={{ border: `0.5px solid ${colors.light[300]}` }}
+                            style={{ border: `0.5px solid ${colors.light[250]}` }}
                         >{order?.address}</td>
                         <td 
                             className='p-2 text-[10px] sm:text-[12px] bord text-center'
-                            style={{ border: `0.5px solid ${colors.light[300]}` }}
+                            style={{ border: `0.5px solid ${colors.light[250]}` }}
                         >{ "+216" + ownerInfo?.contact.phone}</td>
                         <td 
                             className='p-2 text-[10px] sm:text-[12px] bord text-center'
-                            style={{ border: `0.5px solid ${colors.light[300]}` }}
+                            style={{ border: `0.5px solid ${colors.light[250]}` }}
                         >{order.createdAt && showTimeWithTranslate(order.createdAt, activeLanguage.language)}</td>
                     </tr>
                 </tbody>

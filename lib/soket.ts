@@ -6,7 +6,8 @@ export const socketFromLocalHost = "http://localhost:3001"
 
 const socket = io(socketFromVercel, {
   autoConnect: true,
-  // transports: ["websocket"]
+  // transports: ["websocket"],
+  upgrade: false
 });
 
 export default socket;

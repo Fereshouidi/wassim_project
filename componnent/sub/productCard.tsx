@@ -134,7 +134,7 @@ const ProductCard = ({
         </div>
         
         <div 
-            className='w-full h-[180px] sm:h-[220px] rounded-sm overflow-hidden'
+            className='w-full min-h-[150px] sm:min-h-[170px] max-h-[180px] sm:max-h-[220px] rounded-sm overflow-hidden'
             style={{
                 backgroundColor: colors.light[300]
             }}

@@ -58,6 +58,7 @@ const OrdersSection = ({
       <div className='h-full bg-blue-500- flex flex-1 rounded-sm px-4 '
         style={{
           border: `0.2px solid ${colors.light[200]}`,
+          
           // boxShadow: `0 0px 10px rgba(13, 13, 13, 0.05)`
         }}
       >

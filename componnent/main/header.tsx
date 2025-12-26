@@ -216,7 +216,7 @@ const Header = ({
             }}
             className='h-full border-l-[0.02px]'
             style={{
-              backgroundColor: colors.light[200],
+              // backgroundColor: colors.light[200],
               borderColor: colors.light[300]
             }}
             inputStyle={{

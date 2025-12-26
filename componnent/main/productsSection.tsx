@@ -97,7 +97,7 @@ const ProductsSection = ({
 
   return (
 
-    <div className='w-full flex flex-col justify-center items-center sm:my-5'>
+    <div className='w-full flex flex-col justify-center items-center sm:my-5 overflow-hidden'>
 
         {collection.name[activeLanguage.language] ?
             <h2 
@@ -153,7 +153,7 @@ const ProductsSection = ({
 
             :
                 
-                screenWidth > 1500 ?
+                screenWidth > 750 ?
 
                     <Slider
                         products={products}

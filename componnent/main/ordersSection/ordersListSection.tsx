@@ -44,7 +44,12 @@ const OrdersListSection = ({
 
 
   return (
-    <div className='w-full h-full flex- flex-1-'>
+    <div 
+      className='w-full h-full flex- flex-1-'
+      style={{
+        // backgroundColor: colors.light[150]
+      }}
+    >
 
       <OrdersSectionHeader
         orders={orders}
