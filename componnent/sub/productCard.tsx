@@ -16,12 +16,14 @@ type productCardType = {
     product: ProductType
     className?: String
     style?: CSSProperties
+    useLike?: boolean
 }
 
 const ProductCard = ({
     product,
     className,
-    style
+    style,
+    useLike
 }: productCardType) => {
 
     const { colors, activeTheme } = useTheme();
@@ -110,7 +112,7 @@ const ProductCard = ({
         }}
     >
 
-        <div 
+        {useLike && <div 
             className={`absolute top-1 right-1 rounded-full p-[5px] ${like ? "bg-red-500" : "bg-gray-400 opacity-75"} w-8 h-8 z-2 cursor-pointer`}
             style={{
                 // boxShadow: `0 5px 15px ${colors.dark[400]}`,
@@ -131,7 +133,7 @@ const ProductCard = ({
                 className='w-full h-full'
                 alt="" 
             />
-        </div>
+        </div>}
         
         <div 
             className='w-full min-h-[150px] sm:min-h-[170px] max-h-[180px] sm:max-h-[220px] rounded-sm overflow-hidden'

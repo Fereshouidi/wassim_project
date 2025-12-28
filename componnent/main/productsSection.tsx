@@ -22,6 +22,7 @@ type ProductsSectionType = {
     tittleStyle?: CSSProperties
     isThereProducts: boolean
     setIsThereProducts: (value: boolean) => void
+    useLike: boolean
 }
 
 const ProductsSection = ({
@@ -30,7 +31,8 @@ const ProductsSection = ({
     product,
     tittleStyle,
     isThereProducts, 
-    setIsThereProducts
+    setIsThereProducts,
+    useLike
 }: ProductsSectionType) => {
 
     const { colors } = useTheme();
@@ -128,6 +130,7 @@ const ProductsSection = ({
                                     key={index}
                                     product={product}
                                     className="w-[175px] sm:w-[225px] min-h-[185px] sm:min-h-[250px] my-3"
+                                    useLike={useLike}
                                 />
                             ))
                         }
@@ -164,6 +167,7 @@ const ProductsSection = ({
                         setSkip={setSkip}
                         limit={limit}
                         autoScroll={autoScroll}
+                        useLike={useLike}
                     /> 
                 :
                     <SliderForPhones
@@ -175,6 +179,7 @@ const ProductsSection = ({
                         setSkip={setSkip}
                         limit={limit}
                         autoScroll={autoScroll}
+                        useLike={useLike}
                     />
             
         }

@@ -112,6 +112,7 @@ const OtherSimilarChose = ({
                                 fontSize: "15px",
                                 display: 'none'
                             }}
+                            useLike={true}
                         />
                     </div>
                 ))

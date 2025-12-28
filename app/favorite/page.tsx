@@ -80,6 +80,7 @@ const FavoritePage = () => {
                             key={index}
                             product={product}
                             className={`w-[175px] sm:w-[250px]`}
+                            useLike={true}
                         />
                     ))}
                 </div>

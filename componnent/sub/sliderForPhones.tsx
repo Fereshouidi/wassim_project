@@ -14,6 +14,7 @@ type sliderProps = {
     setSkip: (value: number) => void,
     limit: number
     autoScroll: boolean
+    useLike: boolean
 }
 
 const SliderForPhones = ({
@@ -24,7 +25,8 @@ const SliderForPhones = ({
     skip,
     setSkip,
     limit,
-    autoScroll
+    autoScroll,
+    useLike
 }: sliderProps) => {
 
     const [cardWidth, setCardWidth] = useState<number>(180);
@@ -125,6 +127,7 @@ const SliderForPhones = ({
                                     <ProductCard
                                         product={product}
                                         className='w-[95%] h-full'
+                                        useLike={useLike}
                                     />
                                 </div>
                             ))}

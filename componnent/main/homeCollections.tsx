@@ -48,6 +48,7 @@ const HomeCollections = () => {
                     autoScroll={true}
                     isThereProducts={isThereProducts}
                     setIsThereProducts={setIsThereProducts}
+                    useLike={false}
                 />
             ))}
 
