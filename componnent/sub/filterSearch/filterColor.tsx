@@ -53,9 +53,7 @@ const FilterColor = ({
         setFiltrationCopy({
             ...filtrationCopy,
             colors: currentOptions.flatMap(option => 
-                option.value === 'all' ? 
-                availableColors : 
-                [option.value]
+                option.value
             )
         })
     }, [currentOptions])

@@ -72,7 +72,7 @@ const FavoritePage = () => {
 
           <div className='pageContent min-h-[100vh] flex flex-col items-center'>
           
-                <h2 className='mt-10 text-2xl sm:text-3xl'>{`${activeLanguage.myFavorites} (${products.length})`}</h2>
+                <h2 className='mt-10 text-xl sm:text-2xl'>{`${activeLanguage.myFavorites} (${products.length})`}</h2>
 
                 <div className='w-full flex flex-wrap justify-center gap-5 py-10 sm:py-12 sm:p-10'>
                     {products.map((product, index) => (

@@ -53,9 +53,7 @@ const FilterType = ({
         setFiltrationCopy({
             ...filtrationCopy,
             types: currentOptions.flatMap(option => 
-                option.value === 'all' ? 
-                availableType : 
-                [option.value]
+                option.value
             )
         })
     }, [currentOptions])

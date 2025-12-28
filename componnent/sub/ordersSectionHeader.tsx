@@ -58,12 +58,12 @@ const OrdersSectionHeader = ({
 
     if (screenWidth < 1000) {
         return (
-            <div className='w-full- h-[80px] px-4 flex flex-col justify-between py-2 items-center gap-2 bg-red-500-'>
+            <div className='w-full- h-[80px]- px-4 flex flex-col justify-between py-2 items-center gap-2 bg-red-500-'>
 
                 <div className='flex gap-2'>
 
                     <div 
-                        className='flex justify-center items-center text-[11px] sm:text-[13px] p-2 gap-1 duration-50'
+                        className='flex justify-center items-center text-[11px] sm:text-[13px] p-2 gap-2 duration-150'
                         onClick={() => setActivePage("pending")}
                         style={{
                         border: `0.5px solid ${colors.light[200]}`,
@@ -83,7 +83,7 @@ const OrdersSectionHeader = ({
                     </div>
                     
                     <div 
-                        className='flex justify-center items-center text-[11px] sm:text-[13px] p-2 gap-1'
+                        className='flex justify-center items-center text-[11px] sm:text-[13px] p-2 gap-2 duration-150'
                         onClick={() => setActivePage("failed")}
                         style={{
                         border: `0.5px solid ${colors.light[200]}`,
@@ -103,7 +103,7 @@ const OrdersSectionHeader = ({
                     </div>
                 
                     <div 
-                        className='flex justify-center items-center text-[11px] sm:text-[13px] p-2 gap-1'
+                        className='flex justify-center items-center text-[11px] sm:text-[13px] p-2 gap-2 duration-150'
                         onClick={() => setActivePage("delivered")}
                         style={{
                         border: `0.5px solid ${colors.light[200]}`,
@@ -125,7 +125,7 @@ const OrdersSectionHeader = ({
                 </div>
 
                 <div
-                    className='w-full flex justify-between items-center mx-4- mt-7- text-[12px] sm:text-[14px]'
+                    className='w-full flex justify-between items-center my-2 mx-4- mt-7- text-[12px] sm:text-[14px]'
                     style={{
                         // fontSize: screenWidth > 1000 ? "14px" : "14px"
                     }}
@@ -244,7 +244,7 @@ const OrdersSectionHeader = ({
                 <div className='flex flex-row gap-2'>
 
                     <div 
-                        className='flex justify-center items-center text-[11px] sm:text-[13px] p-2 gap-1 duration-50'
+                        className='flex justify-center items-center text-[11px] sm:text-[13px] p-2 gap-2 duration-150'
                         onClick={() => setActivePage("pending")}
                         style={{
                         border: `0.5px solid ${colors.light[200]}`,
@@ -256,15 +256,15 @@ const OrdersSectionHeader = ({
                         }}
                     >
                         <img 
-                        src={activeTheme == "dark" || activePage == "pending" ? "/icons/pendingWhite.png": "/icons/pendingBlack.png"} 
-                        className='w-3 h-3 sm:w-3 sm:h-3'
-                        alt="" 
+                            src={activeTheme == "dark" || activePage == "pending" ? "/icons/pendingWhite.png": "/icons/pendingBlack.png"} 
+                            className='w-3 h-3 sm:w-3 sm:h-3'
+                            alt="" 
                         />
                         <h4>{activeLanguage.pending}</h4>
                     </div>
                     
                     <div 
-                        className='flex justify-center items-center text-[11px] sm:text-[13px] p-2 gap-1'
+                        className='flex justify-center items-center text-[11px] sm:text-[13px] p-2 gap-2 duration-150'
                         onClick={() => setActivePage("failed")}
                         style={{
                         border: `0.5px solid ${colors.light[200]}`,
@@ -284,7 +284,7 @@ const OrdersSectionHeader = ({
                     </div>
                 
                     <div 
-                        className='flex justify-center items-center text-[11px] sm:text-[13px] p-2 gap-1'
+                        className='flex justify-center items-center text-[11px] sm:text-[13px] p-2 gap-2 duration-150'
                         onClick={() => setActivePage("delivered")}
                         style={{
                         border: `0.5px solid ${colors.light[200]}`,

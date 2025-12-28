@@ -177,7 +177,18 @@ export type LanguageStracture = {
     pendingOrders: string
     failedgOrders: string
     deliveredOrders: string
-    
+    noOrders: string,
+    orderNum: string,
+    purchasesDetails: string,
+    product: string,
+    specification: string,
+    quantity: string,
+    price: string
+    moreDetails: string,
+    receiver: string,
+    deliveryPhone: string,
+    orderedAt: string
+
 
     // fullName: string
     // adress: string,
@@ -358,6 +369,7 @@ export type FiltrationType = {
 
     sortBy: 'price' | 'name' | 'date'
     sortDirection: 'asc' | 'desc'
+    activeLanguage: "fr" | "en"
 
 }
 
@@ -402,6 +414,18 @@ export type LikeType = {
   _id?: string
   client: string;
   product: string;
+  createdAt?: Date | null;
+  updatedAt?: Date | null;
+}
+
+
+export type DeliveryWorkerType = {
+  _id?: string
+  fullName?: string
+  email?: string
+  phone?:  Number
+  password?: string
+  adress?: string
   createdAt?: Date | null;
   updatedAt?: Date | null;
 }

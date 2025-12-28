@@ -259,7 +259,7 @@ const OrdersPage = () => {
 
     return (
         <div
-            className='page min-h-screen'
+            className='page min-h-screen-'
         >
 
           <AnnouncementBar/>
@@ -277,7 +277,7 @@ const OrdersPage = () => {
           />
 
           <div 
-            className='pageContent w-full min-h-[100vh]- flex flex-col justify-center- items-center'
+            className='pageContent w-full h-full min-h-[100vh]- flex flex-col justify-center- items-center'
             style={{
                 // maxHeight: screenHeight - headerHeight + "px",
                 backgroundColor: colors.light[100],

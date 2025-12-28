@@ -10,13 +10,15 @@ type MoreBottonProps = {
     setSkip: (value: number) => void,
     limit: number
     isLoading: boolean
+    getMore?: () => void
 }
 
 const MoreBotton = ({
     skip,
     setSkip,
     limit,
-    isLoading
+    isLoading,
+    getMore
 }: MoreBottonProps) => {
     
     const { screenWidth } = useScreen();
@@ -32,7 +34,10 @@ const MoreBotton = ({
                 color: colors.dark[100],
                 // backgroundColor: colors.light[100]
             }}
-            onClick={() => !isLoading && setSkip(skip + limit)}
+            onClick={() => {
+                !isLoading && setSkip(skip + limit);
+                getMore && getMore();
+            }}
             ref={ref}
             onMouseEnter={(e) => {
                 if (screenWidth > 1000) {

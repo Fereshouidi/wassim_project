@@ -32,9 +32,9 @@ const Page = () => {
   const { ownerInfo, setOwnerInfo } = useOwner();
 
   const [mostProductExpensive, setMostProductExpensive] = useState<ProductType | undefined>(undefined);
-  const [availableColors, setAvailableColors] = useState<string[]>([]);
-  const [availableSizes, setAvailableSizes] = useState<string[]>([]);
-  const [availableTypes, setAvailableTypes] = useState<string[]>([]);
+  const [availableColors, setAvailableColors] = useState<string[]>(["all"]);
+  const [availableSizes, setAvailableSizes] = useState<string[]>(["all"]);
+  const [availableTypes, setAvailableTypes] = useState<string[]>(["all"]);
   const [allCollections, setAllCollections] = useState<CollectionType[]>([]);
 
   const [productsFound, setProductsFound] = useState<ProductType[]>([]);
@@ -82,7 +82,7 @@ const Page = () => {
         setAvailableColors(data.availableColors);
         setAvailableSizes(data.availableSizes);
         setAvailableTypes(data.availableTypes);
-        
+        setSkip(0);
         setLoadingScreen(false);
 
       })
@@ -98,9 +98,38 @@ const Page = () => {
     
   }, [filtration, searchText])
 
-  useEffect(() => {console.log("Component rendered");
+  // useEffect(() => {console.log("Component rendered 2");
 
-    if (!searchText || !filtration || skip < limit ) return;
+  //   if (!filtration || skip < limit ) return;
+    
+  //   const fetchProductBySearch = async () => {
+  //     setLoading(true);
+  //     await axios.post( backEndUrl + "/getProductsBySearch", {
+  //       searchText,
+  //       limit,
+  //       skip,
+  //       filtration
+  //     })
+  //     .then(({ data }) => {
+  //       setProductsFound([...productsFound, ...data.products]);
+  //       setProductsCount(data.productsCount);
+  //       setAvailableColors(data.availableColors);
+  //       setAvailableSizes(data.availableSizes);
+  //       setAvailableTypes(data.availableTypes);
+  //       setLoading(false);
+  //     })
+  //     .catch(( err ) => {
+  //       setLoading(false);
+  //       throw err;
+  //     })
+  //   }
+  //   fetchProductBySearch();
+    
+  // }, [skip])
+
+  const getMore = async () => {
+
+    if (!filtration || skip < limit ) return;
     
     const fetchProductBySearch = async () => {
       setLoading(true);
@@ -125,7 +154,7 @@ const Page = () => {
     }
     fetchProductBySearch();
     
-  }, [skip])
+  }
 
   useEffect(() => {console.log("Component rendered");
 
@@ -167,25 +196,15 @@ const Page = () => {
           types: availableTypes,
           sizes: availableTypes,
 
-          sortBy: "name",
-          sortDirection: "asc"
+          sortBy: "date",
+          sortDirection: "asc",
+          activeLanguage: activeLanguage.language
       
       })
 
     }
 
   }, [mostProductExpensive, allCollections])
-
-  // useEffect(() => {console.log("Component rendered");
-  //   const fetchData = async () => {
-  //     await axios.get(backEndUrl + "/getOwnerInfo")
-  //     .then(({ data }) => setOwnerInfo(data.ownerInfo))
-  //     .catch((err) => {
-  //       throw err
-  //     })
-  //   }
-  //   fetchData();
-  // }, [])
 
   useEffect(() => {
     setLoadingScreen(false);
@@ -197,7 +216,7 @@ const Page = () => {
     <div 
       className='page flex flex-col items-center '
       style={{
-        backgroundColor: colors.light[150]
+        backgroundColor: colors.light[100]
       }}
     >
       <Header
@@ -213,12 +232,12 @@ const Page = () => {
 
       {
         filtration && 
-        mostProductExpensive?.specifications[0].price && 
+        mostProductExpensive?.price && 
 
         <FilterBar
           filtration={filtration}
           setFiltration={setFiltration}
-          mostProductExpensive={mostProductExpensive.specifications[0].price}
+          mostProductExpensive={mostProductExpensive.price}
           productsCount={productsCount}
           allCollections={allCollections}
           availableColors={availableColors}
@@ -235,6 +254,7 @@ const Page = () => {
         <div 
           className='w-full min-h-screen relative sm:px-24 flex flex-col justify-center- items-center'
           style={{
+            backgroundColor: colors.light[100]
             // paddingTop: filterBarHeight + 'px'
           }}
         >
@@ -258,11 +278,13 @@ const Page = () => {
         { 
             productsFound?.length != productsCount &&  
 
+              
                 <MoreBotton
                     skip={skip}
                     setSkip={setSkip}
                     limit={limit}
                     isLoading={loading}
+                    getMore={getMore}
                 /> 
 
         }

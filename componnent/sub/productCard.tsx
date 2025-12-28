@@ -97,7 +97,7 @@ const ProductCard = ({
 
   return (
     <div 
-        className={`flex relative flex-col items-center gap-3 overflow-hidden cursor-pointer ${className}`}
+        className={`flex relative flex-col items-center gap-2 overflow-hidden cursor-pointer ${className}`}
         style={{
             ...style
             // backgroundColor: colors.light[100]
@@ -111,9 +111,9 @@ const ProductCard = ({
     >
 
         <div 
-            className={`absolute top-1 right-1 rounded-full p-[5px] ${like ? "bg-red-500" : "bg-gray-400"} w-8 h-8 z-2 cursor-pointer`}
+            className={`absolute top-1 right-1 rounded-full p-[5px] ${like ? "bg-red-500" : "bg-gray-400 opacity-75"} w-8 h-8 z-2 cursor-pointer`}
             style={{
-                boxShadow: `0 5px 15px ${colors.dark[400]}`,
+                // boxShadow: `0 5px 15px ${colors.dark[400]}`,
                 // backgroundColor: like ? "" : 
             }}
             onClick={(e) => {

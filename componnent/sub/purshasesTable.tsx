@@ -26,7 +26,7 @@ const PurshasesTable = ({ purchases }: Props) => {
             onClick={(e) => e.stopPropagation()}
         >
 
-            <h2 className='font-bold text-[12px] m-2'>{"purchases details : "}</h2>
+            <h2 className='font-bold text-[12px] m-2'>{ activeLanguage.purchasesDetails + " : "}</h2>
 
             <table 
                 className='w-full'
@@ -41,25 +41,25 @@ const PurshasesTable = ({ purchases }: Props) => {
                             style={{
                                 border: `0.2px solid ${colors.light[250]}`
                             }}
-                        >Product</th>
+                        >{activeLanguage.product}</th>
                         <th 
                             className='text-center text-[10px] sm:text-[12px] min-w-[70px] p-2'
                             style={{
                                 border: `0.2px solid ${colors.light[250]}`
                             }}
-                        >Specification</th>
+                        >{activeLanguage.specification}</th>
                         <th 
                             className='text-center text-[10px] sm:text-[12px] min-w-[20px] p-2'
                             style={{
                                 border: `0.2px solid ${colors.light[250]}`
                             }}
-                        >Quantity</th>
+                        >{activeLanguage.quantity}</th>
                         <th 
                             className='text-center text-[10px] sm:text-[12px] min-w-[70px] p-2'
                             style={{
                                 border: `0.2px solid ${colors.light[250]}`
                             }}
-                        >Price</th>
+                        >{activeLanguage.price}</th>
                     </tr>
                 </thead>
                 <tbody 

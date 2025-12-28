@@ -98,18 +98,22 @@ const OtherSimilarChose = ({
         <div className='w-full h-full flex flex-col justify-center items-center overflow-scroll- scrollbar-hidden'>
             {
                 collections.map((collection) => (
-                    <ProductsSection
+                    <div 
+                        className='w-full my-1'
                         key={collection._id}
-                        collection={collection}
-                        autoScroll={false}
-                        product={product}
-                        isThereProducts={isThereProducts}
-                        setIsThereProducts={setIsThereProducts}
-                        tittleStyle={{
-                            fontSize: "15px",
-                            display: 'none'
-                        }}
-                    />
+                    >
+                        <ProductsSection
+                            collection={collection}
+                            autoScroll={false}
+                            product={product}
+                            isThereProducts={isThereProducts}
+                            setIsThereProducts={setIsThereProducts}
+                            tittleStyle={{
+                                fontSize: "15px",
+                                display: 'none'
+                            }}
+                        />
+                    </div>
                 ))
             }
         </div>

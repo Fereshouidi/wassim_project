@@ -17,30 +17,54 @@ export const handleShareOnInstagram = (shareUrl: string) => {
   window.open(facebookShareUrl, "_blank", "noopener,noreferrer");
 };
 
-export function timeAgo(date: string | number | Date): string {
+export function timeAgo(date: string | number | Date, activeLanguage: "en" | "fr"): string {
   const now = new Date();
   const past = new Date(date);
   const diffInSeconds = (now.getTime() - past.getTime()) / 1000;
 
-  if (diffInSeconds < 60) return "just now";
+  const i18n = {
+    en: {
+      justNow: "just now",
+      min: "min ago",
+      hour: "h ago",
+      day: "days ago",
+      week: "weeks ago",
+      month: "months ago",
+      year: "years ago"
+    },
+    fr: {
+      justNow: "à l'instant",
+      min: "min",
+      hour: "h",
+      day: "jours",
+      week: "semaines",
+      month: "mois",
+      year: "ans"
+    }
+  };
 
-  const minutes = diffInSeconds / 60;
-  if (minutes < 60) return `${Math.floor(minutes)} min ago`;
+  const lang = i18n[activeLanguage];
+  const prefix = activeLanguage === "fr" ? "il y a " : "";
 
-  const hours = diffInSeconds / 3600;
-  if (hours < 24) return `${Math.floor(hours)} h ago`;
+  if (diffInSeconds < 60) return lang.justNow;
 
-  const days = diffInSeconds / 86400;
-  if (days < 7) return `${Math.floor(days)} days ago`;
+  const minutes = Math.floor(diffInSeconds / 60);
+  if (minutes < 60) return `${prefix}${minutes} ${lang.min}`;
 
-  const weeks = diffInSeconds / 604800;
-  if (weeks < 4) return `${Math.floor(weeks)} weeks ago`;
+  const hours = Math.floor(diffInSeconds / 3600);
+  if (hours < 24) return `${prefix}${hours}${lang.hour}`;
 
-  const months = diffInSeconds / 2592000;
-  if (months < 12) return `${Math.floor(months)} months ago`;
+  const days = Math.floor(diffInSeconds / 86400);
+  if (days < 7) return `${prefix}${days} ${lang.day}`;
 
-  const years = diffInSeconds / 31536000;
-  return `${Math.floor(years)} years ago`;
+  const weeks = Math.floor(diffInSeconds / 604800);
+  if (weeks < 4) return `${prefix}${weeks} ${lang.week}`;
+
+  const months = Math.floor(diffInSeconds / 2592000);
+  if (months < 12) return `${prefix}${months} ${lang.month}`;
+
+  const years = Math.floor(diffInSeconds / 31536000);
+  return `${prefix}${years} ${lang.year}`;
 }
 
 export const showTimeWithTranslate = (date: Date | string, activeLanguage: "en" | "fr") => {

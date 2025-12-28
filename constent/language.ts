@@ -116,7 +116,18 @@ export const english = {
     failed: "failed",
     pendingOrders: "Pending Orders",
     failedgOrders: "FailedgOrders",
-    deliveredOrders: "DeliveredOrders"
+    deliveredOrders: "DeliveredOrders",
+    noOrders: "there is no orders !",
+    orderNum: "Order Num",
+    purchasesDetails: "Purchases Details",
+    product: "Product",
+    specification: "Specification",
+    quantity: "Quantity",
+    price: "Price",
+    moreDetails: "More details",
+    receiver: "Receiver",
+    deliveryPhone: "Delivery phone",
+    orderedAt: "Ordered at"
 
 } as LanguageStracture;
 
@@ -227,7 +238,18 @@ export const frensh = {
     failed: "Échoué",
     pendingOrders: "Commandes en attente",
     failedgOrders: "Commandes échouées",
-    deliveredOrders: "Commandes livrées"
+    deliveredOrders: "Commandes livrées",
+    noOrders: "Il n'y a pas de commandes !",
+    orderNum: "Numéro de commande",
+    purchasesDetails: "Détails des achats",
+    product: "Produit",
+    specification: "Spécification",
+    quantity: "Quantité",
+    price: "Prix",
+    moreDetails: "Plus de détails",
+    receiver: "Destinataire",
+    deliveryPhone: "Téléphone de livreur",
+    orderedAt: "Commandé le"
 
 } as LanguageStracture;
 

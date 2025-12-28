@@ -54,9 +54,7 @@ const FilterSize = ({
         setFiltrationCopy({
             ...filtrationCopy,
             sizes: currentOptions.flatMap(option => 
-                option.value === 'all' ? 
-                availableSizes: 
-                [option.value]
+                option.value
             )
         })
     }, [currentOptions])

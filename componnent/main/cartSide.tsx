@@ -178,9 +178,14 @@ const CartSide = ({
 
                 :
 
-                <div>
+                <div className='flex flex-col justify-center'>
 
-                    <div className='w-full flex flex-col items-center gap-4 mb-2'>
+                    <div 
+                        className='w-full flex flex-col items-center gap-2 mb-1 p-1'
+                        style={{
+                            border: `0.2px solid ${colors.light[300]}`
+                        }}
+                    >
                         {purchases.map((purchase) => (
                             <PurchaseItem
                                 key={purchase._id}
@@ -195,10 +200,17 @@ const CartSide = ({
                         purchases={purchases}
                     />
 
-                    <InputForm
-                        clientForm={clientForm}
-                        setClientForm={setClientForm}
-                    />
+                    <div 
+                        className='p-2'
+                        style={{
+                            border: `0.2px solid ${colors.light[300]}`
+                        }}
+                    >
+                        <InputForm
+                            clientForm={clientForm}
+                            setClientForm={setClientForm}
+                        />
+                    </div>
 
                     <button
                         className={`w-full py-3 mt-5 text-white font-medium text-md rounded-md ${confirmBTNWorks ? "cursor-pointer" : "cursor-not-allowed"}`}

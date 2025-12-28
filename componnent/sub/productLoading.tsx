@@ -22,7 +22,7 @@ const ProductLoading = ({
   return (
 
     <div 
-        className={`w-[175px] sm:w-[250px] h-[180px]- sm:h-[280px]- flex flex-col items-center gap-3 overflow-hidden cursor-pointer ${className}`}
+        className={`w-[175px] sm:w-[250px] h-[180px]- sm:h-[280px]- flex flex-col items-center gap-2 overflow-hidden cursor-pointer ${className}`}
         style={{
             ...style
         }}

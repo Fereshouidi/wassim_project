@@ -1,10 +1,12 @@
+import { backEndUrl } from '@/api';
 import { useClient } from '@/contexts/client';
 import { useLanguage } from '@/contexts/languageContext';
 import { useOwner } from '@/contexts/ownerInfo';
 import { useTheme } from '@/contexts/themeProvider';
 import { showTimeWithTranslate } from '@/lib';
-import { OrderType } from '@/types';
-import React from 'react'
+import { DeliveryWorkerType, OrderType } from '@/types';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
 
 type props = {
     order: OrderType
@@ -18,13 +20,29 @@ const MoreDetailsTable = ({
     const { activeLanguage } = useLanguage();
     const { colors } = useTheme();
     const { ownerInfo } = useOwner();
+    const [ deliveryWorker, setDeliveryWorker ] = useState<DeliveryWorkerType | undefined>(undefined);
+
+    
+
+    useEffect(() => {
+        const fetchDeliveryWorker = async () => {
+            await axios.get( backEndUrl + "/getDeliveryWorker" )
+            .then(({ data }) => {
+                setDeliveryWorker(data.deliveryWorker)
+            })
+            .catch(( err ) => {
+                console.error({ err });
+            })
+        }
+        fetchDeliveryWorker();
+    }, [order])
 
     return (
         <div 
             className='w-full cursor-auto'
             onClick={(e) => e.stopPropagation()}
         >
-            <h2 className='font-bold text-[12px] m-2'>{"More details : "}</h2>
+            <h2 className='font-bold text-[12px] m-2'>{activeLanguage.moreDetails + " : "}</h2>
 
             <table className='w-full bord-collapse'>
                 <thead>
@@ -32,7 +50,7 @@ const MoreDetailsTable = ({
                         <th 
                             className='p-2 text-[10px] sm:text-[12px] bord text-center'
                             style={{ border: `0.5px solid ${colors.light[250]}` }}
-                        >{"Delivered to"}</th>
+                        >{activeLanguage.receiver}</th>
                         <th 
                             className='p-2 text-[10px] sm:text-[12px] bord text-center'
                             style={{ border: `0.5px solid ${colors.light[250]}` }}
@@ -40,11 +58,11 @@ const MoreDetailsTable = ({
                         <th 
                             className='p-2 text-[10px] sm:text-[12px] bord text-center'
                             style={{ border: `0.5px solid ${colors.light[250]}` }}
-                        >{"Driver's Phone"}</th>
+                        >{activeLanguage.deliveryPhone}</th>
                         <th 
                             className='p-2 text-[10px] sm:text-[12px] bord text-center'
                             style={{ border: `0.5px solid ${colors.light[250]}` }}
-                        >{"Ordered At"}</th>
+                        >{activeLanguage.orderedAt}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -60,7 +78,7 @@ const MoreDetailsTable = ({
                         <td 
                             className='p-2 text-[10px] sm:text-[12px] bord text-center'
                             style={{ border: `0.5px solid ${colors.light[250]}` }}
-                        >{ "+216" + ownerInfo?.contact.phone}</td>
+                        >{ "+216" + deliveryWorker?.phone}</td>
                         <td 
                             className='p-2 text-[10px] sm:text-[12px] bord text-center'
                             style={{ border: `0.5px solid ${colors.light[250]}` }}

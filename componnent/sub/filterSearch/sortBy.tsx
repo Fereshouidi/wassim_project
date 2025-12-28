@@ -20,6 +20,7 @@ const SortBy = ({
 
     const { activeLanguage } = useLanguage();
     const { colors } = useTheme();
+    // const [ firstRender, setFirstRender ] = useState<boolean>(true);
     // const [currentSort, setCurrentSort] = useState<currentSort>("date");
     // const [curentSortDirection, setCurentSortDirection] = useState<curentSortDirection>("asc");
 
@@ -34,6 +35,18 @@ const SortBy = ({
     //         sortDirection: curentSortDirection
     //     })
     // }, [currentSort, curentSortDirection])
+
+    // useEffect(() => {
+        
+    //     if (!firstRender) return;
+
+    //     setFiltrationCopy({
+    //         ...filtrationCopy,
+    //         sortBy: "price",
+    //         sortDirection: "asc"
+    //     })
+    //     setFirstRender(false);
+    // }, [filtrationCopy])
 
     return (
 
@@ -67,7 +80,7 @@ const SortBy = ({
                 <h4>{activeLanguage.sideMatter.price + ': '}</h4>
                 <select 
                     className={`h-8 outline-0 flex
-                        ${filterBarWidth > 650 && filterBarWidth < 1100 ? "w-[8]" : " w-[200px] " }
+                        ${filterBarWidth > 650 && filterBarWidth < 1100 ? "w-[80px]" : " w-[200px] " }
                     justify-center items-center text-center ml-2 rounded-sm cursor-pointer`}
                     style={{
                         border: `0.025px solid ${colors.light[300]}`
@@ -150,7 +163,7 @@ const SortBy = ({
                     })}
                 >
                     <option 
-                        value="desc" 
+                        value="asc" 
                         style={{
                             color: colors.dark[200],
                             backgroundColor: colors.dark[200],
@@ -159,7 +172,7 @@ const SortBy = ({
                         // onMouseEnter={() => }    
                     >a-z</option>
                     <option 
-                        value="asc" 
+                        value="desc" 
                         style={{
                             color: colors.dark[200],
                             backgroundColor: colors.dark[200],

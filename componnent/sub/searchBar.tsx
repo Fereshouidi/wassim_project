@@ -156,15 +156,16 @@ const SearchBar = ({
     setFiltration({
         price: {
             from: 0,
-            to: mostProductExpensive?.specifications[0].price ?? 100
+            to: mostProductExpensive?.price ?? 100
         },
         collections: allCollections.map(collection => (collection._id?? '')),
         colors: availableColors,
         types: availableTypes,
         sizes: availableTypes,
 
-        sortBy: "name",
-        sortDirection: "desc"
+        sortBy: "price",
+        sortDirection: "asc",
+        activeLanguage: activeLanguage.language
     
     })
   }, [mostProductExpensive, allCollections, input])
@@ -390,7 +391,7 @@ const SearchBar = ({
         {
             filteBarActive &&
             filtration && 
-            mostProductExpensive?.specifications[0].price && 
+            mostProductExpensive?.price && 
 
             <div 
                 className='w-full absolute top-full'
@@ -400,7 +401,7 @@ const SearchBar = ({
                 <FilterBar
                     filtration={filtration}
                     setFiltration={setFiltration}
-                    mostProductExpensive={mostProductExpensive.specifications[0].price}
+                    mostProductExpensive={mostProductExpensive.price}
                     productsCount={productsCount}
                     allCollections={allCollections}
                     availableColors={availableColors}

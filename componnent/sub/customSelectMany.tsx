@@ -23,7 +23,7 @@ const CustomSelectMany = ({
     useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
         if (selectRef.current && !selectRef.current?.contains(event.target as Node)) {
-        setOptionsOpent(false);
+            setOptionsOpent(false);
         }
     }
 

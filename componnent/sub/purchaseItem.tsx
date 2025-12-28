@@ -53,8 +53,8 @@ const PurchaseItem = ({
             style={{
                 backgroundColor: colors.light[100],
                 color: colors.dark[200],
-                // boxShadow: activeTheme === "dark" ? "0 0 10px 0 rgba(0,0,0,0.01)" : "0 0 10px 0 rgba(0,0,0,0.1)", 
-                border: `0.2px solid ${colors.light[300]}`
+                // boxShadow: activeTheme === "dark" ? `0 0 10px 0 ${colors.light[250]}` : `0 0 10px 0 ${colors.light[250]}`, 
+                border: `0.2px solid ${colors.light[200]}`
             }}
             onClick={() => {
                 localStorage.setItem('purchaseId', purchase._id?? "")
@@ -158,6 +158,7 @@ const PurchaseItem = ({
                         }}
                         onClick={(e) => {
                             e.stopPropagation();
+                            if ( (purchase.quantity || 0) <= 1 ) return;
                             purchase.quantity && updatePurchase({...purchase, quantity: purchase.quantity - 1});
                         }}
                     />
@@ -171,6 +172,10 @@ const PurchaseItem = ({
                             padding: '6px'
                         }}
                         onClick={(e) => {
+                            if (
+                                //@ts-ignore
+                                (purchase.quantity || 0) >= (purchase?.specification?.quantity)
+                            ) return;
                             e.stopPropagation();
                             purchase.quantity && updatePurchase({...purchase, quantity: purchase.quantity + 1});
                         }}

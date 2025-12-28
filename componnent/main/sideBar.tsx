@@ -207,7 +207,7 @@ const SideBar = ({
                 </div>}
 
                 <div 
-                    className='w-[90%] bg-red-500- mb-0 p-3 pt-8- rounded-sm flex justify-start items-end fixed- bottom-5- cursor-pointer'
+                    className='w-full bg-red-500- mb-0 p-3 pt-8- bg-red-500- rounded-sm flex justify-start items-center fixed- bottom-5- cursor-pointer'
                     style={{
                         color: colors.light[150],
                         // border: `1px solid ${colors.dark[300]}`,
@@ -222,17 +222,28 @@ const SideBar = ({
                         }
                     }}
                 >
-                    <img 
-                        src={activeTheme == "dark" ? '/icons/user-black.png' : '/icons/user-white.png'} 
-                        className='w-6 h-6 p-[3px] mr-2 bg-red-500-'
+                    <div
+                        className='flex flex-1 flex-row justify-start items-center '
+                    >
+                        <img 
+                            src={activeTheme == "dark" ? '/icons/user-black.png' : '/icons/user-white.png'} 
+                            className='w-6 h-6 p-[3px] mr-2 bg-red-500-'
+                            alt="" 
+                        />
+                        <h4 className='text-sm bg-red-500- text-end'>
+                            {   
+                                client?.fullName ??
+                                activeLanguage.connection
+                            }
+                        </h4>
+                    </div>
+
+                    {client?._id && <img 
+                        src={activeTheme == "dark" ? "/icons/settingBlack.png" : "/icons/settingWhite.png" }
+                        className=' w-4 h-4'
                         alt="" 
-                    />
-                    <h4 className='text-sm bg-red-500- text-end'>
-                        {   
-                            client?.fullName ??
-                            activeLanguage.connection
-                        }
-                    </h4>
+                    />}
+
                 </div>
             </div>
 

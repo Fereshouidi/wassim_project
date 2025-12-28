@@ -35,13 +35,13 @@ const InputForm = ({
     >
 
         <h4 
-            className='font-bold text-md mx-2 my-4'
+            className='font-bold text-sm mx-2 my-4'
             style={{
                 color: colors.dark[400]
             }}
         >{activeLanguage.sideMatter.fillOutTheForm + " :"}</h4>
 
-        <div className='flex flex-wrap justify-center items-center gap-4'>
+        <div className='flex flex-wrap justify-center items-center gap-2'>
 
                 <input 
                     type="text" 

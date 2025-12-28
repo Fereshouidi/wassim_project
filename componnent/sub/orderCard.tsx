@@ -34,9 +34,9 @@ const OrderCart = ({
 
     return (
         <div
-            className='w-full flex flex-col justify-between items-center gap-5 rounded-lg p-3 cursor-pointer transition-opacity active:opacity-70 duration-300'
+            className='w-full flex flex-col justify-between items-center gap-5 rounded-lg p-3 cursor-pointer active:opacity-70 overflow-hidden transition-all duration-700 ease-in-out'
             style={{
-                maxHeight: cardOpened ? '' : cardClosedHeight + 'px',
+                maxHeight: cardOpened ? '2000px' : cardClosedHeight + 'px',
                 backgroundColor: colors.light[100],
                 border: `0.2px solid ${colors.light[250]}`,
                 boxShadow: `0 5px 15px ${colors.light[150]}`
@@ -45,9 +45,9 @@ const OrderCart = ({
         >
             {/* Top Section */}
             <div className='w-full flex flex-row justify-between items-center'>
-                <div className='flex flex-row items-center gap-5 w-fit h-10'>
+                <div className='flex flex-row items-center gap-2- w-fit h-10'>
                     {/* Overlapping Thumbnails */}
-                    <div className='w-20 h-full flex flex-row justify-start items-center rounded-lg relative'>
+                    <div className='w-16 sm:w-20 h-full flex flex-row justify-start bg-red-500- items-center rounded-lg relative'>
                         {order.purchases?.slice(0, 3).map((purchase, i) => (
                             <img
                                 key={purchase._id}
@@ -61,15 +61,15 @@ const OrderCart = ({
                     </div>
                     
                     <div className='flex flex-row gap-1 w-fit'>
-                        <span className='text-[12px] font-semibold'>Order Num :</span>
+                        <span className='text-[12px] font-semibold'>{activeLanguage.orderNum + " : "}</span>
                         <span className='opacity-70 text-[12px] select-text'>{"#" + (order.orderNumber)}</span>
                     </div>
                 </div>
                 
-                <span className='text-[12px] opacity-80'>
+                <span className='text-[10px] sm:text-[12px] opacity-80'>
                     {
                         //@ts-ignore
-                        timeAgo(order.createdAt)
+                        timeAgo(order.createdAt, activeLanguage.language)
                     }
                 </span>
             </div>

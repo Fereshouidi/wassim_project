@@ -48,7 +48,7 @@ const OrdersSection = ({
 
   return (
     <div 
-      className='w-[85vw] flex flex-row justify-center bg-yellow-500- gap-2 py-5 px-10'
+      className='w-[85vw] h-full bg-red-500- flex flex-row justify-center bg-yellow-500- gap-2 py-5 px-10'
       style={{
         minHeight: screenHeight - (headerHeight * 1.7) + "px",
         backgroundColor: colors.light[100]
@@ -58,7 +58,7 @@ const OrdersSection = ({
       <div className='h-full bg-blue-500- flex flex-1 rounded-sm px-4 '
         style={{
           border: `0.2px solid ${colors.light[200]}`,
-          
+          minHeight: screenHeight - (headerHeight * 2) + "px",
           // boxShadow: `0 0px 10px rgba(13, 13, 13, 0.05)`
         }}
       >

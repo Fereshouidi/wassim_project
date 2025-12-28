@@ -62,9 +62,9 @@ const FilterBar = ({
     useEffect(() => {
         setFiltrationCopy({
             ...filtrationCopy,
-            colors: filtrationCopy.colors.length == 0 ? availableColors : filtrationCopy.colors,
-            sizes: filtrationCopy.sizes.length == 0 ? availableSizes : filtrationCopy.sizes,
-            types: filtrationCopy.types.length == 0 ? availableTypes : filtrationCopy.types
+            colors: filtrationCopy.colors.length == 0 ? ["all"] : filtrationCopy.colors,
+            sizes: filtrationCopy.sizes.length == 0 ? ["all"] : filtrationCopy.sizes,
+            types: filtrationCopy.types.length == 0 ? ["all"] : filtrationCopy.types
 
         })
     }, [availableColors, availableSizes, availableTypes])
@@ -78,13 +78,15 @@ const FilterBar = ({
                 h-fit- left-0 flex flex-col
                 ${screenWidth > 1250 ? "justify-between" : "justify-center"} 
                 items-center p-2 z-10 rounded-sm transition-all duration-300
+                mb-3
             `}
             style={{
                 // position: 'sticky',
                 color: colors.dark[200],
                 backgroundColor: colors.light[100],
                 boxShadow: filteBarActive ? '0 0px 15px rgba(13, 13, 13, 0.07)' : '',
-                border: !filteBarActive ? `0.025px solid ${colors.light[300]}` : `0.025px solid ${colors.light[300]}`,
+                // border: !filteBarActive ? `0.025px solid ${colors.light[300]}` : `0.025px solid ${colors.light[300]}`,
+                borderBottom: `0.025px solid ${colors.light[200]}`,
                 height: filteBarActive ?  
                     (filterBarRef.current?.offsetWidth || 0) > 650 ? filterBarHeight + "px" : "500px" 
                     : "65px",
