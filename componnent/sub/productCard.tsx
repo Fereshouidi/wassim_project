@@ -99,7 +99,7 @@ const ProductCard = ({
 
   return (
     <div 
-        className={`flex relative flex-col items-center gap-2 overflow-hidden cursor-pointer ${className}`}
+        className={` flex relative flex-col items-center gap-2 overflow-hidden cursor-pointer ${className}`}
         style={{
             ...style
             // backgroundColor: colors.light[100]
@@ -136,7 +136,7 @@ const ProductCard = ({
         </div>}
         
         <div 
-            className='w-full min-h-[150px] sm:min-h-[170px] max-h-[180px] sm:max-h-[220px] rounded-sm overflow-hidden'
+            className='w-[200px] sm:w-[250px] min-h-[150px]- sm:min-h-[170px]- h-[180px] sm:h-[220px] rounded-sm overflow-hidden'
             style={{
                 backgroundColor: colors.light[300]
             }}

@@ -163,7 +163,7 @@ const Slider = ({
                             {products.map((product, index) => (
                                 <div 
                                     key={index}
-                                    className=' min-h-[150px] sm:min-h-[220px] m-0 '
+                                    // className=' min-h-[150px] sm:min-h-[220px] m-0 '
                                     style={{
                                         width: cardWidth  + "px",
                                         paddingLeft: '5px',

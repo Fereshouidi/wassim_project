@@ -27,13 +27,6 @@ const PurchaseItem = ({
         setPurchase_(purchase);
     }, [purchase])
 
-    // useEffect(() => {
-    //     if (!purchase_) return;
-    //     socket.emit("update_purchase", {purchase: purchase_});
-    //     // setPurchases((prev: PurchaseType[]) => [...prev, purchase_] as unknown as PurchaseType[])
-    //     // setLoadingScreen(true);
-    // }, [purchase_])
-
     const updatePurchase = (updatedData: PurchaseType) => {
         if (!updatedData) return;
         socket.emit("update_purchase", updatedData);
@@ -42,7 +35,7 @@ const PurchaseItem = ({
             // @ts-ignore
             setPurchases((prev: PurchaseType[]) => { return [...prev.filter(purchase => purchase._id != updatedData._id)]})
         }
-        setLoadingScreen(true);
+        // setLoadingScreen(true);
     }
 
     if (!purchase_ || !purchase) return;

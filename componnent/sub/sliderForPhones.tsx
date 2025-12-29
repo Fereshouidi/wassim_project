@@ -29,7 +29,7 @@ const SliderForPhones = ({
     useLike
 }: sliderProps) => {
 
-    const [cardWidth, setCardWidth] = useState<number>(180);
+    const [cardWidth, setCardWidth] = useState<number>(250);
     const [userScroll, setUserScroll] = useState<boolean>(false);
 
     const sliderRef = useRef<HTMLDivElement>(null);
@@ -115,13 +115,14 @@ const SliderForPhones = ({
                         className='w-max h-full flex flex-row justify-start slide' 
                         ref={slidesRef}
                     >
-                        <div className='w-max h-full flex flex-row justify-start smpx-5'>
+                        <div className='w-max h-full flex flex-row justify-start gap-2- smpx-5'>
                             {products.map((product, index) => (
                                 <div 
                                     key={index}
-                                    className=' min-h-[150px]'
+                                    className='w-[180px] sm:w-[250px]'
                                     style={{
-                                        width: cardWidth  + "px"
+                                        // width: cardWidth  + "px"
+                                        // width="w-"
                                     }}
                                 >
                                     <ProductCard

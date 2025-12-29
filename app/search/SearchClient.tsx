@@ -168,7 +168,7 @@ const Page = () => {
 
       await axios.get(backEndUrl + '/getAllCollections')
       .then(({ data }) => {
-        setAllCollections(data.allCollections);
+        setAllCollections(data.allCollections.filter( (col: CollectionType) => col.type == "public"));
       })
       .catch( (err) => {throw err})
 

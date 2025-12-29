@@ -129,7 +129,7 @@ const ProductsSection = ({
                                 <ProductCard
                                     key={index}
                                     product={product}
-                                    className="w-[175px] sm:w-[225px] min-h-[185px] sm:min-h-[250px] my-3"
+                                    className="w-[45%] sm:w-[225px] min-h-[185px] sm:min-h-[250px] my-3"
                                     useLike={useLike}
                                 />
                             ))
