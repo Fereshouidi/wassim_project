@@ -95,7 +95,7 @@ const ProductsSection = ({
 
     }, [collection, skip])
 
-    if (!isThereProducts) return
+    if (!isThereProducts) return;
 
   return (
 

@@ -22,71 +22,15 @@ const OtherSimilarChose = ({
     const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
-        collectinsWithProducts.map(col => 
+        collectinsWithProducts.map(col => {
             col.products.length > 0 && setIsThereProducts(true)
-        )
+            console.log({productsLen: col.products.length});
+        })
     }, [])
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         await axios.get(backEndUrl + "/getCollectionsByProduct", {
-    //             params: { productId: product._id }
-    //         })
-    //         .then(({ data }) => {
-    //             setCollections(data.collections)
-    //         })
-    //         .catch(( err ) => {
-    //             throw err;
-    //         })
-    //     }
-    //     fetchData();
-    // }, [product])
-
-    // useEffect(() => {
-
-    //     const fetchData = async () => {
-            
-
-    //             // isFirstRender && setProducts(productsLoading);
-
-    //             if (loading) return;
-                
-    //             setLoading(true);
-
-    //             Promise.all((collections.map( async collection => {
-    //                 if (collection._id?.length && collection._id?.length < 3) return setCollectinsWithProducts(collectionsLoading);
-
-    //                 await axios.get(backEndUrl + "/getProductsByCollection", { params: { 
-    //                     collectionId: collection._id, 
-    //                     limit, 
-    //                     skip 
-    //                 }})
-
-    //                 .then(({data}) => {
-
-    //                     !isFirstRender && data.products ?
-    //                         setProducts([...products, ...data.products]) : 
-    //                         setProducts(data.products);
-
-    //                     setProductsCount(data.productsCount);
-    //                     setIsFirstRender(false);
-    //                     setLoading(false);
-                        
-    //                 })
-    //                 .catch((err) => {
-    //                     console.log(err);
-    //                 })
-    //             })))
-
-    //     }
-
-    //     fetchData();
-
-    // }, [collection, skip])
 
     if (
         collections.length < 1 
-        // || !isThereProducts
     ) return <div className='bg-red-400'>{isThereProducts}</div>
 
   return (

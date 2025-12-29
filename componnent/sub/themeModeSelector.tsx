@@ -44,36 +44,17 @@ const ThemeMode = () => {
     if (firstRender) return;
 
     if (activeChoise.theme == "system") {
-      // setActiveChoise({
-      //   theme: 'system',
-      //   label: activeLanguage.sideMatter.theme.system
-      // })
         setActiveTheme(deviceTheme? "dark" : "light")
     } else {
         setActiveTheme(activeChoise.theme);
     }
-
-    // console.log({activeChoise});
     
-
     localStorage.setItem('activeTheme', activeChoise.theme)
 
   }, [activeChoise, deviceTheme])
 
-  // useEffect(() => {
-  //   if (activeChoise.theme == "system") {
-  //     setActiveChoise({
-  //       ...activeChoise,
-  //       theme: deviceTheme? "dark" : "light"
-  //     })
-  //     setReplaceSystemtoRealTheme(true)
-  //   }
-  // }, [activeChoise])
-
   useEffect(() => {
-    const storedTheme = localStorage.getItem('activeTheme') as Themes;
-    // console.log({storedTheme});
-    
+    const storedTheme = localStorage.getItem('activeTheme') as Themes;    
     const storedTheme_ = themeDispo.find(( theme ) => theme.theme == storedTheme);
 
     if (storedTheme_) {
@@ -84,8 +65,6 @@ const ThemeMode = () => {
     };
     setFirstRender(false);
   }, [])
-
-  // localStorage.removeItem('activeTheme')
 
   return (
 
@@ -147,7 +126,13 @@ const ThemeMode = () => {
                   display: optionsListExist ? "" : "none",
                   backgroundColor: activeChoise.label == theme.label ? colors.dark[100] : colors.light[100]
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = colors.light[300])}
+                onMouseEnter={(e) => {
+                  if (activeTheme != theme.theme) {
+                    e.currentTarget.style.backgroundColor = colors.light[200]
+                  } else {
+                    e.currentTarget.style.backgroundColor = colors.dark[200]
+                  }
+                }}
                 onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = activeChoise.label == theme.label ? 
                   colors.dark[100] : 
                   colors.light[100]
@@ -177,78 +162,6 @@ const ThemeMode = () => {
               </li>
 
             ))}
-
-            {/* <li 
-              className={`flex w-full h-full items-center gap-2 px-6`}
-              style={{
-                display: optionsListExist ? "" : "none",
-                backgroundColor: activeChoise.label == activeLanguage.sideMatter.theme.system ? colors.light[100] : colors.light[300]
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = colors.light[400])}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = activeChoise.label == activeLanguage.sideMatter.theme.system ? 
-                colors.light[100] : 
-                colors.light[300]
-              )}
-              onClick={() => setActiveChoise({
-                theme: deviceTheme? "dark" : "light",
-                label: activeLanguage.sideMatter.theme.system
-              })}
-            >
-              <img 
-                className='w-5 h-5'
-                src={activeTheme == "dark" ? "/icons/settings-white.png" : "/icons/settings-black.png" }
-                alt="" 
-              />
-              <h6>{activeLanguage.sideMatter.theme.system}</h6>
-            </li>
-  
-            <li 
-              className={`flex w-full h-full items-center gap-2 px-6`}
-              style={{
-                display: optionsListExist ? "" : "none",
-                backgroundColor: activeChoise.label == activeLanguage.sideMatter.theme.dark ? colors.light[100] : colors.light[300]
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = colors.light[400])}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = activeChoise.label == activeLanguage.sideMatter.theme.dark ? 
-                colors.light[100] : 
-                colors.light[300]
-              )}              
-              onClick={() => setActiveChoise({
-                theme: "dark",
-                label: activeLanguage.sideMatter.theme.dark
-              })}
-            >
-              <img 
-                className='w-5 h-5'
-                src={activeTheme == "dark" ? "/icons/night-mode-white.png" : "/icons/night-mode-black.png"} 
-                alt="" 
-              />
-              <h6>{activeLanguage.sideMatter.theme.dark}</h6>
-            </li>
-
-            <li 
-              className={`flex w-full h-full items-center gap-2 px-6`}
-              style={{
-                display: optionsListExist ? "" : "none",
-                backgroundColor: activeChoise.label == activeLanguage.sideMatter.theme.light ? colors.light[100] : colors.light[300]
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = colors.light[400])}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = activeChoise.label == activeLanguage.sideMatter.theme.light ? 
-                colors.light[100] : 
-                colors.light[300]
-              )}              
-              onClick={() => setActiveChoise({
-                theme: "light",
-                label: activeLanguage.sideMatter.theme.light
-              })}
-            >              
-              <img 
-                className='w-5 h-5'
-                src={activeTheme == "dark" ? "/icons/sun-white.png" : "/icons/sun-black.png" }
-                alt="" 
-              />
-              <h6>{activeLanguage.sideMatter.theme.light}</h6>
-            </li> */}
 
           </ul>
 

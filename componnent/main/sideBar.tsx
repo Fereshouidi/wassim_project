@@ -117,14 +117,16 @@ const SideBar = ({
                             borderBottomColor: colors.dark[200]
                         }}
                     >
-                        <Link 
-                            href="/" 
+                        <div 
                             className='w-full h-ful flex items-center px-7'
                             style={{
                                 color: colors.light[200]
                             }}    
-                            onClick={() => setLoadingScreen(true)}
-                        >{activeLanguage.nav.home}</Link>
+                            onClick={() => {
+                                setLoadingScreen(true);
+                                router.push('/')
+                            }}
+                        >{activeLanguage.nav.home}</div>
                     </li>
                     <li
                         className='w-full bg-green-400- flex h-14 border-b-[1px] border-b-gray-100 text-sm cursor-pointer'

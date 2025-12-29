@@ -122,6 +122,8 @@ const Slider = ({
         transform: 'scale(1.2)'
     }
 
+    if (products.length < 1) return;
+
     return ( 
         <div className={`w-full- max-w-full- bg-red-500- ${screenWidth < 1000 && 'px-5-'}`}>
             <div className={`w-full flex flex-row items-center justify-between `}>

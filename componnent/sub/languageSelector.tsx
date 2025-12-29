@@ -83,7 +83,13 @@ const LanguageSelector = ({
                             backgroundColor: activeLanguage.language == language.language ? colors.dark[100] : colors.light[100],
                             color: activeLanguage.label == language.label ? colors.light[100] : colors.dark[100]
                         }}
-                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = colors.light[400])}
+                        onMouseEnter={(e) => {
+                            if (activeLanguage.language != language.language) {
+                                e.currentTarget.style.backgroundColor = colors.light[200]
+                            } else {
+                                e.currentTarget.style.backgroundColor = colors.dark[200]
+                            }
+                        }}
                         onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = activeLanguage.language == language.language ? 
                             colors.dark[100] : 
                             colors.light[100]
