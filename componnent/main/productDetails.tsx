@@ -262,7 +262,7 @@ const ProductDetails = ({
                                 return (
                                     <h4
                                         key={color}
-                                        className='p-2 text-sm rounded-sm cursor-pointer transition-all'
+                                        className='p-2  min-w-14 text-center text-sm rounded-sm cursor-pointer transition-all'
                                         style={{
                                             backgroundColor: isSelected ? colors.dark[150] : 'transparent',
                                             border: `1px solid ${colors.light[250]}`,
@@ -301,7 +301,7 @@ const ProductDetails = ({
                                 return (
                                     <h4
                                         key={size}
-                                        className='p-2 text-sm rounded-sm cursor-pointer transition-all'
+                                        className='p-2 min-w-14 text-center text-sm rounded-sm cursor-pointer transition-all'
                                         style={{
                                             backgroundColor: isSelected ? colors.dark[150] : 'transparent',
                                             border: `1px solid ${colors.light[250]}`,
@@ -341,7 +341,7 @@ const ProductDetails = ({
                                 return (
                                     <h4
                                         key={type}
-                                        className='p-2 text-sm rounded-sm cursor-pointer transition-all'
+                                        className='p-2  min-w-14 text-center text-sm rounded-sm cursor-pointer transition-all'
                                         style={{
                                             backgroundColor: isSelected ? colors.dark[150] : 'transparent',
                                             border: `1px solid ${colors.light[250]}`,
@@ -391,6 +391,7 @@ const ProductDetails = ({
             purchase={purchase}
             setPurchase={setPurchase}
             cart={cart}
+            product={product}
           />
         </div>
 

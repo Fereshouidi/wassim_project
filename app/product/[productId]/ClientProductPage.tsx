@@ -425,6 +425,7 @@ export default function ClientProductPage({ product }: Props) {
                 purchase={purchase}
                 setPurchase={setPurchase}
                 cart={cart}
+                product={product}
               />
             </div>
           </div>

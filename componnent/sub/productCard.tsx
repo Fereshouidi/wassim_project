@@ -38,7 +38,7 @@ const ProductCard = ({
     const handleLike = async () => {
 
         if (!product || !client || like == null) return;
-        setLoadingScreen(true);
+        // setLoadingScreen(true);
 
         if (!like) {
 
@@ -70,7 +70,7 @@ const ProductCard = ({
 
         }
 
-        setLoadingScreen(false);
+        // setLoadingScreen(false);
 
     }
 

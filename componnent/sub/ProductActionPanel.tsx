@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import ChoseQuantity from './choseQuantity'
-import { CartType, ProductSpecification, PurchaseType } from '@/types'
+import { CartType, ProductSpecification, ProductType, PurchaseType } from '@/types'
 import { useLanguage } from '@/contexts/languageContext'
 import { useTheme } from '@/contexts/themeProvider'
 import { useScreen } from '@/contexts/screenProvider'
@@ -8,6 +8,7 @@ import { useClient } from '@/contexts/client'
 import { useRegisterSection } from '@/contexts/registerSec'
 import { useLoadingScreen } from '@/contexts/loadingScreen'
 import { useSocket } from '@/contexts/soket'
+import AddToCartAnimation from './addToCartAnimation'
 
 type Props = {
     quantity: number,
@@ -16,6 +17,7 @@ type Props = {
     purchase: PurchaseType
     setPurchase: (value: PurchaseType) => void
     cart: CartType
+    product: ProductType
 }
 
 const ProductActionPanel = ({
@@ -24,7 +26,8 @@ const ProductActionPanel = ({
     activeSpecifications,
     purchase,
     setPurchase,
-    cart
+    cart,
+    product
 }: Props) => {
 
     const socket = useSocket();
@@ -35,39 +38,32 @@ const ProductActionPanel = ({
     const { setRegisterSectionExist } = useRegisterSection();
     const { loadingScreen, setLoadingScreen } = useLoadingScreen();
 
-    const handlePuttingInCart = () => {
-
-        if (!client) return setRegisterSectionExist(true);
-        if (!socket) return;
-
-        setLoadingScreen(true);
-
-        if (purchase.cart) {
-            // setPurchase({
-            //     ...purchase, 
-            //     cart: null,
-            //     status: 'viewed'
-            // })
-            socket?.emit("update_purchase", {
-                ...purchase, 
-                cart: null,
-                status: 'viewed'
-            });
-        } else {
-            // setPurchase({
-            //     ...purchase, 
-            //     cart: cart._id,
-            //     status: 'inCart'
-            // })
-            socket?.emit("update_purchase", {
-                ...purchase, 
-                cart: cart._id,
-                status: 'inCart'
-            });
-        }
-
-
+const handlePuttingInCart = () => {
+    // التحقق من وجود العميل
+    if (!client) {
+        setRegisterSectionExist(true);
+        return false; // سيعود الأنميشن للزر
     }
+
+    if (!socket) return false;
+
+    // إرسال البيانات عبر Socket
+    if (purchase.cart) {
+        socket.emit("update_purchase", {
+            ...purchase, 
+            cart: null,
+            status: 'viewed'
+        });
+    } else {
+        socket.emit("update_purchase", {
+            ...purchase, 
+            cart: cart._id,
+            status: 'inCart'
+        });
+    }
+
+    return true; // سينجح الأنميشن ويختفي في السلة
+};
 
     useEffect(() => {
         socket.on('receive_update_purchase_result', async (data: {message: string, purchase: PurchaseType}) => {
@@ -90,7 +86,7 @@ const ProductActionPanel = ({
                 setQuantity={setQuantity}
                 max={activeSpecifications?.quantity?? 1}
             />
-
+{/* 
             <button 
                 className='flex flex-1 min-w-fit px-4 justify-center items-center w-12 h-12 text-sm sm:text-md rounded-sm cursor-pointer'
                 style={{
@@ -112,7 +108,19 @@ const ProductActionPanel = ({
                     :  activeLanguage.addToCart
                 }
                 
-            </button>
+            </button> */}
+
+            {product?.thumbNail && (
+                <AddToCartAnimation
+                    productImage={product.thumbNail}
+                    isInCart={!!purchase?.cart}
+                    onToggle={async () => {
+                        const result = handlePuttingInCart();
+                        return !!result;
+                    }}
+                />
+            )}
+
 
         </div>
   )

@@ -31,7 +31,7 @@ const PurshasesTable = ({ purchases }: Props) => {
             <table 
                 className='w-full'
                 style={{
-                    border: `0.2px solid ${colors.light[250]}`
+                    border: `0.2px solid ${colors.light[300]}`
                 }}
             >
                 <thead>
@@ -39,32 +39,32 @@ const PurshasesTable = ({ purchases }: Props) => {
                         <th 
                             className='text-center text-[10px] sm:text-[12px] p-2'
                             style={{
-                                border: `0.2px solid ${colors.light[250]}`
+                                border: `0.2px solid ${colors.light[300]}`
                             }}
                         >{activeLanguage.product}</th>
                         <th 
                             className='text-center text-[10px] sm:text-[12px] min-w-[70px] p-2'
                             style={{
-                                border: `0.2px solid ${colors.light[250]}`
+                                border: `0.2px solid ${colors.light[300]}`
                             }}
                         >{activeLanguage.specification}</th>
                         <th 
                             className='text-center text-[10px] sm:text-[12px] min-w-[20px] p-2'
                             style={{
-                                border: `0.2px solid ${colors.light[250]}`
+                                border: `0.2px solid ${colors.light[300]}`
                             }}
                         >{activeLanguage.quantity}</th>
                         <th 
                             className='text-center text-[10px] sm:text-[12px] min-w-[70px] p-2'
                             style={{
-                                border: `0.2px solid ${colors.light[250]}`
+                                border: `0.2px solid ${colors.light[300]}`
                             }}
                         >{activeLanguage.price}</th>
                     </tr>
                 </thead>
                 <tbody 
                     style={{
-                        border: `0.2px solid ${colors.light[250]}`
+                        border: `0.2px solid ${colors.light[300]}`
                     }}
                 >
                     {purchases.map((purchase, index) => (
@@ -72,12 +72,12 @@ const PurshasesTable = ({ purchases }: Props) => {
                             key={index} 
                             className=''
                             style={{
-                                border: `0.2px solid ${colors.light[250]}`
+                                border: `0.2px solid ${colors.light[300]}`
                             }}
                         >
                             <td 
                                 className=' max-w-[10%] bg-red-500- p-2'
-                                style={{ border: `0.2px solid ${colors.light[250]}` }}
+                                style={{ border: `0.2px solid ${colors.light[300]}` }}
                             >
                                 <div className='w-full flex flex-row items-center gap-2 bg-red-500-'>
                                     <img
@@ -96,7 +96,7 @@ const PurshasesTable = ({ purchases }: Props) => {
                             </td>
                             <td 
                                 className=' text-[10px] sm:text-[12px] text-center line p-2'
-                                style={{ border: `0.2px solid ${colors.light[250]}` }}
+                                style={{ border: `0.2px solid ${colors.light[300]}` }}
                             >
                                 <p className='w-full break-words whitespace-pre-line'>
                                     {
@@ -121,12 +121,12 @@ const PurshasesTable = ({ purchases }: Props) => {
 
                             <td 
                                 className='text-[10px] sm:text-[12px] text-center p-2'
-                                style={{ border: `0.2px solid ${colors.light[250]}` }}
+                                style={{ border: `0.2px solid ${colors.light[300]}` }}
                             >{purchase.quantity}</td>
 
                             <td 
                                 className='text-[10px] sm:text-[12px] text-center  p-2'
-                                style={{ border: `0.2px solid ${colors.light[250]}` }}
+                                style={{ border: `0.2px solid ${colors.light[300]}` }}
                             >
                                 {
                                     //@ts-ignore
@@ -143,13 +143,13 @@ const PurshasesTable = ({ purchases }: Props) => {
                         <td 
                             colSpan={3}
                             className=' text-center text-[10px] sm:text-[12px] p-2'
-                            style={{ border: `0.2px solid ${colors.light[250]}` }}
+                            style={{ border: `0.2px solid ${colors.light[300]}` }}
                         >
                             <p className='text-center'>{activeLanguage.totalPrice}</p>
                         </td>
                         <td 
                             className='text-[10px] sm:text-[12px] text-center p-2'
-                            style={{ border: `0.2px solid ${colors.light[250]}` }}
+                            style={{ border: `0.2px solid ${colors.light[300]}` }}
                         >
                             {totalPrice + " D.T"}
                         </td>
@@ -159,13 +159,13 @@ const PurshasesTable = ({ purchases }: Props) => {
                         <td 
                             colSpan={3}
                             className='text-center text-[10px] sm:text-[12px] p-2'
-                            style={{ border: `0.2px solid ${colors.light[250]}` }}
+                            style={{ border: `0.2px solid ${colors.light[300]}` }}
                         >
                             {activeLanguage.shippingCoast}
                         </td>
                         <td 
                             className='text-[10px] sm:text-[12px] text-center p-2'
-                            style={{ border: `0.2px solid ${colors.light[250]}` }}
+                            // style={{ border: `0.2px solid ${colors.light[300]}` }}
                         >
                             {ownerInfo?.shippingCost || 0} D.T
                         </td>
@@ -175,13 +175,13 @@ const PurshasesTable = ({ purchases }: Props) => {
                         <td 
                             colSpan={3}
                             className='text-center text-[10px] sm:text-[12px] p-2'
-                            style={{ border: `0.2px solid ${colors.light[250]}` }}
+                            // style={{ border: `0.2px solid ${colors.light[300]}` }}
                         >
                             {activeLanguage.totalAmmount}
                         </td>
                         <td 
                             className='text-[10px] sm:text-[12px] text-center p-2'
-                            style={{ border: `0.2px solid ${colors.light[250]}` }}
+                            style={{ border: `1px solid ${colors.dark[300]}` }}
                         >
                             {totalPrice + (ownerInfo?.shippingCost || 0)} D.T
                         </td>
