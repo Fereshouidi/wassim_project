@@ -39,7 +39,7 @@ const OrderCart = ({
                 maxHeight: cardOpened ? '2000px' : cardClosedHeight + 'px',
                 backgroundColor: colors.light[100],
                 border: cardOpened ? `0.2px solid ${colors.light[350]}` : `0.2px solid ${colors.light[250]}`,
-                boxShadow: cardOpened ? `0 5px 15px ${colors.light[400]}` : `0 5px 15px ${colors.light[150]}`
+                boxShadow: cardOpened ? `0 5px 15px ${colors.light[300]}` : `0 5px 15px ${colors.light[150]}`
             }}
             onClick={() => setCardOpened(!cardOpened)}
         >
