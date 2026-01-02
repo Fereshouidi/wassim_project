@@ -65,7 +65,7 @@ const PurchaseItem = ({
                 />
                 
                 <div className='flex flex-col'>
-                    <p className='text-md'>{
+                    <p className='text-[14px] sm:text-md'>{
                         // @ts-ignore
                         purchase.product?.name[activeLanguage.language].length > 25 ?
                         // @ts-ignore
@@ -73,13 +73,13 @@ const PurchaseItem = ({
                         // @ts-ignore
                         purchase.product?.name[activeLanguage.language]
                     }</p>
-                    <p className='font-bold'>{
+                    <p className='text-[16px] sm:text-md font-bold my-1'>{
                         // @ts-ignore
                         purchase.specification?.price + " T.D"
                     }</p>
             
                     <div 
-                        className='flex flex-col gap-2- text-[12px] '
+                        className='flex flex-col gap-[0.5px]- text-[11.5px] sm:text-[12px] '
                         style={{
                             color: colors.dark[500]
                         }}
@@ -137,7 +137,7 @@ const PurchaseItem = ({
                             height: '15px'
                         }}
                     />
-                    <h4 className='text-red-500 text-sm'>{activeLanguage.cancel}</h4>
+                    <h4 className='text-red-500 text-[12.5px] sm:text-[14px]'>{activeLanguage.cancel}</h4>
                 </div>
 
                 <div className='flex flex-row justify-center items-center gap-3 w-fit mt-2'>

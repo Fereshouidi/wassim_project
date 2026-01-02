@@ -8,6 +8,7 @@ import { useScreen } from '@/contexts/screenProvider';
 import { ClientType, SignInForm, SignUpForm } from '@/types';
 import WelcomeIcon from '@/componnent/sub/welcomeIcon';
 import VerificationAccountBanner from '@/componnent/sub/banners/verificationAccountBanner';
+import { headerHeight } from '@/constent';
 
 type props = {
     // setSideBarExist: (value: boolean) => void
@@ -83,13 +84,26 @@ const RegisterSection = ({
                         />
                 }
 
-                {verificationAccountBannerVisible && <VerificationAccountBanner 
-                    client={clientFound} 
-                    verificationAccountBannerVisible={verificationAccountBannerVisible}
-                    setVerificationAccountBannerVisible={setVerificationAccountBannerVisible}
-                    clientFound={clientFound}
-                    setClientFound={setClientFound}
-                />}
+            {verificationAccountBannerVisible && 
+                <div className='w-full h-full bg-transparent- backdrop:blur-2xl fixed top-0 left-0 flex justify-center items-center overflow-y-scroll- z-50'>
+                    <div 
+                        className={`${screenWidth > 1000 ? "w-[450px]" : "w-[350px]"} h-[450px] max-h-[80%]  relative`}
+                        onClick={(e) => e.stopPropagation()}
+                        style={{
+                            backgroundColor: colors.light[100],
+                            boxShadow: `0 0 15px ${colors.dark[100]}`,
+                            // marginTop: headerHeight * 1.5
+                        }}
+                    >
+                        <VerificationAccountBanner 
+                            verificationAccountBannerVisible={verificationAccountBannerVisible}
+                            setVerificationAccountBannerVisible={setVerificationAccountBannerVisible}
+                            clientFound={clientFound}
+                            setClientFound={setClientFound}
+                        />
+                    </div>
+                </div>
+            }
 
             </div>
 

@@ -3,7 +3,7 @@
 import { headerHeight } from '@/constent'
 import { useLanguage } from '@/contexts/languageContext'
 import { useTheme } from '@/contexts/themeProvider'
-import { ClientFormType, PurchaseType } from '@/types'
+import { ClientFormType, OrderType, PurchaseType } from '@/types'
 import React, { useEffect, useState } from 'react'
 import PurchaseItem from '../sub/purchaseItem'
 import InputForm from './inputForm'
@@ -14,6 +14,7 @@ import { useSocket } from '@/contexts/soket'
 import { useLoadingScreen } from '@/contexts/loadingScreen'
 import { useStatusBanner } from '@/contexts/StatusBanner'
 import OrderConfirmedBanner from '../sub/banner_confirmedOrder'
+import { ErrorBanner } from '../sub/banners/errorBanner'
 
 type Props = {
     isActive: boolean
@@ -37,7 +38,7 @@ const CartSide = ({
     const { setStatusBanner } = useStatusBanner();
     const [clientForm, setClientForm] = useState<ClientFormType>({
         fullName: "",
-        adress: "",
+        address: "",
         phone: "",
         note: ""
     });
@@ -46,7 +47,7 @@ const CartSide = ({
     useEffect(() => {
         setClientForm({
         fullName: client?.fullName || "",
-        adress: client?.adress || "",
+        address: client?.address || "",
         phone: client?.phone ? String(client.phone) : "",
         note: client?.aiNote || ""
         })
@@ -57,7 +58,7 @@ const CartSide = ({
     }, [clientForm])
 
     useEffect(() => {
-        if (clientForm.fullName && clientForm.adress && clientForm.phone && clientForm.phone.length == 8) {
+        if (clientForm.fullName && clientForm.address && clientForm.phone && clientForm.phone.length == 8) {
             setConfirmBTNWorks(true);
         } else {
             setConfirmBTNWorks(false);
@@ -67,31 +68,105 @@ const CartSide = ({
     useEffect(() => {
         if (!socket) return;
         
-        socket.on('receive_update_purchase_result', async () => {
-            localStorage.removeItem('purchaseId');
-            // setPurchases()
-            // setLoadingScreen(false);
-        })
-        socket.on('receive_new_order', async () => {
-            setLoadingScreen(false);
-            setStatusBanner(
-                true,
-                null,
-                <OrderConfirmedBanner show={true} />
-            )
-            const timer = setTimeout(() => {
-                setStatusBanner(false);
-            }, 3500);
-            return () => clearTimeout(timer);
-            
-        })
+        const handleUpdatePurchaseResult = async (data: any) => {
+            try {
+                if (data?.error) {
+                    setLoadingScreen(false);
+                    setStatusBanner(
+                        true,
+                        null,
+                        <ErrorBanner 
+                            show={true} 
+                            message={data.message || "An error occurred"} 
+                        />
+                    );
+                    
+                    setTimeout(() => {
+                        setStatusBanner(false);
+                    }, 3500);
+                    
+                    return;
+                }
+
+                if (data?.purchase) {
+                    localStorage.removeItem('purchaseId');
+                }
+                
+            } catch (err) {
+                console.error('Error handling purchase update:', err);
+                setLoadingScreen(false);
+            }
+        };
+
+        const handleNewOrder = async (data: any) => {
+            try {
+                setLoadingScreen(false);
+
+                if (data?.error) {
+                    setStatusBanner(
+                        true,
+                        null,
+                        <ErrorBanner 
+                            show={true} 
+                            message={data.message || "Failed to create order"} 
+                        />
+                    );
+                    
+                    setTimeout(() => {
+                        setStatusBanner(false);
+                    }, 3500);
+                    
+                    return;
+                }
+
+                if (data?.newOrder) {
+                    
+                    setStatusBanner(
+                        true,
+                        null,
+                        //@ts-ignore
+                        <OrderConfirmedBanner show={true} order={data.newOrder as unknown as OrderType} />
+                    );
+                    
+                    setTimeout(() => {
+                        setStatusBanner(false);
+                    }, 3500);
+
+                    localStorage.removeItem('purchaseId');
+                    localStorage.removeItem('cart');
+                    
+                    // navigate('/orders');
+                    // await fetchOrders();
+                }
+                
+            } catch (err) {
+                console.error('Error handling new order:', err);
+                setLoadingScreen(false);
+                
+                setStatusBanner(
+                    true,
+                    null,
+                    <ErrorBanner 
+                        show={true} 
+                        message="An unexpected error occurred" 
+                    />
+                );
+                
+                setTimeout(() => {
+                    setStatusBanner(false);
+                }, 3500);
+            }
+        };
+
+        socket.on('receive_update_purchase_result', handleUpdatePurchaseResult);
+        socket.on('receive_new_order', handleNewOrder);
 
         return () => {
-            socket.off('receive_update_purchase_result');
-            socket.off('receive_new_order');
-        }
+            socket.off('receive_update_purchase_result', handleUpdatePurchaseResult);
+            socket.off('receive_new_order', handleNewOrder);
+        };
 
-    }, [socket])
+    }, [socket]);
 
     const handleConfirn = async () => {
         if (!confirmBTNWorks) return;
@@ -107,11 +182,11 @@ const CartSide = ({
                 client: client?._id,
                 fullName: clientForm.fullName,
                 phone: clientForm.phone,
-                address: clientForm.adress,
+                address: clientForm.address,
                 clientNote: clientForm.note
             }, 
             purchasesId 
-        });
+        })
 
     }
     
@@ -213,9 +288,10 @@ const CartSide = ({
                     </div>
 
                     <button
-                        className={`w-full py-3 mt-5 text-white font-medium text-sm sm:text-md rounded-md ${confirmBTNWorks ? "cursor-pointer" : "cursor-not-allowed"}`}
+                        className={`w-full py-3 mt-5 font-medium text-sm sm:text-md rounded-md ${confirmBTNWorks ? "cursor-pointer" : "cursor-not-allowed"}`}
                         style={{
-                            backgroundColor: confirmBTNWorks ? colors.dark[100] : colors.dark[500]
+                            backgroundColor: confirmBTNWorks ? colors.dark[100] : colors.dark[500],
+                            color: colors.light[100]
                         }}
                         onClick={handleConfirn}
                     >

@@ -119,9 +119,10 @@ const VerificationAccountBanner = ({
         })
     }
 
-    if (!client) return (
+    
+    if (!clientFound) return (
         <div 
-            className='w-full h-full flex flex-col justify-center items-center absolute top-0 left-0 z-[999] backdrop-blur-2xl over rounded-sm'
+            className='w-full h-full flex flex-col justify-center items-center absolute- top-0 left-0 z-[999] backdrop-blur-2xl over rounded-sm'
             style={{
                 // boxShadow: `0 5px 15px ${colors.dark[550]}`
             }}
@@ -136,13 +137,13 @@ const VerificationAccountBanner = ({
             <div 
                 className='w-full h-full flex flex-col justify-center items-center rounded-sm p-5'
                 style={{
-                    backgroundColor: colors.light[200],
-                    border: `3px solid ${colors.dark[100]}`
+                    // backgroundColor: colors.light[100],
+                    // border: `3px solid ${colors.dark[100]}`
 
                 }}
             >
 
-                <h2 className='font-bold text-lg mb-10'>{activeLanguage.GetBackMyAccount}</h2>
+                <h2 className='font-bold text-lg m-8'>{activeLanguage.GetBackMyAccount}</h2>
 
                 <p className='text-center text-sm px-5'>{activeLanguage.GetBackMyAccountParagraph}</p>
 
@@ -170,7 +171,7 @@ const VerificationAccountBanner = ({
 
   return (
     <div 
-        className='w-full h-full flex flex-col justify-center items-center absolute top-0 left-0 z-[999] backdrop-blur-2xl over rounded-sm'
+        className='w-full h-full flex flex-col justify-center items-center absolute- top-0 left-0 z-[999] backdrop-blur-2xl over rounded-sm'
         style={{
             // boxShadow: `0 5px 15px ${colors.dark[550]}`
         }}
@@ -185,15 +186,15 @@ const VerificationAccountBanner = ({
         <div 
             className='w-full h-full flex flex-col justify-center items-center rounded-sm p-5'
             style={{
-                backgroundColor: colors.light[200],
-                border: `3px solid ${colors.dark[100]}`
+                // backgroundColor: colors.light[200],
+                // border: `3px solid ${colors.dark[100]}`
 
             }}
         >
 
-            <h2 className='font-bold text-lg mb-10'>{activeLanguage.GetBackMyAccount}</h2>
+            <h2 className='font-bold text-lg m-8'>{activeLanguage.GetBackMyAccount}</h2>
 
-            <p className='text-center text-sm'>{activeLanguage.sendingEmailParagraph + " " + client.email}</p>
+            <p className='text-center text-sm'>{activeLanguage.sendingEmailParagraph + " " + clientFound.email}</p>
 
             <div className='w-[250px] h- my-5 flex flex-col justify-center items-center'>
                 <CustomInputText

@@ -98,7 +98,7 @@ export type LanguageStracture = {
         types: string,
         fillOutTheForm: string
         fullName: string
-        adress: string
+        address: string
         phone: string
         email: string
         password: string
@@ -191,7 +191,7 @@ export type LanguageStracture = {
 
 
     // fullName: string
-    // adress: string,
+    // address: string,
     // phone: number,
 }
 
@@ -341,7 +341,7 @@ export type ProductSpecification = {
 
 export type ClientFormType = {
     fullName: string,
-    adress: string,
+    address: string,
     phone: string,
     note: string
 }
@@ -353,9 +353,21 @@ export type ClientType = {
   token: number;
   phone?: number;
   password?: string;
-  adress?: string;
+  address?: string;
+  dateOfBirth?: Date
   aiNote?: string;
 };
+
+export type AdminType = {
+  _id?: string
+  fullName?: string
+  email?: string
+  phone?:  Number
+  password?: string
+  aiNote?: string
+  createdAt?: Date | null;
+  updatedAt?: Date | null;
+}
 
 export type FiltrationType = {
     price: {
@@ -425,7 +437,7 @@ export type DeliveryWorkerType = {
   email?: string
   phone?:  Number
   password?: string
-  adress?: string
+  address?: string
   createdAt?: Date | null;
   updatedAt?: Date | null;
 }

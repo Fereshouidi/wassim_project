@@ -54,7 +54,7 @@ const MoreDetailsTable = ({
                         <th 
                             className='p-2 text-[10px] sm:text-[12px] bord text-center'
                             style={{ border: `0.5px solid ${colors.light[300]}` }}
-                        >{activeLanguage.sideMatter.adress}</th>
+                        >{activeLanguage.sideMatter.address}</th>
                         <th 
                             className='p-2 text-[10px] sm:text-[12px] bord text-center'
                             style={{ border: `0.5px solid ${colors.light[300]}` }}

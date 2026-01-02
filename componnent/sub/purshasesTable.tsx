@@ -1,8 +1,10 @@
 import { useLanguage } from '@/contexts/languageContext';
+import { useLoadingScreen } from '@/contexts/loadingScreen';
 import { useOwner } from '@/contexts/ownerInfo';
 import { useTheme } from '@/contexts/themeProvider';
 import { calculPurshaseTotalPrice } from '@/lib';
 import { PurchaseType } from '@/types';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
 type Props = {
@@ -15,6 +17,8 @@ const PurshasesTable = ({ purchases }: Props) => {
     const { colors } = useTheme();
     const { ownerInfo } = useOwner();
     const [ totalPrice, setTotalPrice ] = useState<number>(0);
+    const { setLoadingScreen } = useLoadingScreen();
+    const router = useRouter();
 
     useEffect(() => {
         setTotalPrice(Number(calculPurshaseTotalPrice(purchases)));
@@ -74,9 +78,15 @@ const PurshasesTable = ({ purchases }: Props) => {
                             style={{
                                 border: `0.2px solid ${colors.light[300]}`
                             }}
+                            onClick={() => {
+                                setLoadingScreen(true);
+                                localStorage.removeItem('purchaseId');
+                                //@ts-ignore
+                                router.push(`/product/${purchase.product._id}`)
+                            }}
                         >
                             <td 
-                                className=' max-w-[10%] bg-red-500- p-2'
+                                className=' max-w-[10%] bg-red-500- p-2 cursor-pointer'
                                 style={{ border: `0.2px solid ${colors.light[300]}` }}
                             >
                                 <div className='w-full flex flex-row items-center gap-2 bg-red-500-'>
@@ -102,18 +112,18 @@ const PurshasesTable = ({ purchases }: Props) => {
                                     {
                                         //@ts-ignore
                                         purchase?.specification?.color
-                                    }, 
+                                    }
                                 </p>
                                 <p className='w-full break-words whitespace-pre-line'>
                                     {
                                         //@ts-ignore
-                                        purchase?.specification?.size
-                                    }, 
+                                        purchase?.specification?.size ?  "" + purchase?.specification?.size :  ""
+                                    }
                                 </p>
                                 <p className='w-full break-words whitespace-pre-line'>
                                     {
                                         //@ts-ignore
-                                        purchase?.specification?.type
+                                        purchase?.specification?.type ?  "" + purchase?.specification?.type :  ""
                                     }
                                 </p>
 

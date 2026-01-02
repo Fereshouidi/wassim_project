@@ -55,13 +55,13 @@ const InputForm = ({
                 />
                 <input 
                     type="text" 
-                    value={clientForm.adress}
-                    placeholder={activeLanguage.sideMatter.adress}
+                    value={clientForm.address}
+                    placeholder={activeLanguage.sideMatter.address}
                     className='flex flex-1 rounded-sm h-12 p-2 text-[14px]'
                     style={{
                         border: `1px solid ${colors.light[300]}`
                     }}
-                    onChange={(e) => setClientForm({...clientForm, adress: e.target.value})}
+                    onChange={(e) => setClientForm({...clientForm, address: e.target.value})}
                 />
                 <input 
                     type="tel" 

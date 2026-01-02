@@ -14,7 +14,7 @@ type Props = {
     value?: string
     defaultValue?: string
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
-    type: 'text' | 'number' | 'email' | 'password' | 'tel'
+    type: 'text' | 'number' | 'email' | 'password' | 'tel' | 'date'
     pattern?: string
     minLength?: number
 }
