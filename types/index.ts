@@ -189,8 +189,11 @@ export type LanguageStracture = {
     deliveryPhone: string,
     orderedAt: string
     viewMyOrder: string
-
-
+    yourInfomations: string
+    inputYourDateOfBirth: string,
+    dateOfBirth: string
+    logOut: string,
+    submit: string
     // fullName: string
     // address: string,
     // phone: number,

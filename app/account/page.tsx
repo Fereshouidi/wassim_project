@@ -10,6 +10,7 @@ import CustomInputText from '@/componnent/sub/customInputText';
 import LoadingScreen from '@/componnent/sub/loading/loadingScreen';
 import { headerHeight } from '@/constent';
 import { useClient } from '@/contexts/client';
+import { useLanguage } from '@/contexts/languageContext';
 import { useLoadingScreen } from '@/contexts/loadingScreen';
 import { useOwner } from '@/contexts/ownerInfo';
 import { useScreen } from '@/contexts/screenProvider';
@@ -33,6 +34,7 @@ const AccountPage = () => {
     const [ updatedClient, setUpdatedClient ] = useState<ClientType | undefined>(undefined);
     const { setStatusBanner } = useStatusBanner();
     const [ verificationAccountBannerVisible, setVerificationAccountBannerVisible ] = useState<boolean>(false);
+    const { activeLanguage } = useLanguage();
 
     useEffect(() => {
         if (!client) return;
@@ -168,15 +170,15 @@ const handleSubmit = async () => {
 
                     <h2
                         className='m-5 sm:m-10 text-lg font-bold'
-                    >Your infomations</h2>
+                    >{activeLanguage.yourInfomations}</h2>
 
                     <div className='grid grid-cols-1 md:grid-cols-2 gap-6 w-full'>
                         <CustomInputText
-                            label='Full Name'
+                            label={activeLanguage.sideMatter.fullName}
                             type='text'
                             className={`${screenWidth > 700 ? 'px-10-' : ''} w-[300px]`}
                             labelClassName='font-bold'
-                            placeholder='enter your full name...'
+                            placeholder={activeLanguage.inputYourName + "..."}
                             inputClassName='py-2'
                             defaultValue={updatedClient?.fullName}
                             onChange={(e) => setUpdatedClient({
@@ -187,11 +189,11 @@ const handleSubmit = async () => {
                         />                    
                         
                         <CustomInputText
-                            label='Phone'
+                            label={activeLanguage.sideMatter.phone}
                             type='tel'
                             className={`${screenWidth > 700 ? 'px-10-' : ''} w-[300px]`}
                             labelClassName='font-bold'
-                            placeholder='enter your phone num...'
+                            placeholder={activeLanguage.inputYourPhone + "..."}
                             inputClassName='py-2'
                             defaultValue={updatedClient?.phone?.toString()}
                             onChange={(e) => {
@@ -203,15 +205,15 @@ const handleSubmit = async () => {
                                     });
                                 }
                             }}
-                            maxLength={8} // تصحيح الكلمة (g)
+                            maxLength={8}
                         />            
                         
                         <CustomInputText
-                            label='Email'
+                            label={activeLanguage.sideMatter.email}
                             type='text'
                             className={`${screenWidth > 700 ? 'px-10-' : ''} w-[300px]`}
                             labelClassName='font-bold'
-                            placeholder='enter your email...'
+                            placeholder={activeLanguage.inputYourEmail + "..."}
                             inputClassName='py-2'
                             defaultValue={updatedClient?.email}
                             onChange={(e) => setUpdatedClient({
@@ -222,11 +224,11 @@ const handleSubmit = async () => {
                         />                    
                         
                         <CustomInputText
-                            label='address'
+                            label={activeLanguage.sideMatter.address}
                             type='text'
                             className={`${screenWidth > 700 ? 'px-10-' : ''} w-[300px]`}
                             labelClassName='font-bold'
-                            placeholder='enter your full address...'
+                            placeholder={activeLanguage.sideMatter.address}
                             inputClassName='py-2'
                             defaultValue={updatedClient?.address}
                             onChange={(e) => setUpdatedClient({
@@ -237,11 +239,11 @@ const handleSubmit = async () => {
                         />                    
                         
                         <CustomInputText
-                            label='Password'
+                            label={activeLanguage.sideMatter.password}
                             type='text'
                             className={`${screenWidth > 700 ? 'px-10-' : ''} w-[300px]`}
                             labelClassName='font-bold'
-                            placeholder='enter your full password...'
+                            placeholder={activeLanguage.inputYourPassword + "..."}
                             inputClassName='py-2'
                             defaultValue={updatedClient?.password}
                             onChange={(e) => setUpdatedClient({
@@ -251,11 +253,11 @@ const handleSubmit = async () => {
                         />
                 
                         <CustomInputText
-                            label='Date of birth'
+                            label={activeLanguage.dateOfBirth}
                             type="date"
                             className={`${screenWidth > 700 ? 'px-10-' : ''} w-[300px]`}
                             labelClassName='font-bold'
-                            placeholder='enter your date of birth...'
+                            placeholder={activeLanguage.inputYourDateOfBirth} 
                             inputClassName='py-2'
                             //@ts-ignore
                             defaultValue={updatedClient?.dateOfBirth ? new Date(updatedClient.dateOfBirth).toISOString().slice(0, 10) : ''}
@@ -286,7 +288,7 @@ const handleSubmit = async () => {
                                 src="/icons/logout-white.png"
                                 className='w-3 h-3'
                             />
-                            <p>Log Out</p>
+                            <p>{activeLanguage.logOut}</p>
                             
                         </div>
 
@@ -298,7 +300,7 @@ const handleSubmit = async () => {
                                 boxShadow: `0 5px 15px ${colors.light[300]}`
                             }}
                             onClick={handleSubmit}
-                        >Submit</div>
+                        >{activeLanguage.submit}</div>
 
                     </div>
 

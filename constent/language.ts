@@ -120,7 +120,12 @@ export const english = {
     receiver: "Receiver",
     deliveryPhone: "Delivery phone",
     orderedAt: "Ordered at",
-    viewMyOrder: "View My Orders"
+    viewMyOrder: "View My Orders",
+    yourInfomations: "Your infomations",
+    dateOfBirth: "Date od birth",
+    inputYourDateOfBirth: 'enter your date of birth...',
+    logOut: "Log Out",
+    submit: "Submit"
 
 } as LanguageStracture;
 
@@ -243,7 +248,13 @@ export const frensh = {
     receiver: "Destinataire",
     deliveryPhone: "Téléphone de livreur",
     orderedAt: "Commandé le",
-    viewMyOrder: "Voir mes commandes"
+    viewMyOrder: "Voir mes commandes",
+    yourInfomations: "Vos informations",
+    dateOfBirth: "Date de naissance",
+    inputYourDateOfBirth: "Entrez votre date de naissance...",
+    logOut: "Se déconnecter",
+    submit: "Envoyer"
+
 
 } as LanguageStracture;
 

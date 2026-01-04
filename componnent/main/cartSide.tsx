@@ -272,8 +272,15 @@ const CartSide = ({
                         ))}
                     </div>
 
+                    <div className='my-5 rounded-sm'>
+                        <OrderData
+                            // ownerInfo={}
+                            purchases={purchases}
+                        />
+                    </div>
+
                     <div 
-                        className='p-2 my-5 rounded-sm'
+                        className='p-2 my-2 rounded-sm'
                         style={{
                             border: `0.2px solid ${colors.light[300]}`
                         }}
@@ -281,14 +288,6 @@ const CartSide = ({
                         <InputForm
                             clientForm={clientForm}
                             setClientForm={setClientForm}
-                        />
-                    </div>
-
-
-                    <div className='my-2 rounded-sm'>
-                        <OrderData
-                            // ownerInfo={}
-                            purchases={purchases}
                         />
                     </div>
 
