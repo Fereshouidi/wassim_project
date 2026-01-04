@@ -96,7 +96,7 @@ const FilterCollection = ({
     }, [defaultOptions]);
     
     return (
-        <div className='w-fit- h-full m-2- p-2 bg-yellow-500- '>
+        <div className='w-fit- min-w-[130px] h-full m-2- p-2 bg-yellow-500- '>
             
             <h4 
                 className='sm:m-5 mb-4 font-extrabold'

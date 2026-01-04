@@ -20,95 +20,57 @@ const FilterColor = ({
 }: FilterCollection) => {
 
     const { activeLanguage } = useLanguage();
-    const { colors, activeTheme } = useTheme();
-    const [options, setOptions] = useState<OptionType[]>([]);
-    const [currentOptions, setCurrentOptions] = useState<OptionType[]>([{
-        label: activeLanguage.sideMatter.all + " " + activeLanguage.sideMatter.colors, 
-        value: "all"
-    }]);
+    const { colors } = useTheme();
+    
+    const options: OptionType[] = React.useMemo(() => [
+        {
+            label: `${activeLanguage.sideMatter.all} ${activeLanguage.sideMatter.colors}`, 
+            value: "all"
+        },
+        ...availableColors.map(color => ({ label: color, value: color }))
+    ], [availableColors, activeLanguage]);
+
+    const [currentOptions, setCurrentOptions] = useState<OptionType[]>([]);
 
     useEffect(() => {
-
-        const allOptions = availableColors.map(color => (
-            {
+        if (!defaultOptions || defaultOptions.length === 0) {
+            setCurrentOptions([options[0]]);
+        } else if (defaultOptions.length === availableColors.length) {
+            setCurrentOptions([options[0]]);
+        } else {
+            const mapped = defaultOptions.map(color => ({
                 label: color,
                 value: color
-            } as OptionType
-        ))
-
-        // const allCollectionsId = allCollections.map(collection => (collection._id))
-
-        setOptions([
-            {
-                label: activeLanguage.sideMatter.all + " " + activeLanguage.sideMatter.colors, 
-                value: "all"
-            },
-            ...allOptions
-        ])
-
-    }, [availableColors])
-
-    useEffect(() => {
-
-        setFiltrationCopy({
-            ...filtrationCopy,
-            colors: currentOptions.flatMap(option => 
-                option.value
-            )
-        })
-    }, [currentOptions])
-
-    useEffect(() => {
-        console.log({options});
-        
-    }, [options])
-
-    useEffect(() => {
-        
-        if (!defaultOptions || defaultOptions?.length == 0 ) {
-            return setCurrentOptions([{
-                label: activeLanguage.sideMatter.all + " " + activeLanguage.sideMatter.colors, 
-                value: "all"
-            }])
+            }));
+            setCurrentOptions(mapped);
         }
+    }, [defaultOptions, options]);
 
-        console.log(defaultOptions.length,  options.length - 1);
+    useEffect(() => {
+        const selectedValues = currentOptions.map(opt => opt.value);
         
-        setCurrentOptions(
-            
-            defaultOptions?.length == options.length - 1  ?
-                [{
-                    label: activeLanguage.sideMatter.all + " " + activeLanguage.sideMatter.colors, 
-                    value: "all"
-                }]
-            :
-            defaultOptions.map(
-            (color): OptionType => ({
-                label: `${filtrationCopy.colors.length} ${activeLanguage.sideMatter.colors}`,
-                value: color
-            })
-            )
-        );
-    }, [defaultOptions]);
+        if (JSON.stringify(selectedValues) !== JSON.stringify(filtrationCopy.colors)) {
+            setFiltrationCopy({
+                ...filtrationCopy,
+                colors: selectedValues
+            });
+        }
+    }, [currentOptions]);
 
-
-    
     return (
-        <div className='w-full- h-full m-2- p-2'>
-            
-            <h4 
-                className='sm:m-5 mb-4 font-extrabold'
-            >{activeLanguage.sideMatter.colors + " : "}</h4>
+        <div className='w-full- min-w-[130px] h-full p-2'>
+            <h4 className='sm:m-5 mb-4 font-extrabold'>
+                {activeLanguage.sideMatter.colors} :
+            </h4>
 
             <CustomSelectMany
                 label={activeLanguage.sideMatter.color}
                 options={options}
                 currentOptions={currentOptions}
                 setCurrentOptions={setCurrentOptions}
-                // className={`sm:w-32`}
             />
         </div>
-    )
+    );
 }
 
 export default FilterColor;

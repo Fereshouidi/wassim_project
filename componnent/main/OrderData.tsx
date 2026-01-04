@@ -35,7 +35,7 @@ const OrderData = ({
     
     return (
         <div 
-            className='bord pt-2 flex flex-col my-10 text-sm rounded-sm px-2 gap-2'
+            className='bord pt-2- flex flex-col my-10- text-sm rounded-sm px-2 gap-2'
             style={{
                 // borderTop: `0.5px solid ${colors.light[300]}`,
                 border: `0.5px solid ${colors.light[300]}`,

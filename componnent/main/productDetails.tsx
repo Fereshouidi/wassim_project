@@ -212,9 +212,9 @@ const ProductDetails = ({
         }
 
         {
-          activeSpecifications?.price ?
+          (activeSpecifications?.price || 0) >= 0 ?
             <h2 className='font-extrabold text-2xl sm:text-3xl m-4'>
-              {activeSpecifications.price + ' D.T'}
+              {activeSpecifications?.price + ' D.T'}
             </h2>
             : <div className='w-[100px] h-10 m-4 rounded-sm'><SkeletonLoading /></div>
         }

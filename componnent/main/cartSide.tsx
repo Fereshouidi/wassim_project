@@ -15,6 +15,7 @@ import { useLoadingScreen } from '@/contexts/loadingScreen'
 import { useStatusBanner } from '@/contexts/StatusBanner'
 import OrderConfirmedBanner from '../sub/banner_confirmedOrder'
 import { ErrorBanner } from '../sub/banners/errorBanner'
+import { useRouter } from 'next/navigation'
 
 type Props = {
     isActive: boolean
@@ -33,6 +34,7 @@ const CartSide = ({
     const { activeLanguage } = useLanguage();
     const { client } = useClient();
     const { colors, activeTheme } = useTheme();
+    const router = useRouter();
     const socket = useSocket();
     const { setLoadingScreen } = useLoadingScreen();
     const { setStatusBanner } = useStatusBanner();
@@ -256,7 +258,7 @@ const CartSide = ({
                 <div className='flex flex-col justify-center'>
 
                     <div 
-                        className='w-full flex flex-col items-center gap-2 mb-1 p-1'
+                        className='w-full flex flex-col items-center gap-2 mb-1 p-1 rounded-sm'
                         style={{
                             border: `0.2px solid ${colors.light[300]}`
                         }}
@@ -270,13 +272,8 @@ const CartSide = ({
                         ))}
                     </div>
 
-                    <OrderData
-                        // ownerInfo={}
-                        purchases={purchases}
-                    />
-
                     <div 
-                        className='p-2'
+                        className='p-2 my-5 rounded-sm'
                         style={{
                             border: `0.2px solid ${colors.light[300]}`
                         }}
@@ -284,6 +281,14 @@ const CartSide = ({
                         <InputForm
                             clientForm={clientForm}
                             setClientForm={setClientForm}
+                        />
+                    </div>
+
+
+                    <div className='my-2 rounded-sm'>
+                        <OrderData
+                            // ownerInfo={}
+                            purchases={purchases}
                         />
                     </div>
 
@@ -297,6 +302,19 @@ const CartSide = ({
                     >
                         {activeLanguage.confirmOrder}
                     </button>
+
+                    <button
+                        className={`w-full py-3 mt-2 bg-transparent font-medium text-center text-sm sm:text-md rounded-md cursor-pointer`}
+                        style={{
+                            // backgroundColor: colors.dark[100],
+                            color: colors.dark[100],
+                            border: `1px solid ${colors.dark[100]}`
+                        }}
+                        onClick={() => router.push(`/orders`)}
+                    >
+                        {activeLanguage.viewMyOrder}
+                    </button>
+
                 </div>
             }
 

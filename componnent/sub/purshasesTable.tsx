@@ -140,7 +140,7 @@ const PurshasesTable = ({ purchases }: Props) => {
                             >
                                 {
                                     //@ts-ignore
-                                    (purchase.specification.price * purchase.quantity).toFixed(2)
+                                    (purchase.specification?.price * purchase.quantity).toFixed(2)
                                 } D.T</td>
 
                         </tr>

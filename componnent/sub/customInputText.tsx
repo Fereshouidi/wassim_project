@@ -17,6 +17,7 @@ type Props = {
     type: 'text' | 'number' | 'email' | 'password' | 'tel' | 'date'
     pattern?: string
     minLength?: number
+    maxLength?: number
 }
 
 const CustomInputText = ({
@@ -33,7 +34,8 @@ const CustomInputText = ({
     onChange,
     type,
     pattern,
-    minLength
+    minLength,
+    maxLength
 }: Props) => {
 
     const {activeLanguage } = useLanguage();
@@ -70,6 +72,7 @@ const CustomInputText = ({
                 defaultValue={defaultValue}
                 onChange={onChange}
                 minLength={minLength}
+                maxLength={maxLength}
             />
             
 

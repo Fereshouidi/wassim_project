@@ -237,10 +237,11 @@ export default function ClientProductPage({ product }: Props) {
     const handleLike = async () => {
 
         if (!product || !client || like == null) return;
-        setLoadingScreen(true);
+        // setLoadingScreen(true);
 
         if (!like) {
 
+          setLike(true)
           await axios.post( backEndUrl + "/addLike", {
             likeData: {
               client: client?._id,
@@ -251,11 +252,12 @@ export default function ClientProductPage({ product }: Props) {
           .catch((err) => {
             console.log(err);
             
-            setStatusBanner(true, "something went wrong !");
+            // setStatusBanner(true, "something went wrong !");
           })
 
         } else {
 
+          setLike(false)
           await axios.delete( backEndUrl + "/deleteLike", {
             data: {
               clientId: client?._id,
@@ -264,12 +266,12 @@ export default function ClientProductPage({ product }: Props) {
           })
           .then(({ data }) => {setLike(false)})
           .catch((err) => {
-            setStatusBanner(true, "something went wrong !");
+            // setStatusBanner(true, "something went wrong !");
           })
 
         }
 
-        setLoadingScreen(false);
+        // setLoadingScreen(false);
 
     }
 

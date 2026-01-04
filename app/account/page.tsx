@@ -183,21 +183,28 @@ const handleSubmit = async () => {
                                 ...updatedClient,
                                 fullName: e.target.value
                             })}
+                            maxLength={25}
                         />                    
                         
                         <CustomInputText
                             label='Phone'
-                            type='number'
+                            type='tel'
                             className={`${screenWidth > 700 ? 'px-10-' : ''} w-[300px]`}
                             labelClassName='font-bold'
                             placeholder='enter your phone num...'
                             inputClassName='py-2'
                             defaultValue={updatedClient?.phone?.toString()}
-                            onChange={(e) => setUpdatedClient({
-                                ...updatedClient,
-                                phone: Number(e.target.value)
-                            })}
-                        />                    
+                            onChange={(e) => {
+                                const val = e.target.value;
+                                if (val.length <= 8) {
+                                    setUpdatedClient({
+                                        ...updatedClient,
+                                        phone: Number(val)
+                                    });
+                                }
+                            }}
+                            maxLength={8} // تصحيح الكلمة (g)
+                        />            
                         
                         <CustomInputText
                             label='Email'
@@ -211,6 +218,7 @@ const handleSubmit = async () => {
                                 ...updatedClient,
                                 email: e.target.value
                             })}
+                            maxLength={50}
                         />                    
                         
                         <CustomInputText
@@ -225,6 +233,7 @@ const handleSubmit = async () => {
                                 ...updatedClient,
                                 address: e.target.value
                             })}
+                            maxLength={100}
                         />                    
                         
                         <CustomInputText
@@ -258,7 +267,7 @@ const handleSubmit = async () => {
                         />
                     </div>
 
-                    <div className={`bg-red-500- w-full mt-7 flex justify-center sm:justify-end gap-2`}>
+                    <div className={`bg-red-500- w-full mt-7 flex justify-between sm:justify-end- gap-2`}>
 
                         <div
                             className='min-w-24 bg-red-500 flex justify-center items-center gap-2 text-white py-2 px-3 rounded-sm text-sm sm:text-md cursor-pointer'

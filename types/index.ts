@@ -188,6 +188,7 @@ export type LanguageStracture = {
     receiver: string,
     deliveryPhone: string,
     orderedAt: string
+    viewMyOrder: string
 
 
     // fullName: string

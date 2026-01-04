@@ -1,14 +1,6 @@
 import { LanguageStracture } from "@/types";
 
 
-
-
-
-
-
-
-
-
 export const english = {
     label: "english",
     language: "en",
@@ -127,7 +119,8 @@ export const english = {
     moreDetails: "More details",
     receiver: "Receiver",
     deliveryPhone: "Delivery phone",
-    orderedAt: "Ordered at"
+    orderedAt: "Ordered at",
+    viewMyOrder: "View My Orders"
 
 } as LanguageStracture;
 
@@ -249,7 +242,8 @@ export const frensh = {
     moreDetails: "Plus de détails",
     receiver: "Destinataire",
     deliveryPhone: "Téléphone de livreur",
-    orderedAt: "Commandé le"
+    orderedAt: "Commandé le",
+    viewMyOrder: "Voir mes commandes"
 
 } as LanguageStracture;
 

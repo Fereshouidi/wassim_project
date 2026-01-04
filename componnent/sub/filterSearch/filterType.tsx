@@ -1,8 +1,6 @@
 import { useLanguage } from '@/contexts/languageContext';
-import { useTheme } from '@/contexts/themeProvider';
-import React, { useEffect, useState } from 'react'
-import CustomSelect from '../customSelect';
-import { CollectionType, FiltrationType, OptionType } from '@/types';
+import React, { useEffect, useState, useMemo } from 'react'
+import { FiltrationType, OptionType } from '@/types';
 import CustomSelectMany from '../customSelectMany';
 
 type FilterCollection = {
@@ -20,88 +18,54 @@ const FilterType = ({
 }: FilterCollection) => {
 
     const { activeLanguage } = useLanguage();
-    const { colors, activeTheme } = useTheme();
-    const [options, setOptions] = useState<OptionType[]>([]);
-    const [currentOptions, setCurrentOptions] = useState<OptionType[]>([{
-        label: activeLanguage.sideMatter.all + " " + activeLanguage.sideMatter.types, 
-        value: "all"
-    }]);
+
+    const options: OptionType[] = useMemo(() => [
+        {
+            label: activeLanguage.sideMatter.all + " " + activeLanguage.sideMatter.types, 
+            value: "all"
+        },
+        ...availableType.map(type => ({
+            label: type,
+            value: type
+        }))
+    ], [availableType, activeLanguage]);
+
+    const [currentOptions, setCurrentOptions] = useState<OptionType[]>([]);
 
     useEffect(() => {
-
-        const allOptions = availableType.map(type => (
-            {
+        if (!defaultOptions || defaultOptions.length === 0 || defaultOptions.length === availableType.length) {
+            setCurrentOptions([options[0]]);
+        } else {
+            const mapped = defaultOptions.map(type => ({
                 label: type,
                 value: type
-            } as OptionType
-        ))
-
-        // const allCollectionsId = allCollections.map(collection => (collection._id))
-
-        setOptions([
-            {
-                label: activeLanguage.sideMatter.all + " " + activeLanguage.sideMatter.types, 
-                value: "all"
-            },
-            ...allOptions
-        ])
-
-    }, [availableType])
-
-    useEffect(() => {
-
-        setFiltrationCopy({
-            ...filtrationCopy,
-            types: currentOptions.flatMap(option => 
-                option.value
-            )
-        })
-    }, [currentOptions])
-
-    useEffect(() => {
-        console.log({options});
-        
-    }, [options])
-
-    useEffect(() => {
-        
-        if (!defaultOptions || defaultOptions?.length == 0 ) {
-            return setCurrentOptions([{
-                label: activeLanguage.sideMatter.all + " " + activeLanguage.sideMatter.colors, 
-                value: "all"
-            }])
+            }));
+            setCurrentOptions(mapped);
         }
+    }, [defaultOptions, options, availableType.length]);
+
+    useEffect(() => {
+        const selectedValues = currentOptions.map(opt => opt.value);
         
-        setCurrentOptions(
-            
-            defaultOptions.length == options.length - 1 ?
-                [{
-                    label: activeLanguage.sideMatter.all + " " + activeLanguage.sideMatter.types, 
-                    value: "all"
-                }]
-            :
-            defaultOptions.map(
-            (type): OptionType => ({
-                label: `${filtrationCopy.types.length} ${activeLanguage.sideMatter.types}`,
-                value: type
-            })
-            )
-        );
-    }, [defaultOptions]);
-    
+        if (JSON.stringify(selectedValues) !== JSON.stringify(filtrationCopy.types)) {
+            setFiltrationCopy({
+                ...filtrationCopy,
+                types: selectedValues
+            });
+        }
+    }, [currentOptions]);
+
     return (
-        <div className='w-fit- h-fit m-2- p-2 bg-red-500-'>
-            
-            <h4 
-                className='sm:m-5 mb-4 font-extrabold'
-            >{activeLanguage.sideMatter.types + " : "}</h4>
+        <div className='w-full- min-w-[130px] h-full p-2'>
+            <h4 className='sm:m-5 mb-4 font-extrabold'>
+                {activeLanguage.sideMatter.types + " : "}
+            </h4>
 
             <CustomSelectMany
                 label={activeLanguage.sideMatter.types}
                 options={options}
                 currentOptions={currentOptions}
                 setCurrentOptions={setCurrentOptions}
-                // className={`sm:w-32`}
             />
         </div>
     )

@@ -26,10 +26,11 @@ const InputForm = ({
 
   return (
     <div
-    // className='border-t-[0.5px]'
+    // className='rou'
         style={{
             // borderTop: `0.5px solid ${colors.light[300]}`,
             // borderTop: `0.5px solid ${colors.light[300]}`
+
         }}
         
     >
@@ -41,48 +42,68 @@ const InputForm = ({
             }}
         >{activeLanguage.sideMatter.fillOutTheForm + " :"}</h4>
 
-        <div className='flex flex-wrap justify-center items-center gap-2'>
+        <div 
+            className='flex flex-wrap justify-center items-center gap-2'
+            style={{
+                color: colors.dark[400]
+            }}
+        >
 
-                <input 
-                    type="text" 
-                    value={clientForm.fullName}
-                    placeholder={activeLanguage.sideMatter.fullName}
-                    className='flex flex-1 rounded-sm h-12 p-2 text-[14px]'
-                    style={{
-                        border: `1px solid ${colors.light[300]}`
-                    }}
-                    onChange={(e) => setClientForm({...clientForm, fullName: e.target.value})}
-                />
-                <input 
-                    type="text" 
-                    value={clientForm.address}
-                    placeholder={activeLanguage.sideMatter.address}
-                    className='flex flex-1 rounded-sm h-12 p-2 text-[14px]'
-                    style={{
-                        border: `1px solid ${colors.light[300]}`
-                    }}
-                    onChange={(e) => setClientForm({...clientForm, address: e.target.value})}
-                />
-                <input 
-                    type="tel" 
-                    value={clientForm.phone}
-                    placeholder={activeLanguage.sideMatter.phone}
-                    className='flex flex-1 rounded-sm h-12 p-2 text-[14px]'
-                    style={{
-                        border: `1px solid ${colors.light[300]}`
-                    }}
-                    onChange={(e) => handleInputPhone(e.target.value)}
-                />
-                <input 
-                    type="text" 
-                    value={clientForm.note}
-                    placeholder={activeLanguage.sideMatter.note + ' (' + activeLanguage.recommended + ' )'}
-                    className='flex flex-1 rounded-sm h-12 p-2 text-[14px]'
-                    style={{
-                        border: `1px solid ${colors.light[300]}`
-                    }}
-                    onChange={(e) => setClientForm({...clientForm, note: e.target.value})}
-                />
+                <div className='w-full bg-red-400-'>
+                    <h4 className='text-[12px] font-semibold mx-2 my-1'>{activeLanguage.sideMatter.fullName} :</h4>
+                    <input 
+                        type="text" 
+                        value={clientForm.fullName}
+                        placeholder={activeLanguage.sideMatter.fullName}
+                        className='w-full rounded-sm h-12 p-2 text-[13px]'
+                        style={{
+                            border: `1px solid ${colors.light[300]}`
+                        }}
+                        onChange={(e) => setClientForm({...clientForm, fullName: e.target.value})}
+                    />
+                </div>
+
+                <div className='w-full bg-red-400-'>
+                    <h4 className='text-[12px] font-semibold mx-2 my-1'>{activeLanguage.sideMatter.address} :</h4>
+                    <input 
+                        type="text" 
+                        value={clientForm.address}
+                        placeholder={activeLanguage.sideMatter.address}
+                        className='w-full rounded-sm h-12 p-2 text-[13px]'
+                        style={{
+                            border: `1px solid ${colors.light[300]}`
+                        }}
+                        onChange={(e) => setClientForm({...clientForm, address: e.target.value})}
+                    />
+                </div>
+
+                <div className='w-full bg-red-400-'>
+                    <h4 className='text-[12px] font-semibold mx-2 my-1'>{activeLanguage.sideMatter.phone} :</h4>
+                    <input 
+                        type="tel" 
+                        value={clientForm.phone}
+                        placeholder={activeLanguage.sideMatter.phone}
+                        className='w-full rounded-sm h-12 p-2 text-[13px]'
+                        style={{
+                            border: `1px solid ${colors.light[300]}`
+                        }}
+                        onChange={(e) => handleInputPhone(e.target.value)}
+                    />
+                </div>
+
+                <div className='w-full bg-red-400-'>
+                    <h4 className='text-[12px] font-semibold mx-2 my-1'>{activeLanguage.sideMatter.note} :</h4>
+                    <input 
+                        type="text" 
+                        value={clientForm.note}
+                        placeholder={activeLanguage.sideMatter.note + ' (' + activeLanguage.recommended + ' )'}
+                        className='w-full rounded-sm h-12 p-2 text-[13px]'
+                        style={{
+                            border: `1px solid ${colors.light[300]}`
+                        }}
+                        onChange={(e) => setClientForm({...clientForm, note: e.target.value})}
+                    />
+                </div>
         </div>
     </div>
   )

@@ -101,7 +101,7 @@ export const calcTotalPrice = (order: OrderType) => {
 
 export const calculPurshaseTotalPrice = (purchases: PurchaseType[]) => {
     //@ts-ignore
-    const total =purchases.reduce((total, purchase) => total + (purchase.specification.price * purchase.quantity), 0);
+    const total =purchases.reduce((total, purchase) => total + (purchase.specification?.price * purchase.quantity), 0);
     return total.toFixed(2);
   }
 
