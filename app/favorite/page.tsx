@@ -89,7 +89,7 @@ const FavoritePage = () => {
                         <ProductCard 
                             key={index}
                             product={product}
-                            className={`w-[175px] sm:w-[250px]`}
+                            className={`w-[180px] sm:w-[220px]`}
                             useLike={true}
                         />
                     ))}

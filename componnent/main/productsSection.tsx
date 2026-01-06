@@ -122,14 +122,14 @@ const ProductsSection = ({
 
                 <div className='w-full sm:px-14 flex flex-col justify-center items-center'>
 
-                    <div className='w-full flex flex-wrap wrap-break-word justify-center px-20- bg-red-500- gap-2 sm:gap-10'>
+                    <div className='w-full flex flex-wrap wrap-break-word justify-center px-20- bg-red-500- gap-2 sm:gap-5'>
 
                         {
                             products?.map((product, index) => (
                                 <ProductCard
                                     key={index}
                                     product={product}
-                                    className="w-[45%] sm:w-[225px] min-h-[185px] sm:min-h-[250px] my-3"
+                                    className="w-[45%] sm:w-[220px] h-[300px] sm:min-h-[250px] bg-red-500- my-3- p-2-"
                                     useLike={useLike}
                                 />
                             ))

@@ -30,7 +30,7 @@ const Slider = ({
     useLike
 }: sliderProps) => {
 
-    const [cardWidth, setCardWidth] = useState<number>(270);
+    const [cardWidth, setCardWidth] = useState<number>(220);
     const [userScroll, setUserScroll] = useState<boolean>(false);
 
     const sliderRef = useRef<HTMLDivElement>(null);
@@ -150,31 +150,35 @@ const Slider = ({
                     onTouchStart={() => setUserScroll(true)}             
                     onMouseEnter={() => setUserScroll(true)}
                     style={{
-                        width: screenWidth > 1500 ? 
+                        width: screenWidth > 1600 ?
+                                cardWidth * 6 + "px" 
+                            :screenWidth < 1600 && screenWidth > 1300 ? 
+                                cardWidth * 5 + "px" 
+                            :screenWidth < 1300 && screenWidth > 1100 ? 
                                 cardWidth * 4 + "px" 
-                            : screenWidth < 1600 && screenWidth > 1100 ?
+                            : screenWidth < 1100 && screenWidth > 900 ?
                                 cardWidth * 3 + "px"
                             : cardWidth * 2 + "px"
                     }}
                 >
                     <div 
-                        className='w-max h-full flex flex-row justify-start slide' 
+                        className='w-max h-full flex flex-row justify-start slide bg-red-500-' 
                         ref={slidesRef}
                     >
-                        <div className='w-max h-full flex flex-row justify-start'>
+                        <div className='w-max h-full  flex flex-row justify-start gap-5-'>
                             {products.map((product, index) => (
                                 <div 
                                     key={index}
-                                    // className=' min-h-[150px] sm:min-h-[220px] m-0 '
+                                    className=' max-h-[180px] bg-red-500- sm:max-h-[270px] m-0 rounded-sm overflow-hidden'
                                     style={{
                                         width: cardWidth  + "px",
-                                        paddingLeft: '5px',
-                                        paddingRight: '5px',
+                                        // paddingLeft: '5px',
+                                        // paddingRight: '5px',
                                     }}
                                 >
                                     <ProductCard
                                         product={product}
-                                        className='w-[100%] h-full'
+                                        className='w-[100%] h-fit py-2-'
                                         useLike={useLike}
                                     />
                                 </div>

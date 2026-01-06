@@ -57,8 +57,8 @@ const FilterType = ({
 
     return (
         <div className='w-full- min-w-[130px] h-full p-2'>
-            <h4 className='sm:m-5 mb-4 font-extrabold'>
-                {activeLanguage.sideMatter.types + " : "}
+            <h4 className='sm:m-5 mb-4 font-bold'>
+                {activeLanguage.sideMatter.types + ": "}
             </h4>
 
             <CustomSelectMany

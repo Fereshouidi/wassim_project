@@ -49,7 +49,7 @@ const Collections = ({sideBarActive}: props) => {
 
     return (
         <div 
-            className='relative w-full bg-red-800- flex flex-row justify-between items-center'
+            className='relative h-full w-full bg-red-800- flex flex-row justify-between items-center z-50'
         >
             {activeLanguage.nav.collections}
             {screenWidth > 1000 && <img 
@@ -70,7 +70,7 @@ const Collections = ({sideBarActive}: props) => {
 
 
             <div
-                className={`w-fit fixed ${collectionsDivVisible ? "left-[320px]" : "invisible left-0"}  top-0- z-[9999] rounded-sm duration-300`}
+                className={`w-fit fixed bg-red-500 ${collectionsDivVisible ? "left-[320px]" : "invisible left-0"}  top-0- z-[9999] rounded-sm duration-300`}
                 style={{
                     backgroundColor: colors.dark[100]
                 }}

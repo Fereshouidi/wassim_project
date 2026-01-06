@@ -50,7 +50,7 @@ const InputForm = ({
         >
 
                 <div className='w-full bg-red-400-'>
-                    <h4 className='text-[12px] font-semibold mx-2 my-1'>{activeLanguage.sideMatter.fullName} :</h4>
+                    {/* <h4 className='text-[12px] font-semibold mx-2 my-1'>{activeLanguage.sideMatter.fullName} :</h4> */}
                     <input 
                         type="text" 
                         value={clientForm.fullName}
@@ -64,7 +64,7 @@ const InputForm = ({
                 </div>
 
                 <div className='w-full bg-red-400-'>
-                    <h4 className='text-[12px] font-semibold mx-2 my-1'>{activeLanguage.sideMatter.address} :</h4>
+                    {/* <h4 className='text-[12px] font-semibold mx-2 my-1'>{activeLanguage.sideMatter.address} :</h4> */}
                     <input 
                         type="text" 
                         value={clientForm.address}
@@ -78,7 +78,7 @@ const InputForm = ({
                 </div>
 
                 <div className='w-full bg-red-400-'>
-                    <h4 className='text-[12px] font-semibold mx-2 my-1'>{activeLanguage.sideMatter.phone} :</h4>
+                    {/* <h4 className='text-[12px] font-semibold mx-2 my-1'>{activeLanguage.sideMatter.phone} :</h4> */}
                     <input 
                         type="tel" 
                         value={clientForm.phone}
@@ -92,7 +92,7 @@ const InputForm = ({
                 </div>
 
                 <div className='w-full bg-red-400-'>
-                    <h4 className='text-[12px] font-semibold mx-2 my-1'>{activeLanguage.sideMatter.note} :</h4>
+                    {/* <h4 className='text-[12px] font-semibold mx-2 my-1'>{activeLanguage.sideMatter.note} :</h4> */}
                     <input 
                         type="text" 
                         value={clientForm.note}

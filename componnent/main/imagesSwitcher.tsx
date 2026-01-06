@@ -62,7 +62,7 @@ const ImagesSwitcher = ({
 
   return (
     <div 
-        className={` relative h-full top-0 min-w-[380px] sm:min-w-[550px] min-h-[300px] sm:min-h-[500px] bg-yellow-500- w-[600px]- flex flex-col justify-center items-center bg-yellow-500- pt-10- no-sellect bg-transparent- ${className}`} 
+        className={` relative h-full top-0 min-w-[380px] sm:min-w-[550px] min-h-[500px] sm:min-h-[500px] bg-yellow-500- w-[600px]- flex flex-col justify-center items-center bg-yellow-500- pt-10- no-sellect bg-transparent- ${className}`} 
         style={{ 
             ...style,
             maxWidth: screenWidth > 700 ? "700px" : "100vw",
@@ -71,7 +71,7 @@ const ImagesSwitcher = ({
 
       
       <div 
-        className={`bg-red-500- relative min-h-full- min-w-full ${screenWidth > 500 ? "w-[600px]- h-[500px]" : "w-[400px]- h-[400px]"}  bg-red-500- rounded-sm flex flex-1 justify-center items-center p-5 sm:px-10- scrollbar-hidden`}
+        className={`bg-red-500- relative min-h-[40vh] min-w-full bg-red-500- ${screenWidth > 500 ? "w-[600px]- h-[500px]" : "w-[400px]- h-[400px]"}  bg-red-500- rounded-sm flex flex-1 justify-center items-center p-5 sm:px-10- scrollbar-hidden`}
         style={{
             paddingBottom: 2,
             
@@ -106,8 +106,7 @@ const ImagesSwitcher = ({
                 alt="" 
                 className='w-full h-full bg-blue-500- p-2- object-content rounded-sm'
                 style={{
-                    // maxWidth: "100%",
-                    // maxHeight: "90vh",
+                    minHeight: "40vh",
                     border: `0.5px solid ${colors.light[500]}`
                 }}
                 ref={imageDisplayRef}

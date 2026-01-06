@@ -61,11 +61,12 @@ const CollectionCard = ({
 
   return (
     <div 
-        className='w-[320px] sm:w-[250px] h-[350px] sm:h-[300px] rounded-sm cursor-pointer duration-300 overflow-hidden'
+        className='w-[320px] sm:w-[250px] max-h-[320px] sm:max-h-[270px] rounded-sm cursor-pointer duration-300 overflow-hidden'
         style={{
             backgroundColor: colors.light[100],
             boxShadow: isHover ? '0 0px 10px rgba(13, 13, 13, 0.15)' : "0 0px 10px rgba(13, 13, 13, 0.02)",
-            transform: isHover ? 'scale(105%)' : ""
+            transform: isHover ? 'scale(105%)' : "",
+            border: `0.5px solid ${colors.light[400]}`
         }}
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
@@ -73,7 +74,7 @@ const CollectionCard = ({
     >
 
         <div 
-            className='w-full h-[270px] sm:h-[250px] flex flex-1 '
+            className='w-full h-[270px] sm:h-[220px] flex flex-1 '
             style={{
                 backgroundColor: colors.light[300],
                 border: 'none'
@@ -81,8 +82,8 @@ const CollectionCard = ({
         >
             {collection.thumbNail ?
                 <img 
-                    src={collection.thumbNail} 
-                    alt="" 
+                    src={collection.thumbNail}
+                    alt=""
                     className='w-full h-full'
                 /> :
             isLoading ?
@@ -93,7 +94,7 @@ const CollectionCard = ({
         </div>
 
         <div className='min-h-10 mt-[1px]'>{
-            collection.name[activeLanguage.language] ? 
+            collection.name[activeLanguage.language] ?
                 <h4     
                     className='min-h-10 p-3 text-center'
                     style={{

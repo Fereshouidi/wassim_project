@@ -99,8 +99,8 @@ const FilterCollection = ({
         <div className='w-fit- min-w-[130px] h-full m-2- p-2 bg-yellow-500- '>
             
             <h4 
-                className='sm:m-5 mb-4 font-extrabold'
-            >{activeLanguage.nav.collections + " : "}</h4>
+                className='sm:m-5 mb-4 font-bold'
+            >{activeLanguage.nav.collections + ": "}</h4>
 
             <CustomSelectMany
                 label={activeLanguage.nav.collection}

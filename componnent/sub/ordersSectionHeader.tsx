@@ -133,7 +133,7 @@ const OrdersSectionHeader = ({
                     <h2>{
                         activePage == "pending" ? `${activeLanguage.pendingOrders} : (${totalOrdersCount})`
                         : activePage == "failed" ? `${activeLanguage.failedgOrders} : (${totalOrdersCount})`
-                        : activePage == "delivered" ? `${activeLanguage.delivered} : (${totalOrdersCount})`
+                        : activePage == "delivered" ? `${activeLanguage.deliveredOrders} : (${totalOrdersCount})`
                         : null
                     }</h2>
                     <div className='pl-5 flex fkex-row justify-center items-center gap-4'>

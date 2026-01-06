@@ -238,7 +238,7 @@ const SearchBar = ({
             >
                 <img 
                     src={
-                        activeTheme == 'dark' ? "/icons/filter-white.png" : "/icons/filter-black.png"
+                        activeTheme == "light" ? "/icons/settings-black.png" : "/icons/settings-white.png"
                     }
                     className='w-5 h-5'
                 />
@@ -256,7 +256,7 @@ const SearchBar = ({
                     placeholder={
                         activeLanguage.sideMatter.search + "..."
                     }
-                    className={`h-full flex flex-1 pl-[20px] outline-none ${inputClassName}`} 
+                    className={`h-full flex flex-1 pl-[20px] outline-none text-sm sm:text-md ${inputClassName}`} 
                     onFocus={() => setFocus(true)}
                     onBlur={() => setFocus(false)}
                     style={{

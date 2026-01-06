@@ -27,7 +27,7 @@ const Slider = ({
     autoScroll
 }: sliderProps) => {
 
-    const [cardWidth, setCardWidth] = useState<number>(250);
+    const [cardWidth, setCardWidth] = useState<number>(260);
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [userScroll, setUserScroll] = useState<boolean>(false);
     // const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
@@ -130,7 +130,7 @@ const Slider = ({
                             <ProductCard
                                 key={product._id}
                                 product={product}
-                                className='w-[170px] sm:w-[220px] min-h-[150px] sm:min-h-[220px] m-0'
+                                className='w-[170px] sm:w-[220px] min-h-[150px] sm:min-h-[220px] m-0 rounded-sm overflow-hidden'
                                 // style={{
                                 //     width: cardWidth + "px"
                                 // }}

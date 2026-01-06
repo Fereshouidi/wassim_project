@@ -73,7 +73,7 @@ const FilterBar = ({
     return (
         <div 
             className={`
-                filter-bar w-full sticky 
+                filter-bar w-full sticky mt-2-
                 ${!filteBarActive && "filter-bar-inactive"}
                 h-fit- left-0 flex flex-col
                 ${screenWidth > 1250 ? "justify-between" : "justify-center"} 
@@ -84,7 +84,7 @@ const FilterBar = ({
                 // position: 'sticky',
                 color: colors.dark[200],
                 backgroundColor: colors.light[100],
-                boxShadow: filteBarActive ? '0 0px 15px rgba(13, 13, 13, 0.07)' : '',
+                boxShadow: filteBarActive ? '10px 10px 15px rgba(13, 13, 13, 0.07)' : '',
                 // border: !filteBarActive ? `0.025px solid ${colors.light[300]}` : `0.025px solid ${colors.light[300]}`,
                 borderBottom: `0.025px solid ${colors.light[200]}`,
                 height: filteBarActive ?  

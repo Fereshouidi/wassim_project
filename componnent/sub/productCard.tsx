@@ -11,6 +11,7 @@ import { useRegisterSection } from '@/contexts/registerSec'
 import axios from 'axios'
 import { backEndUrl } from '@/api'
 import { useStatusBanner } from '@/contexts/StatusBanner'
+import { handleLongText } from '@/lib'
 
 type productCardType = {
     product: ProductType
@@ -99,10 +100,12 @@ const ProductCard = ({
 
   return (
     <div 
-        className={` flex relative flex-col items-center gap-2 rounded-sm overflow-hidden cursor-pointer ${className}`}
+        className={`max-h-200px flex relative flex-col bg-red-500- items-center gap-2 p-2- rounded-sm overflow-hidden cursor-pointer ${className}`}
         style={{
-            ...style
-            // backgroundColor: colors.light[100]
+            ...style,
+            // backgroundColor: colors.light[100]:
+            // border: `0.5px solid ${colors.light[400]}`,
+            // boxShadow: "0 0px 10px rgba(13, 13, 13, 0.02)",
         }}
         onClick={() => {
             if ((product?._id?.length || 0) < 3) return;
@@ -113,7 +116,7 @@ const ProductCard = ({
     >
 
         {useLike && <div 
-            className={`absolute top-1 right-1 rounded-full p-[5px] ${like ? "bg-red-500" : "bg-gray-400 opacity-75"} w-8 h-8 z-2 cursor-pointer`}
+            className={`absolute top-1 right-4 rounded-full p-[5px] ${like ? "bg-red-500" : "bg-gray-400 opacity-75"} w-8 h-8 z-2 cursor-pointer`}
             style={{
                 // boxShadow: `0 5px 15px ${colors.dark[400]}`,
                 // backgroundColor: like ? "" : 
@@ -136,7 +139,7 @@ const ProductCard = ({
         </div>}
         
         <div 
-            className='w-[200px] sm:w-[250px] min-h-[150px]- sm:min-h-[170px]- h-[180px] sm:h-[220px] rounded-sm overflow-hidden'
+            className='w-[185px] sm:w-[200px] h-[185px] sm:h-[200px] rounded-sm overflow-hidden'
             style={{
                 backgroundColor: colors.light[300]
             }}
@@ -154,14 +157,14 @@ const ProductCard = ({
 
 
         <h4 
-            className='w-full rounded-sm overflow-hidden min-h-5 text-[14px] sm:text-lg text-center '
+            className='w-full rounded-sm overflow-hidden min-h-5 text-[14px] sm:text-[16px] text-center '
             style={{
                 color: colors.dark[200]
             }}
         >
             {
                 product.name[activeLanguage.language] != null ?
-                    product.name[activeLanguage.language] + ""
+                    handleLongText(product.name[activeLanguage.language] + "", 20)
                 : <SkeletonLoading/>
             }
             

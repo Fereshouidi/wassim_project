@@ -29,7 +29,7 @@ const SliderForPhones = ({
     useLike
 }: sliderProps) => {
 
-    const [cardWidth, setCardWidth] = useState<number>(250);
+    const [cardWidth, setCardWidth] = useState<number>(270);
     const [userScroll, setUserScroll] = useState<boolean>(false);
 
     const sliderRef = useRef<HTMLDivElement>(null);
@@ -119,7 +119,7 @@ const SliderForPhones = ({
                             {products.map((product, index) => (
                                 <div 
                                     key={index}
-                                    className='w-[180px] sm:w-[250px]'
+                                    className='w-[180px] sm:w-[250px] rounded-sm overflow-hidden'
                                     style={{
                                         // width: cardWidth  + "px"
                                         // width="w-"
@@ -127,7 +127,7 @@ const SliderForPhones = ({
                                 >
                                     <ProductCard
                                         product={product}
-                                        className='w-[95%] h-full'
+                                        className='w-[95%] h-full rounded-sm overflow-hidden'
                                         useLike={useLike}
                                     />
                                 </div>

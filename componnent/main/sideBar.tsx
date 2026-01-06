@@ -34,21 +34,28 @@ const SideBar = ({
 
   return (
     <div 
-        className={`w-screen h-dvh z-50 fixed top-0 ${isActive ? "" : "invisible"} no-sellect`}
+        className={`
+            w-screen h-dvh z-50 fixed top-0 left-0
+            transition-all duration-300 ease-in-out
+            ${isActive ? "opacity-100 visible" : "opacity-0 invisible delay-300"} 
+            no-sellect
+        `}
         style={{
             backgroundColor: "rgba(74, 74, 74, 0.677)",
-            // display: isExist ? "" : "none"
         }}
-        onClick={() => setIsActive(!isActive)}
+        onClick={() => setIsActive(false)}
     >
         <div    
             className={`
-                w-[320px] h-full bg-white absolute top-0 ${isActive ? "left-0" : "left-[-320px]"} 
-                flex flex-col items-center justify-between p-2 overflow-y-scroll overflow-x-visible scrollbar-hidden transition-[left, right] duration-300
+                w-[320px] h-full bg-white absolute top-0
+                ${isActive ? "left-0" : "left-[-320px]"}
+                flex flex-col items-center justify-between p-2
+                overflow-y-scroll overflow-x-visible scrollbar-hidden
+                transition-all duration-300 ease-in-out
             `}
             style={{
                 boxShadow: '0 0px 10px rgba(13, 13, 13, 0.02)',
-                backgroundColor: colors.dark[100]
+                backgroundColor: colors.dark[100],
             }}
             onClick={(e) => e.stopPropagation()}
         >
@@ -187,7 +194,7 @@ const SideBar = ({
                             borderBottomColor: colors.dark[200]
                         }}
                     >
-                        <a href="#" 
+                        <a href="/pages/contactUs" 
                             onClick={() => setLoadingScreen(true)}
                             className='w-full h-full flex items-center px-7'
                             style={{

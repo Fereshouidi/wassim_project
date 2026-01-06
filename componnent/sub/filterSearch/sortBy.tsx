@@ -58,7 +58,7 @@ const SortBy = ({
              gap-4 py-2 mb-4 text-sm sm:text-md`}>
 
             <div className='w-fit'>
-                <h4 className='sm:mx-5 font-extrabold'>{ activeLanguage.sideMatter.SortBy + " : "}</h4>
+                <h4 className='sm:mx-5 font-bold'>{ activeLanguage.sideMatter.SortBy + " : "}</h4>
             </div>
 
             <div 
@@ -83,7 +83,7 @@ const SortBy = ({
                         ${filterBarWidth > 650 && filterBarWidth < 1100 ? "w-[80px]" : " w-[200px] " }
                     justify-center items-center text-center ml-2 rounded-sm cursor-pointer`}
                     style={{
-                        border: `0.025px solid ${colors.light[300]}`
+                        // border: `0.025px solid ${colors.light[300]}`
                     }}
                     defaultValue={filtrationCopy.sortDirection}
                     onChange={(e) => setFiltrationCopy({
@@ -107,7 +107,7 @@ const SortBy = ({
                     sortBy: 'date'
                 })}
                 style={{
-                    border: filtrationCopy.sortBy == "date" ? `1px solid ${colors.dark[200]}` : '',
+                    // border: filtrationCopy.sortBy == "date" ? `1px solid ${colors.dark[200]}` : '',
                     backgroundColor: filtrationCopy.sortBy == "date" ? colors.dark[200] : '',
                     color: filtrationCopy.sortBy == "date" ? colors.light[200] : '',
                 }}
@@ -118,7 +118,7 @@ const SortBy = ({
                         ${filterBarWidth > 650 && filterBarWidth < 1100 ? "w-[80px]" : " w-[200px] " }
                     justify-center items-center text-center ml-2 rounded-sm cursor-pointer`}
                     style={{
-                        border: `0.025px solid ${colors.light[300]}`
+                        // border: `0.025px solid ${colors.light[300]}`
                     }}
                     onChange={(e) => setFiltrationCopy({
                         ...filtrationCopy,
@@ -141,7 +141,7 @@ const SortBy = ({
                     sortBy: 'name'
                 })}
                 style={{
-                    border: filtrationCopy.sortBy == "name" ? `1px solid ${colors.dark[200]}` : '',
+                    // border: filtrationCopy.sortBy == "name" ? `1px solid ${colors.dark[200]}` : '',
                     backgroundColor: filtrationCopy.sortBy == "name" ? colors.dark[200] : '',
                     color: filtrationCopy.sortBy == "name" ? colors.light[200] : '',
                 }}
@@ -152,7 +152,7 @@ const SortBy = ({
                         ${filterBarWidth > 650 && filterBarWidth < 1100 ? "w-[80px]" : " w-[200px] " }
                     justify-center items-center text-center ml-2 rounded-sm cursor-pointer`}
                     style={{
-                        border: `0.025px solid ${colors.light[300]}`,
+                        // border: `0.025px solid ${colors.light[300]}`,
                         color: filtrationCopy.sortBy == "name" ? colors.light[200] : '',
                         outline: 'none'
                     }}

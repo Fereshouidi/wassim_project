@@ -30,7 +30,7 @@ const Slider2 = ({
     useLike
 }: sliderProps) => {
 
-    const [cardWidth, setCardWidth] = useState<number>(270);
+    const [cardWidth, setCardWidth] = useState<number>(290);
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [userScroll, setUserScroll] = useState<boolean>(false);
     // const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
@@ -176,7 +176,7 @@ const Slider2 = ({
                                 products.map((product, index) => (
                                     <div 
                                         key={index}
-                                        className=' min-h-[150px] sm:min-h-[220px] m-0 '
+                                        className=' min-h-[150px] sm:min-h-[220px] m-0  rounded-sm overflow-hidden'
                                         style={{
                                             width: cardWidth  + "px",
                                             paddingLeft: '5px',

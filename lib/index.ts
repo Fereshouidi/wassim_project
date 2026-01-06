@@ -124,3 +124,13 @@ export const isValidPhone = (phone: string | number): boolean => {
     const phoneStr = phone?.toString().replace(/\s/g, "");
     return /^\d{8}$/.test(phoneStr);
 };
+
+export const handleLongText = (text: string, limitLength: number): string => {
+  if (!text) return "";
+  
+  if (text.length <= limitLength) {
+    return text;
+  }
+
+  return text.substring(0, limitLength).trim() + "...";
+};

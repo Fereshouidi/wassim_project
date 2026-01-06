@@ -202,9 +202,9 @@ const ProductDetails = ({
       }}
     >
       <div>
-        { screenWidth > 1000 ?
+        { screenWidth > 0 ?
           product.name[activeLanguage.language] ?
-            <h4 className='font-bold text-lg sm:text-xl'>
+            <h4 className='font-bold text-md sm:text-xl'>
               {product.name[activeLanguage.language]}
             </h4>
             : <div className='w-[300px] h-7 rounded-sm'><SkeletonLoading /></div>
@@ -213,7 +213,7 @@ const ProductDetails = ({
 
         {
           (activeSpecifications?.price || 0) >= 0 ?
-            <h2 className='font-extrabold text-2xl sm:text-3xl m-4'>
+            <h2 className='font-bold text-xl sm:text-3xl m-4'>
               {activeSpecifications?.price + ' D.T'}
             </h2>
             : <div className='w-[100px] h-10 m-4 rounded-sm'><SkeletonLoading /></div>
@@ -250,7 +250,7 @@ const ProductDetails = ({
         <div className='client-select flex flex-col gap-2'>
             
             {
-                allColors.length > 0 && <div className={`${allColors.length > 2 ? "flex flex-col" : "flex flex-row"}`}>
+                allColors.length > 0 && <div className={`${allColors.length > 2 ? "flex flex-col" : "flex flex-col"}`}>
                     <h4 className='w-fit bg-red-500- whitespace-nowrap overflow-hidden- text-ellipsis- font-bold text-md m-2'>{activeLanguage.sideMatter.colors + " : "}</h4>
                     <div className='w-full flex flex-wrap gap-2  pl-2'>
                     {
@@ -262,7 +262,7 @@ const ProductDetails = ({
                                 return (
                                     <h4
                                         key={color}
-                                        className='p-2  min-w-14 text-center text-sm rounded-sm cursor-pointer transition-all'
+                                        className='p-2 min-w-14 text-center text-sm rounded-sm cursor-pointer transition-all'
                                         style={{
                                             backgroundColor: isSelected ? colors.dark[150] : 'transparent',
                                             border: `1px solid ${colors.light[250]}`,
@@ -289,7 +289,7 @@ const ProductDetails = ({
             }
 
             {
-                allSizes.length > 0 && <div className={`${allColors.length > 2 ? "flex flex-col" : "flex flex-row"}`}>
+                allSizes.length > 0 && <div className={`${allColors.length > 2 ? "flex flex-col" : "flex flex-col"}`}>
                     <h4 className='font-bold text-md whitespace-nowrap m-2'>{activeLanguage.sideMatter.sizes + " : "}</h4>
                     <div className='w-full flex flex-wrap gap-2  pl-2'>
                     {
@@ -329,7 +329,7 @@ const ProductDetails = ({
 
 
             {
-                allTypes?.length > 0 && <div className={`${allColors.length > 2 ? "flex flex-col" : "flex flex-row"}`}>
+                allTypes?.length > 0 && <div className={`${allColors.length > 2 ? "flex flex-col" : "flex flex-col"}`}>
                     <h4 className='font-bold whitespace-nowrap text-md m-2'>{activeLanguage.sideMatter.types + " : "}</h4>
                     <div className='w-full flex flex-wrap gap-2  pl-5'>
                     {

@@ -199,7 +199,8 @@ const CartSide = ({
         style={{
             top: '0',
             // bottom: 0,
-            backgroundColor: "rgba(74, 74, 74, 0.677)"
+            backgroundColor: "rgba(74, 74, 74, 0.677)",
+            color: colors.dark[200]
         }}
     >
 
@@ -242,7 +243,7 @@ const CartSide = ({
                 purchases.length === 0 ? 
 
                 <div 
-                    className='w-full h-full flex flex-col justify-center items-center text-md'
+                    className='w-full h-full flex flex-col justify-center items-center text-sm sm:text-md'
                     style={{
                         color: colors.dark[500]
                     }}
