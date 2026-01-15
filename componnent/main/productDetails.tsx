@@ -2,7 +2,7 @@ import { backEndUrl } from '@/api'
 import { fakeProducts } from '@/constent/data'
 import { useLanguage } from '@/contexts/languageContext'
 import { useTheme } from '@/contexts/themeProvider'
-import { CartType, ClientFormType, CollectionType, ProductSpecification, ProductType, PurchaseType } from '@/types'
+import { CartType, ClientFormType, CollectionType, EvaluationType, ProductSpecification, ProductType, PurchaseType } from '@/types'
 import axios from 'axios'
 import React, { CSSProperties, useEffect, useState } from 'react'
 import SkeletonLoading from '../sub/SkeletonLoading'
@@ -10,8 +10,16 @@ import InputForm from './inputForm'
 import ChoseQuantity from '../sub/choseQuantity'
 import { useScreen } from '@/contexts/screenProvider'
 import ProductActionPanel from '../sub/ProductActionPanel'
-import { handleShareOnFacebook } from '@/lib'
+import { calculateRatingStats, handleShareOnFacebook } from '@/lib'
 import { useOwner } from '@/contexts/ownerInfo'
+import { faClipboardCheck, faStarHalfAlt, faChartArea, faChartColumn, faStar } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import CustomBotton from '../sub/customBotton'
+import StarsRatingDisplay from '../sub/StarsRatingDisplay'
+import AddEvaluationCard from '../sub/addEvaluationCard'
+import EvaluationsSection from './evaluationSection'
+import { useClient } from '@/contexts/client'
+import EditEvaluationCard from '../sub/editEvaluationCard'
 
 type ProductDetailsType = {
   className?: string
@@ -51,9 +59,10 @@ const ProductDetails = ({
 
   const { screenWidth } = useScreen();
   const { activeLanguage } = useLanguage();
-  const { colors } = useTheme();
+  const { colors, activeTheme } = useTheme();
   const [firstRender, setFirstRender] = useState<boolean>(true);
   const { ownerInfo } = useOwner();
+  const { client } = useClient();
 
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
@@ -69,7 +78,12 @@ const ProductDetails = ({
   const [availableSizes, setAvailableSizes] = useState<string[]>([]);
   const [availableTypes, setAvailableTypes] = useState<string[]>([]);
 
-
+  const [ addEvaluationActive, setAddEvaluationActive ] = useState<boolean>(false);
+  const [ editEvaluationActive, setEditEvaluationActive ] = useState<boolean>(false);
+  const [ evaluationSectionActive, setEvaluationSectionActive ] = useState<boolean>(false);
+  const [ newEvaluation, setNewEvaluation] = useState<EvaluationType>({});
+  const [ evaluations, setEvaluations ] = useState<EvaluationType[]>([]);
+  
   useEffect(() => {
 
     if (!firstRender) return;
@@ -193,6 +207,37 @@ const ProductDetails = ({
     if (matched) setActiveSpecifications(matched);
   }, [selectedColor, selectedSize, selectedType, product, purchase]);
 
+  useEffect(() => {
+    if (!product._id || !client?._id) return;
+    setNewEvaluation({
+      client: client,
+      product: product._id
+    })
+  }, [client, product])
+
+  useEffect(() => {
+
+      if (!product._id) return;
+
+      const fetchData = async () => {
+          await axios.get( backEndUrl + "/getEvaluationByProduct", {
+              params: {
+                  productId: product._id
+              }
+          })
+          .then(({ data }) => {
+              setEvaluations(data.evaluations);
+              console.log(data.evaluations);
+              
+          })
+          .catch(( err ) => {
+              console.log({err});
+          } )
+      }
+
+      fetchData();
+
+  }, [product._id])
 
   return (
     <div
@@ -213,11 +258,50 @@ const ProductDetails = ({
 
         {
           (activeSpecifications?.price || 0) >= 0 ?
-            <h2 className='font-bold text-xl sm:text-3xl m-4'>
+            <h2 className='font-bold text-2xl sm:text-3xl my-4'>
               {activeSpecifications?.price + ' D.T'}
             </h2>
             : <div className='w-[100px] h-10 m-4 rounded-sm'><SkeletonLoading /></div>
         }
+
+        <div className='flex flex-col justify-between- items-center- gap-5- mb-2 cursor-pointer'>
+
+          {/* <h4 className='font-bold text-md whitespace-nowrap my-2 mx-1'>Opinion : </h4> */}
+
+          <div className='flex flex-row justify-between- items-center gap-5 my-2 px-5- sm:px-5-'>
+
+            <div 
+              className='flex flex-row items-center gap-1'
+              onClick={() => setEvaluationSectionActive(true)}
+            >
+              <StarsRatingDisplay 
+                rating={calculateRatingStats(evaluations).average}                
+              />
+              <p className='opacity-50 ml-1'>{ "( " + evaluations.length + " opinion )"}</p>
+            </div>
+
+            {
+              true && <div 
+                className='flex justify-center items-center gap-2 px-1 py-1 rounded-sm text-sm cursor-pointer'
+                style={{
+                  // border: `1px solid ${colors.dark[200]}`,
+                  backgroundColor: colors.dark[300],
+                  color: colors.light[200]
+                }}
+                onClick={() => setAddEvaluationActive(true)}
+              >
+                <img 
+                  src={activeTheme == "dark" ? "/icons/add-dark.png" : "/icons/add-white.png"} 
+                  className='w-4 h-4'
+                  alt="" 
+                />
+                {/* <p>add your option</p> */}
+              </div> 
+            }
+    
+          </div>
+
+        </div>
 
         <div className={`w-full flex ${collections.length == 0 ? "flex-row items-center" : "flex-col"}`}>
 
@@ -245,7 +329,6 @@ const ProductDetails = ({
             }
           </div>
         </div>
-
 
         <div className='client-select flex flex-col gap-2'>
             
@@ -383,7 +466,7 @@ const ProductDetails = ({
             setClientForm={setClientForm}
         /> */}
 
-        <div className='my-5'>
+        <div className='w-full my-5'>
           <ProductActionPanel
             quantity={quantity}
             setQuantity={setQuantity}
@@ -395,23 +478,61 @@ const ProductDetails = ({
           />
         </div>
 
-              <div className='w-full flex flex-row justify-center items-center gap-2 mt-10'>
-                {screenWidth < 1000 && ownerInfo?.socialMedia?.map((media) => (
-                  <img 
-                    key={media.platform}
-                    src={media.icon}
-                    onClick={() => {
-                      media.platform == "Facebook" ? handleShareOnFacebook(window.location.href)
-                      : null
-                    }}
-                    className="w-8 h-8 cursor-pointer bg-red-500-"
-                  />
-                ))}
-              </div>
+        <div className='w-full flex flex-row justify-center items-center gap-2 mt-10'>
+          {screenWidth < 1000 && ownerInfo?.socialMedia?.map((media) => (
+            <img 
+              key={media.platform}
+              src={media.icon}
+              onClick={() => {
+                media.platform == "Facebook" ? handleShareOnFacebook(window.location.href)
+                : null
+              }}
+              className="w-8 h-8 cursor-pointer bg-red-500-"
+            />
+          ))}
+        </div>
 
 
 
       </div>
+
+      
+      {evaluationSectionActive && <EvaluationsSection
+        addEvaluationActive={addEvaluationActive}
+        setAddEvaluationActive={setAddEvaluationActive}
+        editEvaluationActive={editEvaluationActive}
+        setEditEvaluationActive={setEditEvaluationActive}
+        evaluations={evaluations}
+        setEvaluations={setEvaluations}
+        newEvaluation={newEvaluation}
+        setNewEvaluation={setNewEvaluation}
+        evaluationSectionActive={evaluationSectionActive}
+        setEvaluationSectionActive={setEvaluationSectionActive}
+        product={product}
+      />}
+
+      {addEvaluationActive && <AddEvaluationCard
+          addEvaluationActive={addEvaluationActive}
+          setAddEvaluationActive={setAddEvaluationActive}
+          newEvaluation={newEvaluation}
+          setNewEvaluation={setNewEvaluation}
+          evaluations={evaluations}
+          setEvaluations={setEvaluations}
+          evaluationSectionActive={evaluationSectionActive}
+          setEvaluationSectionActive={setEvaluationSectionActive}
+      />}
+
+      {editEvaluationActive && <EditEvaluationCard
+          editEvaluationActive={editEvaluationActive}
+          setEditEvaluationActive={setEditEvaluationActive}
+          evaluationToEdit={newEvaluation}
+          setEvaluationToEdit={setNewEvaluation}
+          evaluations={evaluations}
+          setEvaluations={setEvaluations}
+          evaluationSectionActive={evaluationSectionActive}
+          setEvaluationSectionActive={setEvaluationSectionActive}
+      />}
+
     </div>
   )
 }

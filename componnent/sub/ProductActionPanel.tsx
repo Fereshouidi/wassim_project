@@ -39,15 +39,13 @@ const ProductActionPanel = ({
     const { loadingScreen, setLoadingScreen } = useLoadingScreen();
 
 const handlePuttingInCart = () => {
-    // التحقق من وجود العميل
     if (!client) {
         setRegisterSectionExist(true);
-        return false; // سيعود الأنميشن للزر
+        return false;
     }
 
     if (!socket) return false;
 
-    // إرسال البيانات عبر Socket
     if (purchase.cart) {
         socket.emit("update_purchase", {
             ...purchase, 
@@ -62,7 +60,7 @@ const handlePuttingInCart = () => {
         });
     }
 
-    return true; // سينجح الأنميشن ويختفي في السلة
+    return true;
 };
 
     useEffect(() => {

@@ -66,6 +66,7 @@ const ImagesSwitcher = ({
         style={{ 
             ...style,
             maxWidth: screenWidth > 700 ? "700px" : "100vw",
+            // backgroundColor: "blue"
         }}
     >
 

@@ -420,58 +420,9 @@ export const collectionsLoading: CollectionType[] = [
   }
 ]
 
-// export const collectionsLoading = [
-
-//     {
-//         _id: "1",
-//         name: {
-//             fr: null,
-//             en: null
-//         },
-//         thumbNail: null,
-//     },
-//     {
-//         _id: "2",
-//         name: {
-//             fr: null,
-//             en: null
-//         },
-//         thumbNail: null,
-//     },
-//     {
-//         _id: "3",
-//         name: {
-//             fr: null,
-//             en: null
-//         },
-//         thumbNail: null,
-//     },
-//     {
-//         _id: "4",
-//         name: {
-//             fr: null,
-//             en: null
-//         },
-//         thumbNail: null,
-//     },
-//     {
-//         _id: "5",
-//         name: {
-//             fr: null,
-//             en: null
-//         },
-//         thumbNail: null,
-//     },
-//     {
-//         _id: "6",
-//         name: {
-//             fr: null,
-//             en: null
-//         },
-//         thumbNail: null,
-//     }
-
-// ] as CollectionType[]
-
-
-//silverwayshop
+// export const defaultEvaluation = {
+//   client?: string
+//   product?: string
+//   number?: number
+//   note?: string
+// }

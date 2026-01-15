@@ -212,6 +212,7 @@ export interface OrderType {
   clientNote?: string
   status?: "pending" | "delivered" | "failed";
   purchases: PurchaseType[]
+  shippingCoast?: number
   createdAt?: Date | null;
   updatedAt?: Date | null;
 }
@@ -444,4 +445,13 @@ export type DeliveryWorkerType = {
   address?: string
   createdAt?: Date | null;
   updatedAt?: Date | null;
+}
+
+export type EvaluationType = {
+  _id?: string
+  client?: string | ClientType
+  product?: string | ProductType
+  number?: number
+  note?: string
+  createdAt?: Date | string
 }

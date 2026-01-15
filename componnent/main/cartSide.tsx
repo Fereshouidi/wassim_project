@@ -16,6 +16,7 @@ import { useStatusBanner } from '@/contexts/StatusBanner'
 import OrderConfirmedBanner from '../sub/banner_confirmedOrder'
 import { ErrorBanner } from '../sub/banners/errorBanner'
 import { useRouter } from 'next/navigation'
+import { useOwner } from '@/contexts/ownerInfo'
 
 type Props = {
     isActive: boolean
@@ -31,6 +32,7 @@ const CartSide = ({
     setPurchases
 }: Props) => {
 
+    const { ownerInfo } = useOwner();
     const { activeLanguage } = useLanguage();
     const { client } = useClient();
     const { colors, activeTheme } = useTheme();
@@ -185,6 +187,7 @@ const CartSide = ({
                 fullName: clientForm.fullName,
                 phone: clientForm.phone,
                 address: clientForm.address,
+                shippingCoast: ownerInfo?.shippingCost,
                 clientNote: clientForm.note
             }, 
             purchasesId 

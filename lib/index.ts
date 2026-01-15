@@ -1,4 +1,4 @@
-import { OrderType, PurchaseType } from "@/types";
+import { EvaluationType, OrderType, PurchaseType } from "@/types";
 
 export const handleShareOnFacebook = (shareUrl: string) => {
     console.log({shareUrl});
@@ -42,6 +42,9 @@ export function timeAgo(date: string | number | Date, activeLanguage: "en" | "fr
       year: "ans"
     }
   };
+
+  console.log(date);
+  
 
   const lang = i18n[activeLanguage];
   const prefix = activeLanguage === "fr" ? "il y a " : "";
@@ -133,4 +136,25 @@ export const handleLongText = (text: string, limitLength: number): string => {
   }
 
   return text.substring(0, limitLength).trim() + "...";
+};
+
+export const calculateRatingStats = (evaluations: EvaluationType[]) => {
+    if (!evaluations || evaluations.length === 0) {
+        return {
+            average: 0,
+            total: 0
+        };
+    }
+
+    const sum = evaluations.reduce((acc, curr) => {
+        return acc + (curr.number || 0);
+    }, 0);
+
+    const rawAverage = parseFloat((sum / evaluations.length).toFixed(1));
+    const average = Math.round(rawAverage * 2) / 2;
+
+    return {
+        average: average,
+        total: evaluations.length
+    };
 };

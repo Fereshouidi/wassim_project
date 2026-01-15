@@ -25,6 +25,7 @@ import { useOwner } from "@/contexts/ownerInfo";
 import LoadingScreen from "@/componnent/sub/loading/loadingScreen";
 import SkeletonLoading from "@/componnent/sub/SkeletonLoading";
 import { useLanguage } from "@/contexts/languageContext";
+import Evaluation from "@/componnent/main/evaluationSection";
 
 interface Props {
   product: ProductType;
@@ -320,7 +321,7 @@ export default function ClientProductPage({ product }: Props) {
               className={`
                 
                 ${screenWidth > 1000 ? 
-                    "w-24 h-[90%] bg-red-500- flex flex-col gap-2 justify-center items-end bg-red-500- bg-red-500- mr-10-"
+                    "w-24 min-h-[90%] bg-red-500- flex flex-col gap-2 justify-center items-end bg-red-500- bg-red-500- mr-10-"
                   : "w-full flex flex-row gap-2 justify-center items-end"
                 }
               `}
@@ -338,7 +339,7 @@ export default function ClientProductPage({ product }: Props) {
               ))}
             </div>
             
-            <div className={`flex flex-1 ${screenWidth > 1000 ? 'h-[90vh] flex-row justify-center items-center' : 'flex-col items-center'}`}>
+            <div className={`bg-blue-500- flex flex-1 ${screenWidth > 1000 ? 'min-h-[90vh] flex-row justify-center items-center' : 'flex-col items-center'}`}>
               
             { screenWidth < 1000 ?
               product.name[activeLanguage.language] ?
@@ -388,6 +389,8 @@ export default function ClientProductPage({ product }: Props) {
 
           </div>
 
+          {/* <Evaluation/> */}
+
           <div className="w-full h-[500px]- my-10 sm:my-24">
             {product?._id && <OtherSimilarChose
                 collections={collections}
@@ -419,7 +422,7 @@ export default function ClientProductPage({ product }: Props) {
               ))}
             </div>}
 
-            <div className="w-[500px] bg-red-500-">
+            <div className="w-full sm:w-[500px] px-3 sm:p-0 bg-red-500-">
               <ProductActionPanel
                 quantity={purchase?.quantity?? 1}
                 setQuantity={handlePurchaseQuantity}
