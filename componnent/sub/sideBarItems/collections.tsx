@@ -76,8 +76,8 @@ const Collections = ({sideBarActive}: props) => {
                 }}
             >
                 {loading && <LoadingIcon
-                    size={20}
-                    squareSize={10}
+                    // size={20}
+                    // squareSize={10}
                 />}
 
                 {collections.length > 0 && collections.map(( collection ) => (
