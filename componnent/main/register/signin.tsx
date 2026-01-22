@@ -204,7 +204,7 @@ const SignIn = ({
 
                 <CustomBotton
                     label={activeLanguage.signIn}
-                    className='mt-2 h-12'
+                    className='mt-2 w-full h-12 text-[14px]'
                     onclick={handleSignInButtonClicked}
                 />
 

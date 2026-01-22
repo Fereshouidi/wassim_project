@@ -248,7 +248,7 @@ const SignUp = ({
 
                 <CustomBotton
                     label={activeLanguage.signUp}
-                    className='mt-2 h-12'
+                    className='mt-2 w-full h-12 text-[14px]'
                     style={{
                         // backgroundColor: signUpButtonWorks ? "red" : 'blue'
                     }}
