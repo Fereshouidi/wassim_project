@@ -28,7 +28,7 @@ export type HeaderProps = {
     isSideBarActive: boolean,
     setIsSideBarActive: (value: boolean) => void
     ownerInfo?: OwnerInfoType 
-    setOwnerInfo: (value: OwnerInfoType) => void
+    setOwnerInfo?: (value: OwnerInfoType) => void
     searchInput?: string | null
     className?: string
     style?: CSSProperties
@@ -193,7 +193,9 @@ export type LanguageStracture = {
     inputYourDateOfBirth: string,
     dateOfBirth: string
     logOut: string,
-    submit: string
+    submit: string,
+    searchByAi: string
+    orderSummary: string
     // fullName: string
     // address: string,
     // phone: number,

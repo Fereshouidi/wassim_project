@@ -1,3 +1,5 @@
+"use client";
+
 import { useLanguage } from '@/contexts/languageContext'
 import { useTheme } from '@/contexts/themeProvider';
 import { ClientFormType } from '@/types';
@@ -7,106 +9,68 @@ type InputFormType = {
     clientForm: ClientFormType,
     setClientForm: (value: ClientFormType) => void
 }
-const InputForm = ({
-    clientForm,
-    setClientForm
-}: InputFormType) => {
 
+const InputForm = ({ clientForm, setClientForm }: InputFormType) => {
     const { activeLanguage } = useLanguage();
-    const { colors } = useTheme();
+    const { colors, activeTheme } = useTheme();
 
     const handleInputPhone = (phone: string) => {
-        if (
-            phone.length > 8
-            || isNaN(Number(phone))
-        ) return;
-
+        if (phone.length > 8 || isNaN(Number(phone))) return;
         setClientForm({...clientForm, phone: phone})
     }
 
-  return (
-    <div
-    // className='rou'
-        style={{
-            // borderTop: `0.5px solid ${colors.light[300]}`,
-            // borderTop: `0.5px solid ${colors.light[300]}`
+    const inputClasses = `
+        w-full rounded-sm text-[13px] px-3 transition-colors outline-none
+        border focus:border-black placeholder:opacity-40
+    `;
+    
+    const dynamicStyle = {
+        borderColor: colors.light[300],
+        backgroundColor: activeTheme === 'dark' ? 'transparent' : '#fff',
+        color: colors.dark[100],
+    };
 
-        }}
-        
-    >
+    return (
+        <div className='w-full'>
+             <h4 className="text-[10px] uppercase font-black tracking-widest opacity-40 mb-3">
+                {activeLanguage.sideMatter.fillOutTheForm}
+             </h4>
 
-        <h4 
-            className='font-bold text-sm mx-2 my-4'
-            style={{
-                color: colors.dark[400]
-            }}
-        >{activeLanguage.sideMatter.fillOutTheForm + " :"}</h4>
-
-        <div 
-            className='flex flex-wrap justify-center items-center gap-2'
-            style={{
-                color: colors.dark[400]
-            }}
-        >
-
-                <div className='w-full bg-red-400-'>
-                    {/* <h4 className='text-[12px] font-semibold mx-2 my-1'>{activeLanguage.sideMatter.fullName} :</h4> */}
-                    <input 
-                        type="text" 
-                        value={clientForm.fullName}
-                        placeholder={activeLanguage.sideMatter.fullName}
-                        className='w-full rounded-sm h-12 p-2 text-[13px]'
-                        style={{
-                            border: `1px solid ${colors.light[300]}`
-                        }}
-                        onChange={(e) => setClientForm({...clientForm, fullName: e.target.value})}
-                    />
-                </div>
-
-                <div className='w-full bg-red-400-'>
-                    {/* <h4 className='text-[12px] font-semibold mx-2 my-1'>{activeLanguage.sideMatter.address} :</h4> */}
-                    <input 
-                        type="text" 
-                        value={clientForm.address}
-                        placeholder={activeLanguage.sideMatter.address}
-                        className='w-full rounded-sm h-12 p-2 text-[13px]'
-                        style={{
-                            border: `1px solid ${colors.light[300]}`
-                        }}
-                        onChange={(e) => setClientForm({...clientForm, address: e.target.value})}
-                    />
-                </div>
-
-                <div className='w-full bg-red-400-'>
-                    {/* <h4 className='text-[12px] font-semibold mx-2 my-1'>{activeLanguage.sideMatter.phone} :</h4> */}
-                    <input 
-                        type="tel" 
-                        value={clientForm.phone}
-                        placeholder={activeLanguage.sideMatter.phone}
-                        className='w-full rounded-sm h-12 p-2 text-[13px]'
-                        style={{
-                            border: `1px solid ${colors.light[300]}`
-                        }}
-                        onChange={(e) => handleInputPhone(e.target.value)}
-                    />
-                </div>
-
-                <div className='w-full bg-red-400-'>
-                    {/* <h4 className='text-[12px] font-semibold mx-2 my-1'>{activeLanguage.sideMatter.note} :</h4> */}
-                    <input 
-                        type="text" 
-                        value={clientForm.note}
-                        placeholder={activeLanguage.sideMatter.note + ' (' + activeLanguage.recommended + ' )'}
-                        className='w-full rounded-sm h-12 p-2 text-[13px]'
-                        style={{
-                            border: `1px solid ${colors.light[300]}`
-                        }}
-                        onChange={(e) => setClientForm({...clientForm, note: e.target.value})}
-                    />
-                </div>
+            <div className='flex flex-col gap-3'>
+                <input 
+                    type="text" 
+                    value={clientForm.fullName}
+                    placeholder={activeLanguage.sideMatter.fullName}
+                    className={`${inputClasses} h-10`}
+                    style={dynamicStyle}
+                    onChange={(e) => setClientForm({...clientForm, fullName: e.target.value})}
+                />
+                <input 
+                    type="text" 
+                    value={clientForm.address}
+                    placeholder={activeLanguage.sideMatter.address}
+                    className={`${inputClasses} h-10`}
+                    style={dynamicStyle}
+                    onChange={(e) => setClientForm({...clientForm, address: e.target.value})}
+                />
+                <input 
+                    type="tel" 
+                    value={clientForm.phone}
+                    placeholder={activeLanguage.sideMatter.phone}
+                    className={`${inputClasses} h-10`}
+                    style={dynamicStyle}
+                    onChange={(e) => handleInputPhone(e.target.value)}
+                />
+                <textarea 
+                    value={clientForm.note}
+                    placeholder={`${activeLanguage.sideMatter.note} (${activeLanguage.recommended})`}
+                    className={`${inputClasses} py-2 h-20 resize-none`}
+                    style={dynamicStyle}
+                    onChange={(e) => setClientForm({...clientForm, note: e.target.value})}
+                />
+            </div>
         </div>
-    </div>
-  )
+    )
 }
 
-export default InputForm
+export default InputForm;

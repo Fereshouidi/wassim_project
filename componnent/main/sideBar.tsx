@@ -15,6 +15,7 @@ import { useRegisterSection } from '@/contexts/registerSec';
 import { useLoadingScreen } from '@/contexts/loadingScreen';
 import { useClient } from '@/contexts/client';
 import Collections from '../sub/sideBarItems/collections';
+import { useAiChatBubble } from '@/contexts/AiChatBubble';
 
 const SideBar = ({
     isActive,
@@ -30,6 +31,7 @@ const SideBar = ({
     const { setRegisterSectionExist } = useRegisterSection();
     const { setLoadingScreen } = useLoadingScreen();
     const { setClient, client } = useClient();
+    const { setBubbleProps, bubbleProps } = useAiChatBubble()
 
 
   return (
@@ -171,7 +173,7 @@ const SideBar = ({
                             }}    
                         >{activeLanguage.nav.favorite}</div>
                     </li>}
-                    {client?._id && <li
+                    {/* {client?._id && <li
                         className='flex h-14 border-b-[1px] border-b-gray-100 text-sm cursor-pointer'
                         style={{
                             borderBottomColor: colors.dark[200]
@@ -187,7 +189,7 @@ const SideBar = ({
                                 color: colors.light[200]
                             }}    
                         >{activeLanguage.nav.order}</div>
-                    </li>}
+                    </li>} */}
                     <li
                         className='flex h-14 border-b-[1px] border-b-gray-100 text-sm cursor-pointer'
                         style={{
@@ -202,6 +204,22 @@ const SideBar = ({
                             }}    
                         >{activeLanguage.nav.contact}</a>
                     </li>
+
+                    <li
+                        className='flex h-14 border-b-[1px] border-b-gray-100 text-sm cursor-pointer'
+                        style={{
+                            borderBottomColor: colors.dark[200]
+                        }}
+                    >
+                        <span
+                            onClick={() => setBubbleProps({...bubbleProps, exist: true})}
+                            className='w-full h-full flex items-center px-7'
+                            style={{
+                                color: colors.light[200]
+                            }}    
+                        >{activeLanguage.nav.askAi}</span>
+                    </li>
+                    
                 </ul>
             </div>
             

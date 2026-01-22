@@ -125,7 +125,9 @@ export const english = {
     dateOfBirth: "Date od birth",
     inputYourDateOfBirth: 'enter your date of birth...',
     logOut: "Log Out",
-    submit: "Submit"
+    submit: "Submit",
+    searchByAi: "Search by AI",
+    orderSummary: "Order Summary"
 
 } as LanguageStracture;
 
@@ -253,7 +255,10 @@ export const frensh = {
     dateOfBirth: "Date de naissance",
     inputYourDateOfBirth: "Entrez votre date de naissance...",
     logOut: "Se déconnecter",
-    submit: "Envoyer"
+    submit: "Envoyer",
+    searchByAi: "Recherche par IA",
+    orderSummary: "Résumé de la commande"
+
 
 
 } as LanguageStracture;

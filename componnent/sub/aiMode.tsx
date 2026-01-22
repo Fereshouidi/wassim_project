@@ -18,7 +18,7 @@ const AiMode = ({
 
     const [aiModeHover, setAiModeHover] = useState<boolean>(false);
     const { activeTheme, colors } = useTheme();
-    const aiIcon = "ai.png"
+    const aiIcon = "/ai.png"
     
     // activeTheme == "dark" ? "/icons/ai_black.png" : "/icons/ai_black.png" 
     

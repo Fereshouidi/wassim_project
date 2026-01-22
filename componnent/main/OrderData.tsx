@@ -1,81 +1,58 @@
-import { useClient } from '@/contexts/client'
+"use client";
+
 import { useLanguage } from '@/contexts/languageContext'
 import { useOwner } from '@/contexts/ownerInfo'
 import { useTheme } from '@/contexts/themeProvider'
-import { OwnerInfoType, PurchaseType } from '@/types'
-import React, { useEffect } from 'react'
-import LoadingScreen from '../sub/loading/loadingScreen'
+import { PurchaseType } from '@/types'
+import React, { useMemo } from 'react'
 import SkeletonLoading from '../sub/SkeletonLoading'
-import { number } from 'framer-motion'
 
-type Props = {
-    purchases?: PurchaseType[]
-}
-const OrderData = ({ 
-    purchases
-}: Props) => {
+type Props = { purchases?: PurchaseType[] }
 
+const OrderData = ({ purchases }: Props) => {
     const { activeLanguage } = useLanguage();
-    const { client } = useClient();
     const { colors, activeTheme } = useTheme();
-    const [pricesList, setPricesList] = React.useState<number>(0);
-    const [totalPrice, setTotalPrice] = React.useState<number>(0);
     const { ownerInfo } = useOwner();
 
-    useEffect(() => {
-        let total = 0;
-        purchases?.map((purchase) =>{
+    const subTotal = useMemo(() => {
+        return purchases?.reduce((acc, purchase) => {
             // @ts-ignore
-            total += ( purchase.specification?.price * purchase.quantity ) || 0;
-        })
-        setPricesList(Number(total.toFixed(2)));
+            const price = purchase.specification?.price || 0;
+            return acc + (price * (purchase.quantity || 1));
+        }, 0) || 0;
     }, [purchases]);
 
-    if (!ownerInfo) return <SkeletonLoading/>
-    
+    if (!ownerInfo) return <div className="h-20 animate-pulse bg-gray-100 rounded-sm" />;
+
+    const finalTotal = subTotal + (ownerInfo?.shippingCost || 0);
+
     return (
-        <div 
-            className='bord pt-2- flex flex-col my-10- text-sm rounded-sm px-2 gap-2'
-            style={{
-                // borderTop: `0.5px solid ${colors.light[300]}`,
-                border: `0.5px solid ${colors.light[300]}`,
-                backgroundColor: colors.light[100],
-                boxShadow: `0 0 15px ${colors.light[150]}`
-            }}
-        >
-            <div 
-                className={`flex justify-between border-b-[0.2px] border-[${colors.light[200]}]- p-2 gap-2`}
-                style={{
-                    borderBottom: `0.2px solid ${colors.light[200]}`
-                }}
-            >
-                <h4>{activeLanguage.totalPrice +  " : "}</h4>
-                <p>{pricesList + " D.T"}</p>
-            </div>
-
-            <div 
-                className={`flex justify-between border-b-[0.2px] border-[${colors.light[200]}]- p-2 gap-2`}
-                style={{
-                    borderBottom: `0.2px solid ${colors.light[200]}`
-                }}
-            >                
-                <h4>{activeLanguage.shippingCoast + " : "}</h4>
-                <p>{ownerInfo?.shippingCost + " D.T"}</p>
-            </div>
-
-            <div 
-                className={`flex justify-between border-b-[0.2px] border-[${colors.light[200]}]- p-2 gap-2`}
-                style={{
-                    borderBottom: `0.2px solid ${colors.light[200]}`
-                }}
-            >                
-                <h4>{activeLanguage.totalAmmount + " : "}</h4>
-                <p>{ ( Number(pricesList) + Number(ownerInfo?.shippingCost || 0) ).toFixed(2) + " D.T"}</p>
-            </div>
-
+        <div className='flex flex-col gap-1 w-full'>
+            <h4 className="text-[10px] uppercase font-bold tracking-widest opacity-40 mb-2">{activeLanguage.orderSummary}</h4>
             
+            <div className="flex justify-between items-center text-xs">
+                <span className="opacity-60">{activeLanguage.totalPrice}</span>
+                <span className="font-semi-bold">{subTotal.toFixed(2)} D.T</span>
+            </div>
+
+            <div className="flex justify-between items-center text-xs">
+                <span className="opacity-60">{activeLanguage.shippingCoast}</span>
+                <span className="font-semi-bold">{ownerInfo.shippingCost?.toFixed(2)} D.T</span>
+            </div>
+
+            <div className="my-2 border-t border-dashed" style={{ borderColor: colors.light[300] }} />
+
+            <div 
+                className="flex justify-between items-center p-3 rounded-sm"
+                style={{ backgroundColor: activeTheme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)' }}
+            >
+                <span className="text-[11px] uppercase font-bold tracking-tight">{activeLanguage.totalAmmount}</span>
+                <span className="text-lg font-bold tracking-tight" style={{ color: colors.dark[100] }}>
+                    {finalTotal.toFixed(2)} <span className="text-[10px]">D.T</span>
+                </span>
+            </div>
         </div>
-  )
+    );
 }
 
-export default OrderData
+export default OrderData;

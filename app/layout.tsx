@@ -13,6 +13,8 @@ import { LoadingScreenProvider } from "@/contexts/loadingScreen";
 import { ClientProvider } from "@/contexts/client";
 import { SocketProvider } from "@/contexts/soket";
 import { OwnerProvider } from "@/contexts/ownerInfo";
+import { AiChatBubbleProvider } from "@/contexts/AiChatBubble";
+import { CartSideProvider } from "@/contexts/cart";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -58,7 +60,11 @@ export default function RootLayout({
                       <ClientProvider>
                         <SocketProvider>
                           <OwnerProvider>
-                            <LayoutContent>{children}</LayoutContent>
+                            <AiChatBubbleProvider>
+                              <CartSideProvider>
+                                <LayoutContent>{children}</LayoutContent>
+                              </CartSideProvider>
+                            </AiChatBubbleProvider>
                           </OwnerProvider>
                         </SocketProvider>
                       </ClientProvider>

@@ -12,6 +12,8 @@ import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { useRouter } from 'next/navigation';
 import FilterBar from '../main/filterBar';
 import { useLoadingScreen } from '@/contexts/loadingScreen';
+import { useAiChatBubble } from '@/contexts/AiChatBubble';
+import { useClient } from '@/contexts/client';
 // import english from '@/app/languages/english.json';
 // import arabic from '@/app/languages/arabic.json';
 // import { LanguageSelectorContext } from "@/app/contexts/LanguageSelectorContext";
@@ -35,6 +37,8 @@ const SearchBar = ({
     importedFrom,
     containerStyle
 }: SearchBarProps) => {
+
+    const { client } = useClient();
 
     const [focus, setFocus] = useState(false);
     const { activeTheme, colors } = useTheme();
@@ -65,6 +69,8 @@ const SearchBar = ({
     const [availableSizes, setAvailableSizes] = useState<string[]>([]);
     const [availableTypes, setAvailableTypes] = useState<string[]>([]);
     const [allCollections, setAllCollections] = useState<CollectionType[]>([]);
+
+    const { bubbleProps, setBubbleProps } = useAiChatBubble();
 
     const [productsFound, setProductsFound] = useState<ProductType[]>([]);
     const [productsCount, setProductsCount] = useState<number>(0);
@@ -189,8 +195,8 @@ const SearchBar = ({
         setFilterBarActive(false);
 
         if (aiModeActive) {
-
-            return;
+            
+            return handleSendMessage();
 
         } else {
 
@@ -221,6 +227,53 @@ const SearchBar = ({
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
+    const handleSendMessage = async () => {
+        if (!input) return;
+
+        console.log('hhhhh');
+        
+        // Save message locally and clear input immediately to improve UX
+        const currentMsg = input;
+        setSeachText('');
+
+        try {
+        // Show "thinking" state while waiting for AI response
+        setBubbleProps(prev => ({ ...prev, answer: '...' }));
+
+        const { data } = await axios.post(`${backEndUrl}/getAnswerFromAi`, {
+            userId: client?._id,
+            message: currentMsg,
+            agent: "SEARCH"
+        });
+
+        console.log("AI Response:", data);
+
+        // 1. Execute UI Actions (e.g., opening the cart)
+        if (data.filtrationUsed || data.searchQuery) {
+            setFiltration(data.filtrationUsed);
+            setInput(data.searchQuery);
+            router.push(
+                `/search?searchInput=${encodeURIComponent(data.searchQuery?? "")}&filter=${encodeURIComponent(JSON.stringify(data.filtrationUsed))}`
+            );
+        }
+
+        // 2. Update chat bubble with the new answer
+        setBubbleProps(prev => ({
+            ...prev,
+            answer: data.answer, 
+            isTherAnswer: true,
+            exist: true
+        }));
+
+        } catch (err) {
+        console.error("AI Request Error:", err);
+        
+        setBubbleProps(prev => ({
+            ...prev,
+            answer: "Sorry, there was a connection issue. Please try again."
+        }));
+        }
+    };
 
     return(
         <div 
@@ -232,7 +285,7 @@ const SearchBar = ({
 
             {importedFrom != "sidBar" && 
             
-            <div 
+            !aiModeActive && <div 
                 className='w-14 h-14 flex justify-center items-center cursor-pointer'
                 onClick={() => filteBarActive ? null : setFilterBarActive(true)}
             >
@@ -247,25 +300,37 @@ const SearchBar = ({
             }
 
             <div 
-                className={`w-full relative flex flex-row rounded-sm- z-10 ${className}`}
+                className={` w-full relative flex flex-row rounded-sm- z-10 ${className}`}
                 style={style} 
             > 
 
-                <input 
-                    type="text" 
-                    placeholder={
-                        activeLanguage.sideMatter.search + "..."
-                    }
-                    className={`h-full flex flex-1 pl-[20px] outline-none text-sm sm:text-md ${inputClassName}`} 
-                    onFocus={() => setFocus(true)}
-                    onBlur={() => setFocus(false)}
-                    style={{
-                        ...inputStyle
-                    }} 
-                    defaultValue={searchInput?? ''}
-                    onChange={(e) => setInput(e.target.value)}
-                    ref={searchRef}
-                />
+                {
+                    // aiModeActive ?
+                    // <div className='w-full flex flex-5'>
+                    //     <textarea
+                    //         className={`w-full pr-[170px] pt-2 absolute top-0 left-0 w-full- h-fit flex flex-1 pl-[20px] outline-none text-sm sm:text-md ${inputClassName}`}
+                    //         maxLength={100}
+                    //     />
+                    // </div>
+
+                    // :
+
+                    <input 
+                        type="text" 
+                        placeholder={
+                            (aiModeActive ? activeLanguage.searchByAi : activeLanguage.sideMatter.search) + "..."
+                        }
+                        className={`h-full flex flex-1 pl-[20px] outline-none text-sm sm:text-md ${inputClassName}`} 
+                        onFocus={() => setFocus(true)}
+                        onBlur={() => setFocus(false)}
+                        style={{
+                            ...inputStyle
+                        }} 
+                        defaultValue={searchInput?? ''}
+                        onChange={(e) => setInput(e.target.value)}
+                        ref={searchRef}
+                    />
+                }
                 
                 <div
                     className='h-full rounded-sm cursor-pointer flex justify-between items-center transition-[width] duration-300'
@@ -307,7 +372,7 @@ const SearchBar = ({
                             
                         }}
                     >
-                        {resSecVisible ? <p className='p-2'>ya wassim ridh rahi mazelet mate5demch hadhika</p> : null }
+                        {resSecVisible ? <p className='p-2 max-h-32 overflow-y-scroll'>{input}</p> : null }
                     </div>
 
                 :

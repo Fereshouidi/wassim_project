@@ -1,58 +1,77 @@
-import { motion } from 'framer-motion';
-import React from 'react'
+import React from 'react';
+import { useTheme } from '@/contexts/themeProvider';
+import { useOwner } from '@/contexts/ownerInfo';
+import { useLanguage } from '@/contexts/languageContext';
 
-type props = {
-    size?: number
-    squareSize?: number
-}
+const LoadingLogo = () => {
 
-const LoadingIcon = ({
-    size = 120,
-    squareSize = 55
-}: props) => {
+  const { ownerInfo } = useOwner();
+  const { activeTheme, colors } = useTheme();
+  const { activeLanguage } = useLanguage();
 
-
-
-  // أربع نقاط داخل المربع الكبير
-  const positions = [
-    { x: 0, y: 0 },                        // top-left
-    { x: size - squareSize, y: 0 },        // top-right
-    { x: size - squareSize, y: size - squareSize }, // bottom-right
-    { x: 0, y: size - squareSize },        // bottom-left
-  ];
-
-  // ترتيب البداية لكل مربع
-  const startIndexes = [0, 1, 2, 3];
-  const colors = ["black", "white", "black", "white"];
-  const borderColors = ["white", "black", "white", "black"];
+  const logoSrc = activeTheme === "dark" ? "/logo-simple-white.jpg" : "/logo-simple-black.jpg" ;
 
   return (
-      <div className="relative" style={{ width: size, height: size }}>
-        {startIndexes.map((startIdx, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded shadow-xl"
-            style={{
-              width: squareSize,
-              height: squareSize,
-              backgroundColor: colors[i],
-              border: `1px solid ${borderColors[i]}`
-            }}
-            animate={{
-              x: positions.map((_, idx) => positions[(startIdx + idx) % 4].x),
-              y: positions.map((_, idx) => positions[(startIdx + idx) % 4].y),
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: "linear",
-              repeatType: "loop",
-              times: [0, 0.25, 0.5, 0.75, 1],
-            }}
-          />
-        ))}
-      </div>
-  )
-}
+    <div className="flex flex-col items-center justify-center w-full h-64">
 
-export default LoadingIcon
+      <style>
+        {`
+          @keyframes breathing {
+            0%, 100% {
+              transform: scale(0.85);
+              filter: drop-shadow(0 0 0px rgba(255,255,255,0));
+            }
+            50% {
+              transform: scale(1.15);
+              filter: drop-shadow(0 0 15px ${activeTheme === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.1)'});
+            }
+          }
+          .animate-breathing {
+            animation: breathing 2.5s ease-in-out infinite;
+          }
+        `}
+      </style>
+
+      <div className="relative flex items-center justify-center">
+
+        <div 
+          className="absolute w-32 h-32 rounded-full blur-3xl opacity-20 animate-pulse"
+          style={{ backgroundColor: colors.dark[100] }}
+        ></div>
+
+        {logoSrc ? (
+          <div 
+            className="w-28 h-28 p-5 rounded-full object-contain animate-breathing z-10"
+            style={{
+              backgroundColor: colors.dark[100],
+              border: `1px solid ${colors.light[100]}`
+            }}
+          >
+            <img
+              src={logoSrc}
+              alt="Loading Logo"
+              className='w-full h-full'
+            />
+          </div>
+        ) : (
+          <div className="w-28 h-28 flex items-center justify-center animate-breathing">
+             <span className="font-bold opacity-50">{activeLanguage.sideMatter.loading + "..."}</span>
+          </div>
+        )}
+      </div>
+
+      <div className="mt-6 flex flex-col items-center gap-1">
+        <p className="text-[10px] tracking-[0.3em] uppercase opacity-40 font-medium">
+          {activeLanguage.sideMatter.loading}
+        </p>
+        <div className="flex gap-1">
+            <span className="w-1 h-1 bg-current rounded-full animate-bounce" style={{ animationDelay: '0s' }}></span>
+            <span className="w-1 h-1 bg-current rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></span>
+            <span className="w-1 h-1 bg-current rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default LoadingLogo;

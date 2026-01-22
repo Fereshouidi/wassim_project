@@ -1,37 +1,20 @@
-"use client"
+"use client";
 
-import { headerHeight } from '@/constent'
-import { useLanguage } from '@/contexts/languageContext'
-import { useTheme } from '@/contexts/themeProvider'
-import { ClientFormType, OrderType, PurchaseType } from '@/types'
-import React, { useEffect, useState } from 'react'
-import PurchaseItem from '../sub/purchaseItem'
-import InputForm from './inputForm'
-import { useClient } from '@/contexts/client'
-import OrderData from './OrderData'
-import { span } from 'framer-motion/m'
-import { useSocket } from '@/contexts/soket'
-import { useLoadingScreen } from '@/contexts/loadingScreen'
-import { useStatusBanner } from '@/contexts/StatusBanner'
-import OrderConfirmedBanner from '../sub/banner_confirmedOrder'
-import { ErrorBanner } from '../sub/banners/errorBanner'
-import { useRouter } from 'next/navigation'
-import { useOwner } from '@/contexts/ownerInfo'
+import React, { useEffect, useState } from 'react';
+import { useLanguage } from '@/contexts/languageContext';
+import { useTheme } from '@/contexts/themeProvider';
+import { useClient } from '@/contexts/client';
+import { useCartSide } from '@/contexts/cart';
+import { useSocket } from '@/contexts/soket';
+import { useLoadingScreen } from '@/contexts/loadingScreen';
+import { useRouter } from 'next/navigation';
+import { useOwner } from '@/contexts/ownerInfo';
+import PurchaseItem from '../sub/purchaseItem';
+import InputForm from './inputForm';
+import OrderData from './OrderData';
 
-type Props = {
-    isActive: boolean
-    setIsActive: (value: boolean) => void
-    purchases: PurchaseType[]
-    setPurchases: (purchases: PurchaseType[]) => void
-}
-
-const CartSide = ({
-    isActive,
-    setIsActive,
-    purchases,
-    setPurchases
-}: Props) => {
-
+const CartSide = () => {
+    const { isActive, setIsActive, purchases, setPurchases } = useCartSide();
     const { ownerInfo } = useOwner();
     const { activeLanguage } = useLanguage();
     const { client } = useClient();
@@ -39,291 +22,135 @@ const CartSide = ({
     const router = useRouter();
     const socket = useSocket();
     const { setLoadingScreen } = useLoadingScreen();
-    const { setStatusBanner } = useStatusBanner();
-    const [clientForm, setClientForm] = useState<ClientFormType>({
-        fullName: "",
-        address: "",
-        phone: "",
-        note: ""
-    });
-    const [confirmBTNWorks, setConfirmBTNWorks] = useState<boolean>(false);
+
+    const [clientForm, setClientForm] = useState({ fullName: "", address: "", phone: "", note: "" });
+    const [confirmBTNWorks, setConfirmBTNWorks] = useState(false);
 
     useEffect(() => {
-        setClientForm({
-        fullName: client?.fullName || "",
-        address: client?.address || "",
-        phone: client?.phone ? String(client.phone) : "",
-        note: client?.aiNote || ""
-        })
-    }, [client])
-
-    useEffect(() => {
-        console.log("clientForm :", clientForm);
-    }, [clientForm])
-
-    useEffect(() => {
-        if (clientForm.fullName && clientForm.address && clientForm.phone && clientForm.phone.length == 8) {
-            setConfirmBTNWorks(true);
-        } else {
-            setConfirmBTNWorks(false);
+        if(client) {
+             setClientForm({
+                fullName: client.fullName || "",
+                address: client.address || "",
+                phone: client.phone ? String(client.phone) : "",
+                note: client.aiNote || ""
+            });
         }
-    }, [clientForm])
+    }, [client]);
 
     useEffect(() => {
-        if (!socket) return;
-        
-        const handleUpdatePurchaseResult = async (data: any) => {
-            try {
-                if (data?.error) {
-                    setLoadingScreen(false);
-                    setStatusBanner(
-                        true,
-                        null,
-                        <ErrorBanner 
-                            show={true} 
-                            message={data.message || "An error occurred"} 
-                        />
-                    );
-                    
-                    setTimeout(() => {
-                        setStatusBanner(false);
-                    }, 3500);
-                    
-                    return;
-                }
+        setConfirmBTNWorks(
+            !!(clientForm.fullName && clientForm.address && clientForm.phone && clientForm.phone.length >= 8)
+        );
+    }, [clientForm]);
 
-                if (data?.purchase) {
-                    localStorage.removeItem('purchaseId');
-                }
-                
-            } catch (err) {
-                console.error('Error handling purchase update:', err);
-                setLoadingScreen(false);
-            }
-        };
-
-        const handleNewOrder = async (data: any) => {
-            try {
-                setLoadingScreen(false);
-
-                if (data?.error) {
-                    setStatusBanner(
-                        true,
-                        null,
-                        <ErrorBanner 
-                            show={true} 
-                            message={data.message || "Failed to create order"} 
-                        />
-                    );
-                    
-                    setTimeout(() => {
-                        setStatusBanner(false);
-                    }, 3500);
-                    
-                    return;
-                }
-
-                if (data?.newOrder) {
-                    
-                    setStatusBanner(
-                        true,
-                        null,
-                        //@ts-ignore
-                        <OrderConfirmedBanner show={true} order={data.newOrder as unknown as OrderType} />
-                    );
-                    
-                    setTimeout(() => {
-                        setStatusBanner(false);
-                    }, 3500);
-
-                    localStorage.removeItem('purchaseId');
-                    localStorage.removeItem('cart');
-                    
-                    // navigate('/orders');
-                    // await fetchOrders();
-                }
-                
-            } catch (err) {
-                console.error('Error handling new order:', err);
-                setLoadingScreen(false);
-                
-                setStatusBanner(
-                    true,
-                    null,
-                    <ErrorBanner 
-                        show={true} 
-                        message="An unexpected error occurred" 
-                    />
-                );
-                
-                setTimeout(() => {
-                    setStatusBanner(false);
-                }, 3500);
-            }
-        };
-
-        socket.on('receive_update_purchase_result', handleUpdatePurchaseResult);
-        socket.on('receive_new_order', handleNewOrder);
-
-        return () => {
-            socket.off('receive_update_purchase_result', handleUpdatePurchaseResult);
-            socket.off('receive_new_order', handleNewOrder);
-        };
-
-    }, [socket]);
-
-    const handleConfirn = async () => {
+    const handleConfirm = () => {
         if (!confirmBTNWorks) return;
-
-        setLoadingScreen(true);      
-
-        const purchasesId: string[] = purchases
-            .map((purchase) => purchase._id)
-            .filter((id): id is string => typeof id === "string");
-
+        setLoadingScreen(true);
+        const purchasesId = purchases.map(p => p._id);
         socket?.emit('add_order', { 
-            form: {
-                client: client?._id,
-                fullName: clientForm.fullName,
-                phone: clientForm.phone,
-                address: clientForm.address,
-                shippingCoast: ownerInfo?.shippingCost,
-                clientNote: clientForm.note
-            }, 
+            form: { ...clientForm, client: client?._id, shippingCoast: ownerInfo?.shippingCost, clientNote: clientForm.note }, 
             purchasesId 
-        })
-
+        });
     }
-    
 
-  return (
-    <div 
-        className={`fixed left-0 w-full h-full z-50 ${isActive ? "" : "invisible"} no-sellect`}
-        style={{
-            top: '0',
-            // bottom: 0,
-            backgroundColor: "rgba(74, 74, 74, 0.677)",
-            color: colors.dark[200]
-        }}
-    >
-
+    return (
         <div 
-            className={`w-[90vw] sm:w-[400px] h-full absolute ${isActive ? "right-0" : "right-[-400px]"} top-0 duration-300 transition-[left, right] overflow-y-scroll scrollbar-hidden- cursor-auto flex flex-col items-center p-5`}
-            style={{
-                backgroundColor: colors.light[100],
-            }}
-            onClick={(e) => e.stopPropagation()}
+            className={`fixed inset-0 z-[100] transition-all duration-500 ease-in-out backdrop-blur-[2px] ${
+                isActive ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+            }`}
+            style={{ backgroundColor: "rgba(0, 0, 0, 0.4)" }}
+            onClick={() => setIsActive(false)}
         >
-
             <div 
-                className='w-full bg-red-500- flex flex-row items-center justify-center pb-5 mb-6 relative'
-                style={{
-                    borderBottom: `0.2px solid ${colors.light[200]}`
-                }}
+                className={`
+                    w-[90vw] sm:w-[450px] h-full absolute right-0 top-0 
+                    flex flex-col shadow-2xl bg-white
+                    transition-transform duration-300 cubic-bezier(0.19, 1, 0.22, 1)
+                    ${isActive ? "translate-x-0" : "translate-x-full"}
+                `}
+                style={{ backgroundColor: colors.light[100], color: colors.dark[200] }}
+                onClick={(e) => e.stopPropagation()}
             >
+                {/* --- HEADER --- */}
+                <div className='flex justify-between items-center px-6 py-5 border-b' style={{ borderColor: colors.light[300] }}>
+                    
+                    <div className='flex gap-3 items-center'>
+                        <img 
+                            src={activeTheme === "dark" ? "/icons/shopping-bag-white.png" : "/icons/shopping-bag-black.png"} 
+                            className='w-5 h-5 opacity-80' alt="" 
+                        />
+                        <h2 className='font-bold text-sm tracking-wide uppercase'>{activeLanguage.myCart}</h2>
+                        <span className='px-2 py-0.5 rounded-sm text-[10px] font-bold opacity-60' style={{ backgroundColor: colors.light[300] }}>
+                            {purchases.length}
+                        </span>
+                    </div>
 
-                <div className='flex gap-2 justify-center items-center '>
-                    <img 
-                        src={activeTheme == "dark" ? "/icons/shopping-bag-white.png" : "/icons/shopping-bag-black.png" } 
-                        className='w-5 h-5'
-                        alt="" 
-                    />
-                    <h2 className='font-bold text-md'>
-                        {activeLanguage.myCart}
-                    </h2>
-                    <h4>{`(${purchases.length})`}</h4>
+                    {/* <button
+                        className='font-bold text-sm tracking-wide uppercase'
+                        style={{ color: colors.dark[100], borderColor: colors.dark[100] }}
+                        onClick={() => router.push(`/orders`)}
+                    >
+                        {activeLanguage.myOrders}
+                    </button> */}
+
+                    <button onClick={() => setIsActive(false)} className='opacity-40 hover:opacity-100 transition-opacity p-2'>
+                        <img src={`/icons/close-${activeTheme === "dark" ? "white" : "black"}.png`} className='w-3 h-3' alt="Close" />
+                    </button>
+
                 </div>
 
-                <img 
-                    src={`/icons/close-${activeTheme === "dark" ? "white" : "black"}.png`} 
-                    alt="" 
-                    className='w-4 h-4 absolute right-5 top-5- cursor-pointer'
-                    onClick={() => setIsActive(false)}
-                />
-            </div>
+                {/* --- SCROLLABLE BODY --- */}
+                <div className='flex-1 overflow-y-scroll px-2 sm:px-6 py-6 scrollbar-hidden'>
+                    {purchases.length === 0 ? (
+                        <div className='h-full flex flex-col justify-center items-center opacity-40 gap-4'>
+                            <img src="/icons/shopping-bag-black.png" className="w-12 h-12 grayscale opacity-20" alt=""/>
+                            <p className="text-sm font-medium uppercase tracking-widest">{activeLanguage.emptyCart}</p>
+                        </div>
+                    ) : (
+                        <div className='flex flex-col gap-8'>
+                            {/* Products */}
+                            <div className='flex flex-col gap-4'>
+                                {purchases.map((purchase) => (
+                                    <PurchaseItem key={purchase._id} purchase={purchase} setPurchases={setPurchases} />
+                                ))}
+                            </div>
+                            
+                            {/* Divider */}
+                            <div className='border-t border-dashed' style={{ borderColor: colors.light[300] }} />
 
-            {
-                purchases.length === 0 ? 
-
-                <div 
-                    className='w-full h-full flex flex-col justify-center items-center text-sm sm:text-md'
-                    style={{
-                        color: colors.dark[500]
-                    }}
-                >
-                    <p className='mr-1'>{activeLanguage.emptyCart + ","}</p>
-                    <p>{activeLanguage.filYourCart} 
-                        <a href="/" className='mx-2 text-[15px]- underline' style={{ color: colors.dark[100] }}>{activeLanguage.here}</a>
-                    </p>
+                            {/* Summary & Form */}
+                            <div className='space-y-6'>
+                                <OrderData purchases={purchases} />
+                                <div className='p-4 border rounded-sm' style={{ borderColor: colors.light[300], backgroundColor: activeTheme === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)' }}>
+                                    <InputForm clientForm={clientForm} setClientForm={setClientForm} />
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
 
-                :
-
-                <div className='flex flex-col justify-center'>
-
-                    <div 
-                        className='w-full flex flex-col items-center gap-2 mb-1 p-1 rounded-sm'
-                        style={{
-                            border: `0.2px solid ${colors.light[300]}`
-                        }}
-                    >
-                        {purchases.map((purchase) => (
-                            <PurchaseItem
-                                key={purchase._id}
-                                purchase={purchase}
-                                setPurchases={setPurchases}
-                            />
-                        ))}
-                    </div>
-
-                    <div className='my-5 rounded-sm'>
-                        <OrderData
-                            // ownerInfo={}
-                            purchases={purchases}
-                        />
-                    </div>
-
-                    <div 
-                        className='p-2 my-2 rounded-sm'
-                        style={{
-                            border: `0.2px solid ${colors.light[300]}`
-                        }}
-                    >
-                        <InputForm
-                            clientForm={clientForm}
-                            setClientForm={setClientForm}
-                        />
-                    </div>
-
+                {/* --- FOOTER --- */}
+                <div className='p-5 border-t space-y-2 z-10' style={{ borderColor: colors.light[300], backgroundColor: colors.light[100] }}>
                     <button
-                        className={`w-full py-3 mt-5 font-medium text-sm sm:text-md rounded-md ${confirmBTNWorks ? "cursor-pointer" : "cursor-not-allowed"}`}
-                        style={{
-                            backgroundColor: confirmBTNWorks ? colors.dark[100] : colors.dark[500],
-                            color: colors.light[100]
-                        }}
-                        onClick={handleConfirn}
+                        className={`w-full h-12 rounded-sm font-bold text-xs uppercase tracking-widest transition-all active:scale-[0.99] flex items-center justify-center ${
+                            confirmBTNWorks ? "hover:brightness-110" : "opacity-30 cursor-not-allowed grayscale"
+                        }`}
+                        style={{ backgroundColor: colors.dark[100], color: colors.light[100] }}
+                        onClick={handleConfirm}
                     >
                         {activeLanguage.confirmOrder}
                     </button>
-
                     <button
-                        className={`w-full py-3 mt-2 bg-transparent font-medium text-center text-sm sm:text-md rounded-md cursor-pointer`}
-                        style={{
-                            // backgroundColor: colors.dark[100],
-                            color: colors.dark[100],
-                            border: `1px solid ${colors.dark[100]}`
-                        }}
+                        className='w-full h-12 rounded-sm font-bold text-xs uppercase tracking-widest border transition-all active:scale-[0.99] hover:bg-black/[0.03]'
+                        style={{ color: colors.dark[100], borderColor: colors.dark[100] }}
                         onClick={() => router.push(`/orders`)}
                     >
                         {activeLanguage.viewMyOrder}
                     </button>
-
                 </div>
-            }
-
+            </div>
         </div>
-    </div>
-  )
+    );
 }
 
-export default CartSide
+export default CartSide;

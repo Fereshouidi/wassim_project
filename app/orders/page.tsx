@@ -51,6 +51,10 @@ const OrdersPage = () => {
 
 
     useEffect(() => {
+        setLoadingScreen(false);
+    }, [])
+
+    useEffect(() => {
         const fetchData = async () => {
 
             if (!client?._id) return;
@@ -254,6 +258,8 @@ const OrdersPage = () => {
             setLoadingScreen(false);
         }
     };
+
+
   
     if (!ownerInfo) return;
 

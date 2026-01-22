@@ -11,6 +11,10 @@ import axios from "axios";
 import { backEndUrl } from "@/api";
 import { useClient } from "@/contexts/client";
 import { useOwner } from "@/contexts/ownerInfo";
+import AiChatBubble from "@/componnent/sub/ai/AiChatBubble";
+import { useAiChatBubble } from "@/contexts/AiChatBubble";
+import { useCartSide } from "@/contexts/cart";
+import CartSide from "@/componnent/main/cartSide";
 
 
 export default function LayoutContent({
@@ -25,6 +29,9 @@ export default function LayoutContent({
     const [clientToken, setClientToken] = useState<string | null>(null);
     const { setClient } = useClient();
     const { setOwnerInfo } = useOwner();
+    const { setBubbleProps, bubbleProps } = useAiChatBubble();
+    const { isActive } = useCartSide();
+    // answer, textDirection, isTherAnswer, setIsTherAnswer
 
 
     useEffect(() => {
@@ -73,6 +80,7 @@ export default function LayoutContent({
         fetchOwner();
         clientToken && fetchClient();
     }, [clientToken])
+    
 
   return (
     <>
@@ -80,6 +88,8 @@ export default function LayoutContent({
       {registerSectionExist && <RegisterSection />}
       {statusBannerExist && <StatusBanner/>}
       {loadingScreen && <LoadingScreen/>}
+      { bubbleProps?.exist && <AiChatBubble/>}
+      <CartSide/>
     </>
   );
 }
