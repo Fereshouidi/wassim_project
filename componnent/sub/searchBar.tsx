@@ -233,7 +233,7 @@ const SearchBar = ({
                         availableTypes={availableTypes}
                         // Added missing props required by the component
                         productsCount={productsCount}
-                        searchText={input}
+                        // searchText={input}
                         filteBarActive={filteBarActive}
                         setFilterBarActive={setFilterBarActive}
                     />
