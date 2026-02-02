@@ -144,7 +144,10 @@ export const english = {
     social_directory: "Digital Presence",
     reviews: "reviews",
     opinion: "opinion",
-    socialMedia: "Social Media"
+    socialMedia: "Social Media",
+    collections: "Collections",
+    close: "Close",
+    haveGoodShop: "have a good shop with SilverWayShop 💫"
 
 
 } as LanguageStracture;
@@ -292,7 +295,10 @@ export const frensh = {
     social_directory: "Répertoire Numérique",
     reviews: "révision",
     opinion: "opinion",
-    socialMedia: "Réseaux sociaux"
+    socialMedia: "Réseaux sociaux",
+    collections: "Collections",
+    close: "fermer",
+    haveGoodShop: "Bon shopping avec SilverWayShop 💫"
 
 
 } as LanguageStracture;

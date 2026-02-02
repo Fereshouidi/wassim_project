@@ -213,9 +213,9 @@ export type LanguageStracture = {
     reviews: string
     opinion: string
     socialMedia: string
-    // fullName: string
-    // address: string,
-    // phone: number,
+    collections: string
+    close: string,
+    haveGoodShop: string
 }
 
 export type LanguageContextType = {

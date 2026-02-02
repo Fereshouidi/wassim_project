@@ -74,7 +74,7 @@ const Footer = ({
                 </div>
 
                 <div className='h-full bg-red-500- flex flex-1 flex-col justify-start items-center '>
-                    <p>{ownerInfo?.haveBestShop?? "have a good shop with SilverWayShop 💫"}</p>
+                    <p>{activeLanguage.haveGoodShop}</p>
                     <img 
                         src="/logo-simple-black.jpg" 
                         className='w-14 h-14 mt-8'

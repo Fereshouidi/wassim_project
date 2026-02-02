@@ -82,7 +82,7 @@ const FilterBar = ({
                     style={{ backgroundColor: colors.light[200] }}
                 >
                     <span className="text-[9px] font-black uppercase tracking-widest">
-                        {filteBarActive ? (activeLanguage.sideMatter.close || "CLOSE") : activeLanguage.sideMatter.filter}
+                        {filteBarActive ? (activeLanguage.close || "CLOSE") : activeLanguage.sideMatter.filter}
                     </span>
                     <img 
                         src={filteBarActive ? 
@@ -117,7 +117,7 @@ const FilterBar = ({
                         {/* 1. المجموعات - مسافات ضيقة */}
                         <div className="flex flex-col gap-2">
                             <h5 className="text-[8px] font-black uppercase tracking-[0.2em] opacity-30 px-1">
-                                {activeLanguage.sideMatter.collections}
+                                {activeLanguage.collections}
                             </h5>
                             <div className="flex flex-wrap gap-1.5">
                                 <FilterCollection 
