@@ -56,7 +56,7 @@ const ContactPage = () => {
                         <div className='lg:col-span-4 space-y-12'>
                             <div className='space-y-6'>
                                 <p className='text-[10px] font-bold uppercase tracking-[0.4em] opacity-40' style={{ color: colors.dark[100] }}>
-                                    01 / {activeLanguage.sideMatter?.contact || "Support"}
+                                    01 / {activeLanguage?.contact || "Support"}
                                 </p>
                                 <div className='flex flex-col gap-8'>
                                     <div className='flex flex-col gap-2'>
@@ -78,7 +78,7 @@ const ContactPage = () => {
                         {/* Section 02: Full Social Directory */}
                         <div className='lg:col-span-8 space-y-6'>
                             <p className='text-[10px] font-bold uppercase tracking-[0.4em] opacity-40' style={{ color: colors.dark[100] }}>
-                                02 / {activeLanguage.sideMatter?.socialMedia || "Digital Directory"}
+                                02 / {activeLanguage?.socialMedia || "Digital Directory"}
                             </p>
                             <div className='grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-12 pt-4'>
                                 {ownerInfo.socialMedia?.map((media, index) => (

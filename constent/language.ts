@@ -143,7 +143,8 @@ export const english = {
     support: "Customer Support",
     social_directory: "Digital Presence",
     reviews: "reviews",
-    opinion: "opinion"
+    opinion: "opinion",
+    socialMedia: "Social Media"
 
 
 } as LanguageStracture;
@@ -290,7 +291,8 @@ export const frensh = {
     support: "Service Client",
     social_directory: "Répertoire Numérique",
     reviews: "révision",
-    opinion: "opinion"
+    opinion: "opinion",
+    socialMedia: "Réseaux sociaux"
 
 
 } as LanguageStracture;

@@ -212,6 +212,7 @@ export type LanguageStracture = {
     social_directory: string
     reviews: string
     opinion: string
+    socialMedia: string
     // fullName: string
     // address: string,
     // phone: number,
