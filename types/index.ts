@@ -368,7 +368,7 @@ export type ProductSpecification = {
 }
 
 export type ProductImage = {
-  uli: string;
+  uri: string;
   specification: ProductSpecification
 }
 

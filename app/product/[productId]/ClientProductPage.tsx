@@ -137,7 +137,7 @@ export default function ClientProductPage({ product }: Props) {
         } catch (err) { setLike(currentLike); }
     }
 
-    const uniqueImages = useMemo(() => getUniqueImagesByColor(product.images), [product.images]);
+    const uniqueImages = useMemo(() => getUniqueImagesByColor(product?.images), [product?.images]);
     
     if (!ownerInfo) return <LoadingScreen/>
 
