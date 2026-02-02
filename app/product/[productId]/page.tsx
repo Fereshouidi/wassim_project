@@ -15,10 +15,15 @@ export async function generateMetadata({
   
 
   try {
+    console.log('hhhhhhhhhhhhh');
+    
     const { data } = await axios.get<{ product: ProductType }>(`${backEndUrl}/getProductById`, {
       params: { productId },
     });
     const product = data.product;
+
+    console.log({product});
+    
 
     if (!product) return { title: "Product not found" };
 
