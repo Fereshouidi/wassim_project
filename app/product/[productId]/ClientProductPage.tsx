@@ -59,6 +59,11 @@ export default function ClientProductPage({ product }: Props) {
     }, [product._id]); // يتم التنفيذ عند تحميل الصفحة أو تغير المنتج
 
     useEffect(() => {
+
+        console.log({client});
+
+        if (!client || !product._id) return;
+        
       if (!purchase?._id) {
         axios.get(backEndUrl + "/getPurchaseByClientAndProduct", {
             params: {
@@ -67,7 +72,7 @@ export default function ClientProductPage({ product }: Props) {
             }
         })
         .then(({data}) => {
-            setPurchase(data.purchase)
+            setPurchase(data?.purchase)
             // alert(data.purchase._id)
         })
         .catch(( err ) => {

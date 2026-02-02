@@ -33,7 +33,7 @@ import { CartSideProvider } from "@/contexts/cart";
 
 
 
-export default function RootLayout({
+export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
