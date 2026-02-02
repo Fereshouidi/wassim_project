@@ -67,7 +67,7 @@ export default function LayoutContent({
             })
             .then(({data}) => {
                 data.client && setClient(data.client);
-                console.log({client: data.client});.
+                console.log({client: data.client});
                 
             })
             .catch((err) => {throw err})
