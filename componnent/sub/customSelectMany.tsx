@@ -1,9 +1,8 @@
-import { useTheme } from '@/contexts/themeProvider'
-import { CustomSelectManyType, CustomSelectType, OptionType } from '@/types'
-import React, { CSSProperties, useEffect, useRef, useState } from 'react'
+"use client";
+import { useTheme } from '@/contexts/themeProvider';
+import { CustomSelectManyType, OptionType } from '@/types';
+import React, { useEffect, useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
-
-
 
 const CustomSelectMany = ({
     label,
@@ -13,24 +12,18 @@ const CustomSelectMany = ({
     className,
     style,
 }: CustomSelectManyType) => {
-
     const { activeTheme, colors } = useTheme();
-    const [optionsOpen, setOptionsOpent] = useState<boolean>(false);
-    const optionsRef = useRef<(HTMLParagraphElement | null)[]>([]);
-    const selectRef = useRef<HTMLDivElement>(null)
-
+    const [optionsOpen, setOptionsOpen] = useState<boolean>(false);
+    const selectRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-        if (selectRef.current && !selectRef.current?.contains(event.target as Node)) {
-            setOptionsOpent(false);
+        function handleClickOutside(event: MouseEvent) {
+            if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
+                setOptionsOpen(false);
+            }
         }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-    };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
     const handleChange = (optionClicked: OptionType) => {
@@ -38,105 +31,89 @@ const CustomSelectMany = ({
             return setCurrentOptions([optionClicked]);
         }
 
-        if (currentOptions.some(option_ => option_.value === "all")) {
-            return setCurrentOptions([optionClicked]);
+        let newOptions = currentOptions.filter(o => o.value !== "all");
+
+        if (currentOptions.some(o => o.value === optionClicked.value)) {
+            newOptions = newOptions.filter(o => o.value !== optionClicked.value);
+        } else {
+            newOptions = [...newOptions, optionClicked];
         }
 
-        if (currentOptions.some(option_ => option_.value === optionClicked.value)) {
-            return setCurrentOptions(
-            currentOptions.filter(option_ => option_.value !== optionClicked.value)
-            );
-        }
-
-        setCurrentOptions([...currentOptions, optionClicked]);
+        setCurrentOptions(newOptions.length > 0 ? newOptions : [options.find(o => o.value === "all") || options[0]]);
     };
 
-
-    const optionStyle: CSSProperties = {
-        backgroundColor: 'transparent',
-        color: colors.dark[250]
-    }
-
-    const optionHoverStyle: CSSProperties = {
-        backgroundColor: colors.dark[250],
-        color: colors.light[250]
-    }
-
-    const activeOptionStyle: CSSProperties = {
-        backgroundColor: colors.dark[200],
-        color: colors.light[200]
-    }
+    const isSelected = (value: string) => currentOptions.some(o => o.value === value);
 
     return (
         <div 
+            ref={selectRef}
             className={twMerge(
-                "w-[150px]- w-full- h-[200px]- relative cursor-pointer select-none border rounded-sm duration-300 z-[50]-",
+                "relative min-w-[140px] w-full cursor-pointer select-none border transition-all duration-300",
+                optionsOpen ? "rounded-t-2xl shadow-lg" : "rounded-2xl",
                 className
             )}
             style={{
-                border: `0.002px solid ${colors.light[400]}`,
-                backgroundColor: colors.light[150],
+                borderColor: colors.light[300],
+                backgroundColor: colors.light[100],
+                color: colors.dark[100],
                 ...style
             }}
-            ref={selectRef}
-            onClick={() => setOptionsOpent(!optionsOpen)}
+            onClick={() => setOptionsOpen(!optionsOpen)}
         >
-            <div className='w-full h-7 rounded-sm px-1 py-5 z-10 flex flex-row justify-between items-center'>
-                <div className='w-full flex flex-row justify-center items-center'>
-                    <h4 className='text-[14px] text-center m-2'>{
-                        currentOptions.some(option_ => option_.value === "all") ?
-                            options.length - 1
-                        : currentOptions.length
-                    }</h4>
-                    <h4 className='text-[14px] text-center'>{label}</h4>
+            <div className="flex items-center justify-between px-4 h-11">
+                <div className="flex items-center gap-2 overflow-hidden">
+                    <span 
+                        className="flex items-center justify-center min-w-[20px] h-[20px] rounded-full text-[10px] font-black"
+                        style={{ backgroundColor: colors.dark[100], color: colors.light[100] }}
+                    >
+                        {currentOptions.some(o => o.value === "all") ? options.length - 1 : currentOptions.length}
+                    </span>
+                    <span className="text-[12px] font-bold truncate opacity-80 uppercase tracking-tighter">
+                        {label}
+                    </span>
                 </div>
+                
                 <img 
                     src={activeTheme == "dark" ? "/icons/down-arrow-white.png" : "/icons/down-arrow-black.png" }
-                    className='w-6 h-6 ml-1'
+                    className={`w-3 h-3 transition-transform duration-300 ${optionsOpen ? "rotate-180" : ""}`}
                 />
             </div>
 
             <div 
-                className={`w-full max-h-[200px] overflow-y-scroll scrollbar-hidden absolute top-full left-0 z-[999] duration-300 ${!optionsOpen && 'hidden'}`}
+                className={twMerge(
+                    "absolute top-[calc(100%-1px)] left-0 w-full overflow-hidden z-[100] border-x border-b rounded-b-2xl transition-all duration-300 ease-in-out shadow-xl",
+                    optionsOpen ? "max-h-[250px] opacity-100" : "max-h-0 opacity-0 pointer-events-none"
+                )}
                 style={{
-                    border: `0.002px solid ${colors.light[400]}`,
-                    backgroundColor: colors.light[150]
+                    backgroundColor: colors.light[100],
+                    borderColor: colors.light[300]
                 }}
                 onClick={(e) => e.stopPropagation()}
             >
-                {
-                    options.map((option, index) => (
-                        <p
-                            key={index}
-                            className='px-1 py-1 cursor-pointer text-[14px]'
-                            ref={(el) => {
-                                if (optionsRef.current) {
-                                    optionsRef.current[index] = el;
-                                }
-                            }}
-                            onMouseEnter={() => {
-                                const el = optionsRef.current[index];
-                                if (el && !currentOptions.some(o => o.value === option.value)) {
-                                    el.style.backgroundColor = colors.light[250];
-                                }
-                            }}
-                            onMouseLeave={() => {
-                                const el = optionsRef.current[index];
-                                if (el && !currentOptions.some(o => o.value === option.value)) {
-                                    el.style.backgroundColor = "transparent";
-                                }
-                            }}
-
-                            style={currentOptions.some(option_ => option_.value === option.value) ? activeOptionStyle : optionStyle}
-                            onClick={() => handleChange(option) }
-
-                        >{option.label}</p>
-                    ))
-                }
+                <div className="max-h-[250px] overflow-y-auto scrollbar-hidden py-2">
+                    {options.map((option, index) => {
+                        const active = isSelected(option.value);
+                        return (
+                            <div
+                                key={index}
+                                onClick={() => handleChange(option)}
+                                className="px-4 py-2.5 text-[12px] font-medium transition-colors flex items-center justify-between group"
+                                style={{
+                                    backgroundColor: active ? colors.dark[100] : 'transparent',
+                                    color: active ? colors.light[100] : colors.dark[100],
+                                }}
+                            >
+                                <span className={active ? "font-black" : "opacity-70 group-hover:opacity-100"}>
+                                    {option.label}
+                                </span>
+                                {active && <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: colors.light[100] }} />}
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
-
         </div>
-    )
-}
+    );
+};
 
-export default CustomSelectMany
+export default CustomSelectMany;

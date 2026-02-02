@@ -127,7 +127,24 @@ export const english = {
     logOut: "Log Out",
     submit: "Submit",
     searchByAi: "Search by AI",
-    orderSummary: "Order Summary"
+    orderSummary: "Order Summary",
+    orderNow: "Order Now",
+    addEvaluation: "Add Opinion",
+    evaluations: "Opinions",
+    reviewsForProduct: "Reviews for this product",
+    noEvaluationsYet: "No opinions yet. Be the first!",
+    verifiedPurchasesOnly: "Verified Purchases Only",
+    rateThisProduct: "Rate this product",
+    writeNotes: "Write your notes...",
+    editEvaluation: "Edit Opinion",
+    artificialIntelligence: "Artificial Intelligence",
+    loading: "Loading",
+    noResults: "No results found",
+    support: "Customer Support",
+    social_directory: "Digital Presence",
+    reviews: "reviews",
+    opinion: "opinion"
+
 
 } as LanguageStracture;
 
@@ -257,8 +274,23 @@ export const frensh = {
     logOut: "Se déconnecter",
     submit: "Envoyer",
     searchByAi: "Recherche par IA",
-    orderSummary: "Résumé de la commande"
-
+    orderSummary: "Résumé de la commande",
+    orderNow: "Acheter",
+    addEvaluation: "Ajouter un avis",
+    evaluations: "Avis",
+    reviewsForProduct: "Avis pour ce produit",
+    noEvaluationsYet: "Pas encore d'avis. Soyez le premier !",
+    verifiedPurchasesOnly: "Achats vérifiés uniquement",
+    rateThisProduct: "Évaluer ce produit",
+    writeNotes: "Écrivez vos notes...",
+    editEvaluation: "Modifier l'avis",
+    artificialIntelligence: "Intelligence Artificielle",
+    loading: "Chargement",
+    noResults: "Aucun résultat trouvé",
+    support: "Service Client",
+    social_directory: "Répertoire Numérique",
+    reviews: "révision",
+    opinion: "opinion"
 
 
 } as LanguageStracture;

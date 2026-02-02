@@ -15,6 +15,7 @@ import AiChatBubble from "@/componnent/sub/ai/AiChatBubble";
 import { useAiChatBubble } from "@/contexts/AiChatBubble";
 import { useCartSide } from "@/contexts/cart";
 import CartSide from "@/componnent/main/cartSide";
+import { getDeviceId } from "@/lib";
 
 
 export default function LayoutContent({
@@ -31,6 +32,7 @@ export default function LayoutContent({
     const { setOwnerInfo } = useOwner();
     const { setBubbleProps, bubbleProps } = useAiChatBubble();
     const { isActive } = useCartSide();
+    const [ deviceId, setDeviceId ] = useState<string>('');
     // answer, textDirection, isTherAnswer, setIsTherAnswer
 
 
@@ -38,6 +40,8 @@ export default function LayoutContent({
         const token = localStorage.getItem("clientToken");
 
         if (!token) return;
+        
+        // localStorage.removeItem('clientToken')
 
         console.log({token});
         
@@ -59,7 +63,7 @@ export default function LayoutContent({
     useEffect(() => {
         const fetchClient = async () => {
             await axios.get( backEndUrl + "/getClientByToken", {
-                params: { token: clientToken}
+                params: { token: clientToken, deviceId }
             })
             .then(({data}) => {
                 data.client && setClient(data.client);
@@ -78,9 +82,18 @@ export default function LayoutContent({
         }
         
         fetchOwner();
-        clientToken && fetchClient();
-    }, [clientToken])
+        clientToken || deviceId && fetchClient();
+    }, [clientToken, deviceId])
     
+    useEffect(() => {
+      const getDeviceId_ = async () => {
+        const deviceId = await getDeviceId();
+        console.log({deviceId});
+        
+        setDeviceId(deviceId)
+      }
+      getDeviceId_();
+    }, [])
 
   return (
     <>

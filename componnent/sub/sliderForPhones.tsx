@@ -1,9 +1,9 @@
 import { ProductType } from '@/types'
 import React, { useEffect, useRef, useState } from 'react'
-import ProductCard from './productCard'
-import ProductLoading from './productLoading'
+import ProductLoading from './productCard/productLoading'
 import { useScreen } from '@/contexts/screenProvider'
 import { useTheme } from '@/contexts/themeProvider'
+import ProductCard from './productCard/productCardForSlider'
 
 type sliderProps = {
     products: ProductType[]
@@ -119,7 +119,7 @@ const SliderForPhones = ({
                             {products.map((product, index) => (
                                 <div 
                                     key={index}
-                                    className='w-[180px] sm:w-[250px] rounded-sm overflow-hidden'
+                                    className='w-[180px] sm:w-[250px] rounded-xl overflow-hidden'
                                     style={{
                                         // width: cardWidth  + "px"
                                         // width="w-"
@@ -127,7 +127,7 @@ const SliderForPhones = ({
                                 >
                                     <ProductCard
                                         product={product}
-                                        className='w-[95%] h-full rounded-sm overflow-hidden'
+                                        className='w-[95%] h-[97%] rounded-xl overflow-hidden'
                                         useLike={useLike}
                                     />
                                 </div>

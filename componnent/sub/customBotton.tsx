@@ -19,7 +19,7 @@ const CustomBotton = ({
     
     return (
         <button 
-            className={`${className} w-full- max-h-10 text-[14px]- rounded-sm cursor-pointer`}
+            className={`${className} w-full- max-h-10 text-[14px]- rounded-xl cursor-pointer`}
             style={{
                 backgroundColor: colors.dark[100],
                 color: colors.light[200],

@@ -8,6 +8,7 @@ import { useLoadingScreen } from '@/contexts/loadingScreen';
 import { useRegisterSection } from '@/contexts/registerSec';
 import { useStatusBanner } from '@/contexts/StatusBanner';
 import { useTheme } from '@/contexts/themeProvider';
+import { getDeviceId } from '@/lib';
 import { SignInForm, SignUpForm } from '@/types';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
@@ -64,8 +65,11 @@ const SignUp = ({
 
             setLoadingScreen(true);
 
+            const deviceId = await getDeviceId();
+
             await axios.post(backEndUrl + "/addClient", {
-                clientData: clientData
+                clientData: clientData,
+                deviceId
             })
             .then(({data}) => {
                 setRegisterSectionExist(false);
@@ -88,7 +92,7 @@ const SignUp = ({
                     true,
                     null,
                     <div 
-                        className='w-full h-full bg-red-500- p-10 rounded-sm flex flex-col justify-center items-center'
+                        className='w-full h-full bg-red-500- p-10 rounded-xl flex flex-col justify-center items-center'
                         style={{
                             backgroundColor: colors.light[100],
                             boxShadow: `0 0 15px ${colors.dark[700]}`
@@ -115,7 +119,7 @@ const SignUp = ({
                 true,
                 null,
                 <div 
-                    className='w-full h-full bg-red-500- p-10 rounded-sm flex flex-col justify-center items-center'
+                    className='w-full h-full bg-red-500- p-10 rounded-xl flex flex-col justify-center items-center'
                     style={{
                         backgroundColor: colors.light[100],
                         boxShadow: `0 0 15px ${colors.dark[700]}`
@@ -137,7 +141,7 @@ const SignUp = ({
                 true,
                 null,
                 <div 
-                    className='w-full h-full bg-red-500- p-10 rounded-sm flex flex-col justify-center items-center'
+                    className='w-full h-full bg-red-500- p-10 rounded-xl flex flex-col justify-center items-center'
                     style={{
                         backgroundColor: colors.light[100]
                     }}
@@ -157,7 +161,7 @@ const SignUp = ({
         
     return (
         <div 
-            className="w-full max-h-full overflow-y-scroll flex flex-col justify-center- items-center text-2xl font-bold bg-red-500- rounded-sm p-5 scrollbar-hidden"
+            className="w-full max-h-full overflow-y-scroll flex flex-col justify-center- items-center text-2xl font-bold bg-red-500- rounded-xl p-5 scrollbar-hidden"
             style={{
                 backgroundColor: colors.light[100],
                 boxShadow: `0 15px 25px ${colors.dark[500]}`

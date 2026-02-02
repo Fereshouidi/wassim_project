@@ -48,7 +48,7 @@ const CustomSelect = ({
 
     return (
         <div 
-            className={`min-w-[170px] relative cursor-pointer no-sellect border-[0.02px] rounded-sm duration-300 ${className}`}
+            className={`min-w-[170px] relative cursor-pointer no-sellect border-[0.02px] rounded-xl duration-300 ${className}`}
             style={{
                 border: `0.002px solid ${colors.light[400]}`,
                 backgroundColor: colors.light[150],
@@ -57,7 +57,7 @@ const CustomSelect = ({
             ref={selectRef}
             onClick={() => setOptionsOpent(!optionsOpen)}
         >
-            <div className='w-full h-7 rounded-sm px-1 py-5 z-10 flex flex-row justify-between items-center'>
+            <div className='w-full h-7 rounded-xl px-1 py-5 z-10 flex flex-row justify-between items-center'>
                 <h4 className='text-[14px]'>{currentOption.label}</h4>
                 <img 
                     src={activeTheme == "dark" ? "/icons/down-arrow-white.png" : "/icons/down-arrow-black.png" }

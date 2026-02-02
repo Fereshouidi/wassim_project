@@ -77,7 +77,7 @@ const SignIn = ({
                     true,
                     null,
                     <div 
-                        className='w-full h-full bg-red-500- p-10 rounded-sm flex flex-col justify-center items-center'
+                        className='w-full h-full bg-red-500- p-10 rounded-xl flex flex-col justify-center items-center'
                         style={{
                             backgroundColor: colors.light[100]
                         }}
@@ -99,7 +99,7 @@ const SignIn = ({
                 true,
                 null,
                 <div 
-                    className='w-full h-full bg-red-500- p-10 rounded-sm flex flex-col justify-center items-center'
+                    className='w-full h-full bg-red-500- p-10 rounded-xl flex flex-col justify-center items-center'
                     style={{
                         backgroundColor: colors.light[100]
                     }}
@@ -121,7 +121,7 @@ const SignIn = ({
             true,
             null,
             <div 
-                className='w-full h-full bg-red-500- p-10 rounded-sm flex flex-col justify-center items-center'
+                className='w-full h-full bg-red-500- p-10 rounded-xl flex flex-col justify-center items-center'
                 style={{
                     backgroundColor: colors.light[100]
                 }}
@@ -151,7 +151,7 @@ const SignIn = ({
         
     return (
         <div 
-            className="w-full h-full overflow-y-scroll flex flex-col justify-center- items-center text-2xl font-bold bg-red-500- rounded-sm p-5 scrollbar-hidden"
+            className="w-full h-full overflow-y-scroll flex flex-col justify-center- items-center text-2xl font-bold bg-red-500- rounded-xl p-5 scrollbar-hidden"
             style={{
                 backgroundColor: colors.light[100],
                 boxShadow: `0 10px 25px ${colors.dark[500]}`

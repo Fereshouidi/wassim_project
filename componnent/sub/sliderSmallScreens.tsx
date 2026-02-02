@@ -1,9 +1,9 @@
 import { ProductType } from '@/types'
 import React, { useEffect, useRef, useState } from 'react'
-import ProductCard from './productCard'
-import ProductLoading from './productLoading'
+import ProductLoading from './productCard/productLoading'
 import { useScreen } from '@/contexts/screenProvider'
 import { useTheme } from '@/contexts/themeProvider'
+import ProductCard from './productCard/productCardForSlider'
 
 type sliderProps = {
     products: ProductType[]
@@ -130,7 +130,7 @@ const Slider = ({
                             <ProductCard
                                 key={product._id}
                                 product={product}
-                                className='w-[170px] sm:w-[220px] min-h-[150px] sm:min-h-[220px] m-0 rounded-sm overflow-hidden'
+                                className='w-[170px] sm:w-[220px] min-h-[150px] sm:min-h-[220px] m-0 rounded-xl overflow-hidden'
                                 // style={{
                                 //     width: cardWidth + "px"
                                 // }}
@@ -144,7 +144,7 @@ const Slider = ({
 
                         <div ref={productLoading} className=''>
                             <ProductLoading
-                                className='w-[170px] sm:w-[220px] min-h-[150px] sm:min-h-[220px] m-0 '
+                                className='w-[170px] sm:w-[220px] min-h-[150px] sm:min-h-[220px] m-0 rounded-xl overflow-hidden'
                             />
                         </div>
 

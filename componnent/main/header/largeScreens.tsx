@@ -36,7 +36,7 @@ const LargeScreens = ({
 
     return (
       <div 
-          className={`w-full bg-white flex items-center justify-between gap-5 px-10 sticky top-0 z-50 ${className}`}
+          className={`w-full bg-white flex items-center justify-between gap-5 px-10 sticky top-0 z-[50] ${className}`}
           style={{
               height: headerHeight,
               boxShadow: '0 0px 15px rgba(13, 13, 13, 0.07)',
@@ -112,7 +112,7 @@ const LargeScreens = ({
                 borderTop: 'none'
             }}
             aiIconStyle={{
-                backgroundColor: colors.light[200]
+                backgroundColor: colors.light[100]
             }}
           />
 
@@ -123,7 +123,7 @@ const LargeScreens = ({
             <div 
                 className='w-fit h-full flex justify-center items-center cursor-pointer'
                 onClick={() => {
-                    if (client && client.token) {
+                    if (client && client.password) {
                         setLoadingScreen(true)
                         router.push('/account')
                     } else { 

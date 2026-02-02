@@ -1,15 +1,15 @@
+"use client";
 import { useLanguage } from '@/contexts/languageContext';
 import { useTheme } from '@/contexts/themeProvider';
 import React, { useEffect, useState } from 'react'
-import CustomSelect from '../customSelect';
-import { CollectionType, FiltrationType, OptionType } from '@/types';
+import { FiltrationType, OptionType } from '@/types';
 import CustomSelectMany from '../customSelectMany';
 
-type FilterCollection = {
+type FilterColorProps = {
     availableColors: string[]
     filtrationCopy: FiltrationType
     setFiltrationCopy: (value: FiltrationType) => void
-    defaultOptions?:string[]
+    defaultOptions?: string[]
 }
 
 const FilterColor = ({
@@ -17,7 +17,7 @@ const FilterColor = ({
     filtrationCopy,
     setFiltrationCopy,
     defaultOptions
-}: FilterCollection) => {
+}: FilterColorProps) => {
 
     const { activeLanguage } = useLanguage();
     const { colors } = useTheme();
@@ -27,22 +27,27 @@ const FilterColor = ({
             label: `${activeLanguage.sideMatter.all} ${activeLanguage.sideMatter.colors}`, 
             value: "all"
         },
-        ...availableColors.map(color => ({ label: color, value: color }))
+        ...availableColors.map(color => ({ 
+            label: color ?? "", 
+            value: color ?? "" 
+        }))
     ], [availableColors, activeLanguage]);
 
     const [currentOptions, setCurrentOptions] = useState<OptionType[]>([]);
 
     useEffect(() => {
-        if (!defaultOptions || defaultOptions.length === 0) {
+        if (!defaultOptions || defaultOptions.length === 0 || options.length === 0) {
             setCurrentOptions([options[0]]);
-        } else if (defaultOptions.length === availableColors.length) {
+            return;
+        }
+
+        const isAllSelected = defaultOptions.includes("all") || defaultOptions.length === availableColors.length;
+
+        if (isAllSelected) {
             setCurrentOptions([options[0]]);
         } else {
-            const mapped = defaultOptions.map(color => ({
-                label: color,
-                value: color
-            }));
-            setCurrentOptions(mapped);
+            const mapped = options.filter(opt => defaultOptions.includes(opt.value));
+            setCurrentOptions(mapped.length > 0 ? mapped : [options[0]]);
         }
     }, [defaultOptions, options]);
 
@@ -58,9 +63,12 @@ const FilterColor = ({
     }, [currentOptions]);
 
     return (
-        <div className='w-full- min-w-[130px] h-full p-2'>
-            <h4 className='sm:m-5 mb-4 font-bold'>
-                {activeLanguage.sideMatter.colors}:
+        <div className="w-full px-4- py-2- border-b" style={{ borderColor: colors.light[200] }}>
+            <h4 
+                className="text-[13px] font-black uppercase tracking-widest mb-3 opacity-80"
+                style={{ color: colors.dark[100] }}
+            >
+                {activeLanguage.sideMatter.colors}
             </h4>
 
             <CustomSelectMany

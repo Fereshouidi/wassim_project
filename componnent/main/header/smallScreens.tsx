@@ -81,7 +81,7 @@ const SmallScreens = ({
           >
 
               <img 
-                  className='w-14 h-14 p-4 rounded-sm cursor-pointer'
+                  className='w-14 h-14 p-4 rounded-xl cursor-pointer'
                   src={ activeTheme == "dark" ? "/icons/searchWhite.png" : "/icons/searchBlack.png" }
                   alt="" 
                   style={{

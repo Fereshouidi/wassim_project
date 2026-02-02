@@ -1,3 +1,4 @@
+import { useScreen } from '@/contexts/screenProvider';
 import { useTheme } from '@/contexts/themeProvider';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import React, { CSSProperties, useState } from 'react'
@@ -19,13 +20,14 @@ const AiMode = ({
     const [aiModeHover, setAiModeHover] = useState<boolean>(false);
     const { activeTheme, colors } = useTheme();
     const aiIcon = "/ai.png"
+    const { screenWidth } = useScreen();
     
     // activeTheme == "dark" ? "/icons/ai_black.png" : "/icons/ai_black.png" 
     
     return (
 
         <div 
-            className={`${aiModeHover || aiModeActive ? 'w-[100px]' : 'w-[50px]'} h-[80%] flex justify-center items-center relative overflow-hidden m-3 rounded-full transition-[width] duration-300`}
+            className={`${screenWidth > 1000 || aiModeActive ? 'w-[100px]' : 'w-[50px]'} h-[80%] flex justify-center items-center relative overflow-hidden m-3 rounded-full transition-[width] duration-300`}
             onClick={() => {
                 setAiModeActive(!aiModeActive)
                 setAiModeHover(aiModeActive ? false : aiModeHover)
@@ -33,7 +35,7 @@ const AiMode = ({
         >
 
             <div    
-                className={`${aiModeHover || aiModeActive ? 'w-[97px] p-3' : 'w-[47px] p-2'} h-[93%] flex justify-center items-center rounded-full z-10 overflow-hidden relative transition-[width] duration-300`}
+                className={`${screenWidth > 1000 || aiModeActive ? 'w-[97px] p-3' : 'w-[47px] p-2'} h-[93%] flex justify-center items-center rounded-full z-10 overflow-hidden relative transition-[width] duration-300`}
                 style={{
                     ...aiIconStyle,
                     // backgroundColor: colors.light[200]
@@ -45,7 +47,7 @@ const AiMode = ({
             >
                 <h4 
                     className={`
-                        text-sm ${aiModeHover || aiModeActive ? "opacity-100" : "opacity-0 invisible w-0"} 
+                        text-sm ${screenWidth > 1000 || aiModeActive ? "opacity-100" : "opacity-0 invisible w-0"} 
                         z-10 transition-[width] duration-300- whitespace-nowrap block text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-red-500
                     `}
                     style={{
@@ -55,7 +57,7 @@ const AiMode = ({
                 >Ai mode</h4>
 
                 <img 
-                    className='rounded-sm cursor-pointer mx-2 h-[80%] z-10'
+                    className='rounded-xl cursor-pointer mx-2 h-[80%] z-10'
                     src={aiIcon} 
                     alt="" 
                     style={{

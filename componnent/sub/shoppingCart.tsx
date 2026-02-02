@@ -57,14 +57,14 @@ const ShoppingCart = () => {
                     alt="Cart" 
                     className="w-full h-full object-contain"
                 />
-                {purchases.length > 0 && (
-                    <span 
-                        className='absolute -top-2 -right-2 w-5 h-5 flex justify-center items-center text-[11px] font-bold rounded-full'
-                        style={{ backgroundColor: colors.dark[100], color: colors.light[100] }}
-                    >
-                        {purchases.length}
-                    </span>
-                )}
+                
+                <span 
+                    className='absolute -top-2 -right-2 w-5 h-5 flex justify-center items-center text-[11px] font-bold rounded-full'
+                    style={{ backgroundColor: colors.dark[100], color: colors.light[100] }}
+                >
+                    {purchases.length}
+                </span>
+                
             </div>
             <CartSide />
         </>

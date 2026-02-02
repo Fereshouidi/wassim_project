@@ -1,194 +1,176 @@
 "use client";
+
+import React, { CSSProperties, useEffect, useRef, useState, useMemo } from 'react';
 import { useScreen } from '@/contexts/screenProvider';
 import { useTheme } from '@/contexts/themeProvider';
-import React, { CSSProperties, useEffect, useRef, useState } from 'react'
-import SkeletonLoading from '../sub/SkeletonLoading';
 import { useClient } from '@/contexts/client';
 import { useRegisterSection } from '@/contexts/registerSec';
+import { ProductSpecification } from '@/types';
+import SkeletonLoading from '../sub/SkeletonLoading';
+
+type ImageType = {
+  uri: string | null;
+  specification: ProductSpecification | any;
+};
 
 type ImagesSwitcherType = {
-    className?: string
-    style?: CSSProperties
-    images: string[],
-    like: boolean
-    setLike: (value: boolean) => void
-}
+  className?: string;
+  style?: CSSProperties;
+  images: ImageType[];
+  currentImageIndex: number;
+  setCurrentImageIndex: (value: number) => void;
+  like: boolean;
+  setLike: (value: boolean) => void;
+};
+
 const ImagesSwitcher = ({
-    className,
-    style,
-    images,
-    like,
-    setLike
-}: ImagesSwitcherType) => { 
+  className,
+  style,
+  images,
+  currentImageIndex,
+  setCurrentImageIndex,
+  like,
+  setLike,
+}: ImagesSwitcherType) => {
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const { colors, activeTheme } = useTheme();
+  const { screenWidth } = useScreen();
+  const { client } = useClient();
+  const { setRegisterSectionExist } = useRegisterSection();
 
-    const imageDisplayRef = useRef<HTMLImageElement>(null);
-    const sliderRef = useRef<HTMLDivElement>(null);
-    const [imageDisplayWidth, setImageDisplayWidth] = useState<number>(0);
-    const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
-    const [ leftArrowHover, setLeftArrowHover ] = useState<boolean>(false);
-    const [ rightArrowHover, setRightArrowHover ] = useState<boolean>(false);
-    const { colors, activeTheme } = useTheme();
-    const [imgWidth, setimgWidth] = useState<number>(100);
-    const { screenWidth } = useScreen();
-    const { client } = useClient();
-    const { setRegisterSectionExist } = useRegisterSection();
+  const [zoomPos, setZoomPos] = useState({ x: 0, y: 0, show: false });
 
+  // --- الحل: تصفية الصور المتكررة بناءً على الرابط uri ---
+  const uniqueImages = useMemo(() => {
+    if (!images) return [];
+    const seen = new Set();
+    return images.filter(img => {
+      if (!img.uri || seen.has(img.uri)) return false;
+      seen.add(img.uri);
+      return true;
+    });
+  }, [images]);
 
-    useEffect(() => {
-        if (imageDisplayRef.current) {
-            setImageDisplayWidth(imageDisplayRef.current.clientWidth);
-        }
-    }, []);
-
-  const handleLeftArrowClick = () => {
-        if (!sliderRef.current) return;
-        sliderRef.current.scrollLeft -= imgWidth;
-  }
-
-    const handleRightArrowClick = () => {
-        if (!sliderRef.current) return;
-        sliderRef.current.scrollLeft += imgWidth;
+  // تصحيح Index في حال كان خارج نطاق المصفوفة الجديدة
+  useEffect(() => {
+    if (currentImageIndex >= uniqueImages.length && uniqueImages.length > 0) {
+      setCurrentImageIndex(0);
     }
+  }, [uniqueImages, currentImageIndex, setCurrentImageIndex]);
 
-    const arrowStyle = {
-        transform: 'scale(1)',
-        backgroundColor: colors.light[250],
+  useEffect(() => {
+    if (sliderRef.current) {
+      const activeThumbnail = sliderRef.current.children[0]?.children[currentImageIndex] as HTMLElement;
+      if (activeThumbnail) {
+        activeThumbnail.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
     }
-    const arrowHoverStyle = {
-        backgroundColor: colors.light[250],
-        transform: 'scale(1.2)'
-    }
+  }, [currentImageIndex]);
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (screenWidth < 1024) return;
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    const x = Math.max(0, Math.min(100, ((e.clientX - left) / width) * 100));
+    const y = Math.max(0, Math.min(100, ((e.clientY - top) / height) * 100));
+    setZoomPos({ x, y, show: true });
+  };
+
+  const handleNext = () => setCurrentImageIndex((currentImageIndex + 1) % uniqueImages.length);
+  const handlePrev = () => setCurrentImageIndex((currentImageIndex - 1 + uniqueImages.length) % uniqueImages.length);
 
   return (
-    <div 
-        className={` relative h-full top-0 min-w-[380px] sm:min-w-[550px] min-h-[500px] sm:min-h-[500px] bg-yellow-500- w-[600px]- flex flex-col justify-center items-center bg-yellow-500- pt-10- no-sellect bg-transparent- ${className}`} 
-        style={{ 
-            ...style,
-            maxWidth: screenWidth > 700 ? "700px" : "100vw",
-            // backgroundColor: "blue"
-        }}
-    >
-
+    <div className={`bg-red-500- h-full relative flex flex-col items-center select-none w-full ${screenWidth > 1000 ? "max-w-[550px] max-h-[600px] bg-red-500-" : "max-w-[90%]"}  mx-auto ${className}`} style={style}>
       
       <div 
-        className={`bg-red-500- relative min-h-[40vh] min-w-full bg-red-500- ${screenWidth > 500 ? "w-[600px]- h-[500px]" : "w-[400px]- h-[400px]"}  bg-red-500- rounded-sm flex flex-1 justify-center items-center p-5 sm:px-10- scrollbar-hidden`}
-        style={{
-            paddingBottom: 2,
-            
-            // maxHeight: "90vh",
-            // minHeight: imageDisplayWidth / 2
-        }}
-    >
-        <div 
-            className={`absolute top-7 right-7 rounded-full p-2 ${like ? "bg-red-500" : "bg-gray-400"} w-10 h-10 cursor-pointer`}
-            style={{
-                boxShadow: `0 5px 15px ${colors.dark[400]}`,
-                // backgroundColor: like ? "" : 
-            }}
-            onClick={() => {
-                if (client) {
-                    setLike(!like)
-                } else {
-                    setRegisterSectionExist(true)
-                }
-            }}
+        className={`relative w-full overflow-hidden rounded-2xl border border-gray-100 shadow-xl bg-white
+          ${screenWidth > 500 ? "h-[500px]" : "h-[400px]"}`}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={() => setZoomPos(prev => ({ ...prev, show: false }))}
+      >
+        <button
+          className={`absolute top-2 right-2 z-20 p-2 rounded-full transition-all active:scale-90 shadow-lg
+            ${like ? "bg-red-500 text-white" : "bg-white/40 backdrop-blur-md text-gray-600 hover:bg-white/20"}`}
+          onClick={() => client ? setLike(!like) : setRegisterSectionExist(true)}
         >
-            <img 
-                src={activeTheme == "dark" ? "/icons/heart-white.png" : "/icons/heart-white.png"} 
-                className='w-full h-full'
-                alt="" 
-            />
-        </div>
+          <img src={like ? "/icons/heart-white.png" : "/icons/heart-white.png"} className="w-6 h-6" alt="like" />
+        </button>
 
-        {
-            images[currentImageIndex] ? <img 
-                src={images[currentImageIndex]} 
-                alt="" 
-                className='w-full h-full bg-blue-500- p-2- object-content rounded-sm'
-                style={{
-                    minHeight: "40vh",
-                    border: `0.5px solid ${colors.light[500]}`
-                }}
-                ref={imageDisplayRef}
-            />
-        :
-            <SkeletonLoading/>
-        }
+        {zoomPos.show && uniqueImages[currentImageIndex]?.uri && (
+          <div 
+            className="absolute inset-0 z-10 pointer-events-none"
+            style={{
+              backgroundImage: `url(${uniqueImages[currentImageIndex]?.uri})`,
+              backgroundPosition: `${zoomPos.x}% ${zoomPos.y}%`,
+              backgroundSize: '120%',
+              backgroundRepeat: 'no-repeat',
+            }}
+          />
+        )}
+
+        {uniqueImages.length > 0 ? (
+          <img
+            src={uniqueImages[currentImageIndex]?.uri?? ""}
+            alt="Product"
+            className={`w-full h-full object-cover transition-opacity duration-200 ${zoomPos.show ? 'opacity-0' : 'opacity-100'}`}
+          />
+        ) : (
+          <SkeletonLoading />
+        )}
       </div>
 
+        {uniqueImages.length > 0 && (
+        <div className="w-full flex items-center gap-3 mt-5 px-3">
 
-        {images && <div className='w-[90%] h-[100px]- flex flex-row justify-center items-center'>
-
-            {/* left arrow */}
-            {images.length > 3 && screenWidth > 1000 && <div 
-                className={`w-14 h-14 flex justify-center items-center rounded-full mx-2 cursor-pointer duration-300`}
-                onMouseEnter={() => setLeftArrowHover(true)}
-                onMouseLeave={() => setLeftArrowHover(false)}
-                onClick={handleLeftArrowClick}
-                style={leftArrowHover ?  arrowHoverStyle : arrowStyle}
+            {screenWidth > 1000 && <button 
+                onClick={handlePrev} 
+                className="p-2.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-900 shrink-0 border border-gray-100 dark:border-gray-900 shadow-sm active:scale-90 transition-transform"
             >
                 <img 
-                    src={activeTheme == "dark" ? "/icons/left-arrow-white.png" : "/icons/left-arrow-black.png"}
-                    className='w-6 h-6'
+                    src={activeTheme === "dark" ? "/icons/left-arrow-white.png" : "/icons/left-arrow-black.png"} 
+                    className="w-4 h-4" 
+                    alt="prev" 
                 />
-            </div>}
-            
-            {/* slider */}
-        <div 
-            className='h-full- w-[100%] sm:w-[80%] overflow-x-scroll scrollbar-hidden'
-            ref={sliderRef}
-            style={{
-                // maxWidth: "90%",
-                // width: imgWidth * 3 + "px"
-            }}
-        >
+            </button>}
 
-            {/* slides */}
             <div 
-                className='slides w-[500px]- w-fit h-full- flex flex-row'
-            >{
-                images.map((img, index) => (
-                    <div 
-                        className='flex min-w-full- justify-center items-center p-2 overflow-hidden '
-                        key={index}
-                        style={{
-                            width: imgWidth + 'px',
-                            height: imgWidth + 'px',
-                        }}
-                    >
-                        <img
-                            className='w-full h-full object-cover cursor-pointer rounded-sm'
-                            src={img}
-                            style={{
-                                border: currentImageIndex == index ? `2px solid ${colors.dark[100]}` : `2px solid transparent`
-                            }}
-                            onClick={() => setCurrentImageIndex(index)}
-                        />
-                    </div>
-                ))
-            }</div>
+            ref={sliderRef} 
+            className="flex-1 overflow-x-auto scrollbar-hidden scroll-smooth px-1 py-3"
+            >
+            <div className="flex flex-row gap-4">
+                {uniqueImages.map((img, index) => (
+                <button
+                    key={index}
+                    onClick={() => setCurrentImageIndex(index)}
+                    className={`relative shrink-0 w-20 h-20 rounded-2xl overflow-hidden border-2 transition-all duration-300
+                    ${currentImageIndex === index 
+                        ? 'border-black scale-105 shadow-lg z-10' 
+                        : 'border-transparent opacity-60 hover:opacity-100 hover:scale-105'}`}
+                >
+                    <img 
+                        src={img.uri || ""} 
+                        className="w-full h-full object-cover" 
+                        alt={`thumbnail ${index}`} 
+                    />
+                </button>
+                ))}
+            </div>
+            </div>
 
-        </div>
-
-            {/* right arrow */}
-            {images.length > 3 && screenWidth > 1000 && <div 
-                className={`w-14 h-14 flex justify-center items-center rounded-full mx-2 cursor-pointer duration-300`}
-                onMouseEnter={() => setRightArrowHover(true)}
-                onMouseLeave={() => setRightArrowHover(false)}
-                onClick={handleRightArrowClick}
-                style={rightArrowHover ?  arrowHoverStyle : arrowStyle}
+            {screenWidth > 1000 && <button 
+                onClick={handleNext} 
+                className="p-2.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-900 shrink-0 border border-gray-100 dark:border-gray-900 shadow-sm active:scale-90 transition-transform"
             >
                 <img 
-                    src={activeTheme == "dark" ? "/icons/right-arrow-white.png" : "/icons/right-arrow-black.png"}
-                    className='w-6 h-6'
+                    src={activeTheme === "dark" ? "/icons/right-arrow-white.png" : "/icons/right-arrow-black.png"} 
+                    className="w-4 h-4" 
+                    alt="next" 
                 />
-            </div>}
-        </div>}
-
-
+            </button>}
+            
+        </div>
+        )}
     </div>
-  )
-}
+  );
+};
 
-export default ImagesSwitcher
+export default ImagesSwitcher;

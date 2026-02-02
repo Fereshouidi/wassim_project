@@ -19,7 +19,7 @@ const StatusBanner = () => {
 
             <div 
                 className={`
-                    rounded-sm flex justify-center px-5 py-2 absolute-
+                    rounded-xl flex justify-center px-5 py-2 absolute-
                     duration-300 ${className}`
                 }
                 style={{

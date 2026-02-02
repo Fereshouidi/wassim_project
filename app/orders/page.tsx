@@ -6,7 +6,7 @@ import OrdersSectionForLargeScreens from '@/componnent/main/ordersSection/largeS
 import OrdersSectionForSmallScreens from '@/componnent/main/ordersSection/smallScreen';
 import SideBar from '@/componnent/main/sideBar';
 import AnnouncementBar from '@/componnent/sub/AnnouncementBar';
-import ProductCard from '@/componnent/sub/productCard';
+import ProductCard from '@/componnent/sub/productCard/productCard';
 import { headerHeight } from '@/constent';
 import { useClient } from '@/contexts/client';
 import { useLanguage } from '@/contexts/languageContext';

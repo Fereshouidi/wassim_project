@@ -5,64 +5,41 @@ import { useScreen } from '@/contexts/screenProvider';
 import { useTheme } from '@/contexts/themeProvider';
 import { CollectionType, FiltrationType, ProductType, SearchBarProps } from '@/types';
 import axios from 'axios';
-// import SearchIcon from "@/app/svg/icons/search";
-import React, { CSSProperties, useState, useContext, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import AiMode from './aiMode';
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { useRouter } from 'next/navigation';
 import FilterBar from '../main/filterBar';
 import { useLoadingScreen } from '@/contexts/loadingScreen';
 import { useAiChatBubble } from '@/contexts/AiChatBubble';
 import { useClient } from '@/contexts/client';
-// import english from '@/app/languages/english.json';
-// import arabic from '@/app/languages/arabic.json';
-// import { LanguageSelectorContext } from "@/app/contexts/LanguageSelectorContext";
 
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
 const SearchBar = ({
-    className,
-    inputClassName,
-    style,
-    inputStyle,
-    searchIcon,
-    searchIconClassName,
-    searchIconStyle,
-    containerClassName,
-    resSectionStyle,
-    aiIconStyle,
-    aiIconContentStyle,
-    searchInput,
-    searchIconClicked,
-    importedFrom,
-    containerStyle
+    className, inputClassName, style, inputStyle, searchIcon,
+    searchIconClassName, searchIconStyle, containerClassName,
+    resSectionStyle, aiIconStyle, aiIconContentStyle, searchInput,
+    searchIconClicked, importedFrom, containerStyle
 }: SearchBarProps) => {
 
     const { client } = useClient();
-
-    const [focus, setFocus] = useState(false);
     const { activeTheme, colors } = useTheme();
     const { setLoadingScreen } = useLoadingScreen();
     const { activeLanguage } = useLanguage();
     const [input, setInput] = useState<string>('');
-    const [searchResult, setSearchResult] = useState<ProductType[]>([]);
     const [skip, setSkip] = useState<number>(0);
     const [limit, setLimit] = useState<number>(8);
-    const [searchResultCount, setSearchResultCount] = useState<number>(0);
-    const resRef = useRef<(HTMLParagraphElement | null)[]>([]);
     const searchResultDivRef = useRef<HTMLDivElement>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const { screenWidth } = useScreen();
     const [aiModeActive, setAiModeActive] = useState<boolean>(false);
     const [resSecVisible, setResSecVisible] = useState<boolean>(false);
-    // const [filterSecVisible, setFilterSecVisible] = useState<boolean>(false);
     const searchRef = useRef<HTMLInputElement | null>(null);
-    const filterBarRef = useRef<HTMLInputElement | null>(null);
-    
+    const filterBarRef = useRef<HTMLDivElement | null>(null);
+
     const router = useRouter();
     const [filteBarActive, setFilterBarActive] = useState<boolean>(false);
-    const [searchText, setSeachText] = useState<string>('');
-    // const [loading, setLoading] = useState<boolean>(false);
 
     const [mostProductExpensive, setMostProductExpensive] = useState<ProductType | undefined>(undefined);
     const [availableColors, setAvailableColors] = useState<string[]>([]);
@@ -70,434 +47,252 @@ const SearchBar = ({
     const [availableTypes, setAvailableTypes] = useState<string[]>([]);
     const [allCollections, setAllCollections] = useState<CollectionType[]>([]);
 
-    const { bubbleProps, setBubbleProps } = useAiChatBubble();
-
+    const { setBubbleProps } = useAiChatBubble();
     const [productsFound, setProductsFound] = useState<ProductType[]>([]);
     const [productsCount, setProductsCount] = useState<number>(0);
-      
     const [filtration, setFiltration] = useState<FiltrationType | undefined>(undefined);
 
+    const aiGradient = "linear-gradient(45deg, #3b82f6, #8b5cf6, #ec4899, #ef4444)";
+
     useEffect(() => {
-        console.log({filtration});
-        
-    }, [filtration])
+        if (!input || !filtration || aiModeActive) {
+            if (aiModeActive) setResSecVisible(true);
+            return;
+        }
 
-  useEffect(() => {
+        const fetchProductBySearch = async () => {
+            setIsLoading(true);
+            try {
+                const { data } = await axios.post(backEndUrl + "/getProductsBySearch", {
+                    searchText: input, limit, skip: 0, filtration
+                });
+                setProductsFound(data.products);
+                setProductsCount(data.productsCount);
+                setAvailableColors(data.availableColors);
+                setAvailableSizes(data.availableSizes);
+                setAvailableTypes(data.availableTypes);
+            } catch (err) { console.error(err); } finally { setIsLoading(false); }
+        };
 
-    if (!input || !filtration) return;
+        setResSecVisible(true);
+        fetchProductBySearch();
+    }, [filtration, input, aiModeActive]);
 
-    // if (loading) {
-    //     setTimeout(() => {
-    //         setLoading(false)
-    //     }, 3000)
-    // }
-    
-    const fetchProductBySearch = async () => {
-      setIsLoading(true);
-      await axios.post( backEndUrl + "/getProductsBySearch", {
-        searchText: input,
-        limit,
-        skip: 0,
-        filtration
-      })
-      .then(({ data }) => {
-        console.log(data.availableColors);
-        
-        setProductsFound(data.products);
-        setProductsCount(data.productsCount);
-        setAvailableColors(data.availableColors);
-        setAvailableSizes(data.availableSizes);
-        setAvailableTypes(data.availableTypes);
-        setIsLoading(false);
-      })
-      .catch(( err ) => {
-        setIsLoading(false);
-        throw err;
-      })
-    }
+    useEffect(() => {
+        const fetchDefaultFiltration = async () => {
+            try {
+                const [priceRes, collRes] = await Promise.all([
+                    axios.get(backEndUrl + '/getMostProductExpensive'),
+                    axios.get(backEndUrl + '/getAllCollections')
+                ]);
+                setMostProductExpensive(priceRes.data.product);
+                setAllCollections(collRes.data.allCollections.filter((col: CollectionType) => col.type == "public"));
+            } catch (err) { console.error(err); }
+        };
+        fetchDefaultFiltration();
+    }, []);
 
-    setResSecVisible(true);
+    useEffect(() => {
+        setFiltration({
+            price: { from: 0, to: mostProductExpensive?.price ?? 100 },
+            collections: allCollections.map(collection => (collection._id ?? '')),
+            colors: availableColors,
+            types: availableTypes,
+            sizes: availableTypes,
+            sortBy: "price",
+            sortDirection: "asc",
+            activeLanguage: activeLanguage.language
+        });
+    }, [mostProductExpensive, allCollections]);
 
-    fetchProductBySearch();
-    
-    localStorage.setItem('searchFilter', JSON.stringify(filtration));
-    localStorage.setItem('searchText', searchText);
-    
-  }, [filtration, input])
-
-  useEffect(() => {console.log("Component rendered");
-
-    const fetchDefaultFiltration = async () => {
-
-      await axios.get(backEndUrl + '/getMostProductExpensive')
-      .then(({ data }) => {
-        console.log({ data });
-        
-        setMostProductExpensive(data.product)
-        // setFiltration({
-        //   ...filtration, 
-        //   price: {
-        //     ...filtration.price,
-        //     to: data.product.specifications[0].price
-        //   }
-        // })
-      })
-      .catch( (err) => {throw err})
-
-      await axios.get(backEndUrl + '/getAllCollections')
-      .then(({ data }) => {
-        setAllCollections(data.allCollections.filter( (col: CollectionType) => col.type == "public"));
-      })
-      .catch( (err) => {throw err})
-
-    }
-    
-    fetchDefaultFiltration();
-
-
-  }, [])
-
-  useEffect(() => {
-
-    setFiltration({
-        price: {
-            from: 0,
-            to: mostProductExpensive?.price ?? 100
-        },
-        collections: allCollections.map(collection => (collection._id?? '')),
-        colors: availableColors,
-        types: availableTypes,
-        sizes: availableTypes,
-
-        sortBy: "price",
-        sortDirection: "asc",
-        activeLanguage: activeLanguage.language
-    
-    })
-  }, [mostProductExpensive, allCollections, input])
-    
-    const handleScroll = () => {
-
-        if (!searchResultDivRef.current) return;
-        
-
-        const { scrollTop, scrollHeight, clientHeight } = searchResultDivRef.current;
-        const reachedToEnd = scrollTop + clientHeight >= scrollHeight;
-
-        if (reachedToEnd) {
-            setSkip(skip + limit);
+    const handleSearchIconClicked = () => {
+        if (aiModeActive) {
+            handleSendMessage();
+        } else {
+            setLoadingScreen(true);
+            setFilterBarActive(false);
+            router.push(`/search?searchInput=${encodeURIComponent(input)}&filter=${encodeURIComponent(JSON.stringify(filtration))}`);
         }
     };
 
-    const handleSearchIconClicked = () => {
-
-        setLoadingScreen(true);
-        setFilterBarActive(false);
-
-        if (aiModeActive) {
-            
-            return handleSendMessage();
-
-        } else {
-
-            router.push(
-                `/search?searchInput=${encodeURIComponent(input)}&filter=${encodeURIComponent(JSON.stringify(filtration))}`
-            );
-        }
-
-    }
+    const handleSendMessage = async () => {
+        if (!input) return;
+        const currentMsg = input;
+        setInput('');
+        setResSecVisible(false);
+        try {
+            setBubbleProps(prev => ({ ...prev, answer: '...', exist: true }));
+            const { data } = await axios.post(`${backEndUrl}/getAnswerFromAi`, {
+                userId: client?._id, message: currentMsg, agent: "SEARCH"
+            });
+            if (data.filtrationUsed || data.searchQuery) {
+                setFiltration(data.filtrationUsed);
+                router.push(`/search?searchInput=${encodeURIComponent(data.searchQuery ?? "")}&filter=${encodeURIComponent(JSON.stringify(data.filtrationUsed))}`);
+            }
+            setBubbleProps(prev => ({ ...prev, answer: data.answer, isTherAnswer: true, exist: true }));
+        } catch (err) { setBubbleProps(prev => ({ ...prev, answer: "Connection error..." })); }
+    };
 
     function handleClickOutside(event: any) {
-        const ResSecEl = searchResultDivRef.current;
-        const filterEl = filterBarRef.current;
-        const target = (event as any).target as Node;
-
-        const clickedOutsideSearch = !ResSecEl?.contains(target);
-        const clickedOutsideFilter = !filterEl?.contains(target);
-
-        if (clickedOutsideSearch && clickedOutsideFilter) {
+        if (searchResultDivRef.current && !searchResultDivRef.current.contains(event.target)) {
             setResSecVisible(false);
+        }
+        if (filterBarRef.current && !filterBarRef.current.contains(event.target)) {
             setFilterBarActive(false);
         }
     }
-
 
     useEffect(() => {
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-    const handleSendMessage = async () => {
-        if (!input) return;
-
-        console.log('hhhhh');
-        
-        // Save message locally and clear input immediately to improve UX
-        const currentMsg = input;
-        setSeachText('');
-
-        try {
-        // Show "thinking" state while waiting for AI response
-        setBubbleProps(prev => ({ ...prev, answer: '...' }));
-
-        const { data } = await axios.post(`${backEndUrl}/getAnswerFromAi`, {
-            userId: client?._id,
-            message: currentMsg,
-            agent: "SEARCH"
-        });
-
-        console.log("AI Response:", data);
-
-        // 1. Execute UI Actions (e.g., opening the cart)
-        if (data.filtrationUsed || data.searchQuery) {
-            setFiltration(data.filtrationUsed);
-            setInput(data.searchQuery);
-            router.push(
-                `/search?searchInput=${encodeURIComponent(data.searchQuery?? "")}&filter=${encodeURIComponent(JSON.stringify(data.filtrationUsed))}`
-            );
-        }
-
-        // 2. Update chat bubble with the new answer
-        setBubbleProps(prev => ({
-            ...prev,
-            answer: data.answer, 
-            isTherAnswer: true,
-            exist: true
-        }));
-
-        } catch (err) {
-        console.error("AI Request Error:", err);
-        
-        setBubbleProps(prev => ({
-            ...prev,
-            answer: "Sorry, there was a connection issue. Please try again."
-        }));
-        }
-    };
-
-    return(
+    return (
         <div 
-            className={`relative w-[60%] flex flex-row items-center justify-center ${aiModeActive && "overflow-hidden-"} relative rounded-sm p-[1.5px] no-sellect ${containerClassName} `}
+            className={`relative w-[60%] flex flex-row items-center justify-center transition-all duration-700 rounded-xl p-[1.5px] no-sellect ${containerClassName}`}
             style={{
-                ...containerStyle
+                ...containerStyle,
+                backgroundColor: aiModeActive ? aiGradient : 'transparent',
+                boxShadow: aiModeActive ? `0 0 20px rgba(139, 92, 246, 0.3)` : 'none',
             }}
         >
-
-            {importedFrom != "sidBar" && 
-            
-            !aiModeActive && <div 
-                className='w-14 h-14 flex justify-center items-center cursor-pointer'
-                onClick={() => filteBarActive ? null : setFilterBarActive(true)}
-            >
-                <img 
-                    src={
-                        activeTheme == "light" ? "/icons/settings-black.png" : "/icons/settings-white.png"
-                    }
-                    className='w-5 h-5'
-                />
-            </div>
-            
-            }
+            {importedFrom !== "sidBar" && !aiModeActive && (
+                <div 
+                    className='w-14 h-14 flex justify-center items-center cursor-pointer hover:scale-110 transition-transform rounded-xl overflow-hidden'
+                    // Updated to toggle, consistent with UI behavior
+                    onClick={() => setFilterBarActive(!filteBarActive)}
+                >
+                    <img 
+                        src={activeTheme === "light" ? "/icons/settings-black.png" : "/icons/settings-white.png"}
+                        className='w-5 h-5 opacity-70' alt="settings"
+                    />
+                </div>
+            )}
 
             <div 
-                className={` w-full relative flex flex-row rounded-sm- z-10 ${className}`}
-                style={style} 
+                className={`w-full relative flex flex-row transition-all duration-500 z-10 rounded-xl overflow-hidden ${className}`}
+                style={{
+                    ...style,
+                    backgroundColor: aiModeActive 
+                        ? (activeTheme === 'dark' ? '#121212' : '#fff') 
+                        : style?.backgroundColor
+                }}
             > 
-
-                {
-                    // aiModeActive ?
-                    // <div className='w-full flex flex-5'>
-                    //     <textarea
-                    //         className={`w-full pr-[170px] pt-2 absolute top-0 left-0 w-full- h-fit flex flex-1 pl-[20px] outline-none text-sm sm:text-md ${inputClassName}`}
-                    //         maxLength={100}
-                    //     />
-                    // </div>
-
-                    // :
-
-                    <input 
-                        type="text" 
-                        placeholder={
-                            (aiModeActive ? activeLanguage.searchByAi : activeLanguage.sideMatter.search) + "..."
-                        }
-                        className={`h-full flex flex-1 pl-[20px] outline-none text-sm sm:text-md ${inputClassName}`} 
-                        onFocus={() => setFocus(true)}
-                        onBlur={() => setFocus(false)}
-                        style={{
-                            ...inputStyle
-                        }} 
-                        defaultValue={searchInput?? ''}
-                        onChange={(e) => setInput(e.target.value)}
-                        ref={searchRef}
-                    />
-                }
+                <input 
+                    type="text" 
+                    placeholder={(aiModeActive ? activeLanguage.searchByAi : activeLanguage.sideMatter.search) + "..."}
+                    className={`h-full flex flex-1 pl-[20px] rounded-xl outline-none text-sm sm:text-md transition-all ${inputClassName} ${aiModeActive ? 'font-medium' : ''}`} 
+                    style={inputStyle} 
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleSearchIconClicked()}
+                    ref={searchRef}
+                />
                 
-                <div
-                    className='h-full rounded-sm cursor-pointer flex justify-between items-center transition-[width] duration-300'
-                >
-                    {importedFrom != "sidBar" && <AiMode
-                        aiModeActive={aiModeActive}
-                        setAiModeActive={setAiModeActive}
-                        aiIconStyle={aiIconStyle} 
-                        aiIconContentStyle={aiIconContentStyle}
-                    />}
+                <div className='h-full flex items-center px-1 gap-2'>
+                    {importedFrom !== "sidBar" && (
+                        <AiMode
+                            aiModeActive={aiModeActive}
+                            setAiModeActive={setAiModeActive}
+                            aiIconStyle={aiIconStyle} 
+                            aiIconContentStyle={aiIconContentStyle}
+                        />
+                    )}
 
-                    <img 
-                        className='h-[95%] mr-0.5 p-4 rounded-sm cursor-pointer'
-                        src={searchIcon} 
-                        alt="" 
+                    <div 
+                        className={`h-[45px] w-[45px] flex items-center justify-center rounded-lg cursor-pointer transition-all duration-300 transform active:scale-90`}
                         style={{
-                            // backgroundColor: colors.dark[100]
-                            ...searchIconStyle,
+                            background: aiModeActive ? aiGradient : 'transparent',
+                            boxShadow: aiModeActive ? '0 4px 12px rgba(0,0,0,0.1)' : 'none'
                         }}
                         onClick={() => {
                             handleSearchIconClicked();
-                            searchIconClicked ? searchIconClicked() : null
-                            setSeachText(input);
-                        }}
-                    />
-                </div>
-
-
-            </div>
-
-                    
-            { 
-                aiModeActive ?
-
-                    <div 
-                        className={`w-full max-h-[500px] absolute top-full rounded-sm overflow-y-scroll scrollbar-hidden z-[999] ${!resSecVisible && "invisible"}`}
-                        style={{
-                            ...resSectionStyle
-                            
+                            searchIconClicked?.();
                         }}
                     >
-                        {resSecVisible ? <p className='p-2 max-h-32 overflow-y-scroll'>{input}</p> : null }
+                        {aiModeActive ? (
+                            <FontAwesomeIcon icon={faPaperPlane} className="text-white text-sm" />
+                        ) : (
+                            <img src={searchIcon} className={`h-[100%] p-3 rounded-xl cursor-pointer transition-all duration-300 `} style={{...searchIconStyle}} alt="search" />
+                        )}
                     </div>
-
-                :
-
-                <div 
-                    className={`w-full max-h-[500px] absolute top-full rounded-sm overflow-y-scroll scrollbar-hidden ${resSecVisible && !filteBarActive ? "visible" : "invisible"}`}
-                    style={{
-                        
-                        ...resSectionStyle,
-                    }}
-                    ref={searchResultDivRef}
-                    onScroll={handleScroll}
-                    // onMouseDown={(e) => handleClickOutside(e)}
-                >
-                    {
-                        productsFound.length > 0 && input.length > 0 ?
-
-                            productsFound.map((product, index) => (
-                                <div
-                                    key={product._id}
-                                    ref={(el: HTMLParagraphElement | null) => {
-                                        resRef.current[index] = el;
-                                    }}                            
-                                    onMouseEnter={(e) => {
-                                        if (resRef.current[index]) {
-                                            resRef.current[index].style.backgroundColor = resSectionStyle?.color + '20'
-                                        }
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        if (resRef.current[index]) {
-                                            resRef.current[index].style.backgroundColor = 'transparent'
-                                        }
-                                    }}
-                                    className='px-4 py-2 text-sm cursor-pointer flex flex-row items-center gap-2'
-                                    style={{
-                                        color: resSectionStyle?.color
-                                    }}
-                                    onClick={() => {
-                                        setLoadingScreen(true);
-                                        localStorage.removeItem('purchaseId');
-                                        router.push(`/product/${product._id}`)
-                                    }}
-                                >
-                                    <img 
-                                        src={product.thumbNail?? ''} 
-                                        className='w-10 h-10 rounded-sm'
-                                        alt="" 
-                                    />
-                                    <p 
-                                    >
-                                        {
-                                            screenWidth > 1000 ?
-
-                                                (product.name[activeLanguage.language]?.length ?? 0) > 80 ? 
-                                                    (product.name[activeLanguage.language]?.slice(0, 80) ?? "") + "..." :
-                                                    (product.name[activeLanguage.language] ?? "")
-
-                                            : 
-
-                                                (product.name[activeLanguage.language]?.length ?? 0) > 30 ? 
-                                                    (product.name[activeLanguage.language]?.slice(0, 30) ?? "") + "..." :
-                                                    (product.name[activeLanguage.language] ?? "")
-
-                                        }
-                                    </p>
-                                </div>
-
-                            ))
-                        : input.length > 0 && productsFound.length == 0 ?
-
-                            isLoading ? 
-                                <p className='p-5 text-sm'>{activeLanguage.sideMatter.loading + "..."}</p>
-                            :
-                                <p className='p-5 text-sm'>{activeLanguage.sideMatter.noRes}</p>
-                        : null
-                    }
                 </div>
-
-            }
-
-        {
-            filteBarActive &&
-            filtration && 
-            mostProductExpensive?.price && 
-
-            <div 
-                className='w-full absolute top-full'
-                onClick={(e) => e.stopPropagation()}
-                ref={filterBarRef}
-            >
-                <FilterBar
-                    filtration={filtration}
-                    setFiltration={setFiltration}
-                    mostProductExpensive={mostProductExpensive.price}
-                    productsCount={productsCount}
-                    allCollections={allCollections}
-                    availableColors={availableColors}
-                    availableSizes={availableSizes}
-                    availableTypes={availableTypes}
-                    searchText={input}
-                    filteBarActive={filteBarActive}
-                    setFilterBarActive={setFilterBarActive}
-                />
             </div>
 
-        }
+            {/* FIXED FILTER BAR SECTION */}
+            {filteBarActive && filtration && (
+                <div ref={filterBarRef} className="absolute top-full left-0 mt-2 z-[1000] w-full">
+                    <FilterBar 
+                        filtration={filtration} 
+                        setFiltration={setFiltration}
+                        // Corrected: Passing .price (number) instead of the object
+                        mostProductExpensive={mostProductExpensive?.price ?? 100}
+                        allCollections={allCollections}
+                        availableColors={availableColors}
+                        availableSizes={availableSizes}
+                        availableTypes={availableTypes}
+                        // Added missing props required by the component
+                        productsCount={productsCount}
+                        searchText={input}
+                        filteBarActive={filteBarActive}
+                        setFilterBarActive={setFilterBarActive}
+                    />
+                </div>
+            )}
 
-            {/* {aiModeActive && <div className='absolute top-0 left-0 w-full h-full'>
-                <video 
-                    src="/AIBg.webm"
-                    className=" w-full  rounded-sm"
-                    loop={true}
-                    autoPlay={true}
-                ></video>
-            </div>} */}
+            {aiModeActive && resSecVisible && input && (
+                <div 
+                    className="absolute top-full left-0 w-full mt-3 p-[1px] rounded-xl z-[999] animate-in fade-in zoom-in-95 duration-300 shadow-2xl"
+                    style={{ background: aiGradient }}
+                >
+                    <div 
+                        className="w-full h-full p-4 rounded-[11px] backdrop-blur-xl"
+                        style={{ backgroundColor: activeTheme === 'dark' ? 'rgba(18, 18, 18, 0.95)' : 'rgba(255, 255, 255, 0.95)' }}
+                    >
+                        <div className="flex items-center gap-3 mb-2">
+                            <div className="flex gap-1">
+                                <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-bounce" style={{animationDelay: '0ms'}}></span>
+                                <span className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-bounce" style={{animationDelay: '150ms'}}></span>
+                                <span className="w-1.5 h-1.5 rounded-full bg-pink-500 animate-bounce" style={{animationDelay: '300ms'}}></span>
+                            </div>
+                            <span className="text-[10px] uppercase font-black tracking-[0.2em] text-transparent bg-clip-text" style={{ backgroundImage: aiGradient }}>
+                                Artificial Intelligence
+                            </span>
+                        </div>
+                        <p className="text-sm font-medium opacity-80 italic leading-relaxed" style={{ color: colors.dark[200] }}>
+                            {input}
+                        </p>
+                    </div>
+                </div>
+            )}
 
-
-
-
+            {!aiModeActive && resSecVisible && (
+                <div 
+                    className={`w-full max-h-[500px] absolute top-full rounded-xl overflow-y-scroll scrollbar-hidden z-[998] shadow-2xl mt-1`}
+                    style={{ ...resSectionStyle, backgroundColor: activeTheme === 'dark' ? '#121212' : '#fff' }}
+                    ref={searchResultDivRef}
+                >
+                    {productsFound.length > 0 && input.length > 0 ? (
+                        productsFound.map((product) => (
+                            <div
+                                key={product._id}
+                                className='px-4 py-3 text-sm cursor-pointer flex flex-row items-center gap-3 border-b border-black/5 last:border-none hover:bg-black/5 transition-colors'
+                                style={{ color: colors.dark[200] }}
+                                onClick={() => router.push(`/product/${product._id}`)}
+                            >
+                                <img src={product.thumbNail ?? ''} className='w-10 h-10 rounded-lg object-cover shadow-sm' alt="" />
+                                <p className="truncate flex-1 font-medium">{product.name[activeLanguage.language]}</p>
+                            </div>
+                        ))
+                    ) : input.length > 0 && (
+                        <p className='p-6 text-center text-sm opacity-40 italic' style={{ color: colors.dark[200] }}>
+                            {isLoading ? activeLanguage.sideMatter.loading + "..." : activeLanguage.sideMatter.noRes}
+                        </p>
+                    )}
+                </div>
+            )}
         </div>
+    );
+};
 
-    )
-
-
-
-}
-export default  SearchBar;
-
+export default SearchBar;

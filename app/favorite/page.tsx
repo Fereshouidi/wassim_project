@@ -4,11 +4,12 @@ import Footer from '@/componnent/main/footer';
 import Header from '@/componnent/main/header';
 import SideBar from '@/componnent/main/sideBar';
 import AnnouncementBar from '@/componnent/sub/AnnouncementBar';
-import ProductCard from '@/componnent/sub/productCard';
+import ProductCard from '@/componnent/sub/productCard/productCard';
 import { useClient } from '@/contexts/client';
 import { useLanguage } from '@/contexts/languageContext';
 import { useLoadingScreen } from '@/contexts/loadingScreen';
 import { useOwner } from '@/contexts/ownerInfo';
+import { useScreen } from '@/contexts/screenProvider';
 import { useTheme } from '@/contexts/themeProvider';
 import { OwnerInfoType, ProductType } from '@/types';
 import axios from 'axios';
@@ -24,6 +25,7 @@ const FavoritePage = () => {
     const { ownerInfo } = useOwner();
     const [sideBarActive, setSideBarActive] = useState(false);
     const { colors } = useTheme();
+    const { screenWidth } = useScreen();
 
 
     useEffect(() => {
@@ -84,13 +86,16 @@ const FavoritePage = () => {
                     }}
                 >{`${activeLanguage.myFavorites} (${products.length})`}</h2>
 
-                <div className='w-full flex flex-wrap justify-center gap-5 py-10 sm:py-12 sm:p-10'>
+                <div className='w-full flex flex-wrap justify-center gap-2 sm:gap-5 py-10 sm:py-12 sm:p-10'>
                     {products.map((product, index) => (
                         <ProductCard 
                             key={index}
                             product={product}
                             className={`w-[180px] sm:w-[220px]`}
                             useLike={true}
+                            style={{
+                                width: screenWidth > 1000 ? "300px"  : "45%",
+                            }}
                         />
                     ))}
                 </div>

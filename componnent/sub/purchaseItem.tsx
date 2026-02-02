@@ -34,22 +34,22 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
 
     return (
         <div 
-            className='group flex gap-3 p-3 rounded-sm border transition-all hover:border-gray-400 bg-white cursor-pointer'
+            className='group flex gap-3 p-3 rounded-xl border transition-all hover:border-gray-400 bg-white cursor-pointer'
             style={{ 
                 borderColor: colors.light[200],
                 backgroundColor: activeTheme === 'dark' ? 'rgba(255,255,255,0.02)' : '#fff'
             }}
             onClick={() => {
-                localStorage.setItem('purchaseId', purchase._id ?? "");
+                localStorage.setItem('purchaseId', purchase?._id ?? "");
                 // @ts-ignore
-                router.push(`/product/${purchase.product?._id}`);
+                router.push(`/product/${purchase?.product?._id}`);
             }}
         >
             {/* Thumbnail */}
-            <div className="w-20 h-24 flex-shrink-0 overflow-hidden rounded-sm bg-gray-50 border" style={{ borderColor: colors.light[200] }}>
+            <div className="w-20 h-24 flex-shrink-0 overflow-hidden rounded-xl bg-gray-50 border" style={{ borderColor: colors.light[200] }}>
                 <img 
                     // @ts-ignore
-                    src={purchase.product?.thumbNail} 
+                    src={purchase?.product?.thumbNail} 
                     className='w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-300'
                     alt="" 
                 />
@@ -62,7 +62,7 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
                         <h3 className=' flex flex-1 text-[13px] font-bold leading-tight line-clamp-2'>
                             {
                                 // @ts-ignore
-                                purchase.product?.name[activeLanguage.language]
+                                purchase?.product?.name[activeLanguage.language]
                             }
                         </h3>
                         {/* Remove Icon */}
@@ -79,34 +79,34 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
 
                     <div className='flex flex-wrap gap-2 mt-2 opacity-60 text-[10px] uppercase font-medium tracking-wide'>
                         {/* @ts-ignore */}
-                        {purchase.specification?.color && <span>{purchase.specification.color}</span>}
+                        {purchase?.specification?.color && <span>{purchase?.specification.color}</span>}
                         {/* @ts-ignore */}
-                        {purchase.specification?.size && <span className="border-l pl-2" style={{borderColor: colors.dark[200]}}>{purchase.specification.size}</span>}
+                        {purchase?.specification?.size && <span className="border-l pl-2" style={{borderColor: colors.dark[200]}}>{purchase?.specification.size}</span>}
                         {/* @ts-ignore */}
-                        {purchase.specification?.type && <span className="border-l pl-2" style={{borderColor: colors.dark[200]}}>{purchase.specification.type}</span>}
+                        {purchase?.specification?.type && <span className="border-l pl-2" style={{borderColor: colors.dark[200]}}>{purchase?.specification.type}</span>}
                     </div>
                 </div>
 
                 <div className='flex justify-between items-end mt-2'>
-                    <div className='flex items-center border rounded-sm h-7' style={{ borderColor: colors.light[300] }}>
+                    <div className='flex items-center border rounded-xl h-7' style={{ borderColor: colors.light[300] }}>
                         <button 
                             className='w-7 h-full flex items-center justify-center hover:bg-black/5'
                             onClick={(e) => {
                                 e.stopPropagation();
-                                if ((purchase.quantity || 0) <= 1) return;
-                                updatePurchase({...purchase, quantity: (purchase.quantity || 0) - 1});
+                                if ((purchase?.quantity || 0) <= 1) return;
+                                updatePurchase({...purchase, quantity: (purchase?.quantity || 0) - 1});
                             }}
                         >
                             <img src={activeTheme == "dark" ? "/icons/minus-light.png" : "/icons/minus-dark.png"} className='w-2 h-2 opacity-60' alt="-" />
                         </button>
-                        <span className='px-2 text-xs font-bold w-6 text-center'>{purchase.quantity}</span>
+                        <span className='px-2 text-xs font-bold w-6 text-center'>{purchase?.quantity}</span>
                         <button 
                             className='w-7 h-full flex items-center justify-center hover:bg-black/5'
                             onClick={(e) => {
                                 e.stopPropagation();
                                 // @ts-ignore
-                                if ((purchase.quantity || 0) >= (purchase?.specification?.quantity || 100)) return;
-                                updatePurchase({...purchase, quantity: (purchase.quantity || 0) + 1});
+                                if ((purchase?.quantity || 0) >= (purchase?.specification?.quantity || 100)) return;
+                                updatePurchase({...purchase, quantity: (purchase?.quantity || 0) + 1});
                             }}
                         >
                             <img src={activeTheme == "dark" ? "/icons/add-white.png" : "/icons/add-black.png"} className='w-2 h-2 opacity-60' alt="+" />
@@ -115,7 +115,7 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
                     
                     <p className='text-sm font-bold' style={{ color: colors.dark[100] }}>
                         {/* @ts-ignore */}
-                        {purchase.specification?.price} <span className="text-[10px] font-normal">T.D</span>
+                        {purchase?.specification?.price} <span className="text-[10px] font-normal">T.D</span>
                     </p>
                 </div>
             </div>

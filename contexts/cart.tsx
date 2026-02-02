@@ -1,7 +1,10 @@
 "use client";
 
-import { PurchaseType } from "@/types"; // Ensure this path is correct
-import React, { createContext, ReactNode, useContext, useState } from "react";
+import { backEndUrl } from "@/api";
+import { CartType, PurchaseType } from "@/types"; // Ensure this path is correct
+import axios from "axios";
+import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { useClient } from "./client";
 
 type CartSideContextType = {
   isActive: boolean;
@@ -9,16 +12,31 @@ type CartSideContextType = {
   purchases: PurchaseType[];
   // This type definition fixes the "Argument of type..." error
   setPurchases: React.Dispatch<React.SetStateAction<PurchaseType[]>>;
+  cart?: CartType
+  setCart?: (value: CartType) => void
 };
 
 const CartSideContext = createContext<CartSideContextType | undefined>(undefined);
 
 export const CartSideProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+
   const [isActive, setIsActive] = useState<boolean>(false);
   const [purchases, setPurchases] = useState<PurchaseType[]>([]);
+  const [ cart, setCart ] = useState<CartType | undefined>(undefined);
+  const { client } = useClient();
+
+
+  useEffect(() => {
+    const fetchCart = async () => {
+      axios.get(`${backEndUrl}/getCartByClient`, { params: { clientId: client?._id } })
+          .then(({ data }) => setCart(data.cart))
+          .catch(( err ) => console.log({err}))
+    }
+    fetchCart()
+  }, [client])
 
   return (
-    <CartSideContext.Provider value={{ isActive, setIsActive, purchases, setPurchases }}>
+    <CartSideContext.Provider value={{ isActive, setIsActive, purchases, setPurchases, cart, setCart }}>
       {children}
     </CartSideContext.Provider>
   );

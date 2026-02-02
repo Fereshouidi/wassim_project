@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import Home from "./home/page";
 
-
 export async function generateMetadata(): Promise<Metadata> {
     return {
       title: "SilverWay",

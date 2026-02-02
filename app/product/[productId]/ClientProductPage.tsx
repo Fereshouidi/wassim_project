@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ProductType, OwnerInfoType, ProductSpecification, CollectionType, PurchaseType, CartType, LikeType } from "@/types";
 import ImagesSwitcher from "@/componnent/main/imagesSwitcher";
 import ProductDetails from "@/componnent/main/productDetails";
@@ -12,7 +12,7 @@ import AnnouncementBar from "@/componnent/sub/AnnouncementBar";
 import ProductActionPanel from "@/componnent/sub/ProductActionPanel";
 import { useScreen } from "@/contexts/screenProvider";
 import { useTheme } from "@/contexts/themeProvider";
-import { handleShareOnFacebook } from "@/lib";
+import { getUniqueImagesByColor, handleShareOnFacebook } from "@/lib";
 import { headerHeight, productActionPanelHeight } from "@/constent";
 import { fakeProducts } from "@/constent/data";
 import { useLoadingScreen } from "@/contexts/loadingScreen";
@@ -25,11 +25,9 @@ import { useOwner } from "@/contexts/ownerInfo";
 import LoadingScreen from "@/componnent/sub/loading/loadingScreen";
 import SkeletonLoading from "@/componnent/sub/SkeletonLoading";
 import { useLanguage } from "@/contexts/languageContext";
-import Evaluation from "@/componnent/main/evaluationSection";
 
 interface Props {
   product: ProductType;
-  // ownerInfo: OwnerInfoType;
 }
 
 export default function ClientProductPage({ product }: Props) {
@@ -38,417 +36,200 @@ export default function ClientProductPage({ product }: Props) {
     const { activeLanguage } = useLanguage();
     const socket = useSocket();
     const { client } = useClient()
-    const { setStatusBanner } = useStatusBanner();
-
-    // const [quantity, setQuantity] = useState<number>(1);
-    // const [like, setLike] = useState<boolean>(false);
-
-    const [activeSpecifications, setActiveSpecifications] = useState<ProductSpecification>(product.specifications[0]);
-    const [loadingGettingCollection, setLoadingGettingCollection] = useState<boolean>(true);
-    const [sideBarActive, setSideBarActive] = useState(false);
     const { setLoadingScreen } = useLoadingScreen();
-    const [collections, setCollections] = useState<CollectionType[]>([]);
-    const [purchase, setPurchase] = useState<PurchaseType>({
-        client: client?._id ?? undefined,
-        product: product._id ?? undefined,
-        specification: product.specifications[0] ?? null,
-        quantity: 1,
-        like: false
-    });
-    const [cart, setCart] = useState<CartType>({});
-    const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
-    const [like, setLike] = useState<boolean | null>(null);
     const { ownerInfo } = useOwner();
-    const newPurchaseCreated = useRef<boolean>(false);
 
+    const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+    const [sideBarActive, setSideBarActive] = useState(false);
+    
+    const [activeSpecifications, setActiveSpecifications] = useState<ProductSpecification | null>(null);
+    const [purchase, setPurchase] = useState<PurchaseType | null>(null); 
+    
+    const [collections, setCollections] = useState<CollectionType[]>([]);
+    const [loadingGettingCollection, setLoadingGettingCollection] = useState<boolean>(true);
+    const [cart, setCart] = useState<CartType>({});
+    const [like, setLike] = useState<boolean | null>(null);
+    const [clientForm, setClientForm] = useState({ fullName: "", address: "", phone: "", note: "" });
+
+    // --- الحل هنا: إجبار الصفحة على الصعود للأعلى عند الدخول ---
     useEffect(() => {
+        window.scrollTo(0, 0);
         setLoadingScreen(false);
-    }, [])
+    }, [product._id]); // يتم التنفيذ عند تحميل الصفحة أو تغير المنتج
 
     useEffect(() => {
-
-      !purchase._id && setPurchase({
-          client: client?._id ?? undefined,
-          product: product._id ?? undefined,
-          specification: product.specifications[0] ?? null,
-          quantity: 1,
-          like: false
-          
-      })
-
+      if (!purchase?._id) {
+        axios.get(backEndUrl + "/getPurchaseByClientAndProduct", {
+            params: {
+                productId: product._id,
+                clientId: client?._id
+            }
+        })
+        .then(({data}) => {
+            setPurchase(data.purchase)
+            // alert(data.purchase._id)
+        })
+        .catch(( err ) => {
+            alert(err)
+        })
+        // setPurchase({
+        //     client: client?._id ?? undefined,
+        //     product: product._id ?? undefined,
+        //     specification: null, 
+        //     quantity: 1,
+        //     like: false
+        // })
+      }
     }, [client, product])
 
-    
-
-    // useEffect(() => {
-    //   console.log({purchase});
-
-    //   const createPurchase = async () => {
-    //     await axios.post(backEndUrl + "/addPurchase", {
-    //       purchaseData: {
-    //           client: client?._id ?? undefined,
-    //           product: product._id ?? undefined,
-    //           specification: product.specifications[0] ?? null,
-    //           quantity: 1,
-    //           like: false
-    //       }
-    //     })
-    //     .then(({ data }) => {     
-    //       newPurchaseCreated.current = true;
-    //       setPurchase(data.newPurchase);
-    //       return;
-    //     })
-    //     .catch(( err ) => console.error(err));
-    //   }
-
-    //   if (purchase.client && purchase.product && !purchase._id && !newPurchaseCreated) {
-    //     createPurchase();
-    //   } else {
-    //     console.log(purchase.client, purchase.product, !purchase._id);
-        
-    //   }
-
-    // }, [purchase])
-
-
     useEffect(() => {
-        const fetchCollections = async () => {
-        try {
-            setLoadingGettingCollection(true);
-            await axios.get(`${backEndUrl}/getCollectionsByProduct`, {
-                params: { productId: product._id },
-            })
-            .then(({ data }) => {
-                const filtered = data.collections.filter(
-                (collection: CollectionType) =>
-                    collection.type === "public"
-                );
-                
-                const toSlider = filtered.map((collection: CollectionType) => { return {...collection, display: "horizental"} })
-
-                setCollections(toSlider);            
-            })
-
-        } catch (err) {
-            console.error(err);
-        } finally {
-            setLoadingGettingCollection(false);
+        if (activeSpecifications && purchase) {
+            setPurchase(prev => prev ? ({
+              ...prev,
+              specification: activeSpecifications
+            }) : null);
         }
-        };
-
-        const fetchPurchase = async () => {
-
-          const purchaseId = localStorage.getItem('purchaseId');
-
-          if (!purchaseId) return;
-
-          const purchase_ = await axios.get<{ purchase: PurchaseType }>(`${backEndUrl}/getPurchaseById`, {
-            params: { purchaseId },
-          })
-          .then(({ data }) => {return data.purchase;})
-          .catch((err) => {})
-
-          if (purchase_) {
-
-            setPurchase(purchase_);
-            console.log({purchase_});
-            
-
-          }
-        }
-
-        const fetchCart = async () => {
-            await axios.get( backEndUrl + "/getCartByClient", {
-                params: {clientId: client?._id}
-            })
-            .then(({ data }) => {
-                setCart(data.cart);
-                console.log({cart: data.cart})
-            })
-            .catch( err => {
-                console.log({err})
-            })
-        }
-
-        const fetchLike = async () => {
-          await axios.get( backEndUrl + "/getLikeByClientAndProduct", {
-              params: {
-                clientId: client?._id, 
-                productId: product._id
-              }
-          })
-          .then(({ data }) => {
-              setLike(data.like ?  true : false);
-              console.log({like: data.like})
-          })
-          .catch( err => {
-              console.error({err})
-          })
-          
-        }
-
-        if (product?._id && product._id.length > fakeProducts.length) {
-            fetchCollections();
-        }
-
-        if (client?._id && product?._id && product._id.length > fakeProducts.length) {
-            fetchLike();
-            fetchPurchase();
-            fetchCart();
-        }
-
-        setIsFirstRender(false);
-
-    }, [product?._id, client?._id]);
-
-    useEffect(() => {
-        if (!socket) return;
-
-        socket.on("receive_update_purchase_result", (data: any) => {
-            // alert(data)
-            setLoadingScreen(false);
-        });
-
-        socket.on("receive_new_order", (data: any) => {
-            // alert('ffff')
-            setPurchase({
-                client: client?._id ?? undefined,
-                product: product._id ?? undefined,
-                specification: product.specifications[0] ?? null,
-                quantity: 1,
-                like: false
-            })
-            setLoadingScreen(false);
-        });
-
-        // Clean up
-        return () => {
-            socket.off("receive_update_purchase_result");
-            socket.off("receive_new_order");
-        };
-    }, [socket]);
-
-    useEffect(() => {
-        setPurchase({
-          ...purchase,
-          specification: activeSpecifications
-        })
     }, [activeSpecifications])
 
-    const handleLike = async () => {
+    useEffect(() => {
+        const fetchData = async () => {
+            if (!product?._id || product._id.length <= fakeProducts.length) return;
 
-        if (!product || !client || like == null) return;
-        // setLoadingScreen(true);
+            try {
+                setLoadingGettingCollection(true);
+                const { data } = await axios.get(`${backEndUrl}/getCollectionsByProduct`, { params: { productId: product._id } });
+                const filtered = data.collections.filter((c: CollectionType) => c.type === "public");
+                setCollections(filtered.map((c: CollectionType) => ({ ...c, display: "horizental" })));
+            } catch (err) { console.error(err); } 
+            finally { setLoadingGettingCollection(false); }
 
-        if (!like) {
+            if (client?._id) {
+                axios.get(`${backEndUrl}/getLikeByClientAndProduct`, { params: { clientId: client._id, productId: product._id } })
+                    .then(({ data }) => setLike(!!data.like));
 
-          setLike(true)
-          await axios.post( backEndUrl + "/addLike", {
-            likeData: {
-              client: client?._id,
-              product: product._id
+                axios.get(`${backEndUrl}/getCartByClient`, { params: { clientId: client._id } })
+                    .then(({ data }) => setCart(data.cart));
+                
+                const purchaseId = localStorage.getItem('purchaseId');
+                if (purchaseId) {
+                    axios.get(`${backEndUrl}/getPurchaseById`, { params: { purchaseId } })
+                        .then(({ data }) => { if(data.purchase) setPurchase(data.purchase); });
+                }
             }
-          })
-          .then(({ data }) => {setLike(true)})
-          .catch((err) => {
-            console.log(err);
-            
-            // setStatusBanner(true, "something went wrong !");
-          })
-
-        } else {
-
-          setLike(false)
-          await axios.delete( backEndUrl + "/deleteLike", {
-            data: {
-              clientId: client?._id,
-              productId: product._id
-            }
-          })
-          .then(({ data }) => {setLike(false)})
-          .catch((err) => {
-            // setStatusBanner(true, "something went wrong !");
-          })
-
-        }
-
-        // setLoadingScreen(false);
-
-    }
+        };
+        fetchData();
+    }, [product?._id, client?._id]);
 
     const handlePurchaseQuantity = (quantity: number) => {
-        setPurchase({
-            ...purchase,
-            quantity
-        })
+        if (purchase) setPurchase({ ...purchase, quantity });
     }
 
+    const handleLike = async () => {
+        if (!product || !client || like == null) return;
+        const currentLike = like;
+        setLike(!currentLike);
+        try {
+            if (!currentLike) {
+                await axios.post(`${backEndUrl}/addLike`, { likeData: { client: client._id, product: product._id } });
+            } else {
+                await axios.delete(`${backEndUrl}/deleteLike`, { data: { clientId: client._id, productId: product._id } });
+            }
+        } catch (err) { setLike(currentLike); }
+    }
 
+    const uniqueImages = useMemo(() => getUniqueImagesByColor(product.images), [product.images]);
+    
     if (!ownerInfo) return <LoadingScreen/>
 
- return (
+    return (
+        <div className="page bg-transparent" style={{ backgroundColor: colors.light[100], color: colors.dark[150], paddingBottom: productActionPanelHeight }}>
+            <AnnouncementBar/>
+            <Header isSideBarActive={sideBarActive} setIsSideBarActive={setSideBarActive} ownerInfo={ownerInfo} setOwnerInfo={() => {}} />
 
-    <>
-      {/* <Main> */}
-        <div 
-            className="page bg-transparent"
-            style={{
-                backgroundColor: colors.light[100],
-                color: colors.dark[150],
-                paddingBottom: productActionPanelHeight
-            }}
-            
-        >
-
-          <AnnouncementBar/>
-          <Header
-            isSideBarActive={sideBarActive}
-            setIsSideBarActive={setSideBarActive}
-            ownerInfo={ownerInfo}
-            setOwnerInfo={() => {}}
-          />
-
-          <div 
-            className={`w-full bg-red-500- sm:min-h-[90vh]- relative flex bg-blue-500- pb-16- ${screenWidth > 1000 ? 'h-[90vh] flex-row justify-center' : 'flex-col items-center'} pt-5`}
-            style={{
-                minHeight: screenHeight - (headerHeight * 1.5),
+            <div className={`w-full relative flex ${screenWidth > 1200 ? 'h-[90vh] flex-row justify-center' : 'flex-col justify-start items-center'} pt-5`} style={{ minHeight: screenHeight - (headerHeight * 1.5) }}>
                 
-                // borderBottom: `0.2px solid ${colors.light[200]}`
-            }}
-        >
-
-            <div 
-              className={`
+                {screenWidth > 1200 && (
+                    <div className="w-24 flex flex-col gap-4 justify-center items-center mr-4">
+                        {ownerInfo?.socialMedia?.map((media) => (
+                            <img key={media.platform} src={media.icon} className="w-8 h-8 cursor-pointer opacity-70 hover:opacity-100" onClick={() => media.platform === "Facebook" && handleShareOnFacebook(window.location.href)} />
+                        ))}
+                    </div>
+                )}
                 
-                ${screenWidth > 1000 ? 
-                    "w-24 min-h-[90%] bg-red-500- flex flex-col gap-2 justify-center items-end bg-red-500- bg-red-500- mr-10-"
-                  : "w-full flex flex-row gap-2 justify-center items-end"
-                }
-              `}
-            >
-              {screenWidth > 1000 && ownerInfo?.socialMedia?.map((media) => (
-                <img 
-                  key={media.platform}
-                  src={media.icon}
-                  onClick={() => {
-                    media.platform == "Facebook" ? handleShareOnFacebook(window.location.href)
-                    : null
-                  }}
-                  className="w-10 h-10 cursor-pointer bg-red-500-"
-                />
-              ))}
-            </div>
-            
-            <div className={`bg-blue-500- flex flex-1 ${screenWidth > 1000 ? 'min-h-[90vh] flex-row justify-center items-center' : 'flex-col items-center'}`}>
-              
-            { screenWidth < 1000 ?
-              product.name[activeLanguage.language] ?
-                <h4 className='font-bold text-lg sm:text-xl px-10'>
-                  {product.name[activeLanguage.language]}
-                </h4>
-                : <div className='w-[300px] h-7 rounded-sm'><SkeletonLoading /></div>
-              : null
-            }
-              
-              
-              <ImagesSwitcher
-                  images={product?.images || []}
-                  like={like?? false}
-                  setLike={handleLike}
-                  className=""
-                  style={{
-                      // width: screenWidth > 1000 ? "500px" : "90%",
-                      // backgroundColor: 'red'
-                  }}
-              />
+                <div className={`max-w-full flex flex-1 ${screenWidth > 1200 ? 'min-h-[90vh] flex-row justify-center items-start' : 'flex-col items-center'}`}>
+                    {screenWidth < 1200 && (
+                        <h4 className='font-bold text-lg sm:text-xl px-10 my-3'>
+                            {product.name[activeLanguage.language] || <SkeletonLoading />}
+                        </h4>
+                    )}
 
-              <ProductDetails
-                  product={product?? fakeProducts[0]}
-                  loadingGettingProduct={false}
-                  style={{
-                      // width: screenWidth > 1000 ? "40%" : "90%",
-                      height: screenWidth > 1000 ? "" : "100%",
-                  }}
-                  quantity={purchase?.quantity?? 1}
-                  setQuantity={handlePurchaseQuantity}
-                  activeSpecifications={activeSpecifications}
-                  collections={collections}
-                  setCollections={setCollections}
-                  loadingGettingCollection={loadingGettingCollection}
-                  setLoadingGettingCollection={setLoadingGettingCollection}
-                  setActiveSpecifications={(value) => {
-                    if (value !== null && value !== undefined) {
-                      setActiveSpecifications(value);
-                    }
-                  }}
-                  purchase={purchase}
-                  setPurchase={setPurchase}
-                  cart={cart}
-              />
+                    <ImagesSwitcher 
+                        images={product?.images || []} 
+                        currentImageIndex={currentImageIndex} 
+                        setCurrentImageIndex={setCurrentImageIndex} 
+                        like={like ?? false} 
+                        setLike={handleLike} 
+                    />
+
+                    <ProductDetails
+                        product={product}
+                        currentImageIndex={currentImageIndex}
+                        setCurrentImageIndex={setCurrentImageIndex}
+                        loadingGettingProduct={false}
+                        quantity={purchase?.quantity ?? 1}
+                        setQuantity={handlePurchaseQuantity}
+                        activeSpecifications={activeSpecifications}
+                        collections={collections}
+                        loadingGettingCollection={loadingGettingCollection}
+                        setActiveSpecifications={setActiveSpecifications}
+                        purchase={purchase!}
+                        setPurchase={setPurchase}
+                        cart={cart}
+                        clientForm={clientForm}
+                        setClientForm={setClientForm}
+                    />
+                </div>
             </div>
 
-          </div>
-
-          {/* <Evaluation/> */}
-
-          <div className="w-full h-[500px]- my-10 sm:my-24">
-            {product?._id && <OtherSimilarChose
-                collections={collections}
-                product={product}
-            />}
-          </div>
-
-          <div 
-            className="w-full h-fit fixed bottom-0 left-0 flex justify-center items-center p-2 z-20"
-            style={{
-              backgroundColor: colors.light[100],
-              boxShadow: `0 5px 15px ${colors.dark[900]}`,
-              height: productActionPanelHeight
-            }}
-          >
-            {screenWidth > 1000 && 
-              <div className="mr-10 flex flex-row gap-1">
-                {ownerInfo?.socialMedia?.map((media) => (
-                <img 
-                  key={media.platform}
-                  src={media.icon}
-                  onClick={() => {
-                    media.platform == "Facebook" ? handleShareOnFacebook(window.location.href)
-                    : null
-                  }}
-                  
-                  className="w-10 h-10"
-                />
-              ))}
-            </div>}
-
-            <div className="w-full sm:w-[500px] px-3 sm:p-0 bg-red-500-">
-              <ProductActionPanel
-                quantity={purchase?.quantity?? 1}
-                setQuantity={handlePurchaseQuantity}
-                activeSpecifications={activeSpecifications}     
-                purchase={purchase}
-                setPurchase={setPurchase}
-                cart={cart}
-                product={product}
-              />
+            <div className="my-10 sm:my-24">
+                {product?._id && <OtherSimilarChose collections={collections} product={product} />}
             </div>
-          </div>
 
-          <Footer/>
+            <div className="w-full fixed bottom-0 left-0 flex flex-row justify-center items-center p-2 z-20" style={{ backgroundColor: colors.light[100], boxShadow: `0 -2px 10px rgba(0,0,0,0.1)`, height: productActionPanelHeight }}>
+                <div className="w-full flex flex-row justify-center items-center gap-10 sm:w-[600px]">
+                    {screenWidth > 1000 && <div>
+                        {screenWidth > 1000 && 
+                        <div className="mr-10 flex flex-row gap-1">
+                            {ownerInfo?.socialMedia?.map((media) => (
+                            <img 
+                            key={media.platform}
+                            src={media.icon}
+                            onClick={() => {
+                                media.platform == "Facebook" ? handleShareOnFacebook(window.location.href)
+                                : null
+                            }}
+                            
+                            className="w-10 h-10"
+                            />
+                        ))}
+                        </div>}
+                    </div>}
+                    <ProductActionPanel
+                        quantity={purchase?.quantity ?? 1}
+                        setQuantity={handlePurchaseQuantity}
+                        activeSpecifications={activeSpecifications}
+                        purchase={purchase!}
+                        setPurchase={setPurchase}
+                        cart={cart}
+                        product={product}
+                        clientForm={clientForm}
+                        setClientForm={setClientForm}
+                    />
+                </div>
+            </div>
 
-          {/* <div style={{ height: productActionPanelHeight}}></div> */}
-
-          <SideBar
-            isActive={sideBarActive}
-            setIsActive={setSideBarActive}
-            ownerInfo={ownerInfo}
-            setOwnerInfo={() => {}}
-          />
-
+            <Footer/>
+            <SideBar isActive={sideBarActive} setIsActive={setSideBarActive} ownerInfo={ownerInfo} setOwnerInfo={() => {}} />
         </div>
-      {/* </Main> */}
-    </>
-
-  );
+    );
 }

@@ -1,3 +1,5 @@
+"use client";
+
 import { backEndUrl } from '@/api'
 import { useLanguage } from '@/contexts/languageContext'
 import { useTheme } from '@/contexts/themeProvider'
@@ -29,14 +31,10 @@ const AddEvaluationCard = ({
 
     const { colors, activeTheme } = useTheme();
     const { activeLanguage } = useLanguage();
-    // const [rating, setRating] = useState(0);
-    // const [comment, setComment] = useState("");
 
     const handleSubmit = async () => {
-
         if (!evaluationToEdit.product || !evaluationToEdit.number || !evaluationToEdit.note) return;
 
-        console.log({ evaluationToEdit });
         setEvaluations(evaluations.map(evaluation => evaluation._id == evaluationToEdit._id ? evaluationToEdit : evaluation))
         setEditEvaluationActive(false);
         setEvaluationSectionActive(true);
@@ -54,7 +52,6 @@ const AddEvaluationCard = ({
         .catch(( err ) => {
             console.log({err});
         })
-
     }
 
     return (
@@ -72,7 +69,7 @@ const AddEvaluationCard = ({
             >
                 <div className='flex justify-between items-center mb-6'>
                     <h3 className='text-xl font-bold' style={{ color: colors.dark[100] }}>
-                        {'Edit Opinion'}
+                        {activeLanguage.editEvaluation}
                     </h3>
                     <button onClick={() => setEditEvaluationActive(false)} className='opacity-50 hover:opacity-100 transition-opacity cursor-pointer'>
                         ✕
@@ -81,7 +78,7 @@ const AddEvaluationCard = ({
 
                 <div className='flex flex-col items-center gap-3 mb-6'>
                     <p className='text-sm opacity-70'>
-                        {'Rate this product'}
+                        {activeLanguage.rateThisProduct}
                     </p>
                     <div className='flex gap-2'>
                         {[1, 2, 3, 4, 5].map((star) => (
@@ -101,10 +98,10 @@ const AddEvaluationCard = ({
 
                 <div className='mb-6'>
                     <textarea
-                        className='w-full p-3 rounded-sm border outline-none min-h-[120px] text-sm resize-none transition-all focus:ring-1'
-                        placeholder={'Write your notes...'}
+                        className='w-full p-3 rounded-xl border outline-none min-h-[120px] text-sm resize-none transition-all focus:ring-1'
+                        placeholder={activeLanguage.writeNotes}
                         style={{ 
-                            backgroundColor: activeTheme === 'dark' ? colors.dark[200] : '#f9f9f9',
+                            backgroundColor: colors.light[100],
                             borderColor: colors.light[300],
                             color: colors.dark[100]
                         }}
@@ -118,7 +115,7 @@ const AddEvaluationCard = ({
 
                 <div className='flex flex-row-reverse gap-3'>
                     <button
-                        className='flex-1 py-3 rounded-sm font-bold transition-all active:scale-95 text-sm'
+                        className='flex-1 py-3 rounded-xl font-bold transition-all active:scale-95 text-sm cursor-pointer'
                         style={{ 
                             backgroundColor: colors.dark[100], 
                             color: colors.light[100] 
@@ -129,14 +126,14 @@ const AddEvaluationCard = ({
                     </button>
                     
                     <button
-                        className='flex-1 py-3 rounded-sm font-bold border transition-all active:scale-95 text-sm'
+                        className='flex-1 py-3 rounded-xl font-bold border transition-all active:scale-95 text-sm cursor-pointer'
                         style={{ 
                             borderColor: colors.light[300],
                             color: colors.dark[100]
                         }}
                         onClick={() => setEditEvaluationActive(false)}
                     >
-                        {'Cancel'}
+                        {activeLanguage.cancel}
                     </button>
                 </div>
             </div>

@@ -24,7 +24,7 @@
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif ;
   scroll-behavior: smooth;
   user-select: none;
-  /* border-radius: 4px; */
+  /* border-radius: 10px; */
   /* transition: 1s; */
 }
 
@@ -45,6 +45,10 @@ body {
   /* overflow-x: hidden; */
 }
 
+#footer *:hover {
+  user-select: none;
+}
+
 @media (min-width: 640px) {
   .page {
     /* padding: 5rem; p-20 (20 * 0.25rem = 5rem) */
@@ -53,7 +57,7 @@ body {
 
 
 .x{
-  background-color: rgba(13, 13, 13, 0.21);
+  background-color: rgba(196, 196, 196, 0.21);
 }
 
 .scrollbar-hidden {

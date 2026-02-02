@@ -1,424 +1,58 @@
 import { CollectionType, ProductType } from "@/types";
 
-export const fakeProducts = [
-  {
-    _id: "1",
-    name: {
-      fr: "",
-      en: "",
-    },
-    price: 0.0,
-    thumbNail: "",
-    images: [],
-    description: {
-      fr: "",
-      en: "",
-    },
-    collections: [],
-    stock: 0,
-    specifications: [
-      {
-        color: "",
-        size: "",
-        type: "",
-        price: 0.0,
-        quantity: 0,
-      },
-    ],
-  },
-  {
-    _id: "2",
-    name: {
-      fr: "",
-      en: "",
-    },
-    price: 0.0,
-    thumbNail: "",
-    images: [],
-    description: {
-      fr: "",
-      en: "",
-    },
-    collections: [],
-    stock: 0,
-    specifications: [
-      {
-        color: "",
-        size: "",
-        type: "",
-        price: 0.0,
-        quantity: 0,
-      },
-    ],
-  },
-  {
-    _id: "3",
-    name: {
-      fr: "",
-      en: "",
-    },
-    price: 0.0,
-    thumbNail: "",
-    images: [],
-    description: {
-      fr: "",
-      en: "",
-    },
-    collections: [],
-    stock: 0,
-    specifications: [
-      {
-        color: "",
-        size: "",
-        type: "",
-        price: 0.0,
-        quantity: 0,
-      },
-    ],
-  },
-  {
-    _id: "4",
-    name: {
-      fr: "",
-      en: "",
-    },
-    price: 0.0,
-    thumbNail: "",
-    images: [],
-    description: {
-      fr: "",
-      en: "",
-    },
-    collections: [],
-    stock: 0,
-    specifications: [
-      {
-        color: "",
-        size: "",
-        type: "",
-        price: 0.0,
-        quantity: 0,
-      },
-    ],
-  },
-  {
-    _id: "5",
-    name: {
-      fr: "",
-      en: "",
-    },
-    price: 0.0,
-    thumbNail: "",
-    images: [],
-    description: {
-      fr: "",
-      en: "",
-    },
-    collections: [],
-    stock: 0,
-    specifications: [
-      {
-        color: "",
-        size: "",
-        type: "",
-        price: 0.0,
-        quantity: 0,
-      },
-    ],
-  },
-  {
-    _id: "6",
-    name: {
-      fr: "",
-      en: "",
-    },
-    price: 0.0,
-    thumbNail: "",
-    images: [],
-    description: {
-      fr: "",
-      en: "",
-    },
-    collections: [],
-    stock: 0,
-    specifications: [
-      {
-        color: "",
-        size: "",
-        type: "",
-        price: 0.0,
-        quantity: 0,
-      },
-    ],
-  },
-  {
-    _id: "7",
-    name: {
-      fr: "",
-      en: "",
-    },
-    price: 0.0,
-    thumbNail: "",
-    images: [],
-    description: {
-      fr: "",
-      en: "",
-    },
-    collections: [],
-    stock: 0,
-    specifications: [
-      {
-        color: "",
-        size: "",
-        type: "",
-        price: 0.0,
-        quantity: 0,
-      },
-    ],
-  },
-  {
-    _id: "8",
-    name: {
-      fr: "",
-      en: "",
-    },
-    price: 0.0,
-    thumbNail: "",
-    images: [],
-    description: {
-      fr: "",
-      en: "",
-    },
-    collections: [],
-    stock: 0,
-    specifications: [
-      {
-        color: "",
-        size: "",
-        type: "",
-        price: 0.0,
-        quantity: 0,
-      },
-    ],
-  },
-] as ProductType[];
+export const fakeProducts = Array.from({ length: 8 }, (_, i) => ({
+  _id: (i + 1).toString(),
+  name: { fr: `Produit ${i + 1}`, en: `Product ${i + 1}` },
+  price: 0.0,
+  thumbNail: "",
+  images: [
+    { 
+      uri: "", 
+      // تم التغيير من [] إلى كائن فارغ أو قيم افتراضية ليطابق الكائن الواحد
+      specification: { color: "", colorHex: "", size: "", type: "", price: 0, quantity: 0 } 
+    }
+  ],
+  description: { fr: "", en: "" },
+  collections: [],
+  stock: 0,
+  specifications: [
+    { color: "", colorHex: "", size: "", type: "", price: 0.0, quantity: 0 },
+  ],
+})) as ProductType[];
 
+const loadingPlaceholder: ProductType = {
+  _id: null,
+  name: { fr: null, en: null },
+  price: null,
+  thumbNail: null,
+  images: [
+    { 
+      uri: '', 
+      specification: { color: null, colorHex: null, size: null, type: null, price: null, quantity: null } 
+    }
+  ],
+  description: { fr: null, en: null },
+  collections: [],
+  stock: null,
+  specifications: [
+    { color: null, colorHex: null, size: null, type: null, price: null, quantity: null },
+  ],
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
 
-export const productsLoading: ProductType[] = [
-  {
-    _id: "1",
-    name: { fr: null, en: null },
-    price: null,
-    thumbNail: null,
-    images: [],
-    description: { fr: null, en: null },
-    collections: [],
-    stock: null,
-    specifications: [
-      { color: null, size: null, type: null, price: null, quantity: null },
-    ],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    _id: "2",
-    name: { fr: null, en: null },
-    price: null,
-    thumbNail: null,
-    images: [],
-    description: { fr: null, en: null },
-    collections: [],
-    stock: null,
-    specifications: [
-      { color: null, size: null, type: null, price: null, quantity: null },
-    ],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    _id: "3",
-    name: { fr: null, en: null },
-    price: null,
-    thumbNail: null,
-    images: [],
-    description: { fr: null, en: null },
-    collections: [],
-    stock: null,
-    specifications: [
-      { color: null, size: null, type: null, price: null, quantity: null },
-    ],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    _id: "4",
-    name: { fr: null, en: null },
-    price: null,
-    thumbNail: null,
-    images: [],
-    description: { fr: null, en: null },
-    collections: [],
-    stock: null,
-    specifications: [
-      { color: null, size: null, type: null, price: null, quantity: null },
-    ],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    _id: "5",
-    name: { fr: null, en: null },
-    price: null,
-    thumbNail: null,
-    images: [],
-    description: { fr: null, en: null },
-    collections: [],
-    stock: null,
-    specifications: [
-      { color: null, size: null, type: null, price: null, quantity: null },
-    ],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    _id: "6",
-    name: { fr: null, en: null },
-    price: null,
-    thumbNail: null,
-    images: [],
-    description: { fr: null, en: null },
-    collections: [],
-    stock: null,
-    specifications: [
-      { color: null, size: null, type: null, price: null, quantity: null },
-    ],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    _id: "7",
-    name: { fr: null, en: null },
-    price: null,
-    thumbNail: null,
-    images: [],
-    description: { fr: null, en: null },
-    collections: [],
-    stock: null,
-    specifications: [
-      { color: null, size: null, type: null, price: null, quantity: null },
-    ],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    _id: "8",
-    name: { fr: null, en: null },
-    price: null,
-    thumbNail: null,
-    images: [],
-    description: { fr: null, en: null },
-    collections: [],
-    stock: null,
-    specifications: [
-      { color: null, size: null, type: null, price: null, quantity: null },
-    ],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    _id: "9",
-    name: { fr: null, en: null },
-    price: null,
-    thumbNail: null,
-    images: [],
-    description: { fr: null, en: null },
-    collections: [],
-    stock: null,
-    specifications: [
-      { color: null, size: null, type: null, price: null, quantity: null },
-    ],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    _id: "10",
-    name: { fr: null, en: null },
-    price: null,
-    thumbNail: null,
-    images: [],
-    description: { fr: null, en: null },
-    collections: [],
-    stock: null,
-    specifications: [
-      { color: null, size: null, type: null, price: null, quantity: null },
-    ],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-];
+export const productsLoading: ProductType[] = Array.from({ length: 10 }, (_, i) => ({
+  ...loadingPlaceholder,
+  _id: (i + 1).toString(),
+}));
 
-export const collectionsLoading: CollectionType[] = [
-  {
-    _id: '1',
-    name: {
-      en: null,
-      fr: null
-    },
-    thumbNail: null,
-    type: "private",
-    display: "horizontal"
-  },
-  {
-    _id: '2',
-    name: {
-      en: null,
-      fr: null
-    },
-    thumbNail: null,
-    type: "private",
-    display: "vertical"
-  },
-  {
-    _id: '3',
-    name: {
-      en: null,
-      fr: null
-    },
-    thumbNail: null,
-    type: "private",
-    display: "vertical"
-  },
-  {
-    _id: '4',
-    name: {
-      en: null,
-      fr: null
-    },
-    thumbNail: null,
-    type: "private",
-    display: "vertical"
-  },
-  {
-    _id: '5',
-    name: {
-      en: null,
-      fr: null
-    },
-    thumbNail: null,
-    type: "private",
-    display: "vertical"
-  },
-  {
-    _id: '6',
-    name: {
-      en: null,
-      fr: null
-    },
-    thumbNail: null,
-    type: "private",
-    display: "vertical"
-  }
-]
+export const collectionsLoading: CollectionType[] = Array.from({ length: 6 }, (_, i) => ({
+  _id: (i + 1).toString(),
+  name: { en: null, fr: null },
+  thumbNail: null,
+  type: "private",
+  display: i === 0 ? "horizontal" : "vertical"
+}));
 
 // export const defaultEvaluation = {
 //   client?: string

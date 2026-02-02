@@ -55,7 +55,7 @@ const OrdersSection = ({
       }}
     >
 
-      <div className='h-full bg-blue-500- flex flex-1 rounded-sm px-4 '
+      <div className='h-full bg-blue-500- flex flex-1 rounded-xl px-4 '
         style={{
           border: `0.2px solid ${colors.light[200]}`,
           minHeight: screenHeight - (headerHeight * 2) + "px",

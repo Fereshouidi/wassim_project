@@ -9,6 +9,7 @@ import VerificationAccountBanner from '@/componnent/sub/banners/verificationAcco
 import CustomInputText from '@/componnent/sub/customInputText';
 import LoadingScreen from '@/componnent/sub/loading/loadingScreen';
 import { headerHeight } from '@/constent';
+import { useCartSide } from '@/contexts/cart';
 import { useClient } from '@/contexts/client';
 import { useLanguage } from '@/contexts/languageContext';
 import { useLoadingScreen } from '@/contexts/loadingScreen';
@@ -35,6 +36,7 @@ const AccountPage = () => {
     const [ verificationAccountBannerVisible, setVerificationAccountBannerVisible ] = useState<boolean>(false);
     const { activeLanguage } = useLanguage();
     const { screenWidth } = useScreen();
+    const { setPurchases } = useCartSide();
 
     // Determine if we are in Dark Mode for styling
     const isDark = activeTheme === 'dark';
@@ -122,7 +124,7 @@ const AccountPage = () => {
                 style={{ paddingTop: screenWidth > 1000 ? headerHeight : 10 }}
             >
                 <div
-                    className='w-full max-w-5xl flex flex-col rounded-sm overflow-hidden transition-all duration-300'
+                    className='w-full max-w-5xl flex flex-col rounded-xl overflow-hidden transition-all duration-300'
                     style={{
                         backgroundColor: isDark ? 'rgba(30,30,30,0.6)' : 'white',
                         border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'}`,
@@ -150,7 +152,7 @@ const AccountPage = () => {
                                 className="w-full"
                                 labelClassName='font-semibold mb-2 block text-sm'
                                 placeholder={activeLanguage.inputYourName + "..."}
-                                inputClassName='w-full px-4 py-3 rounded-sm border  rounded transition-all  bg-transparent'
+                                inputClassName='w-full px-4 py-3 rounded-xl border  rounded transition-all  bg-transparent'
                                 defaultValue={updatedClient?.fullName}
                                 onChange={(e) => setUpdatedClient({ ...updatedClient, fullName: e.target.value })}
                                 maxLength={25}
@@ -162,7 +164,7 @@ const AccountPage = () => {
                                 className="w-full"
                                 labelClassName='font-semibold mb-2 block text-sm'
                                 placeholder={activeLanguage.inputYourPhone + "..."}
-                                inputClassName='w-full px-4 py-3 rounded-sm border  rounded transition-all  bg-transparent'
+                                inputClassName='w-full px-4 py-3 rounded-xl border  rounded transition-all  bg-transparent'
                                 defaultValue={updatedClient?.phone?.toString()}
                                 onChange={(e) => {
                                     const val = e.target.value;
@@ -177,7 +179,7 @@ const AccountPage = () => {
                                 className="w-full"
                                 labelClassName='font-semibold mb-2 block text-sm'
                                 placeholder={activeLanguage.inputYourEmail + "..."}
-                                inputClassName='w-full px-4 py-3 rounded-sm  rounded transition-all  bg-transparent'
+                                inputClassName='w-full px-4 py-3 rounded-xl  rounded transition-all  bg-transparent'
                                 defaultValue={updatedClient?.email}
                                 onChange={(e) => setUpdatedClient({ ...updatedClient, email: e.target.value })}
                                 maxLength={50}
@@ -189,7 +191,7 @@ const AccountPage = () => {
                                 className="w-full"
                                 labelClassName='font-semibold mb-2 block text-sm'
                                 placeholder={activeLanguage.sideMatter.address}
-                                inputClassName='w-full px-4 py-3 rounded-sm border border-gray-200   rounded transition-all  bg-transparent'
+                                inputClassName='w-full px-4 py-3 rounded-xl border border-gray-200   rounded transition-all  bg-transparent'
                                 defaultValue={updatedClient?.address}
                                 onChange={(e) => setUpdatedClient({ ...updatedClient, address: e.target.value })}
                                 maxLength={100}
@@ -201,7 +203,7 @@ const AccountPage = () => {
                                 className="w-full"
                                 labelClassName='font-semibold mb-2 block text-sm'
                                 placeholder={activeLanguage.inputYourPassword + "..."}
-                                inputClassName='w-full px-4 py-3 rounded-sm border  rounded transition-all  bg-transparent'
+                                inputClassName='w-full px-4 py-3 rounded-xl border  rounded transition-all  bg-transparent'
                                 defaultValue={updatedClient?.password}
                                 onChange={(e) => setUpdatedClient({ ...updatedClient, password: e.target.value })}
                             />
@@ -212,7 +214,7 @@ const AccountPage = () => {
                                 className="w-full"
                                 labelClassName='font-semibold mb-2 block text-sm'
                                 placeholder={activeLanguage.inputYourDateOfBirth} 
-                                inputClassName='w-full px-4 py-3 rounded-sm border  rounded transition-all  bg-transparent'
+                                inputClassName='w-full px-4 py-3 rounded-xl border  rounded transition-all  bg-transparent'
                                 //@ts-ignore
                                 defaultValue={updatedClient?.dateOfBirth ? new Date(updatedClient.dateOfBirth).toISOString().slice(0, 10) : ''}
                                 onChange={(e) => setUpdatedClient({ ...updatedClient, //@ts-ignore
@@ -225,12 +227,14 @@ const AccountPage = () => {
 
                             {/* Logout Button (Ghost Style for Secondary/Destructive) */}
                             <button
-                                className='group flex items-center justify-center gap-2 px-6 py-3 rounded-sm text-red-500 font-medium hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors w-full sm:w-auto'
+                                className='group flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-red-500 font-medium hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors w-full sm:w-auto'
                                 onClick={() => {
                                     setLoadingScreen(true);
+                                    setPurchases([])
                                     localStorage.removeItem('clientToken');
                                     setClient(null);
-                                    route.push('/');
+                                    setClient(null);
+                                    route.replace('/');
                                     setLoadingScreen(false);
                                 }}
                             >
@@ -244,7 +248,7 @@ const AccountPage = () => {
 
                             {/* Submit Button (Solid Primary) */}
                             <button
-                                className='w-full sm:w-auto min-w-[150px] flex justify-center items-center py-3 px-8 rounded-sm font-bold text-white shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200'
+                                className='w-full sm:w-auto min-w-[150px] flex justify-center items-center py-3 px-8 rounded-xl font-bold text-white shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200'
                                 style={{
                                     backgroundColor: colors.dark[100], // Primary brand color
                                 }}
@@ -262,7 +266,7 @@ const AccountPage = () => {
             {verificationAccountBannerVisible && 
                 <div className='fixed inset-0 z-50 flex justify-center items-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200'>
                     <div 
-                        className="w-full max-w-md relative bg-white rounded-sm shadow-2xl overflow-hidden"
+                        className="w-full max-w-md relative bg-white rounded-xl shadow-2xl overflow-hidden"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <VerificationAccountBanner 

@@ -12,13 +12,16 @@ import { useOwner } from '@/contexts/ownerInfo';
 import PurchaseItem from '../sub/purchaseItem';
 import InputForm from './inputForm';
 import OrderData from './OrderData';
+import { useRegisterSection } from '@/contexts/registerSec';
 
 const CartSide = () => {
+
     const { isActive, setIsActive, purchases, setPurchases } = useCartSide();
     const { ownerInfo } = useOwner();
     const { activeLanguage } = useLanguage();
     const { client } = useClient();
     const { colors, activeTheme } = useTheme();
+    const { setRegisterSectionExist } = useRegisterSection();
     const router = useRouter();
     const socket = useSocket();
     const { setLoadingScreen } = useLoadingScreen();
@@ -45,6 +48,7 @@ const CartSide = () => {
 
     const handleConfirm = () => {
         if (!confirmBTNWorks) return;
+        if (!client?._id) return setRegisterSectionExist(true);
         setLoadingScreen(true);
         const purchasesId = purchases.map(p => p._id);
         socket?.emit('add_order', { 
@@ -80,7 +84,7 @@ const CartSide = () => {
                             className='w-5 h-5 opacity-80' alt="" 
                         />
                         <h2 className='font-bold text-sm tracking-wide uppercase'>{activeLanguage.myCart}</h2>
-                        <span className='px-2 py-0.5 rounded-sm text-[10px] font-bold opacity-60' style={{ backgroundColor: colors.light[300] }}>
+                        <span className='px-2 py-0.5 rounded-xl text-[10px] font-bold opacity-60' style={{ backgroundColor: colors.light[300] }}>
                             {purchases.length}
                         </span>
                     </div>
@@ -110,8 +114,8 @@ const CartSide = () => {
                         <div className='flex flex-col gap-8'>
                             {/* Products */}
                             <div className='flex flex-col gap-4'>
-                                {purchases.map((purchase) => (
-                                    <PurchaseItem key={purchase._id} purchase={purchase} setPurchases={setPurchases} />
+                                {purchases.map((purchase, index) => (
+                                    <PurchaseItem key={index} purchase={purchase} setPurchases={setPurchases} />
                                 ))}
                             </div>
                             
@@ -121,7 +125,7 @@ const CartSide = () => {
                             {/* Summary & Form */}
                             <div className='space-y-6'>
                                 <OrderData purchases={purchases} />
-                                <div className='p-4 border rounded-sm' style={{ borderColor: colors.light[300], backgroundColor: activeTheme === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)' }}>
+                                <div className='p-4 border rounded-xl' style={{ borderColor: colors.light[300], backgroundColor: activeTheme === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)' }}>
                                     <InputForm clientForm={clientForm} setClientForm={setClientForm} />
                                 </div>
                             </div>
@@ -132,7 +136,7 @@ const CartSide = () => {
                 {/* --- FOOTER --- */}
                 <div className='p-5 border-t space-y-2 z-10' style={{ borderColor: colors.light[300], backgroundColor: colors.light[100] }}>
                     <button
-                        className={`w-full h-12 rounded-sm font-bold text-xs uppercase tracking-widest transition-all active:scale-[0.99] flex items-center justify-center ${
+                        className={`w-full h-12 rounded-xl font-bold text-xs uppercase tracking-widest transition-all active:scale-[0.99] flex items-center justify-center ${
                             confirmBTNWorks ? "hover:brightness-110" : "opacity-30 cursor-not-allowed grayscale"
                         }`}
                         style={{ backgroundColor: colors.dark[100], color: colors.light[100] }}
@@ -141,9 +145,9 @@ const CartSide = () => {
                         {activeLanguage.confirmOrder}
                     </button>
                     <button
-                        className='w-full h-12 rounded-sm font-bold text-xs uppercase tracking-widest border transition-all active:scale-[0.99] hover:bg-black/[0.03]'
+                        className='w-full h-12 rounded-xl font-bold text-xs uppercase tracking-widest border transition-all active:scale-[0.99] hover:bg-black/[0.03]'
                         style={{ color: colors.dark[100], borderColor: colors.dark[100] }}
-                        onClick={() => router.push(`/orders`)}
+                        onClick={() => {router.push(`/orders`); setIsActive(false)}}
                     >
                         {activeLanguage.viewMyOrder}
                     </button>

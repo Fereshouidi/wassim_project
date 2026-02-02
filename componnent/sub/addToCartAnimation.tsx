@@ -110,7 +110,7 @@ export default function AddToCartAnimation({ productImage, isInCart, onToggle }:
         ref={buttonRef}
         onClick={handleAction}
         disabled={isLoading}
-        className={`flex flex-1 min-w-fit px-4 justify-center items-center w-12 h-12 text-sm sm:text-md rounded-sm cursor-pointer`}
+        className={`flex flex-1 min-w-fit px-4 justify-center items-center w-12 h-12 text-sm sm:text-md rounded-xl cursor-pointer`}
         style={{
             backgroundColor: isInCart ? "transparent" : colors.dark[100],
             border: isInCart ? `1px solid ${colors.dark[100]}` : "none",

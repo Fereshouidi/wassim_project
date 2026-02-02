@@ -22,7 +22,7 @@ const OrderData = ({ purchases }: Props) => {
         }, 0) || 0;
     }, [purchases]);
 
-    if (!ownerInfo) return <div className="h-20 animate-pulse bg-gray-100 rounded-sm" />;
+    if (!ownerInfo) return <div className="h-20 animate-pulse bg-gray-100 rounded-xl" />;
 
     const finalTotal = subTotal + (ownerInfo?.shippingCost || 0);
 
@@ -43,7 +43,7 @@ const OrderData = ({ purchases }: Props) => {
             <div className="my-2 border-t border-dashed" style={{ borderColor: colors.light[300] }} />
 
             <div 
-                className="flex justify-between items-center p-3 rounded-sm"
+                className="flex justify-between items-center p-3 rounded-xl"
                 style={{ backgroundColor: activeTheme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)' }}
             >
                 <span className="text-[11px] uppercase font-bold tracking-tight">{activeLanguage.totalAmmount}</span>

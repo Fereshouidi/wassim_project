@@ -31,6 +31,10 @@ const HomeCollections = () => {
 
     }, [])
 
+    useEffect(() => {
+        alert(collections?.length)
+    }, [collections?.length])
+
 
     return (
 

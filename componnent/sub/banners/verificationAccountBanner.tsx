@@ -122,7 +122,7 @@ const VerificationAccountBanner = ({
     
     if (!clientFound) return (
         <div 
-            className='w-full h-full flex flex-col justify-center items-center absolute- top-0 left-0 z-[999] backdrop-blur-2xl over rounded-sm'
+            className='w-full h-full flex flex-col justify-center items-center absolute- top-0 left-0 z-[999] backdrop-blur-2xl over rounded-xl'
             style={{
                 // boxShadow: `0 5px 15px ${colors.dark[550]}`
             }}
@@ -135,7 +135,7 @@ const VerificationAccountBanner = ({
                 />
         
             <div 
-                className='w-full h-full flex flex-col justify-center items-center rounded-sm p-5'
+                className='w-full h-full flex flex-col justify-center items-center rounded-xl p-5'
                 style={{
                     // backgroundColor: colors.light[100],
                     // border: `3px solid ${colors.dark[100]}`
@@ -171,7 +171,7 @@ const VerificationAccountBanner = ({
 
   return (
     <div 
-        className='w-full h-full flex flex-col justify-center items-center absolute- top-0 left-0 z-[999] backdrop-blur-2xl over rounded-sm'
+        className='w-full h-full flex flex-col justify-center items-center absolute- top-0 left-0 z-[999] backdrop-blur-2xl over rounded-xl'
         style={{
             // boxShadow: `0 5px 15px ${colors.dark[550]}`
         }}
@@ -184,7 +184,7 @@ const VerificationAccountBanner = ({
         />
       
         <div 
-            className='w-full h-full flex flex-col justify-center items-center rounded-sm p-5'
+            className='w-full h-full flex flex-col justify-center items-center rounded-xl p-5'
             style={{
                 // backgroundColor: colors.light[200],
                 // border: `3px solid ${colors.dark[100]}`

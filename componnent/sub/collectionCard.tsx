@@ -61,7 +61,7 @@ const CollectionCard = ({
 
   return (
     <div 
-        className='w-[320px] sm:w-[250px] max-h-[320px] sm:max-h-[270px] rounded-sm cursor-pointer duration-300 overflow-hidden'
+        className='w-[320px] sm:w-[250px] max-h-[320px] sm:max-h-[270px] rounded-xl cursor-pointer duration-300 overflow-hidden'
         style={{
             backgroundColor: colors.light[100],
             boxShadow: isHover ? '0 0px 10px rgba(13, 13, 13, 0.15)' : "0 0px 10px rgba(13, 13, 13, 0.02)",

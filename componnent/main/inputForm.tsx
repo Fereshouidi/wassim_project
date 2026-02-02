@@ -20,7 +20,7 @@ const InputForm = ({ clientForm, setClientForm }: InputFormType) => {
     }
 
     const inputClasses = `
-        w-full rounded-sm text-[13px] px-3 transition-colors outline-none
+        w-full rounded-xl text-[13px] px-3 transition-colors outline-none
         border focus:border-black placeholder:opacity-40
     `;
     
@@ -41,7 +41,7 @@ const InputForm = ({ clientForm, setClientForm }: InputFormType) => {
                     type="text" 
                     value={clientForm.fullName}
                     placeholder={activeLanguage.sideMatter.fullName}
-                    className={`${inputClasses} h-10`}
+                    className={`${inputClasses} h-12`}
                     style={dynamicStyle}
                     onChange={(e) => setClientForm({...clientForm, fullName: e.target.value})}
                 />
@@ -49,7 +49,7 @@ const InputForm = ({ clientForm, setClientForm }: InputFormType) => {
                     type="text" 
                     value={clientForm.address}
                     placeholder={activeLanguage.sideMatter.address}
-                    className={`${inputClasses} h-10`}
+                    className={`${inputClasses} h-12`}
                     style={dynamicStyle}
                     onChange={(e) => setClientForm({...clientForm, address: e.target.value})}
                 />
@@ -57,7 +57,7 @@ const InputForm = ({ clientForm, setClientForm }: InputFormType) => {
                     type="tel" 
                     value={clientForm.phone}
                     placeholder={activeLanguage.sideMatter.phone}
-                    className={`${inputClasses} h-10`}
+                    className={`${inputClasses} h-12`}
                     style={dynamicStyle}
                     onChange={(e) => handleInputPhone(e.target.value)}
                 />

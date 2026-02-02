@@ -1,4 +1,5 @@
-import { EvaluationType, OrderType, PurchaseType } from "@/types";
+import { EvaluationType, OrderType, ProductImage, ProductSpecification, ProductType, PurchaseType } from "@/types";
+import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
 export const handleShareOnFacebook = (shareUrl: string) => {
     console.log({shareUrl});
@@ -157,4 +158,80 @@ export const calculateRatingStats = (evaluations: EvaluationType[]) => {
         average: average,
         total: evaluations.length
     };
+};
+
+export const getUniqueColorsFomSpecification = (specs: any[]) => {
+  if (!specs || !Array.isArray(specs)) return [];
+
+  // نستخدم Map لضمان التفرد بناءً على اسم اللون
+  const uniqueColorsMap = new Map();
+
+  specs.forEach((spec) => {
+    if (spec.color && spec.color.name && spec.color.hex) {
+      // نستخدم اسم اللون كمفتاح (Key) لضمان عدم التكرار
+      uniqueColorsMap.set(spec.color.name, {
+        name: spec.color.name,
+        hex: spec.color.hex,
+      });
+    }
+  });
+
+  // تحويل الـ Map مرة أخرى إلى مصفوفة
+  return Array.from(uniqueColorsMap.values());
+};
+
+export const getProductUniqueColors = (images: ProductType['images']): string[] => {
+  // التأكد من أن المصفوفة موجودة وليست فارغة
+  if (!images || !Array.isArray(images)) return [];
+
+  const hexSet = new Set<string>();
+
+  images.forEach((img) => {
+    // بما أن specification كائن (Object)، نصل للون مباشرة بدون forEach
+    const hex = img.specification?.colorHex;
+    
+    if (hex) {
+      hexSet.add(hex);
+    }
+  });
+
+  return Array.from(hexSet);
+};
+
+export const getUniqueImagesByColor = (images: ProductImage[]) => {
+    if (!images || !Array.isArray(images)) return [];
+
+    const seenHex = new Set<string>();
+    let hasGeneralImage = false; // لمتابعة الصور التي ليس لها لون
+    
+    return images.filter((img) => {
+        const spec = img.specification as ProductSpecification;
+        const hex = spec?.colorHex;
+
+        if (hex) {
+            // إذا كان اللون موجوداً مسبقاً، نحذفه
+            if (seenHex.has(hex)) return false;
+            
+            seenHex.add(hex);
+            return true;
+        }
+
+        // التعامل مع الصور العامة (التي لا تملك لون)
+        // إذا أردت السماح بصورة واحدة فقط بدون لون:
+        if (!hasGeneralImage) {
+            hasGeneralImage = true;
+            return true;
+        }
+
+        return false; // أي صورة عامة إضافية سيتم حذفها
+    });
+};
+
+export const getDeviceId = async () => {
+  const fp = await FingerprintJS.load();
+  const result = await fp.get();
+  return result.visitorId;
+  // setDeviceId(result.visitorId)
+  console.log({deviceId: result.visitorId});
+  
 };

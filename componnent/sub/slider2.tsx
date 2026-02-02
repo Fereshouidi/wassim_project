@@ -1,10 +1,10 @@
 import { ProductType } from '@/types'
 import React, { useEffect, useRef, useState } from 'react'
-import ProductCard from './productCard'
-import ProductLoading from './productLoading'
+import ProductLoading from './productCard/productLoading'
 import { useScreen } from '@/contexts/screenProvider'
 import { useTheme } from '@/contexts/themeProvider'
 import { transform } from 'next/dist/build/swc/generated-native'
+import ProductCard from './productCard/productCardForSlider'
 
 type sliderProps = {
     products: ProductType[]
@@ -176,7 +176,7 @@ const Slider2 = ({
                                 products.map((product, index) => (
                                     <div 
                                         key={index}
-                                        className=' min-h-[150px] sm:min-h-[220px] m-0  rounded-sm overflow-hidden'
+                                        className='h-[150px] sm:h-[220px] m-0  rounded-xl overflow-hidden'
                                         style={{
                                             width: cardWidth  + "px",
                                             paddingLeft: '5px',
@@ -185,7 +185,7 @@ const Slider2 = ({
                                     >
                                         <ProductCard
                                             product={product}
-                                            className='w-[100%] h-full'
+                                            className='w-[100%] h-[97%]'
                                             useLike={useLike}
                                         />
                                     </div>
@@ -196,9 +196,9 @@ const Slider2 = ({
                             
                             { productLoadingShowUp && 
 
-                                <div ref={productLoading} className=''>
+                                <div ref={productLoading} className='h-[150px] sm:h-[220px] m-0  rounded-xl overflow-hidden'>
                                     <ProductLoading
-                                        // className='w-[170px] sm:w-[220px] min-h-[150px] sm:min-h-[220px] m-0 '
+                                        className='w-[100%] h-[97%]'
                                         style={{
                                             width: cardWidth
                                         }}

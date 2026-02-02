@@ -28,7 +28,7 @@ const MoreBotton = ({
     
     return (
         <div 
-            className='w-44 h-10 border text-sm sm:-text-md cursor-pointer m-5 rounded-sm flex justify-center items-center overflow-hidden'
+            className='w-44 h-10 border text-sm sm:-text-md cursor-pointer mt-10 rounded-xl flex justify-center items-center overflow-hidden'
             style={{
                 borderColor: colors.dark[600],
                 color: colors.dark[100],

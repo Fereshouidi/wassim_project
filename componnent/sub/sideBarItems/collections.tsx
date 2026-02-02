@@ -10,6 +10,8 @@ import LoadingScreen from '../loading/loadingScreen';
 import LoadingIcon from '../loading/loadingIcon';
 import { col } from 'framer-motion/m';
 import { useScreen } from '@/contexts/screenProvider';
+import LoadingLogo from '../loading/loadingIcon';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 type props = {
     sideBarActive: boolean
@@ -70,20 +72,26 @@ const Collections = ({sideBarActive}: props) => {
 
 
             <div
-                className={`w-fit fixed bg-red-500 ${collectionsDivVisible ? "left-[320px]" : "invisible left-0"}  top-0- z-[9999] rounded-sm duration-300`}
+                className={`w-fit fixed bg-red-500 ${collectionsDivVisible ? "left-[320px]" : "invisible left-0"}  top-0- z-[9999] rounded-xl overflow-hidden duration-300`}
                 style={{
                     backgroundColor: colors.dark[100]
                 }}
             >
-                {loading && <LoadingIcon
-                    // size={20}
-                    // squareSize={10}
-                />}
+                {loading && 
+                    <div className='w-fit h-10'>
+                        <DotLottieReact
+                            src="/icons/LoadingDotsBlack.json"
+                            className='w-full h-full scale-[200%]'
+                            loop
+                            autoplay
+                        />     
+                    </div>
+                }
 
                 {collections.length > 0 && collections.map(( collection ) => (
                     <div
                         key={collection._id}
-                        className={`p-2 min-w-32 cursor-pointer ${activeTheme == "dark" ? "hover:bg-gray-200" : "hover:bg-gray-900"} `}
+                        className={`p-2 min-w-32 rounded-xl- cursor-pointer ${activeTheme == "dark" ? "hover:bg-gray-200" : "hover:bg-gray-900"} `}
                         style={{
                             border: `0.2px solid ${colors.dark[200]}`
                         }}

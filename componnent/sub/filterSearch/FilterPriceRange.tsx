@@ -1,3 +1,4 @@
+"use client";
 import { useLanguage } from '@/contexts/languageContext'
 import { useTheme } from '@/contexts/themeProvider';
 import { FiltrationType } from '@/types';
@@ -11,173 +12,107 @@ type FilterPriceRangeType = {
 }
 
 const FilterPriceRange = ({
-    filtration,
     mostProductExpensive,
     filtrationCopy,
     setFiltrationCopy
 }: FilterPriceRangeType) => {
 
     const { activeLanguage } = useLanguage();
-    const { colors, activeTheme } = useTheme();
+    const { colors } = useTheme();
 
+    const getPercent = (value: number) => Math.round((value / mostProductExpensive) * 100);
 
-    const minRangeStyle: React.CSSProperties = {
-        height: "0.5rem",
-        WebkitAppearance: "none",
-        MozAppearance: "none",
-        borderRadius: 9999,
-        cursor: "pointer",
-        background: `
-            linear-gradient(to right, 
-            ${colors.dark[250]} ${(filtrationCopy.price.from * 100) / mostProductExpensive}%, 
-            ${colors.light[250]} ${(filtrationCopy.price.from * 100) / mostProductExpensive}%)
-        `,
+    const handlePriceChange = (type: 'from' | 'to', value: string) => {
+        const numValue = parseFloat(value);
+        setFiltrationCopy({
+            ...filtrationCopy,
+            price: { ...filtrationCopy.price, [type]: numValue }
+        });
     };
 
-    const maxRangeStyle: React.CSSProperties = {
-        height: "0.5rem",
+    // مظهر المسار (Track)
+    const getTrackStyle = (currentValue: number): React.CSSProperties => ({
+        height: "4px",
         WebkitAppearance: "none",
-        MozAppearance: "none",
-        borderRadius: 9999,
-        cursor: "pointer",
-        background: `
-            linear-gradient(to right, 
-            ${colors.dark[250]} ${(filtrationCopy.price.to * 100) / mostProductExpensive}%, 
-            ${colors.light[250]} ${(filtrationCopy.price.to * 100) / mostProductExpensive}%)
-        `,
-    };
+        borderRadius: "999px",
+        background: `linear-gradient(to right, ${colors.dark[100]} ${getPercent(currentValue)}%, ${colors.light[300]} ${getPercent(currentValue)}%)`,
+    });
 
-  return (
-    // <div>
-        <div className=' flex flex-1- flex-col justify-center w-fit mx-2- px-2- bg-blue-500-'>
+    return (
+        <div className="w-full flex flex-col px-4 py-6- border-b" style={{ borderColor: colors.light[200] }}>
+            {/* لتغيير لون الكرة (Thumb) بدون استخدام activeTheme في المنطق، نستخدم الـ CSS المضمن */}
+            <style dangerouslySetInnerHTML={{ __html: `
+                input[type='range']::-webkit-slider-thumb {
+                    -webkit-appearance: none;
+                    appearance: none;
+                    width: 14px;
+                    height: 14px;
+                    border-radius: 50%;
+                    background: ${colors.dark[100]};
+                    cursor: pointer;
+                    border: 2px solid ${colors.light[100]};
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+                }
+                input[type='range']::-moz-range-thumb {
+                    width: 14px;
+                    height: 14px;
+                    border-radius: 50%;
+                    background: ${colors.dark[100]};
+                    cursor: pointer;
+                    border: 2px solid ${colors.light[100]};
+                }
+            `}} />
 
-            <h4 
-                className='m-5 font-bold'
-                style={{
-                    color: colors.dark[200]
-                }}
-            >{activeLanguage.sideMatter.priceZone + ": "}</h4>
+            <h4 className="text-[11px] font-black uppercase tracking-[0.2em] mb-10- opacity-60" style={{ color: colors.dark[100] }}>
+                {activeLanguage.sideMatter.priceZone}
+            </h4>
             
-            <div className='h-full flex flex-col justify-center items-center mx-2 relative '>
-                
-                <div className='flex flex-rox my-[9px]'>
-
-                    <h5
-                        className='inline-block"'
-                        style={{
-                            color: colors.dark[200],
-                        }}
-                    >{activeLanguage.sideMatter.min + ': '}</h5>
-                    
-                    <div className=' w-[250px] flex flex-row justify-center items-center'>
-                        <span 
-                            className='text-[12px] w-[70px] text-center'
-                            style={{
-                                color: colors.dark[300]
-                            }}
-                        >{0 + " D.T"}</span>
-                        <div className='relative w-full'>
-
-                            <input 
-                                min={0}
-                                max={mostProductExpensive}
-                                value={filtrationCopy.price.from}
-                                type="range" 
-                                color='red'
-                                onChange={(e) => {
-                                    setFiltrationCopy({
-                                        ...filtrationCopy,
-                                        price: {
-                                            ...filtrationCopy.price,
-                                            from: parseFloat(e.target.value)
-                                        }
-                                    })
-                                }}
-                                className={`${activeTheme == "light" ? "range-input-light" : "range-input-dark"} flex flex-1 w-full`}
-                                style={minRangeStyle}
-                            />
-                            <span 
-                                className='absolute top-[-300%] whitespace-nowrap px-1 -translate-x-1 text-center text-sm rounded-full z-10'
-                                style={{
-                                    left: (filtrationCopy.price.from * 100) / mostProductExpensive + "%",
-                                    backgroundColor: colors.dark[100],
-                                    color: colors.light[100]
-                                }}
-                            >{filtrationCopy.price.from + ' D.T'}</span>
-
-                        </div>
-                        <span 
-                            className='text-[12px] w-[100px] text-center'
-                            style={{
-                                color: colors.dark[300]
-                            }}
-                        >{mostProductExpensive + " D.T"}</span>
+            <div className="space-y-6">
+                {/* Min Slider */}
+                <div className="relative flex flex-col group">
+                    <div className="flex justify-between items-end mb-3">
+                        <span className="text-[9px] font-bold opacity-40 uppercase" style={{ color: colors.dark[100] }}>{activeLanguage.sideMatter.min}</span>
+                        <span className="text-[12px] font-black" style={{ color: colors.dark[100] }}>
+                            {filtrationCopy.price.from} <span className="text-[9px] opacity-40">D.T</span>
+                        </span>
                     </div>
-
-
+                    <input 
+                        type="range"
+                        min={0}
+                        max={mostProductExpensive}
+                        value={filtrationCopy.price.from?? 999}
+                        onChange={(e) => handlePriceChange('from', e.target.value)}
+                        className="w-full appearance-none bg-transparent cursor-pointer"
+                        style={getTrackStyle(filtrationCopy.price.from)}
+                    />
                 </div>
 
-                <div className='flex flex-rox my-[9px]'>
-
-                    <h5
-                        style={{
-                            color: colors.dark[200]
-                        }}
-                    >{activeLanguage.sideMatter.max + ': '}</h5>
-
-                    <div className=' w-[250px] flex flex-row justify-center items-center'>
-                        <span 
-                            className='text-[12px] w-[70px] text-center'
-                            style={{
-                                color: colors.dark[300]
-                            }}
-                        >{0 + " D.T"}</span>                                    
-                        <div className='relative w-full'>
-
-
-                            <input 
-                                min={0}
-                                max={mostProductExpensive + 1}
-                                value={filtrationCopy.price.to}
-                                type="range" 
-                                onChange={(e) => {
-                                    setFiltrationCopy({
-                                        ...filtrationCopy,
-                                        price: {
-                                            ...filtrationCopy.price,
-                                            to: parseFloat(e.target.value)
-                                        }
-                                    })
-                                }}                                            
-                                className={`${activeTheme == "light" ? "range-input-light" : "range-input-dark"} flex flex-1 w-full`}
-                                style={maxRangeStyle}
-                            />
-                            <span 
-                                className='absolute top-[-300%] whitespace-nowrap px-1 -translate-x-1 text-center text-sm rounded-full z-10'
-                                style={{
-                                    left: (filtrationCopy.price.to * 100) / mostProductExpensive + "%",
-                                    backgroundColor: colors.dark[100],
-                                    color: colors.light[100]
-                                }}
-                            >{filtrationCopy.price.to + ' D.T'}</span>
-
-                        </div>
-                        <span 
-                            className='text-[12px] w-[100px] text-center'
-                            style={{
-                                color: colors.dark[300]
-                            }}
-                        >{mostProductExpensive + " D.T"}</span>
+                {/* Max Slider */}
+                <div className="relative flex flex-col group">
+                    <div className="flex justify-between items-end mb-3">
+                        <span className="text-[9px] font-bold opacity-40 uppercase" style={{ color: colors.dark[100] }}>{activeLanguage.sideMatter.max}</span>
+                        <span className="text-[12px] font-black" style={{ color: colors.dark[100] }}>
+                            {filtrationCopy.price.to} <span className="text-[9px] opacity-40">D.T</span>
+                        </span>
                     </div>
-
-
+                    <input 
+                        type="range"
+                        min={0}
+                        max={mostProductExpensive}
+                        value={filtrationCopy.price.to}
+                        onChange={(e) => handlePriceChange('to', e.target.value)}
+                        className="w-full appearance-none bg-transparent cursor-pointer"
+                        style={getTrackStyle(filtrationCopy.price.to)}
+                    />
                 </div>
-
             </div>
 
+            <div className="flex justify-between mt-8 opacity-20 text-[8px] font-bold">
+                <span style={{ color: colors.dark[100] }}>0 D.T</span>
+                <span style={{ color: colors.dark[100] }}>{mostProductExpensive} D.T</span>
+            </div>
         </div>
-    // </div>
-  )
+    )
 }
 
-export default FilterPriceRange
+export default FilterPriceRange;

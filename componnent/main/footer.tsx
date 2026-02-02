@@ -21,6 +21,7 @@ const Footer = ({
 
     return (
         <div 
+            id='footer'
             className='w-full min-h-[250px] p-14 sm:p-14 overflow-hidden-'
             style={{
                 backgroundColor: "black",
@@ -35,7 +36,7 @@ const Footer = ({
                 }}
             >
 
-                <div className='w-fit- flex flex-1 bg-green-400- flex-col justify-center items-center bg-red-500- gap-3 bg-blue-500- text-white'>
+                <div className='w-fit- flex flex-1 bg-green-400- flex-col justify-center items-center bg-red-500- gap-3 bg-blue-500- hover:text-white- text-white'>
 
                     <h2 className='font-bold'>{ activeLanguage.contact + ' : '}</h2>
 
@@ -48,7 +49,7 @@ const Footer = ({
                     
                     <a
                         href={`mailto:${ownerInfo?.contact?.email}`}
-                        className="flex flex-row justify-center items-center gap-2"
+                        className={`flex flex-row justify-center items-center gap-2 hover:text-white`}
                     >
                         {/* <img
                             src={'/icons/phone.png'}
@@ -59,7 +60,7 @@ const Footer = ({
 
                     <a
                         href={`tel:+216${ownerInfo?.contact.phone}`}
-                        className="flex flex-row justify-center items-center gap-2-"
+                        className="flex flex-row justify-center items-center gap-2- hover:text-white"
                     >
                         {/* <img
                             src={'/icons/email.png'}
@@ -68,37 +69,20 @@ const Footer = ({
                         <p>{"+216" + ownerInfo?.contact.phone}</p>
                     </a>
 
-                        <p className='text-sm cursor-pointer'>{activeLanguage.askAi}</p>
+                        <p className='text-sm cursor-pointer hover:text-white'>{activeLanguage.askAi}</p>
                     </div>
                 </div>
 
-                <div className='w-fit- flex flex-1 bg-green-400- flex-col justify-center items-center bg-red-500- gap-3 bg-red-500- text-white'>
-                    
-                    <h2 className='font-bold'>{activeLanguage.aboutUs + ' : '}</h2>
-
-                    <div 
-                        className='flex flex-col gap-2 w-fit  text-center'
-                        style={{
-                            color: colorsInsLightMode.light[350]
-                        }}
-                    >
-                        <a 
-                            href="" 
-                            className='text-sm font-[1px] w-fit'
-                        >example 1 </a>
-                        <a 
-                            href="" 
-                            className='text-sm '
-                        >example 2</a>
-                        <a 
-                            href="" 
-                            className='text-sm '
-                        >example 3</a>                    
-                    </div>
-
+                <div className='h-full bg-red-500- flex flex-1 flex-col justify-start items-center '>
+                    <p>{ownerInfo?.haveBestShop?? "have a good shop with SilverWayShop 💫"}</p>
+                    <img 
+                        src="/logo-simple-black.jpg" 
+                        className='w-14 h-14 mt-8'
+                        alt="" 
+                    />
                 </div>
                 
-                <div className='w-fit- flex flex-1 bg-green-400- flex-col justify-center items-center bg-red-500- gap-3 bg-green-500- text-white'>
+                <div className='w-fit- h-full flex flex-1 bg-green-400- flex-col justify-center items-center bg-red-500- gap-3 bg-green-500- text-white'>
 
                     <h2 className='font-bold'>{'Social Media : '}</h2>
 
@@ -125,27 +109,21 @@ const Footer = ({
                                 {screenWidth > 1000 && <p className='text-sm font-[1px] '>{social.platform}</p>}
                             </a>
                         ))}
-                        {/* <a 
-                            href="" 
-                            className='text-sm font-[1px] '
-                        >Instagram</a>
-                        <a 
-                            href="" 
-                            className='text-sm '
-                        >Facebook</a>
-                         <a 
-                            href="" 
-                            className='text-sm '
-                        >WhatsApp</a>
-                         <a 
-                            href="" 
-                            className='text-sm '
-                        >TikTok</a> */}
-                        
                     </div>
                 </div>
 
             </div>
+
+            {/* ----------- NEW BOTTOM SECTION ----------- */}
+            <div className='w-full flex flex-col sm:flex-row justify-between items-center pt-6 opacity-30 text-[10px] uppercase tracking-widest'>
+                <p>© 2026 SilverWayShop. All Rights Reserved.</p>
+                <div className='flex gap-6 mt-4 sm:mt-0'>
+                    <span className='cursor-pointer hover:underline'>Privacy Policy</span>
+                    <span className='cursor-pointer hover:underline'>Terms of Service</span>
+                </div>
+            </div>
+             {/* ------------------------------------------ */}
+
         </div>
     )
 }

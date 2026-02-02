@@ -21,7 +21,7 @@ const ChoseQuantity = ({
     <div className=' flex justify-between items-center pag-5'>
 
         <img 
-            className='w-10 h-10 p-3 flex justify-center items-center rounded-sm text-2xl font-extrabold cursor-pointer'
+            className='w-10 h-10 p-3 flex justify-center items-center rounded-xl text-2xl font-extrabold cursor-pointer'
             src={activeTheme == "light" ? "/icons/minus-dark.png" : "/icons/minus-light.png" } 
             style={{
                 backgroundColor: colors.light[300],
@@ -30,11 +30,11 @@ const ChoseQuantity = ({
         />
 
         <span
-            className='w-10 h-10 p-3 flex justify-center items-center rounded-sm '
+            className='w-10 h-10 p-3 flex justify-center items-center rounded-xl '
         >{quantity}</span>
 
         <img 
-            className='w-10 h-10 p-3 flex justify-center items-center rounded-sm text-2xl font-extrabold cursor-pointer'
+            className='w-10 h-10 p-3 flex justify-center items-center rounded-xl text-2xl font-extrabold cursor-pointer'
             src={activeTheme == "light" ? "/icons/add-black.png" : "/icons/add-white.png" } 
             style={{
                 backgroundColor: colors.light[300],

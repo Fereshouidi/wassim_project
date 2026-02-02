@@ -234,14 +234,14 @@ const SideBar = ({
                 </div>}
 
                 <div 
-                    className='w-full bg-red-500- mb-0 p-3 pt-8- bg-red-500- rounded-sm flex justify-start items-center fixed- bottom-5- cursor-pointer'
+                    className='w-full bg-red-500- mb-0 p-3 pt-8- bg-red-500- rounded-xl flex justify-start items-center fixed- bottom-5- cursor-pointer'
                     style={{
                         color: colors.light[150],
                         // border: `1px solid ${colors.dark[300]}`,
                         // boxShadow: `0 0px 15px ${colors.dark[250]}`
                     }}
                     onClick={() => {
-                        if (client && client.token) {
+                        if (client && client.password) {
                             setLoadingScreen(true)
                             router.push('/account')
                         } else { 

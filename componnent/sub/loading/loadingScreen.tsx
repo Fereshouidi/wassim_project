@@ -12,7 +12,7 @@ export default function LoadingScreen() {
         className="w-full h-screen fixed top-0 left-0 z-[999] flex items-center justify-center bg-black/70 backdrop-blur-[1px]"
         onClick={() => setLoadingScreen(false)}
     >
-      <LoadingIcon/>
+      {/* <LoadingIcon/> */}
     </div>
   );
 }

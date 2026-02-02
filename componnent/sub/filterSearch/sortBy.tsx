@@ -1,9 +1,10 @@
+"use client";
 import { useLanguage } from '@/contexts/languageContext'
 import { useTheme } from '@/contexts/themeProvider';
 import { FiltrationType } from '@/types';
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
-type currentSort = 'price' | 'name' | 'date' ;
+type currentSort = 'price' | 'name' | 'date';
 type curentSortDirection = 'asc' | 'desc';
 
 type Props = {
@@ -20,171 +21,82 @@ const SortBy = ({
 
     const { activeLanguage } = useLanguage();
     const { colors } = useTheme();
-    // const [ firstRender, setFirstRender ] = useState<boolean>(true);
-    // const [currentSort, setCurrentSort] = useState<currentSort>("date");
-    // const [curentSortDirection, setCurentSortDirection] = useState<curentSortDirection>("asc");
 
-    // useEffect(() => {
-
-    // }, [filtrationCopy])
-
-    // useEffect(() => {
-    //     setFiltrationCopy({
-    //         ...filtrationCopy,
-    //         sortBy: currentSort,
-    //         sortDirection: curentSortDirection
-    //     })
-    // }, [currentSort, curentSortDirection])
-
-    // useEffect(() => {
+    // دالة لتغيير نوع الترتيب أو الاتجاه
+    const handleSort = (type: currentSort) => {
+        let direction: curentSortDirection = 'desc';
         
-    //     if (!firstRender) return;
+        // إذا نقر المستخدم على نفس النوع الفعال، نقوم بعكس الاتجاه تلقائياً
+        if (filtrationCopy.sortBy === type) {
+            direction = filtrationCopy.sortDirection === 'desc' ? 'asc' : 'desc';
+        } else {
+            // اتجاهات افتراضية منطقية عند النقر لأول مرة
+            direction = type === 'price' ? 'asc' : 'desc';
+        }
 
-    //     setFiltrationCopy({
-    //         ...filtrationCopy,
-    //         sortBy: "price",
-    //         sortDirection: "asc"
-    //     })
-    //     setFirstRender(false);
-    // }, [filtrationCopy])
+        setFiltrationCopy({
+            ...filtrationCopy,
+            sortBy: type,
+            sortDirection: direction
+        });
+    };
+
+    const getDirectionLabel = (type: currentSort) => {
+        if (filtrationCopy.sortBy !== type) return "";
+        const isAsc = filtrationCopy.sortDirection === 'asc';
+        
+        if (type === 'price') return isAsc ? "(↑)" : "(↓)"; // cheapest vs expensive
+        if (type === 'date') return isAsc ? "(Old)" : "(New)";
+        if (type === 'name') return isAsc ? "(A-Z)" : "(Z-A)";
+        return "";
+    };
+
+    const sortItems: { id: currentSort; label: string }[] = [
+        { id: 'date', label: activeLanguage.sideMatter.date },
+        { id: 'price', label: activeLanguage.sideMatter.price },
+        { id: 'name', label: activeLanguage.sideMatter.name },
+    ];
 
     return (
-
-        <div className={`arrangement flex bg-red-400-
-            ${filterBarWidth > 650 && filterBarWidth < 1100 ? 
-                " w-full flex-row justify-center items-center overflow-x-scroll- my-5 z-0 bg-red-500-" 
-                : "flex-col justify-center items-center bg-blue-500-"
-            } 
-             gap-4 py-2 mb-4 text-sm sm:text-md`}>
-
-            <div className='w-fit'>
-                <h4 className='sm:mx-5 font-bold'>{ activeLanguage.sideMatter.SortBy + " : "}</h4>
+        <div className={`
+            flex w-full transition-all duration-300
+            ${filterBarWidth > 700 ? "flex-row justify-center items-center gap-6" : "flex-col items-center gap-4"}
+        `}>
+            {/* العنوان */}
+            <div className='opacity-40 uppercase tracking-[0.2em] text-[10px] font-black'>
+                {activeLanguage.sideMatter.SortBy}
             </div>
 
-            <div 
-                className={`
-                    w-fill rounded-sm flex flex-row items-center 
-                    ${filterBarWidth > 650 && filterBarWidth < 1100 ? "p-2" : "px-5"} 
-                     py-1 cursor-pointer
-                `}
-                onClick={() => setFiltrationCopy({
-                    ...filtrationCopy,
-                    sortBy: 'price'
+            {/* حاوية الأزرار */}
+            <div className={`
+                flex flex-wrap justify-center gap-2
+                ${filterBarWidth < 500 ? "w-full px-4" : "w-auto"}
+            `}>
+                {sortItems.map((item) => {
+                    const isActive = filtrationCopy.sortBy === item.id;
+                    return (
+                        <button
+                            key={item.id}
+                            onClick={() => handleSort(item.id)}
+                            className={`
+                                flex items-center justify-center gap-2 px-6 py-2.5 rounded-full
+                                text-[11px] font-black uppercase transition-all duration-300 active:scale-90
+                                border
+                            `}
+                            style={{
+                                backgroundColor: isActive ? colors.dark[100] : 'transparent',
+                                color: isActive ? colors.light[100] : colors.dark[100],
+                                borderColor: isActive ? colors.dark[100] : colors.light[300],
+                            }}
+                        >
+                            {item.label}
+                            {isActive && <span className="opacity-60 text-[9px]">{getDirectionLabel(item.id)}</span>}
+                        </button>
+                    )
                 })}
-                style={{
-                    border: filtrationCopy.sortBy == "price" ? `1px solid ${colors.dark[200]}` : '',
-                    backgroundColor: filtrationCopy.sortBy == "price" ? colors.dark[200] : '',
-                    color: filtrationCopy.sortBy == "price" ? colors.light[200] : '',
-                }}
-            >
-                <h4>{activeLanguage.sideMatter.price + ': '}</h4>
-                <select 
-                    className={`h-8 outline-0 flex
-                        ${filterBarWidth > 650 && filterBarWidth < 1100 ? "w-[80px]" : " w-[200px] " }
-                    justify-center items-center text-center ml-2 rounded-sm cursor-pointer`}
-                    style={{
-                        // border: `0.025px solid ${colors.light[300]}`
-                    }}
-                    defaultValue={filtrationCopy.sortDirection}
-                    onChange={(e) => setFiltrationCopy({
-                        ...filtrationCopy,
-                        sortDirection: e.target.value as curentSortDirection
-                    })}
-                >
-                    <option value="desc">{activeLanguage.sideMatter.mostExpensive}</option>
-                    <option value="asc">{activeLanguage.sideMatter.cheapest}</option>
-                </select>
             </div>
-
-            <div 
-                className={`
-                    w-fill rounded-sm flex flex-row items-center 
-                    ${filterBarWidth > 650 && filterBarWidth < 1100 ? "p-2" : "px-5"} 
-                     py-1 cursor-pointer
-                `}
-                onClick={() => setFiltrationCopy({
-                    ...filtrationCopy,
-                    sortBy: 'date'
-                })}
-                style={{
-                    // border: filtrationCopy.sortBy == "date" ? `1px solid ${colors.dark[200]}` : '',
-                    backgroundColor: filtrationCopy.sortBy == "date" ? colors.dark[200] : '',
-                    color: filtrationCopy.sortBy == "date" ? colors.light[200] : '',
-                }}
-            >
-                <h4>{activeLanguage.sideMatter.date + ': '}</h4>
-                <select 
-                    className={`h-8 outline-0 flex
-                        ${filterBarWidth > 650 && filterBarWidth < 1100 ? "w-[80px]" : " w-[200px] " }
-                    justify-center items-center text-center ml-2 rounded-sm cursor-pointer`}
-                    style={{
-                        // border: `0.025px solid ${colors.light[300]}`
-                    }}
-                    onChange={(e) => setFiltrationCopy({
-                        ...filtrationCopy,
-                        sortDirection: e.target.value as curentSortDirection
-                    })}
-                >
-                    <option value="desc">{activeLanguage.sideMatter.newest}</option>
-                    <option value="asc">{activeLanguage.sideMatter.Oldest}</option>
-                </select>
-            </div>
-
-            <div 
-                className={`
-                    w-fill rounded-sm flex flex-row items-center 
-                    ${filterBarWidth > 650 && filterBarWidth < 1100 ? "p-2" : "px-5"} 
-                     py-1 cursor-pointer
-                `}
-                onClick={() => setFiltrationCopy({
-                    ...filtrationCopy,
-                    sortBy: 'name'
-                })}
-                style={{
-                    // border: filtrationCopy.sortBy == "name" ? `1px solid ${colors.dark[200]}` : '',
-                    backgroundColor: filtrationCopy.sortBy == "name" ? colors.dark[200] : '',
-                    color: filtrationCopy.sortBy == "name" ? colors.light[200] : '',
-                }}
-            >
-                <h4>{activeLanguage.sideMatter.name + ': '}</h4>
-                <select 
-                    className={`h-8 outline-0 flex
-                        ${filterBarWidth > 650 && filterBarWidth < 1100 ? "w-[80px]" : " w-[200px] " }
-                    justify-center items-center text-center ml-2 rounded-sm cursor-pointer`}
-                    style={{
-                        // border: `0.025px solid ${colors.light[300]}`,
-                        color: filtrationCopy.sortBy == "name" ? colors.light[200] : '',
-                        outline: 'none'
-                    }}
-                    color='red'
-                    onChange={(e) => setFiltrationCopy({
-                        ...filtrationCopy,
-                        sortDirection: e.target.value as curentSortDirection
-                    })}
-                >
-                    <option 
-                        value="asc" 
-                        style={{
-                            color: colors.dark[200],
-                            backgroundColor: colors.dark[200],
-                            outline: 'none'
-                        }}
-                        // onMouseEnter={() => }    
-                    >a-z</option>
-                    <option 
-                        value="desc" 
-                        style={{
-                            color: colors.dark[200],
-                            backgroundColor: colors.dark[200],
-                            outline: 'none'
-                        }}
-                        // onMouseEnter={() => }    
-                    >z-a</option>
-                </select>
-            </div>
-
         </div>
     )
 }
 
-export default SortBy
+export default SortBy;

@@ -2,173 +2,122 @@
 import { useLanguage } from '@/contexts/languageContext';
 import { useTheme } from '@/contexts/themeProvider';
 import { Themes } from '@/types';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react';
 
 const ThemeMode = () => {
-
   const { themeDispo, activeTheme, setActiveTheme, colors } = useTheme();
-  const [optionsListExist, setOptionListExit] = useState<boolean>(false);
   const { activeLanguage } = useLanguage();
-  const [deviceTheme, setDeviceTheme] = useState<"light" | "dark" |undefined>(undefined);
-  const [firstRender, setFirstRender] = useState<boolean>(true);
-  const [replaceSystemtoRealTheme, setReplaceSystemtoRealTheme] = useState<boolean>(false);
+  
+  const [isOpen, setIsOpen] = useState(false);
+  const [deviceTheme, setDeviceTheme] = useState<"light" | "dark">("light");
+  const [mounted, setMounted] = useState(false);
 
-
-  const [activeChoise, setActiveChoise] = useState<{
-    theme: Themes,
-    label: string
-  }>({
+  const [activeChoice, setActiveChoice] = useState<{ theme: Themes; label: string }>({
     theme: "system",
     label: activeLanguage.sideMatter.theme.system
   });
 
-
+  // Handle System Theme detection
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
+    setMounted(true);
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-
     setDeviceTheme(mediaQuery.matches ? "dark" : "light");
 
-    const handler = (e: MediaQueryListEvent) => {
-      setDeviceTheme(e.matches ? "dark" : "light");
-    };
-
+    const handler = (e: MediaQueryListEvent) => setDeviceTheme(e.matches ? "dark" : "light");
     mediaQuery.addEventListener('change', handler);
+    
+    const stored = localStorage.getItem('activeTheme') as Themes;
+    if (stored) {
+      const found = themeDispo.find(t => t.theme === stored);
+      if (found) setActiveChoice({ theme: found.theme, label: found.label });
+    }
 
     return () => mediaQuery.removeEventListener('change', handler);
-  }, []);
+  }, [themeDispo]);
 
+  // Sync theme changes
   useEffect(() => {
+    if (!mounted) return;
 
-    if (firstRender) return;
+    const themeToApply = activeChoice.theme === "system" ? deviceTheme : activeChoice.theme;
+    setActiveTheme(themeToApply);
+    localStorage.setItem('activeTheme', activeChoice.theme);
+  }, [activeChoice, deviceTheme, mounted, setActiveTheme]);
 
-    if (activeChoise.theme == "system") {
-        setActiveTheme(deviceTheme? "dark" : "light")
-    } else {
-        setActiveTheme(activeChoise.theme);
-    }
-    
-    localStorage.setItem('activeTheme', activeChoise.theme)
+  // Memoized icon logic to keep JSX clean
+  const currentIcon = useMemo(() => {
+    if (activeTheme === "light") return '/icons/sun-black.png';
+    return '/icons/night-mode-white.png';
+  }, [activeTheme]);
 
-  }, [activeChoise, deviceTheme])
-
-  useEffect(() => {
-    const storedTheme = localStorage.getItem('activeTheme') as Themes;    
-    const storedTheme_ = themeDispo.find(( theme ) => theme.theme == storedTheme);
-
-    if (storedTheme_) {
-      setActiveChoise({
-        theme: storedTheme_?.theme,
-        label: storedTheme_?.label
-      });
-    };
-    setFirstRender(false);
-  }, [])
+  if (!mounted) return <div className="w-28 h-full" />; // Prevent hydration mismatch
 
   return (
-
     <div 
-      className='w-28 h-full flex justify-center items-center cursor-pointer no-sellect relative z-50'
-      style={{
-        color: colors.dark[200]
-      }}
-      onClick={() =>  setOptionListExit(!optionsListExist)}
+      className='w-32 h-10 flex justify-center items-center cursor-pointer no-sellect relative z-50 rounded-lg transition-all'
+      style={{ color: colors.dark[200] }}
+      onClick={() => setIsOpen(!isOpen)}
+      onBlur={() => setTimeout(() => setIsOpen(false), 200)} // Delay to allow onClick of items
       tabIndex={0}
-      onBlur={() => setOptionListExit(false)}
     >
-
-      <div className='w-full h-full flex flex-row justify-between items-center gap-2 '>
-
+      <div className='w-full h-full flex flex-row justify-between items-center px-2 gap-2'>
+        <img src={currentIcon} className='w-4 h-4 object-contain' alt="theme" />
+        <span className='text-md font-semibold truncate flex-1'>{activeChoice.label}</span>
         <img 
-          src={
-            activeTheme == "light" ? '/icons/sun-black.png' :
-            activeTheme == "dark" ? '/icons/night-mode-white.png' :
-            "a"
-          } 
-          className='w-4 h-4 z-0'
-          alt="" 
+          src={activeTheme === "dark" ? "/icons/down-arrow-white.png" : "/icons/down-arrow-black.png"}
+          className={`w-3 h-3 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
+          alt="arrow" 
         />
-
-        <h4 className='text-lg font-medium'>{activeChoise.label}</h4>
-
-        <img 
-          src={activeTheme == "dark" ? "/icons/down-arrow-white.png" : "/icons/down-arrow-black.png" }
-          className='w-4 h-4 mx-2'
-          alt="" 
-        />
-        
       </div>
 
-
+      {/* Dropdown Menu */}
       <div 
-        className='options w-[120%] absolute top-full duration-100'
-        style={{
+        className={`absolute top-[110%] left-0 w-full rounded-xl overflow-hidden shadow-2xl transition-all duration-300 origin-top
+          ${isOpen ? 'opacity-100 scale-100 visible' : 'opacity-0 scale-95 invisible'}`}
+        style={{ 
           backgroundColor: colors.light[100],
-          visibility: optionsListExist ? "visible" : "hidden",
-          height: optionsListExist ? "50px" : "0"
+          border: `1px solid ${colors.dark[100]}20`
         }}
       >
-          
-          <ul 
-            className='w-full h-full'
-            style={{
-              // height: optionsListExist ? "120px" : "0"
-            }}
-          >
-
-            {themeDispo.map((theme, index) => (
-
+        <ul className='flex flex-col py-1'>
+          {themeDispo.map((item, index) => {
+            const isActive = activeChoice.theme === item.theme;
+            return (
               <li 
                 key={index}
-                className={`flex w-full h-full items-center gap-2 px-6`}
+                className='flex items-center gap-3 px-4 py-2 text-md transition-colors duration-200'
                 style={{
-                  display: optionsListExist ? "" : "none",
-                  backgroundColor: activeChoise.label == theme.label ? colors.dark[100] : colors.light[100]
+                  backgroundColor: isActive ? colors.dark[100] : 'transparent',
+                  color: isActive ? colors.light[100] : colors.dark[100]
                 }}
                 onMouseEnter={(e) => {
-                  if (activeTheme != theme.theme) {
-                    e.currentTarget.style.backgroundColor = colors.light[200]
-                  } else {
-                    e.currentTarget.style.backgroundColor = colors.dark[200]
-                  }
+                  if (!isActive) e.currentTarget.style.backgroundColor = `${colors.dark[100]}15`;
                 }}
-                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = activeChoise.label == theme.label ? 
-                  colors.dark[100] : 
-                  colors.light[100]
-                )}
-                onClick={() => setActiveChoise({
-                  theme: theme.theme,
-                  label: theme.label
-                })}
+                onMouseLeave={(e) => {
+                  if (!isActive) e.currentTarget.style.backgroundColor = 'transparent';
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setActiveChoice({ theme: item.theme, label: item.label });
+                  setIsOpen(false);
+                }}
               >
                 <img 
-                  className='w-5 h-5'
-                  src={activeTheme == "dark" ? 
-
-                    activeChoise.label == theme.label ? theme.icon.light : theme.icon.dark
-                    :
-                    activeChoise.label == theme.label ? theme.icon.dark : theme.icon.light
-                     
-                  
+                  className='w-4 h-4 object-contain'
+                  src={activeTheme === "dark" 
+                    ? (isActive ? item.icon.light : item.icon.dark)
+                    : (isActive ? item.icon.dark : item.icon.light)
                   }
-                  alt="" 
+                  alt={item.label} 
                 />
-                <h6
-                  style={{
-                    color: activeChoise.label == theme.label ? colors.light[100] : colors.dark[100]
-                  }}
-                >{theme.label}</h6>
+                <span className="font-medium">{item.label}</span>
               </li>
-
-            ))}
-
-          </ul>
-
+            );
+          })}
+        </ul>
       </div>
-
     </div>
-  )
+  );
 }
 
 export default ThemeMode;

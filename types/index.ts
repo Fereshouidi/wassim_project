@@ -196,6 +196,22 @@ export type LanguageStracture = {
     submit: string,
     searchByAi: string
     orderSummary: string
+    orderNow: string
+    addEvaluation: string,
+    evaluations: string,
+    reviewsForProduct: string,
+    noEvaluationsYet: string,
+    verifiedPurchasesOnly: string,
+    rateThisProduct: string,
+    writeNotes: string,
+    editEvaluation: string,
+    artificialIntelligence: string,
+    loading: string,
+    noResults: string
+    support: string,
+    social_directory: string
+    reviews: string
+    opinion: string
     // fullName: string
     // address: string,
     // phone: number,
@@ -286,7 +302,10 @@ export type ProductType = {
   };
   price: number | null;
   thumbNail: string | null;
-  images: string[];
+  images: [{
+    uri: string,
+    specification: ProductSpecification;
+  }];
   description: {
     fr: string | null;
     en: string | null;
@@ -340,10 +359,16 @@ export type CollectionWithProductsType = {
 export type ProductSpecification = {
   _id?: string | null;
   color?: string | null;
+  colorHex?: string | null;
   size?: string | null;
   type?: string | null;
   price?: number | null;
   quantity?: number | null;
+}
+
+export type ProductImage = {
+  uli: string;
+  specification: ProductSpecification
 }
 
 export type ClientFormType = {

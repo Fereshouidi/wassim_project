@@ -46,7 +46,7 @@ const OrdersSection = ({
 
     return (
         <div>
-            <div className='w-[100vw] h-full bg-blue-500- flex flex-1 rounded-sm p-4-'
+            <div className='w-[100vw] h-full bg-blue-500- flex flex-1 rounded-xl p-4-'
                 style={{
                     minHeight: screenHeight - headerHeight + "px",
                     border: `0.2px solid ${colors.light[200]}`,
