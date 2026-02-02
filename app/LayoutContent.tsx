@@ -43,7 +43,7 @@ export default function LayoutContent({
         
         // localStorage.removeItem('clientToken')
 
-        console.log({token});
+        console.log({token__: token});
         
         
         setClientToken(token);

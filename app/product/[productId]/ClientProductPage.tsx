@@ -55,6 +55,7 @@ export default function ClientProductPage({ product }: Props) {
     useEffect(() => {
         window.scrollTo(0, 0);
         setLoadingScreen(false);
+        
     }, [product._id]); // يتم التنفيذ عند تحميل الصفحة أو تغير المنتج
 
     useEffect(() => {

@@ -15,7 +15,7 @@ export async function generateMetadata({
   
 
   try {
-    console.log('hhhhhhhhhhhhh');
+    console.log('hhhhhhhhhhhhh');alert("hhh")
     
     const { data } = await axios.get<{ product: ProductType }>(`${backEndUrl}/getProductById`, {
       params: { productId },
