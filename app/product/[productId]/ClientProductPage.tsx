@@ -178,7 +178,7 @@ export default function ClientProductPage({ product }: Props) {
                         loadingGettingProduct={false}
                         quantity={purchase?.quantity ?? 1}
                         setQuantity={handlePurchaseQuantity}
-                        activeSpecifications={activeSpecifications}
+                        activeSpecifications={activeSpecifications?? product.specifications[0]}
                         collections={collections}
                         loadingGettingCollection={loadingGettingCollection}
                         setActiveSpecifications={setActiveSpecifications}

@@ -15,6 +15,7 @@ import SliderForPhones from '../sub/sliderForPhones';
 import SkeletonLoading from '../sub/SkeletonLoading';
 // استيراد motion
 import { motion } from 'framer-motion';
+import { slideInFromBottom } from '@/lib/motion';
 
 type ProductsSectionType = {
     collection: CollectionType
@@ -117,7 +118,7 @@ const ProductsSection = ({
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
-                variants={titleAnimation}
+                variants={slideInFromBottom(0.5)}
                 className='text-xl sm:text-4xl sm:mb-20 m-10'
                 style={{
                     color: colors.dark[100],

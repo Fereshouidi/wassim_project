@@ -51,6 +51,7 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
     // التحقق من وجود المنتج في السلة
     const isInCart = useMemo(() => {
         return purchases.some(pur => 
+            //@ts-ignore
             (typeof pur?.product === 'string' ? pur.product === product._id : pur?.product?._id === product._id) && 
             pur?.status === 'inCart'
         );
@@ -92,6 +93,7 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
         if (isInCart) {
             // إزالة المنتج من القائمة المحلية (Optimistic Update)
             setPurchases(purchases.filter(pur => 
+                //@ts-ignore
                 (typeof pur?.product === 'string' ? pur.product !== product._id : pur?.product?._id !== product._id)
             ));
         } else {
