@@ -16,7 +16,7 @@ import { calculateRatingStats, handleShareOnFacebook } from '@/lib';
 
 // Sub Components
 import SkeletonLoading from '../sub/SkeletonLoading';
-import ProductActionPanel from '../sub/ProductActionPanel';
+import ProductActionPanel from '../sub/ProductActionPanel/ProductActionPanel';
 import StarsRatingDisplay from '../sub/StarsRatingDisplay';
 import AddEvaluationCard from '../sub/addEvaluationCard';
 import EditEvaluationCard from '../sub/editEvaluationCard';
@@ -69,41 +69,92 @@ const ProductDetails = ({
   const [addEvaluationActive, setAddEvaluationActive] = useState(false);
   const [editEvaluationActive, setEditEvaluationActive] = useState(false);
   const [newEvaluation, setNewEvaluation] = useState<EvaluationType>({});
+  const [clientCanRate, setClientCanRate] = useState<boolean>(false);
 
-  // 1. استخدام المواصفات من المنتج مباشرة
+  // 1. مصدر البيانات الأساسي
   const allSpecs = useMemo(() => product.specifications || [], [product.specifications]);
 
-  // 2. تجميع القيم الفريدة
-  const allColors = useMemo(() => Array.from(new Set(allSpecs.map(s => s.color).filter(Boolean))), [allSpecs]);
+  // 2. القيم الفريدة الكاملة (لكي لا تختفي الأزرار من الواجهة)
   const allSizes = useMemo(() => Array.from(new Set(allSpecs.map(s => s.size).filter(Boolean))), [allSpecs]);
   const allTypes = useMemo(() => Array.from(new Set(allSpecs.map(s => s.type).filter(Boolean))), [allSpecs]);
 
-  // 3. منطق التوافر الذكي
-  const availableColors = useMemo(() => allSpecs
-    .filter(s => (!selectedSize || s.size === selectedSize) && (!selectedType || s.type === selectedType) && (s.quantity ?? 0) > 0)
-    .map(s => s.color), [selectedSize, selectedType, allSpecs]);
+  // 3. الألوان المتاحة (تختفي الألوان التي لا تملك هذا المقاس أو النوع)
+  const dynamicAvailableColors = useMemo(() => {
+    return allSpecs
+      .filter(s => 
+        (!selectedSize || s.size === selectedSize) && 
+        (!selectedType || s.type === selectedType) && 
+        (s.quantity ?? 0) > 0
+      )
+      .map(s => s.color);
+  }, [selectedSize, selectedType, allSpecs]);
 
-  const availableSizes = useMemo(() => allSpecs
-    .filter(s => (!selectedColor || s.color === selectedColor) && (!selectedType || s.type === selectedType) && (s.quantity ?? 0) > 0)
-    .map(s => s.size), [selectedColor, selectedType, allSpecs]);
+  // 4. المقاسات والأنواع المتاحة (للتنسيق البصري فقط: تبهيت الزر)
+  const availableSizesForContext = useMemo(() => 
+    allSpecs
+      .filter(s => 
+        (!selectedColor || s.color === selectedColor) && 
+        (!selectedType || s.type === selectedType) && 
+        (s.quantity ?? 0) > 0
+      )
+      .map(s => s.size), 
+  [selectedColor, selectedType, allSpecs]);
 
-  const availableTypes = useMemo(() => allSpecs
-    .filter(s => (!selectedColor || s.color === selectedColor) && (!selectedSize || s.size === selectedSize) && (s.quantity ?? 0) > 0)
-    .map(s => s.type), [selectedColor, selectedSize, allSpecs]);
+  const availableTypesForContext = useMemo(() => 
+    allSpecs
+      .filter(s => 
+        (!selectedColor || s.color === selectedColor) && 
+        (!selectedSize || s.size === selectedSize) && 
+        (s.quantity ?? 0) > 0
+      )
+      .map(s => s.type), 
+  [selectedColor, selectedSize, allSpecs]);
+
+  // --- Handlers ---
+
+  const handleColorSelect = (hex: string | null) => {
+    const targetSpec = allSpecs.find(s => s.colorHex === hex);
+    if (!targetSpec) return;
+
+    const newColor = targetSpec.color ?? null;
+    if (selectedColor === newColor) {
+      setSelectedColor(null);
+    } else {
+      setSelectedColor(newColor);
+      // تحديث الفهرس الخاص بالصورة
+      const imageIndex = product.images.findIndex(img => (img.specification as ProductSpecification)?.colorHex === hex);
+      if (imageIndex !== -1) setCurrentImageIndex(imageIndex);
+    }
+  };
+
+  const handleSizeSelect = (size: string) => {
+    if (selectedSize === size) {
+      setSelectedSize(null);
+    } else {
+      setSelectedSize(size);
+      // إذا كان اللون المختار غير متوافق مع المقاس الجديد، يتم إلغاء تحديده ليختفي من السلايدر
+      const isColorStillAvailable = allSpecs.some(s => 
+        s.size === size && s.color === selectedColor && (s.quantity ?? 0) > 0
+      );
+      if (!isColorStillAvailable) setSelectedColor(null);
+    }
+  };
+
+  const handleTypeSelect = (type: string) => {
+    if (selectedType === type) {
+      setSelectedType(null);
+    } else {
+      setSelectedType(type);
+      const isColorStillAvailable = allSpecs.some(s => 
+        s.type === type && s.color === selectedColor && (s.quantity ?? 0) > 0
+      );
+      if (!isColorStillAvailable) setSelectedColor(null);
+    }
+  };
 
   // --- Effects ---
   useEffect(() => {
-    if (purchase?.specification) {
-      // @ts-ignore
-      setSelectedColor(purchase?.specification?.color ?? null);
-      // @ts-ignore
-      setSelectedSize(purchase?.specification?.size ?? null);
-      // @ts-ignore
-      setSelectedType(purchase?.specification?.type ?? null);
-    }
-  }, [product._id]);
-
-  useEffect(() => {
+    // تحديد المواصفة النشطة بناءً على جميع الفلاتر
     const matched = allSpecs.find(s => 
       (!selectedColor || s.color === selectedColor) && 
       (!selectedSize || s.size === selectedSize) &&
@@ -114,10 +165,22 @@ const ProductDetails = ({
 
   useEffect(() => {
     if (!product._id) return;
+
     axios.get(`${backEndUrl}/getEvaluationByProduct`, { params: { productId: product._id } })
       .then(({ data }) => setEvaluations(data.evaluations || []))
       .catch(err => console.error(err));
-  }, [product._id]);
+
+    if (!client?._id) return;
+    console.log({ productId: product._id, clientId: client?._id })
+
+    axios.get(`${backEndUrl}/verifyClientPurchase`, { params: { productId: product._id, clientId: client._id } })
+      .then(({ data }) => {
+        setClientCanRate( (data?.purchaseCount || 0) > 0 ? true : false);
+        console.log(data);
+      })
+      .catch(err => console.error(err));
+
+  }, [product._id, client?._id]);
 
   return (
     <div className={`h-full overflow-y-auto scrollbar-hidden p-5 ${screenWidth > 1000 ? "w-[50%]" : "w-full"} ${className}`} style={style}>
@@ -136,63 +199,36 @@ const ProductDetails = ({
           <StarsRatingDisplay rating={calculateRatingStats(evaluations).average} />
           <p className='text-xs opacity-50 underline'>( {evaluations.length} {activeLanguage?.opinion} )</p>
         </div>
-        <button onClick={() => setAddEvaluationActive(true)} className='p-1.5 rounded-full transition-transform active:scale-90' style={{ backgroundColor: colors.dark[300] }}>
+        {clientCanRate && <button onClick={() => setAddEvaluationActive(true)} className='p-1.5 rounded-full transition-transform active:scale-90' style={{ backgroundColor: colors.dark[300] }}>
           <img src={activeTheme === "dark" ? "/icons/add-black.png" : "/icons/add-white.png"} className='w-3 h-3' alt="add" />
-        </button>
+        </button>}
       </div>
 
-      <div className="mb-6">
-        <h4 className='font-bold text-sm mb-2' style={{ color: colors.dark[150] }}>{activeLanguage.nav.collections} :</h4>
-        <div className='flex flex-wrap gap-2'>
-          {loadingGettingCollection ? [1, 2].map(i => <SkeletonLoading key={i}/>) :
-            collections?.map(c => (
-              <span key={c._id} className="px-3 py-1 text-xs rounded-full border" style={{ backgroundColor: colors.light[250], color: colors.dark[500], borderColor: colors.dark[500] + '20' }}>
-                {c.name[activeLanguage.language]}
-              </span>
-            ))
-          }
+      {/* اختيار الألوان: تختفي الألوان غير المتاحة للمقاس المختار */}
+      {dynamicAvailableColors.length > 0 && (
+        <div className='w-full mb-6'>
+          <h4 className='font-bold text-sm mb-2' style={{ color: colors.dark[150] }}>{activeLanguage.sideMatter.colors} :</h4>
+          <SpecificationsSlider 
+            product={product.images} 
+            availableColors={dynamicAvailableColors as string[]} 
+            onColorSelect={handleColorSelect} 
+            importedFrom="productDetails"
+          />
         </div>
-      </div>
+      )}
 
-      {availableColors.length > 1 && <div className='w-full mb-6'>
-        <h4 className='font-bold text-sm mb-2' style={{ color: colors.dark[150] }}>{activeLanguage.sideMatter.colors} :</h4>
-        <SpecificationsSlider 
-          product={product.images} 
-          // selectedColor={selectedColor}
-          availableColors={availableColors as string[]} 
-          onColorSelect={(hex) => {
-            const targetSpec = allSpecs.find(s => s.colorHex === hex);
-            if (targetSpec) {
-                const newColor = targetSpec.color ?? null;
-                if (selectedColor === newColor) {
-                    setSelectedColor(null);
-                    setCurrentImageIndex(0); 
-                } else {
-                    setSelectedColor(newColor);
-                    const imageIndex = product.images.findIndex(img => (img.specification as ProductSpecification)?.colorHex === hex);
-                    if (imageIndex !== -1) setCurrentImageIndex(imageIndex);
-                }
-            } else {
-                setSelectedColor(null);
-                setCurrentImageIndex(0);
-            }
-          }} 
-          importedFrom="productDetails"
-        />
-      </div>}
-
+      {/* اختيار المقاسات: تظل ظاهرة ولكن تبهت إذا كانت غير متاحة للون الحالي */}
       {allSizes.length > 0 && (
         <div className='mb-6'>
           <h4 className='font-bold text-sm mb-2' style={{ color: colors.dark[150] }}>{activeLanguage.sideMatter.sizes} :</h4>
           <div className='flex flex-wrap gap-2'>
             {allSizes.map(size => {
-              const isAvailable = availableSizes.includes(size!);
               const isSelected = selectedSize === size;
+              const isAvailable = availableSizesForContext.includes(size!);
               return (
                 <button
                   key={size}
-                  disabled={!isAvailable}
-                  onClick={() => setSelectedSize(isSelected ? null : size!)}
+                  onClick={() => handleSizeSelect(size!)}
                   className={`px-4 py-2 text-xs font-bold rounded border transition-all duration-300 ${isSelected ? 'scale-105' : ''}`}
                   style={{ 
                       backgroundColor: isSelected ? colors.dark[150] : 'transparent',
@@ -210,25 +246,25 @@ const ProductDetails = ({
         </div>
       )}
 
+      {/* اختيار الأنواع */}
       {allTypes.length > 0 && (
         <div className='mb-6'>
           <h4 className='font-bold text-sm mb-2' style={{ color: colors.dark[150] }}>{activeLanguage.sideMatter.types || "Types"} :</h4>
           <div className='flex flex-wrap gap-2'>
             {allTypes.map(type => {
-              const isAvailable = availableTypes.includes(type!);
               const isSelected = selectedType === type;
+              const isAvailable = availableTypesForContext.includes(type!);
               return (
                 <button
                   key={type}
-                  disabled={!isAvailable}
-                  onClick={() => setSelectedType(isSelected ? null : type!)}
+                  onClick={() => handleTypeSelect(type!)}
                   className={`px-4 py-2 text-xs font-bold rounded border transition-all duration-300 ${isSelected ? 'scale-105' : ''}`}
                   style={{ 
                       backgroundColor: isSelected ? colors.dark[150] : 'transparent',
                       color: isSelected ? colors.light[100] : colors.dark[150],
                       borderColor: colors.dark[150],
                       opacity: isAvailable ? 1 : 0.3,
-                      textDecoration: isAvailable ? 'none' : 'line-through' 
+                      textDecoration: isAvailable ? 'none' : 'line-through'
                   }}
                 >
                   {type}
@@ -264,19 +300,13 @@ const ProductDetails = ({
         cart={cart} product={product}
         clientForm={clientForm}
         setClientForm={setClientForm}
+
       />
 
-      <div className='flex justify-center gap-4 mt-8'>
-        {ownerInfo?.socialMedia?.map((media) => (
-          <img 
-            key={media.platform} 
-            src={media.icon} 
-            className="w-8 h-8 cursor-pointer hover:scale-110 transition-transform opacity-80 hover:opacity-100"
-            onClick={() => media.platform === "Facebook" && handleShareOnFacebook(window.location.href)}
-            alt={media.platform}
-          />
-        ))}
-      </div>
+
+
+
+
 
       {/* Evaluation Modals */}
       {evaluationSectionActive && (
@@ -286,6 +316,7 @@ const ProductDetails = ({
           evaluationSectionActive={evaluationSectionActive} setEvaluationSectionActive={setEvaluationSectionActive}
           product={product} addEvaluationActive={addEvaluationActive} setAddEvaluationActive={setAddEvaluationActive}
           editEvaluationActive={editEvaluationActive} setEditEvaluationActive={setEditEvaluationActive}
+          clientCanRate={clientCanRate}
         />
       )}
       
@@ -306,6 +337,10 @@ const ProductDetails = ({
           evaluationSectionActive={evaluationSectionActive} setEvaluationSectionActive={setEvaluationSectionActive}
         />
       )}
+
+
+
+
     </div>
   );
 };

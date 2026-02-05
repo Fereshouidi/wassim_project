@@ -3,15 +3,16 @@ import { useLoadingScreen } from '@/contexts/loadingScreen';
 import { useOwner } from '@/contexts/ownerInfo';
 import { useTheme } from '@/contexts/themeProvider';
 import { calculPurshaseTotalPrice } from '@/lib';
-import { PurchaseType } from '@/types';
+import { OrderType, PurchaseType } from '@/types';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
 type Props = {
   purchases: PurchaseType[];
+  order: OrderType
 }
 
-const PurshasesTable = ({ purchases }: Props) => {
+const PurshasesTable = ({ purchases, order }: Props) => {
 
     const { activeLanguage } = useLanguage();
     const { colors } = useTheme();
@@ -177,7 +178,10 @@ const PurshasesTable = ({ purchases }: Props) => {
                             className='text-[10px] sm:text-[12px] text-center p-2'
                             // style={{ border: `0.2px solid ${colors.light[300]}` }}
                         >
-                            {ownerInfo?.shippingCost || 0} D.T
+                            {
+                                //@ts-ignore
+                                order?.shippingCoast || 0
+                            } D.T
                         </td>
                     </tr>
 
@@ -193,7 +197,10 @@ const PurshasesTable = ({ purchases }: Props) => {
                             className='text-[10px] sm:text-[12px] text-center p-2'
                             style={{ border: `1px solid ${colors.dark[300]}` }}
                         >
-                            {totalPrice + (ownerInfo?.shippingCost || 0)} D.T
+                            {
+                                //@ts-ignore
+                                totalPrice + (order?.shippingCoast || 0)
+                            } D.T
                         </td>
                     </tr>
 

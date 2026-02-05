@@ -5,7 +5,6 @@ import { useLanguage } from '@/contexts/languageContext';
 import { useTheme } from '@/contexts/themeProvider';
 import { useClient } from '@/contexts/client';
 import { useCartSide } from '@/contexts/cart';
-import { useSocket } from '@/contexts/soket';
 import { useLoadingScreen } from '@/contexts/loadingScreen';
 import { useRouter } from 'next/navigation';
 import { useOwner } from '@/contexts/ownerInfo';
@@ -13,9 +12,10 @@ import PurchaseItem from '../sub/purchaseItem';
 import InputForm from './inputForm';
 import OrderData from './OrderData';
 import { useRegisterSection } from '@/contexts/registerSec';
+import { backEndUrl } from '@/api';
+import axios from 'axios';
 
 const CartSide = () => {
-
     const { isActive, setIsActive, purchases, setPurchases } = useCartSide();
     const { ownerInfo } = useOwner();
     const { activeLanguage } = useLanguage();
@@ -23,7 +23,6 @@ const CartSide = () => {
     const { colors, activeTheme } = useTheme();
     const { setRegisterSectionExist } = useRegisterSection();
     const router = useRouter();
-    const socket = useSocket();
     const { setLoadingScreen } = useLoadingScreen();
 
     const [clientForm, setClientForm] = useState({ fullName: "", address: "", phone: "", note: "" });
@@ -42,20 +41,45 @@ const CartSide = () => {
 
     useEffect(() => {
         setConfirmBTNWorks(
-            !!(clientForm.fullName && clientForm.address && clientForm.phone && clientForm.phone.length >= 8)
+            !!(clientForm.fullName && clientForm.address && clientForm.phone && clientForm.phone.length >= 8 && purchases.length > 0)
         );
-    }, [clientForm]);
+    }, [clientForm, purchases]);
 
-    const handleConfirm = () => {
+    const handleConfirm = async () => {
         if (!confirmBTNWorks) return;
         if (!client?._id) return setRegisterSectionExist(true);
+
         setLoadingScreen(true);
+
         const purchasesId = purchases.map(p => p._id);
-        socket?.emit('add_order', { 
-            form: { ...clientForm, client: client?._id, shippingCoast: ownerInfo?.shippingCost, clientNote: clientForm.note }, 
+        const orderData = {
+            orderForm: { 
+                ...clientForm, 
+                client: client?._id, 
+                shippingCoast: ownerInfo?.shippingCost, 
+                clientNote: clientForm.note 
+            }, 
             purchasesId 
-        });
-    }
+        };
+
+        try {
+            const { data } = await axios.post(`${backEndUrl}/addOrder`, orderData);
+
+            if (data.success) {
+                // 1. تفريغ السلة محلياً بعد نجاح الطلب
+                setPurchases([]);
+                // 2. إغلاق السلة الجانبية
+                setIsActive(false);
+                // 3. التوجيه لصفحة الطلبات لمشاهدة حالة الطلب
+                router.push('/orders');
+            }
+        } catch (err: any) {
+            console.error("Order Error:", err.response?.data?.message || "Error");
+            // هنا يمكنك إضافة تنبيه للمستخدم في حال فشل الطلب
+        } finally {
+            setLoadingScreen(false);
+        }
+    };
 
     return (
         <div 
@@ -68,8 +92,7 @@ const CartSide = () => {
             <div 
                 className={`
                     w-[90vw] sm:w-[450px] h-full absolute right-0 top-0 
-                    flex flex-col shadow-2xl bg-white
-                    transition-transform duration-300 cubic-bezier(0.19, 1, 0.22, 1)
+                    flex flex-col shadow-2xl transition-transform duration-300
                     ${isActive ? "translate-x-0" : "translate-x-full"}
                 `}
                 style={{ backgroundColor: colors.light[100], color: colors.dark[200] }}
@@ -77,11 +100,10 @@ const CartSide = () => {
             >
                 {/* --- HEADER --- */}
                 <div className='flex justify-between items-center px-6 py-5 border-b' style={{ borderColor: colors.light[300] }}>
-                    
                     <div className='flex gap-3 items-center'>
                         <img 
                             src={activeTheme === "dark" ? "/icons/shopping-bag-white.png" : "/icons/shopping-bag-black.png"} 
-                            className='w-5 h-5 opacity-80' alt="" 
+                            className='w-5 h-5 opacity-80' alt="cart" 
                         />
                         <h2 className='font-bold text-sm tracking-wide uppercase'>{activeLanguage.myCart}</h2>
                         <span className='px-2 py-0.5 rounded-xl text-[10px] font-bold opacity-60' style={{ backgroundColor: colors.light[300] }}>
@@ -89,21 +111,12 @@ const CartSide = () => {
                         </span>
                     </div>
 
-                    {/* <button
-                        className='font-bold text-sm tracking-wide uppercase'
-                        style={{ color: colors.dark[100], borderColor: colors.dark[100] }}
-                        onClick={() => router.push(`/orders`)}
-                    >
-                        {activeLanguage.myOrders}
-                    </button> */}
-
                     <button onClick={() => setIsActive(false)} className='opacity-40 hover:opacity-100 transition-opacity p-2'>
                         <img src={`/icons/close-${activeTheme === "dark" ? "white" : "black"}.png`} className='w-3 h-3' alt="Close" />
                     </button>
-
                 </div>
 
-                {/* --- SCROLLABLE BODY --- */}
+                {/* --- BODY --- */}
                 <div className='flex-1 overflow-y-scroll px-2 sm:px-6 py-6 scrollbar-hidden'>
                     {purchases.length === 0 ? (
                         <div className='h-full flex flex-col justify-center items-center opacity-40 gap-4'>
@@ -112,17 +125,14 @@ const CartSide = () => {
                         </div>
                     ) : (
                         <div className='flex flex-col gap-8'>
-                            {/* Products */}
                             <div className='flex flex-col gap-4'>
                                 {purchases.map((purchase, index) => (
-                                    <PurchaseItem key={index} purchase={purchase} setPurchases={setPurchases} />
+                                    <PurchaseItem key={purchase._id || index} purchase={purchase} setPurchases={setPurchases} />
                                 ))}
                             </div>
                             
-                            {/* Divider */}
                             <div className='border-t border-dashed' style={{ borderColor: colors.light[300] }} />
 
-                            {/* Summary & Form */}
                             <div className='space-y-6'>
                                 <OrderData purchases={purchases} />
                                 <div className='p-4 border rounded-xl' style={{ borderColor: colors.light[300], backgroundColor: activeTheme === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)' }}>
@@ -145,7 +155,7 @@ const CartSide = () => {
                         {activeLanguage.confirmOrder}
                     </button>
                     <button
-                        className='w-full h-12 rounded-xl font-bold text-xs uppercase tracking-widest border transition-all active:scale-[0.99] hover:bg-black/[0.03]'
+                        className='w-full h-12 rounded-xl font-bold text-xs uppercase tracking-widest border transition-all active:scale-[0.99]'
                         style={{ color: colors.dark[100], borderColor: colors.dark[100] }}
                         onClick={() => {router.push(`/orders`); setIsActive(false)}}
                     >

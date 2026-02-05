@@ -30,6 +30,8 @@ const OrderCart = ({
 
     useEffect(() => {
         setCardOpened(cardOpenedByDefault)
+        console.log({order});
+        
     }, [cardOpenedByDefault])
 
     return (
@@ -81,6 +83,7 @@ const OrderCart = ({
                 >
                     <PurshasesTable 
                         purchases={order.purchases ?? []}
+                        order={order}
                     />
 
                     <MoreDetailsTable

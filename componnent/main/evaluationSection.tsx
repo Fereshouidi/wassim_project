@@ -19,6 +19,7 @@ type EvaluationSectionType = {
     evaluationSectionActive: boolean, 
     setEvaluationSectionActive: (value: boolean) => void
     product: ProductType
+    clientCanRate: boolean
 }
 
 const EvaluationSection = ({
@@ -32,7 +33,8 @@ const EvaluationSection = ({
     setEvaluations,
     evaluationSectionActive, 
     setEvaluationSectionActive,
-    product
+    product,
+    clientCanRate
 }: EvaluationSectionType) => {
 
     const { colors, activeTheme } = useTheme();
@@ -63,7 +65,7 @@ const EvaluationSection = ({
                 <div className='w-full px-6 py-8 sm:px-12 flex flex-col sm:flex-row justify-between items-center gap-4 border-b'
                     style={{ borderColor: colors.light[200] }}
                 >
-                    <button 
+                    {clientCanRate && <button 
                         className='order-2 sm:order-1 flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold transition-all active:scale-95 shadow-lg'
                         style={{
                             backgroundColor: colors.dark[100],
@@ -77,7 +79,7 @@ const EvaluationSection = ({
                             alt="add" 
                         />
                         <span>{activeLanguage.addEvaluation}</span>
-                    </button>
+                    </button>}
 
                     <div className='order-1 sm:order-2 text-center'>
                         <h3 className='text-2xl font-black uppercase tracking-tight' style={{ color: colors.dark[100] }}>

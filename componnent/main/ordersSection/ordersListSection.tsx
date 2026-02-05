@@ -43,7 +43,7 @@ const OrdersListSection = ({
 
 
   useEffect(() => {
-    setCardsOpenedByDefault(orders.length < 3);
+    setCardsOpenedByDefault(orders.length < 3);    
   }, [orders.length])
 
 

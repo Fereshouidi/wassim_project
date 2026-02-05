@@ -9,7 +9,7 @@ import SideBar from "@/componnent/main/sideBar";
 import Footer from "@/componnent/main/footer";
 import Header from "@/componnent/main/header";
 import AnnouncementBar from "@/componnent/sub/AnnouncementBar";
-import ProductActionPanel from "@/componnent/sub/ProductActionPanel";
+import ProductActionPanel from "@/componnent/sub/ProductActionPanel/ProductActionPanel";
 import { useScreen } from "@/contexts/screenProvider";
 import { useTheme } from "@/contexts/themeProvider";
 import { getUniqueImagesByColor, handleShareOnFacebook } from "@/lib";
@@ -63,7 +63,7 @@ export default function ClientProductPage({ product }: Props) {
         console.log({client});
 
         if (!client || !product._id) return;
-        
+
       if (!purchase?._id) {
         axios.get(backEndUrl + "/getPurchaseByClientAndProduct", {
             params: {
@@ -230,6 +230,7 @@ export default function ClientProductPage({ product }: Props) {
                         product={product}
                         clientForm={clientForm}
                         setClientForm={setClientForm}
+                        activeButtong='putInCart'
                     />
                 </div>
             </div>

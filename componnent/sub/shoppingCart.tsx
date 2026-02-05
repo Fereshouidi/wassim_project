@@ -2,7 +2,7 @@
 
 import { backEndUrl } from '@/api';
 import { useClient } from '@/contexts/client';
-import { useSocket } from "@/contexts/soket";
+// تم حذف استيراد useSocket
 import { useTheme } from '@/contexts/themeProvider';
 import { useCartSide } from '@/contexts/cart';
 import axios from 'axios';
@@ -12,9 +12,9 @@ import CartSide from '../main/cartSide';
 const ShoppingCart = () => {
     const { activeTheme, colors } = useTheme();
     const { client } = useClient();
-    const socket = useSocket();
     const { setIsActive, purchases, setPurchases } = useCartSide();
 
+    // جلب المشتريات الموجودة في السلة عند تحميل الصفحة لأول مرة
     const fetchPurchasesInCart = async () => {
         if (!client?._id) return;
         try {
@@ -23,28 +23,16 @@ const ShoppingCart = () => {
             });
             setPurchases(data.purchases || []); 
         } catch (err) {
-            console.error(err);
+            console.error("Error fetching cart items:", err);
         }
     }
 
-    useEffect(() => { fetchPurchasesInCart(); }, [client]);
+    // يتم الجلب عند تغيير العميل (أو عند الدخول المباشر للرابط كما ناقشنا في البداية)
+    useEffect(() => { 
+        fetchPurchasesInCart(); 
+    }, [client?._id]); 
 
-    useEffect(() => {
-        if (!socket || !client) return;
-        socket.on("receive_update_purchase_result", (data: any) => {
-            setPurchases((prev) => {
-                const exists = prev.some((p) => p._id === data.purchase?._id);
-                if (exists) {
-                    if (!data.purchase.cart) return prev.filter((p) => p._id !== data.purchase._id);
-                    return prev.map((p) => p._id === data.purchase._id ? data.purchase : p);
-                } else {
-                    if (!data.purchase?.cart) return prev;
-                    return [...prev, data.purchase];
-                }
-            });
-        });
-        return () => { socket.off("receive_update_purchase_result"); };
-    }, [socket, client]);
+    // تم حذف الـ useEffect الثاني الذي كان يحتوي على socket.on بالكامل
 
     return (
         <>
@@ -58,12 +46,15 @@ const ShoppingCart = () => {
                     className="w-full h-full object-contain"
                 />
                 
-                <span 
-                    className='absolute -top-2 -right-2 w-5 h-5 flex justify-center items-center text-[11px] font-bold rounded-full'
-                    style={{ backgroundColor: colors.dark[100], color: colors.light[100] }}
-                >
-                    {purchases.length}
-                </span>
+                {/* سيظل هذا الرقم محدثاً لأن setPurchases تُستدعى من المكونات الأخرى عبر الـ Context */}
+                {purchases.length > 0 && (
+                    <span 
+                        className='absolute -top-2 -right-2 w-5 h-5 flex justify-center items-center text-[11px] font-bold rounded-full'
+                        style={{ backgroundColor: colors.dark[100], color: colors.light[100] }}
+                    >
+                        {purchases.length}
+                    </span>
+                )}
                 
             </div>
             <CartSide />

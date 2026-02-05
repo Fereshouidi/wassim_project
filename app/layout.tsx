@@ -11,7 +11,7 @@ import LayoutContent from "./LayoutContent";
 import { StatusBannerProvider } from "@/contexts/StatusBanner";
 import { LoadingScreenProvider } from "@/contexts/loadingScreen";
 import { ClientProvider } from "@/contexts/client";
-import { SocketProvider } from "@/contexts/soket";
+// import { SocketProvider } from "@/contexts/soket";
 import { OwnerProvider } from "@/contexts/ownerInfo";
 import { AiChatBubbleProvider } from "@/contexts/AiChatBubble";
 import { CartSideProvider } from "@/contexts/cart";
@@ -58,7 +58,7 @@ export default function Layout({
                   <StatusBannerProvider>
                     <LoadingScreenProvider>
                       <ClientProvider>
-                        <SocketProvider>
+                        {/* <SocketProvider> */}
                           <OwnerProvider>
                             <AiChatBubbleProvider>
                               <CartSideProvider>
@@ -66,7 +66,7 @@ export default function Layout({
                               </CartSideProvider>
                             </AiChatBubbleProvider>
                           </OwnerProvider>
-                        </SocketProvider>
+                        {/* </SocketProvider> */}
                       </ClientProvider>
                     </LoadingScreenProvider>
                   </StatusBannerProvider>

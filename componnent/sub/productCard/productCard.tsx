@@ -6,8 +6,6 @@ import axios from 'axios';
 
 // Framer Motion
 import { motion } from 'framer-motion';
-// استيراد الـ variant الذي قمنا بإنشائه (تأكد من المسار الصحيح لملف الـ variants الخاص بك)
-// إذا كنت تضعه في نفس الملف أو ملف خارجي، تأكد من وجود slideInFromBottom
 import { slideInFromBottom } from '@/lib/motion';
 
 // Contexts
@@ -43,12 +41,15 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
     const { client } = useClient();
     const { setRegisterSectionExist } = useRegisterSection();
     const { setStatusBanner } = useStatusBanner();
-    const { setIsActive, purchases, setPurchases } = useCartSide();
+    const { purchases, setPurchases, cart } = useCartSide();
 
+    // --- States ---
     const [currentImage, setCurrentImage] = useState<string | null>(null);
     const [like, setLike] = useState<boolean | null>(null);
+    // حالة لتتبع المواصفة المختارة (تبدأ بأول مواصفة)
+    const [activeSpecifications, setActiveSpecifications] = useState<ProductSpecification | null>(null);
 
-    // التحقق من وجود المنتج في السلة
+    // --- UseMemo ---
     const isInCart = useMemo(() => {
         return purchases.some(pur => 
             //@ts-ignore
@@ -57,9 +58,15 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
         );
     }, [purchases, product._id]);
 
+    // --- Effects ---
     useEffect(() => {
         if (product.thumbNail) setCurrentImage(product.thumbNail);
         else if (product.images?.[0]) setCurrentImage(product.images[0].uri || null);
+        
+        // تعيين المواصفة الافتراضية عند تحميل المنتج
+        if (product.specifications?.length > 0) {
+            setActiveSpecifications(product.specifications[0]);
+        }
     }, [product]);
 
     useEffect(() => {
@@ -75,110 +82,156 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
         fetchLike();
     }, [client?._id, product._id]);
 
+    // --- Handlers ---
     const handleColorChange = (hex: string | null) => {
         if (!hex) {
             setCurrentImage(product.thumbNail || product.images?.[0]?.uri || null);
+            setActiveSpecifications(product.specifications?.[0] || null);
             return;
         }
+
+        // تحديث الصورة
         const targetImage = product.images?.find(img => 
             (img.specification as ProductSpecification)?.colorHex === hex
         );
         if (targetImage?.uri) setCurrentImage(targetImage.uri);
+
+        // تحديث المواصفة النشطة لتتوافق مع اللون المختار
+        const targetSpec = product.specifications?.find(s => s.colorHex === hex);
+        if (targetSpec) setActiveSpecifications(targetSpec);
     };
 
-    const handleCartToggle = (e: React.MouseEvent) => {
+    const handleCartToggle = async (e: React.MouseEvent) => {
         e.stopPropagation();
-        if (!product?._id) return;
+        if (!product?._id || !client?._id) {
+            setRegisterSectionExist(true);
+            return;
+        }
 
-        if (isInCart) {
-            // إزالة المنتج من القائمة المحلية (Optimistic Update)
-            setPurchases(purchases.filter(pur => 
-                //@ts-ignore
-                (typeof pur?.product === 'string' ? pur.product !== product._id : pur?.product?._id !== product._id)
-            ));
-        } else {
-            // إضافة المنتج (بافتراض أول مواصفة)
-            const firstSpec = product.images?.[0]?.specification as ProductSpecification;
-            setPurchases([
-                ...purchases, 
-                {
+        // استخدام المواصفة المختارة أو الافتراضية
+        const selectedSpec = activeSpecifications || product.specifications?.[0];
+        if (!selectedSpec) return;
+
+        const previousPurchases = [...purchases];
+        const tempId = `temp-${Date.now()}`;
+
+        try {
+            if (isInCart) {
+                const purchaseToRemove = purchases.find(pur => 
+                    //@ts-ignore
+                    (typeof pur.product === 'string' ? pur.product === product._id : pur.product?._id === product._id)
+                );
+
+                if (purchaseToRemove) {
+                    setPurchases(prev => prev.filter(p => p._id !== purchaseToRemove._id));
+                    await axios.put(`${backEndUrl}/updatePurchase`, { 
+                        ...purchaseToRemove, 
+                        cart: null, 
+                        status: 'viewed' 
+                    });
+                }
+            } else {
+                // إضافة تفاؤلية
+                const optimisticPurchase = {
+                    _id: tempId,
                     product: product,
-                    specification: firstSpec,
+                    specification: selectedSpec,
                     quantity: 1,
                     status: 'inCart'
-                } as unknown as PurchaseType
-            ]);
+                } as unknown as PurchaseType;
+
+                setPurchases(prev => [...prev, optimisticPurchase]);
+
+                const { data: getRes } = await axios.get(`${backEndUrl}/getPurchaseByClientAndProduct`, { 
+                    params: { productId: product._id, clientId: client._id } 
+                });
+
+                const targetPurchase = getRes.purchase;
+
+                const { data: updateRes } = await axios.put(`${backEndUrl}/updatePurchase`, {
+                    ...targetPurchase,
+                    product: product._id,
+                    client: client._id,
+                    cart: cart?._id,
+                    status: 'inCart',
+                    specification: selectedSpec._id || selectedSpec
+                });
+
+                if (updateRes.success) {
+                    setPurchases(prev => {
+                        const filtered = prev.filter(p => 
+                            p._id !== tempId && 
+                            //@ts-ignore
+                            (typeof p.product === 'string' ? p.product !== product._id : p.product?._id !== product._id)
+                        );
+                        return [...filtered, updateRes.purchase];
+                    });
+                }
+            }
+        } catch (error) {
+            setPurchases(previousPurchases);
+            console.error("Cart Toggle Error:", error);
         }
     };
 
     const isMobile = screenWidth < 640;
 
-    if (isMobile) {
+    // --- Shared Render Parts ---
+    const renderCardContent = (layout: 'mobile' | 'desktop') => {
+        const isMob = layout === 'mobile';
         return (
-            <motion.div 
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={slideInFromBottom(0)}
-                className={`group relative flex flex-col w-full h-[350px] mx-auto- justify-between overflow-hidden rounded-2xl transition-all duration-500 hover:shadow-xl ${className}`}
-                style={{
-                    ...style,
-                    backgroundColor: colors.light[100],
-                    boxShadow: activeTheme === 'dark' ? `0 4px 15px rgba(0,0,0,0.3)` : `0 4px 15px ${colors.light[400]}`,
-                }}
-                onClick={() => {
-                    if (!product?._id) return;
-                    setLoadingScreen(true);
-                    router.push(`/product/${product._id}`);
-                }}
-            >
+            <>
                 {useLike && (
-                    <div className="absolute top-2 right-2 rounded-full p-1.5 transition-transform active:scale-75 z-20 shadow-md cursor-pointer"
+                    <div className={`absolute ${isMob ? 'top-2 right-2 p-1.5' : 'top-4 right-4 p-2'} rounded-full transition-transform active:scale-75 z-20 shadow-md cursor-pointer`}
                         style={{ backgroundColor: like ? "#ef4444" : "rgba(255, 255, 255, 0.9)" }}
-                        onClick={(e) => e.stopPropagation()}>
-                        <img src={like ? "/icons/heart-white.png" : "/icons/heart-black.png"} className="w-4 h-4 object-contain" alt="Like" />
+                        onClick={(e) => { e.stopPropagation(); /* هنا يمكن إضافة وظيفة اللايك */ }}>
+                        <img src={like ? "/icons/heart-white.png" : "/icons/heart-black.png"} className={isMob ? "w-4 h-4" : "w-5 h-5"} alt="Like" />
                     </div>
                 )}
-                <div className="w-full h- aspect-[1/1] overflow-hidden bg-gray-50 relative">
-                    {currentImage ? <img src={currentImage} className="w-full h-full object-cover" alt="Product" /> : <SkeletonLoading />}
+                <div className={`w-full overflow-hidden bg-gray-50 relative ${isMob ? 'aspect-square' : 'aspect-square'}`}>
+                    {currentImage ? (
+                        <img src={currentImage} className={`w-full h-full object-cover transition-all duration-500 ${!isMob && 'group-hover:scale-110'}`} alt="Product" />
+                    ) : <SkeletonLoading />}
                 </div>
                 <div className="flex flex-col gap-1 px-2 pb-1">
-                    <h4 className="font-md text-[14px] text-center line-clamp-1- mt-2" style={{ color: colors.dark[200] }}>
-                        {product.name[activeLanguage.language] ? handleLongText(product.name[activeLanguage.language]!, 20) : "..."}
+                    <h4 className={`font-md text-center line-clamp-1 mt-2`} style={{ color: colors.dark[200], fontSize: isMob ? '14px' : '16px' }}>
+                        {product.name[activeLanguage.language] ? handleLongText(product.name[activeLanguage.language]!, isMob ? 20 : 25) : "..."}
                     </h4>
                     <div className="text-center">
-                        <span className="text-[16px] font-semibold" style={{ color: colors.dark[100] }}>{product.price} DT</span>
+                        <span className={`font-semibold`} style={{ color: colors.dark[100], fontSize: isMob ? '16px' : '20px' }}>
+                            {activeSpecifications?.price || product.price} DT
+                        </span>
                     </div>
                 </div>
                 <div className="px-1" onClick={(e) => e.stopPropagation()}>
                     <SpecificationsSlider product={product.images} importedFrom="slider" onColorSelect={handleColorChange} />
                 </div>
-                <div className="w-full flex flex-col gap-1.5 p-2 border-t border-gray-50">
+                <div className={`w-full flex ${isMob ? 'flex-col' : 'justify-between'} items-center gap-2 p-2 border-t border-gray-100`}>
                     <button 
-                        className={`flex items-center justify-center gap-2 w-full py-2 rounded-xl transition-all ${isInCart ? 'bg-green-50' : 'hover:bg-gray-100'}`}
+                        className={`flex items-center justify-center gap-2 flex-1 py-2.5 rounded-xl transition-all cursor-pointer w-full ${isInCart ? 'bg-green-50' : 'hover:bg-gray-100'}`}
                         onClick={handleCartToggle}
                     >
-                        {!isInCart && <img src={activeTheme === "dark" ? "/icons/shopping-bag-white.png" : "/icons/shopping-bag-black.png"} className={`w-3.5 h-3.5 ${isInCart ? 'opacity-100' : 'opacity-70'}`} alt="Cart" />}
-                        <span className={`text-[10px] font-bold uppercase ${isInCart ? 'text-green-600' : ''}`}>
+                        {!isInCart && <img src={activeTheme === "dark" ? "/icons/shopping-bag-white.png" : "/icons/shopping-bag-black.png"} className="w-4 h-4 opacity-70" alt="Cart" />}
+                        <span className={`text-[11px] font-bold uppercase tracking-tighter ${isInCart ? 'text-green-600' : ''}`}>
                             {isInCart ? "In Cart" : "Panier"}
                         </span>
                     </button>
-                    <button className="flex items-center justify-center gap-2 w-full py-2 rounded-xl" style={{ backgroundColor: colors.dark[200], color: colors.light[200] }}>
-                        <span className="text-[10px] font-bold uppercase">Acheter</span>
-                        <img src={activeTheme === "dark" ? "/icons/right-arrow-black.png" : "/icons/right-arrow-white.png"} className="w-2.5 h-2.5" alt="Buy" />
+                    <button className="flex items-center justify-center gap-2 flex-1 py-2.5 rounded-xl cursor-pointer w-full" style={{ backgroundColor: colors.dark[200], color: colors.light[200] }}>
+                        <span className="text-[11px] font-bold uppercase tracking-tighter">Acheter</span>
+                        <img src={activeTheme === "dark" ? "/icons/right-arrow-black.png" : "/icons/right-arrow-white.png"} className="w-3 h-3" alt="Buy" />
                     </button>
                 </div>
-            </motion.div>
+            </>
         );
-    }
+    };
 
     return (
         <motion.div 
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            variants={slideInFromBottom(0.1)}
-            className={`group relative flex flex-col w-full max-w-[320px] min-h-[300px] justify-between gap-2 overflow-hidden rounded-2xl transition-all duration-500 hover:shadow-2xl ${className}`}
+            variants={slideInFromBottom(isMobile ? 0 : 0.1)}
+            className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl transition-all duration-500 hover:shadow-2xl ${className} ${isMobile ? 'w-full h-[380px]' : 'w-full max-w-[320px] min-h-[400px]'}`}
             style={{
                 ...style,
                 backgroundColor: colors.light[100],
@@ -191,43 +244,7 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
                 router.push(`/product/${product._id}`);
             }}
         >
-            {useLike && (
-                <div className="absolute top-4 right-4 rounded-full p-2 z-20 shadow-md cursor-pointer"
-                    style={{ backgroundColor: like ? "#ef4444" : "rgba(255, 255, 255, 0.9)" }}
-                    onClick={(e) => e.stopPropagation()}>
-                    <img src={like ? "/icons/heart-white.png" : "/icons/heart-black.png"} className="w-5 h-5 object-contain" alt="Like" />
-                </div>
-            )}
-            <div className="w-full aspect-square overflow-hidden bg-gray-50 relative">
-                {currentImage ? <img src={currentImage} className="w-full h-full object-cover group-hover:scale-110 transition-all duration-500" alt="Product" /> : <SkeletonLoading />}
-            </div>
-            <div className="flex h-fit flex-col gap-1 px-1">
-                <h4 className="font-md text-[14px] sm:text-[16px] text-center line-clamp-1 mt-2" style={{ color: colors.dark[200] }}>
-                    {product.name[activeLanguage.language] ? handleLongText(product.name[activeLanguage.language]!, 25) : "..."}
-                </h4>
-                <div className="text-center">
-                    <span className="text-[18px] sm:text-[20px] font-semibold" style={{ color: colors.dark[100] }}>{product.price} DT</span>
-                </div>
-            </div>
-            <div onClick={(e) => e.stopPropagation()}>
-                <SpecificationsSlider product={product.images} importedFrom="slider" onColorSelect={handleColorChange} />
-            </div>
-            <div className="w-full flex justify-between items-center gap-2 mt-2 p-2 border-t border-gray-100 dark:border-gray-900-">
-                {/* زر السلة - Desktop */}
-                <div 
-                    className={`flex items-center justify-center gap-2 flex-1 py-2.5 rounded-xl transition-all cursor-pointer ${isInCart ? 'bg-green-50' : 'hover:bg-gray-100'}`}
-                    onClick={handleCartToggle}
-                >
-                    {!isInCart && <img src={activeTheme === "dark" ? "/icons/shopping-bag-white.png" : "/icons/shopping-bag-black.png"} className={`w-4 h-4 ${isInCart ? 'opacity-100' : 'opacity-70'}`} alt="Cart" />}
-                    <span className={`text-[11px] font-bold uppercase tracking-tighter ${isInCart ? 'text-green-600' : ''}`}>
-                        {isInCart ? "In Cart" : "Panier"}
-                    </span>
-                </div>
-                <div className="flex items-center justify-center gap-2 flex-1 py-2.5 rounded-xl cursor-pointer" style={{ backgroundColor: colors.dark[200], color: colors.light[200] }}>
-                    <span className="text-[11px] font-bold uppercase tracking-tighter">Acheter</span>
-                    <img src={activeTheme === "dark" ? "/icons/right-arrow-black.png" : "/icons/right-arrow-white.png"} className="w-3 h-3" alt="Buy" />
-                </div>
-            </div>
+            {renderCardContent(isMobile ? 'mobile' : 'desktop')}
         </motion.div>
     );
 };

@@ -1,32 +1,49 @@
 "use client";
 
 import { useLanguage } from '@/contexts/languageContext';
-import { useSocket } from '@/contexts/soket';
+// حذف استيراد useSocket
 import { useTheme } from '@/contexts/themeProvider';
 import { PurchaseType } from '@/types';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { backEndUrl } from '@/api';
 
 type Props = {
     purchase: PurchaseType;
-    setPurchases: (purchases: PurchaseType[]) => void;
+    // setPurchases تستخدم لتحديث القائمة الأب (Parent List)
+    setPurchases: (purchases: PurchaseType[] | ((prev: PurchaseType[]) => PurchaseType[])) => void;
 };
 
 const PurchaseItem = ({ purchase, setPurchases }: Props) => {
     const { activeLanguage } = useLanguage();
     const { colors, activeTheme } = useTheme();
-    const socket = useSocket();
     const router = useRouter();
     const [purchase_, setPurchase_] = useState<PurchaseType | null>(null);
 
     useEffect(() => { setPurchase_(purchase); }, [purchase]);
 
-    const updatePurchase = (updatedData: PurchaseType) => {
+    // تحويل الدالة لتعمل بنظام HTTP
+    const updatePurchaseData = async (updatedData: PurchaseType) => {
         if (!updatedData) return;
-        socket.emit("update_purchase", updatedData);
-        if (!updatedData.cart) {
-            // @ts-ignore
-            setPurchases((prev: PurchaseType[]) => prev.filter(p => p._id !== updatedData._id));
+
+        try {
+            // 1. إرسال التحديث للسيرفر
+            const { data } = await axios.put(`${backEndUrl}/updatePurchase`, updatedData);
+
+            if (data.success) {
+                // 2. إذا تم إزالة المنتج من السلة (cart: null)
+                if (!updatedData.cart) {
+                    setPurchases((prev: PurchaseType[]) => prev.filter(p => p._id !== updatedData._id));
+                } else {
+                    // 3. إذا كان تحديثاً للكمية فقط، نحدث القائمة في المكون الأب
+                    setPurchases((prev: PurchaseType[]) => 
+                        prev.map(p => p._id === data.purchase._id ? data.purchase : p)
+                    );
+                }
+            }
+        } catch (err) {
+            console.error("Failed to update purchase:", err);
         }
     };
 
@@ -67,10 +84,10 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
                         </h3>
                         {/* Remove Icon */}
                         <button 
-                            className='w-3 h-3 opacity-50 hover:opacity-100 transition-opacity p-1-'
+                            className='w-3 h-3 opacity-50 hover:opacity-100 transition-opacity'
                             onClick={(e) => {
                                 e.stopPropagation();
-                                updatePurchase({...purchase, cart: null, status: "viewed"});
+                                updatePurchaseData({...purchase, cart: null, status: "viewed"});
                             }}
                         >
                             <img src="/icons/trash.png" className="w-full h-full" alt="remove"/>
@@ -94,7 +111,7 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
                             onClick={(e) => {
                                 e.stopPropagation();
                                 if ((purchase?.quantity || 0) <= 1) return;
-                                updatePurchase({...purchase, quantity: (purchase?.quantity || 0) - 1});
+                                updatePurchaseData({...purchase, quantity: (purchase?.quantity || 0) - 1});
                             }}
                         >
                             <img src={activeTheme == "dark" ? "/icons/minus-light.png" : "/icons/minus-dark.png"} className='w-2 h-2 opacity-60' alt="-" />
@@ -106,7 +123,7 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
                                 e.stopPropagation();
                                 // @ts-ignore
                                 if ((purchase?.quantity || 0) >= (purchase?.specification?.quantity || 100)) return;
-                                updatePurchase({...purchase, quantity: (purchase?.quantity || 0) + 1});
+                                updatePurchaseData({...purchase, quantity: (purchase?.quantity || 0) + 1});
                             }}
                         >
                             <img src={activeTheme == "dark" ? "/icons/add-white.png" : "/icons/add-black.png"} className='w-2 h-2 opacity-60' alt="+" />
