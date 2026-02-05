@@ -16,7 +16,7 @@ import { getUniqueImagesByColor, handleShareOnFacebook } from "@/lib";
 import { headerHeight, productActionPanelHeight } from "@/constent";
 import { fakeProducts } from "@/constent/data";
 import { useLoadingScreen } from "@/contexts/loadingScreen";
-import { useSocket } from "@/contexts/soket";
+// import { useSocket } from "@/contexts/soket";
 import axios from "axios";
 import { backEndUrl } from "@/api";
 import { useClient } from "@/contexts/client";
@@ -34,7 +34,7 @@ export default function ClientProductPage({ product }: Props) {
     const { screenWidth, screenHeight } = useScreen();
     const { colors } = useTheme();
     const { activeLanguage } = useLanguage();
-    const socket = useSocket();
+    // const socket = useSocket();
     const { client } = useClient()
     const { setLoadingScreen } = useLoadingScreen();
     const { ownerInfo } = useOwner();
