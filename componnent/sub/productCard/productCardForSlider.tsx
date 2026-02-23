@@ -14,7 +14,6 @@ import { backEndUrl } from '@/api'
 import { useStatusBanner } from '@/contexts/StatusBanner'
 import { handleLongText } from '@/lib'
 import { useCartSide } from '@/contexts/cart'
-// تم حذف استيراد useSocket
 
 type productCardType = {
     product: ProductType
@@ -185,7 +184,7 @@ const handlePuttingInCart = async () => {
         }
         return false;
     };
-    
+
   return (
     <div 
         className={`flex relative flex-col items-center gap-2 rounded-xl overflow-hidden cursor-pointer pb-2 px-2 ${className}`}

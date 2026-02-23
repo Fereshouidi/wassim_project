@@ -12,18 +12,17 @@ import {
   CartType, CollectionType, EvaluationType, 
   ProductSpecification, ProductType, PurchaseType 
 } from '@/types';
-import { calculateRatingStats, handleShareOnFacebook } from '@/lib';
+import { calculateRatingStats } from '@/lib';
 
 // Sub Components
-import SkeletonLoading from '../sub/SkeletonLoading';
 import ProductActionPanel from '../sub/ProductActionPanel/ProductActionPanel';
 import StarsRatingDisplay from '../sub/StarsRatingDisplay';
 import AddEvaluationCard from '../sub/addEvaluationCard';
 import EditEvaluationCard from '../sub/editEvaluationCard';
 import EvaluationsSection from './evaluationSection';
 import InputForm from './inputForm';
-import SpecificationsSlider from '../sub/specificationsSlider';
 import OrderData from './OrderData';
+import SkeletonLoading from '../sub/SkeletonLoading';
 
 type ProductDetailsType = {
   className?: string;
@@ -56,14 +55,14 @@ const ProductDetails = ({
   const { screenWidth } = useScreen();
   const { activeLanguage } = useLanguage();
   const { colors, activeTheme } = useTheme();
-  const { ownerInfo } = useOwner();
   const { client } = useClient();
 
-  // --- States ---
+  // --- Selection States ---
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedType, setSelectedType] = useState<string | null>(null);
   
+  // --- Evaluation States ---
   const [evaluations, setEvaluations] = useState<EvaluationType[]>([]);
   const [evaluationSectionActive, setEvaluationSectionActive] = useState(false);
   const [addEvaluationActive, setAddEvaluationActive] = useState(false);
@@ -71,59 +70,38 @@ const ProductDetails = ({
   const [newEvaluation, setNewEvaluation] = useState<EvaluationType>({});
   const [clientCanRate, setClientCanRate] = useState<boolean>(false);
 
-  // 1. مصدر البيانات الأساسي
   const allSpecs = useMemo(() => product.specifications || [], [product.specifications]);
 
-  // 2. القيم الفريدة الكاملة (لكي لا تختفي الأزرار من الواجهة)
+  // --- Attribute Extraction ---
+  const allColors = useMemo(() => Array.from(new Set(allSpecs.map(s => s.color).filter(Boolean))), [allSpecs]);
   const allSizes = useMemo(() => Array.from(new Set(allSpecs.map(s => s.size).filter(Boolean))), [allSpecs]);
   const allTypes = useMemo(() => Array.from(new Set(allSpecs.map(s => s.type).filter(Boolean))), [allSpecs]);
 
-  // 3. الألوان المتاحة (تختفي الألوان التي لا تملك هذا المقاس أو النوع)
-  const dynamicAvailableColors = useMemo(() => {
-    return allSpecs
-      .filter(s => 
-        (!selectedSize || s.size === selectedSize) && 
-        (!selectedType || s.type === selectedType) && 
-        (s.quantity ?? 0) > 0
-      )
-      .map(s => s.color);
-  }, [selectedSize, selectedType, allSpecs]);
+  // --- Dynamic Availability Mapping ---
+  const availableColorsForContext = useMemo(() => 
+    allSpecs.filter(s => (!selectedSize || s.size === selectedSize) && (!selectedType || s.type === selectedType) && (s.quantity ?? 0) > 0).map(s => s.color),
+  [selectedSize, selectedType, allSpecs]);
 
-  // 4. المقاسات والأنواع المتاحة (للتنسيق البصري فقط: تبهيت الزر)
   const availableSizesForContext = useMemo(() => 
-    allSpecs
-      .filter(s => 
-        (!selectedColor || s.color === selectedColor) && 
-        (!selectedType || s.type === selectedType) && 
-        (s.quantity ?? 0) > 0
-      )
-      .map(s => s.size), 
+    allSpecs.filter(s => (!selectedColor || s.color === selectedColor) && (!selectedType || s.type === selectedType) && (s.quantity ?? 0) > 0).map(s => s.size), 
   [selectedColor, selectedType, allSpecs]);
 
   const availableTypesForContext = useMemo(() => 
-    allSpecs
-      .filter(s => 
-        (!selectedColor || s.color === selectedColor) && 
-        (!selectedSize || s.size === selectedSize) && 
-        (s.quantity ?? 0) > 0
-      )
-      .map(s => s.type), 
+    allSpecs.filter(s => (!selectedColor || s.color === selectedColor) && (!selectedSize || s.size === selectedSize) && (s.quantity ?? 0) > 0).map(s => s.type), 
   [selectedColor, selectedSize, allSpecs]);
 
-  // --- Handlers ---
-
-  const handleColorSelect = (hex: string | null) => {
-    const targetSpec = allSpecs.find(s => s.colorHex === hex);
-    if (!targetSpec) return;
-
-    const newColor = targetSpec.color ?? null;
-    if (selectedColor === newColor) {
+  // --- Selection Handlers ---
+  const handleColorSelect = (color: string) => {
+    if (selectedColor === color) {
       setSelectedColor(null);
     } else {
-      setSelectedColor(newColor);
-      // تحديث الفهرس الخاص بالصورة
-      const imageIndex = product.images.findIndex(img => (img.specification as ProductSpecification)?.colorHex === hex);
-      if (imageIndex !== -1) setCurrentImageIndex(imageIndex);
+      setSelectedColor(color);
+      // Sync image with selected color if hex match found
+      const specWithColor = allSpecs.find(s => s.color === color);
+      if (specWithColor?.colorHex) {
+        const imageIndex = product.images.findIndex(img => (img.specification as ProductSpecification)?.colorHex === specWithColor.colorHex);
+        if (imageIndex !== -1) setCurrentImageIndex(imageIndex);
+      }
     }
   };
 
@@ -132,11 +110,8 @@ const ProductDetails = ({
       setSelectedSize(null);
     } else {
       setSelectedSize(size);
-      // إذا كان اللون المختار غير متوافق مع المقاس الجديد، يتم إلغاء تحديده ليختفي من السلايدر
-      const isColorStillAvailable = allSpecs.some(s => 
-        s.size === size && s.color === selectedColor && (s.quantity ?? 0) > 0
-      );
-      if (!isColorStillAvailable) setSelectedColor(null);
+      const isStillAvailable = allSpecs.some(s => s.size === size && s.color === selectedColor && (s.quantity ?? 0) > 0);
+      if (!isStillAvailable) setSelectedColor(null);
     }
   };
 
@@ -145,16 +120,13 @@ const ProductDetails = ({
       setSelectedType(null);
     } else {
       setSelectedType(type);
-      const isColorStillAvailable = allSpecs.some(s => 
-        s.type === type && s.color === selectedColor && (s.quantity ?? 0) > 0
-      );
-      if (!isColorStillAvailable) setSelectedColor(null);
+      const isStillAvailable = allSpecs.some(s => s.type === type && s.color === selectedColor && (s.quantity ?? 0) > 0);
+      if (!isStillAvailable) setSelectedColor(null);
     }
   };
 
-  // --- Effects ---
+  // --- Component Effects ---
   useEffect(() => {
-    // تحديد المواصفة النشطة بناءً على جميع الفلاتر
     const matched = allSpecs.find(s => 
       (!selectedColor || s.color === selectedColor) && 
       (!selectedSize || s.size === selectedSize) &&
@@ -165,21 +137,14 @@ const ProductDetails = ({
 
   useEffect(() => {
     if (!product._id) return;
-
     axios.get(`${backEndUrl}/getEvaluationByProduct`, { params: { productId: product._id } })
       .then(({ data }) => setEvaluations(data.evaluations || []))
       .catch(err => console.error(err));
 
     if (!client?._id) return;
-    console.log({ productId: product._id, clientId: client?._id })
-
     axios.get(`${backEndUrl}/verifyClientPurchase`, { params: { productId: product._id, clientId: client._id } })
-      .then(({ data }) => {
-        setClientCanRate( (data?.purchaseCount || 0) > 0 ? true : false);
-        console.log(data);
-      })
+      .then(({ data }) => setClientCanRate((data?.purchaseCount || 0) > 0))
       .catch(err => console.error(err));
-
   }, [product._id, client?._id]);
 
   return (
@@ -199,25 +164,68 @@ const ProductDetails = ({
           <StarsRatingDisplay rating={calculateRatingStats(evaluations).average} />
           <p className='text-xs opacity-50 underline'>( {evaluations.length} {activeLanguage?.opinion} )</p>
         </div>
-        {clientCanRate && <button onClick={() => setAddEvaluationActive(true)} className='p-1.5 rounded-full transition-transform active:scale-90' style={{ backgroundColor: colors.dark[300] }}>
-          <img src={activeTheme === "dark" ? "/icons/add-black.png" : "/icons/add-white.png"} className='w-3 h-3' alt="add" />
-        </button>}
+        {clientCanRate && (
+          <button onClick={() => setAddEvaluationActive(true)} className='p-1.5 rounded-full transition-transform active:scale-90' style={{ backgroundColor: colors.dark[300] }}>
+            <img src={activeTheme === "dark" ? "/icons/add-black.png" : "/icons/add-white.png"} className='w-3 h-3' alt="add" />
+          </button>
+        )}
       </div>
 
-      {/* اختيار الألوان: تختفي الألوان غير المتاحة للمقاس المختار */}
-      {dynamicAvailableColors.length > 0 && (
-        <div className='w-full mb-6'>
+        <div className='w-full mb-5'>
+          <h4 className='font-bold text-md mb-2'>{activeLanguage.nav.collections + " :"}</h4>
+
+          <div className='w-full flex flex-wrap gap-2'>
+            {
+              loadingGettingCollection ?
+                [1, 2, 3].map((x) => (
+                  <div key={x} className='w-[70px] h-8 overflow-hidden text-xs font-bold rounded-xl transition-all duration-300'><SkeletonLoading /></div>
+                ))
+                : collections.map((collection => (
+                  <h4
+                    key={collection._id}
+                    className={`px-4 py-2 text-xs font-bold rounded-xl transition-all duration-300`}
+                    style={{
+                      backgroundColor: colors.light[250],
+                      color: colors.dark[500]
+                    }}
+                  >
+                    {collection.name[activeLanguage.language]}
+                  </h4>
+                )))
+            }
+          </div>
+        </div>
+
+      {/* 1. Color Selection Buttons */}
+      {allColors.length > 0 && (
+        <div className='mb-6'>
           <h4 className='font-bold text-sm mb-2' style={{ color: colors.dark[150] }}>{activeLanguage.sideMatter.colors} :</h4>
-          <SpecificationsSlider 
-            product={product.images} 
-            availableColors={dynamicAvailableColors as string[]} 
-            onColorSelect={handleColorSelect} 
-            importedFrom="productDetails"
-          />
+          <div className='flex flex-wrap gap-2'>
+            {allColors.map(color => {
+              const isSelected = selectedColor === color;
+              const isAvailable = availableColorsForContext.includes(color!);
+              return (
+                <button
+                  key={color}
+                  onClick={() => handleColorSelect(color!)}
+                  className={`px-4 py-2 text-xs font-bold rounded-xl border transition-all duration-300 ${isSelected ? 'scale-105' : ''}`}
+                  style={{ 
+                      backgroundColor: isSelected ? colors.dark[150] : 'transparent',
+                      color: isSelected ? colors.light[100] : colors.dark[150],
+                      borderColor: colors.dark[150],
+                      opacity: isAvailable ? 1 : 0.3,
+                      textDecoration: isAvailable ? 'none' : 'line-through'
+                  }}
+                >
+                  {color}
+                </button>
+              );
+            })}
+          </div>
         </div>
       )}
 
-      {/* اختيار المقاسات: تظل ظاهرة ولكن تبهت إذا كانت غير متاحة للون الحالي */}
+      {/* 2. Size Selection Buttons */}
       {allSizes.length > 0 && (
         <div className='mb-6'>
           <h4 className='font-bold text-sm mb-2' style={{ color: colors.dark[150] }}>{activeLanguage.sideMatter.sizes} :</h4>
@@ -229,7 +237,7 @@ const ProductDetails = ({
                 <button
                   key={size}
                   onClick={() => handleSizeSelect(size!)}
-                  className={`px-4 py-2 text-xs font-bold rounded border transition-all duration-300 ${isSelected ? 'scale-105' : ''}`}
+                  className={`px-4 py-2 text-xs font-bold rounded-xl border transition-all duration-300 ${isSelected ? 'scale-105' : ''}`}
                   style={{ 
                       backgroundColor: isSelected ? colors.dark[150] : 'transparent',
                       color: isSelected ? colors.light[100] : colors.dark[150],
@@ -246,7 +254,7 @@ const ProductDetails = ({
         </div>
       )}
 
-      {/* اختيار الأنواع */}
+      {/* 3. Type Selection Buttons */}
       {allTypes.length > 0 && (
         <div className='mb-6'>
           <h4 className='font-bold text-sm mb-2' style={{ color: colors.dark[150] }}>{activeLanguage.sideMatter.types || "Types"} :</h4>
@@ -258,7 +266,7 @@ const ProductDetails = ({
                 <button
                   key={type}
                   onClick={() => handleTypeSelect(type!)}
-                  className={`px-4 py-2 text-xs font-bold rounded border transition-all duration-300 ${isSelected ? 'scale-105' : ''}`}
+                  className={`px-4 py-2 text-xs font-bold rounded-xl border transition-all duration-300 ${isSelected ? 'scale-105' : ''}`}
                   style={{ 
                       backgroundColor: isSelected ? colors.dark[150] : 'transparent',
                       color: isSelected ? colors.light[100] : colors.dark[150],
@@ -300,15 +308,9 @@ const ProductDetails = ({
         cart={cart} product={product}
         clientForm={clientForm}
         setClientForm={setClientForm}
-
       />
 
-
-
-
-
-
-      {/* Evaluation Modals */}
+      {/* Modals and Overlays */}
       {evaluationSectionActive && (
         <EvaluationsSection
           evaluations={evaluations} setEvaluations={setEvaluations}
@@ -337,10 +339,6 @@ const ProductDetails = ({
           evaluationSectionActive={evaluationSectionActive} setEvaluationSectionActive={setEvaluationSectionActive}
         />
       )}
-
-
-
-
     </div>
   );
 };

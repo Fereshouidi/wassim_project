@@ -7,7 +7,6 @@ import { useScreen } from '@/contexts/screenProvider'
 import { useClient } from '@/contexts/client'
 import { useRegisterSection } from '@/contexts/registerSec'
 import { useLoadingScreen } from '@/contexts/loadingScreen'
-// تم حذف استيراد useSocket
 import OrderNowButton from '../orderBtn'
 import { useOwner } from '@/contexts/ownerInfo'
 import { backEndUrl } from '@/api'
@@ -41,7 +40,6 @@ const ProductActionPanel = ({
     activeButtong
 }: Props) => {
 
-    // حذف متغير socket
     const { screenWidth } = useScreen();
     const { activeLanguage } = useLanguage();
     const { colors, activeTheme } = useTheme();
@@ -51,7 +49,11 @@ const ProductActionPanel = ({
     const { setLoadingScreen } = useLoadingScreen();
     const { purchases, setPurchases } = useCartSide();
 
-    // 1. دالة إضافة/حذف من السلة (عبر HTTP)
+    /**
+     * 1. Cart Toggle Handler
+     * Manages adding/removing items from the cart via HTTP PUT request.
+     * Updates global cart state and local purchase status.
+     */
     const handlePuttingInCart = async () => {
         if (!client) {
             setRegisterSectionExist(true);
@@ -65,6 +67,7 @@ const ProductActionPanel = ({
             status: isRemoving ? 'viewed' : 'inCart'
         };
 
+        // Optimistic UI update for the cart side panel
         setPurchases(prev => 
             isRemoving 
                 ? prev.filter(p => p._id !== purchase._id) 
@@ -72,11 +75,10 @@ const ProductActionPanel = ({
         );
 
         try {
-
             const { data } = await axios.put(`${backEndUrl}/updatePurchase`, updatedPurchaseData);
 
             if (data.success) {
-                // تحديث الحالة فوراً بالبيانات الجديدة القادمة من السيرفر
+                // Synchronize state with the latest server data
                 setPurchase(data.purchase); 
                 return true;
             }
@@ -87,10 +89,11 @@ const ProductActionPanel = ({
         }
     };
 
-    // 2. دالة إتمام الطلب (عبر HTTP)
+    /**
+     * 2. Direct Order Handler
+     * Validates form data and processes the final checkout via HTTP POST.
+     */
     const handleOrder = async () => {
-
-        console.log({purchase});
         
         if (
             !purchase._id || 
@@ -115,21 +118,21 @@ const ProductActionPanel = ({
         };
 
         try {
+            // Ensure purchase data is synced before finalizing order
             await axios.put(`${backEndUrl}/updatePurchase`, purchase);
             const { data } = await axios.post(`${backEndUrl}/addOrder`, orderData);
+            
             if (data.success) {
                 console.log("Order Successful:", data.newOrder);
-                // هنا يمكنك إضافة توجيه لصفحة النجاح أو إظهار تنبيه
+                // Success redirect or notification logic goes here
             }
         } catch (err: any) {
-            const errorMessage = err.response?.data?.message || "حدث خطأ أثناء إتمام الطلب";
+            const errorMessage = err.response?.data?.message || "An error occurred during checkout";
             console.error("Order Error:", errorMessage);
         } finally {
             setLoadingScreen(false);
         }
     };
-
-    // تم حذف الـ useEffect بالكامل لأنه لم يعد هناك socket للاستماع إليه
 
     return (
         <div className='w-full flex flex-row justify-center items-center my-5 mx-2 px-5 gap-4'>
@@ -155,8 +158,6 @@ const ProductActionPanel = ({
                     onOrder={handleOrder} 
                 />
             }
-
-
 
         </div>
     )

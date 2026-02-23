@@ -1,4 +1,6 @@
 import { backEndUrl } from '@/api';
+import AccountNotFoundBanner from '@/componnent/sub/banners/accountNotFound';
+import RequiredFieldsBanner from '@/componnent/sub/banners/allFiledRequired';
 import WrongPasswordBanner from '@/componnent/sub/banners/wrongPasswordBanner';
 import CustomBotton from '@/componnent/sub/customBotton';
 import CustomInputText from '@/componnent/sub/customInputText';
@@ -9,6 +11,7 @@ import { useLoadingScreen } from '@/contexts/loadingScreen';
 import { useRegisterSection } from '@/contexts/registerSec';
 import { useStatusBanner } from '@/contexts/StatusBanner';
 import { useTheme } from '@/contexts/themeProvider';
+import { getDeviceId } from '@/lib';
 import { ClientType, SignInForm, SignUpForm } from '@/types';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
@@ -44,10 +47,12 @@ const SignIn = ({
     // const [ signInButtonWorks, setSignInButtonWorks ] = useState<boolean>(false);
 
     const getClient = async () => {
+        const deviceId = await getDeviceId();
         await axios.get( backEndUrl + "/validateClientLogin", {
             params: {
                 fullName: signInForm.fullName,
-                password: signInForm.password
+                password: signInForm.password,
+                deviceId
             }
         })
         .then(({data}) => {
@@ -76,19 +81,11 @@ const SignIn = ({
                 setStatusBanner(
                     true,
                     null,
-                    <div 
-                        className='w-full h-full bg-red-500- p-10 rounded-xl flex flex-col justify-center items-center'
-                        style={{
-                            backgroundColor: colors.light[100]
-                        }}
-                    >
-                        <video  
-                            src="/icons/fail.webm"
-                            className='w-[200px] h-[200px]'
-                            autoPlay
-                        ></video>
-                        <p>{activeLanguage.wrongPassword}</p>
-                    </div>
+                    <WrongPasswordBanner 
+                        isVisible={true}
+                        message={activeLanguage.wrongPassword}
+                        onClose={() => setStatusBanner(false)}
+                    />
                 )
                 return;
                 
@@ -98,19 +95,11 @@ const SignIn = ({
             setStatusBanner(
                 true,
                 null,
-                <div 
-                    className='w-full h-full bg-red-500- p-10 rounded-xl flex flex-col justify-center items-center'
-                    style={{
-                        backgroundColor: colors.light[100]
-                    }}
-                >
-                    <video  
-                        src="/icons/fail.webm"
-                        className='w-[200px] h-[200px]'
-                        autoPlay
-                    ></video>
-                    <p>{activeLanguage.AccountWithTheseNameAndPasswordNotFound}</p>
-                </div>
+                <AccountNotFoundBanner 
+                    isVisible={true}
+                    message={activeLanguage.AccountWithTheseNameAndPasswordNotFound}
+                    onClose={() => setStatusBanner(false)}
+                />
             )
         })
     }
@@ -120,19 +109,11 @@ const SignIn = ({
         if (!signInForm.fullName || !signInForm.password) return setStatusBanner(
             true,
             null,
-            <div 
-                className='w-full h-full bg-red-500- p-10 rounded-xl flex flex-col justify-center items-center'
-                style={{
-                    backgroundColor: colors.light[100]
-                }}
-            >
-                <video  
-                    src="/icons/fail.webm"
-                    className='w-[200px] h-[200px]'
-                    autoPlay
-                ></video>
-                <p>{activeLanguage.allFildAreRequired}</p>
-            </div>
+            <RequiredFieldsBanner 
+                isVisible={true}
+                message={activeLanguage.allFildAreRequired}
+                onClose={() => setStatusBanner(false)}
+            />
         )
 
         setLoadingScreen(true);

@@ -53,11 +53,12 @@ const FilterBar = ({
     const handleConfirm = () => {
         setFiltration(filtrationCopy);
         localStorage.setItem('searchFilter', JSON.stringify(filtrationCopy));
-        // في الموبايل فقط، نغلق القائمة بعد التأكيد
+        
+        // Close the filter bar on mobile devices after confirmation
         if (screenWidth < 1024) setFilterBarActive(false);
     };
 
-    // هذا التصميم مخصص ليكون بجانب المنتجات (Vertical)
+    // Vertical layout design intended for side-by-side product placement
     return (
         <aside 
             className={`
@@ -69,33 +70,15 @@ const FilterBar = ({
             style={{
                 backgroundColor: colors.light[100],
                 borderColor: colors.light[200],
-                top: screenWidth > 1024 ? `${-headerHeight}px` : '',
+                top: screenWidth > 1024 ? `${-headerHeight}px` : ``,
             }}
         >
-            {/* Header: عدد النتائج وزر الإغلاق للموبايل */}
-            <div className="p-6 flex justify-between items-center border-b" style={{ borderColor: colors.light[200] }}>
-                <div>
-                    <h2 className="font-black text-xl uppercase tracking-tighter" style={{ color: colors.dark[100] }}>
-                        {activeLanguage.sideMatter.filter}
-                    </h2>
-                    <p className="text-[10px] opacity-50 uppercase tracking-widest">
-                        {productsCount} {activeLanguage.sideMatter.resultsFound}
-                    </p>
-                </div>
-                
-                {/* زر إغلاق يظهر فقط في الشاشات الصغيرة */}
-                <button 
-                    className="lg:hidden p-2 rounded-full bg-gray-500/10"
-                    onClick={() => setFilterBarActive(false)}
-                >
-                    ✕
-                </button>
-            </div>
 
-            {/* Scrollable Content: جميع الفلاتر تحت بعضها */}
+
+            {/* Scrollable Content: Main filter groups */}
             <div className="flex-1 overflow-y-auto px-6 py-4 space-y-10 scrollbar-hidden">
                 
-                {/* 1. السعر */}
+                {/* 1. Price Filtering Section */}
                 {mostProductExpensive && (
                     <div className="py-2">
                         <FilterPriceRange
@@ -107,7 +90,7 @@ const FilterBar = ({
                     </div>
                 )}
 
-                {/* 3. المجموعات، الألوان، المقاسات */}
+                {/* 2. Collections, Colors, and Sizes Group */}
                 <div className="flex flex-col gap-6">
                     <FilterCollection
                         allCollections={allCollections}
@@ -138,7 +121,7 @@ const FilterBar = ({
                     />
                 </div>
 
-                {/* 2. الترتيب */}
+                {/* 3. Sorting Options Section */}
                 <div className="space-y-3">
                     <SortBy
                         filtrationCopy={filtrationCopy}
@@ -149,7 +132,7 @@ const FilterBar = ({
 
             </div>
 
-            {/* Footer: أزرار التحكم الثابتة في الأسفل */}
+            {/* Footer: Persistent control buttons */}
             <div className="p-6 border-t bg-inherit" style={{ borderColor: colors.light[200] }}>
                 <button
                     className="w-full py-3 rounded-2xl font-bold text-[12px] uppercase tracking-widest transition-all active:scale-[0.98] shadow-xl shadow-black/5"
@@ -167,7 +150,7 @@ const FilterBar = ({
                     onClick={() => {
                         setFiltrationCopy(filtration)
                         setFiltration(filtration)
-                    }} // Reset logic
+                    }} // Reset logic to initial state
                 >
                     Clear All
                 </button>

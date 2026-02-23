@@ -57,7 +57,10 @@ body {
 
 
 .x{
-  background-color: rgba(196, 196, 196, 0.21);
+  background-color: rgba(12, 222, 222, 0.21); /*green - blue*/
+  background-color: rgba(106, 13, 220, 0.21);/*purple - blue*/
+  background-color: rgba(216, 7, 91, 0.21); /*red - pink*/
+  background-color: rgba(192, 216, 7, 0.21); /*yellow - green*/
 }
 
 .scrollbar-hidden {

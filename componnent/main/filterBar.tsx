@@ -6,7 +6,7 @@ import { useScreen } from '@/contexts/screenProvider';
 import { CollectionType, FiltrationType } from '@/types';
 import { headerHeight, headerHeightForPhones } from '@/constent';
 
-// المكونات الفرعية
+// Sub-components imports
 import FilterPriceRange from '../sub/filterSearch/FilterPriceRange';
 import FilterCollection from '../sub/filterSearch/filterCollections';
 import FilterColor from '../sub/filterSearch/filterColor';
@@ -67,7 +67,7 @@ const FilterBar = ({
                 maxHeight: filteBarActive ? "85vh" : "56px"
             }}
         >
-            {/* الهيدر العلوي الصغير */}
+            {/* Minimal Upper Header */}
             <div className="flex items-center justify-between px-6 h-[56px] min-h-[56px] w-full">
                 <div className="flex items-center gap-2">
                     <span className="text-[11px] font-black">{productsCount}</span>
@@ -94,14 +94,14 @@ const FilterBar = ({
                 </button>
             </div>
 
-            {/* محتوى الفلترة المتلاحم */}
+            {/* Collapsible Filter Content */}
             <div className={`
                 w-full transition-all duration-500 px-4 pb-6
                 ${filteBarActive ? "opacity-100 overflow-y-auto" : "opacity-0 pointer-events-none"}
             `}>
                 <div className="flex flex-col gap-5 sm:gap-8 mt-4">
                     
-                    {/* قسم السعر - مدمج أكثر */}
+                    {/* Price Range Section - Compact Layout */}
                     <div className="w-full lg:w-3/4 mx-auto p-4 sm:p-6 rounded-2xl" style={{ backgroundColor: colors.light[200] }}>
                         {mostProductExpensive && (
                             <FilterPriceRange
@@ -114,7 +114,7 @@ const FilterBar = ({
                     </div>
 
                     <div className="w-full flex flex-col gap-5">
-                        {/* 1. المجموعات - مسافات ضيقة */}
+                        {/* 1. Collections - Tight Spacing */}
                         <div className="flex flex-col gap-2">
                             <h5 className="text-[8px] font-black uppercase tracking-[0.2em] opacity-30 px-1">
                                 {activeLanguage.collections}
@@ -129,10 +129,10 @@ const FilterBar = ({
                             </div>
                         </div>
 
-                        {/* 2. الشبكة المتجاوبة: الألوان والمقاسات والنوع */}
+                        {/* 2. Responsive Grid: Colors, Sizes, and Types */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
                             
-                            {/* إطار الألوان */}
+                            {/* Colors Wrapper */}
                             <div className="flex flex-col gap-3 p-3 sm:p-5 rounded-xl border" style={{ borderColor: colors.light[200] }}>
                                 <h5 className="text-[8px] font-black uppercase tracking-widest opacity-30">
                                     {activeLanguage.sideMatter.colors}
@@ -145,7 +145,7 @@ const FilterBar = ({
                                 />
                             </div>
 
-                            {/* إطار المقاسات */}
+                            {/* Sizes Wrapper */}
                             <div className="flex flex-col gap-3 p-3 sm:p-5 rounded-xl border" style={{ borderColor: colors.light[200] }}>
                                 <h5 className="text-[8px] font-black uppercase tracking-widest opacity-30">
                                     {activeLanguage.sideMatter.sizes}
@@ -158,7 +158,7 @@ const FilterBar = ({
                                 />
                             </div>
 
-                            {/* إطار النوع */}
+                            {/* Types Wrapper */}
                             <div className="flex flex-col gap-3 p-3 sm:p-5 rounded-xl border" style={{ borderColor: colors.light[200] }}>
                                 <h5 className="text-[8px] font-black uppercase tracking-widest opacity-30">
                                     {activeLanguage.sideMatter.types}
@@ -173,7 +173,7 @@ const FilterBar = ({
                         </div>
                     </div>
 
-                    {/* قسم الترتيب - مساحة أصغر قليلاً */}
+                    {/* Sorting Section */}
                     <div className="border-t pt-5 flex justify-center" style={{ borderColor: colors.light[200] }}>
                         <SortBy
                             filtrationCopy={filtration}

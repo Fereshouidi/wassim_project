@@ -40,7 +40,6 @@ const ImagesSwitcher = ({
 
   const [zoomPos, setZoomPos] = useState({ x: 0, y: 0, show: false });
 
-  // --- الحل: تصفية الصور المتكررة بناءً على الرابط uri ---
   const uniqueImages = useMemo(() => {
     if (!images) return [];
     const seen = new Set();
@@ -51,7 +50,6 @@ const ImagesSwitcher = ({
     });
   }, [images]);
 
-  // تصحيح Index في حال كان خارج نطاق المصفوفة الجديدة
   useEffect(() => {
     if (currentImageIndex >= uniqueImages.length && uniqueImages.length > 0) {
       setCurrentImageIndex(0);
@@ -89,7 +87,7 @@ const ImagesSwitcher = ({
       >
         <button
           className={`absolute top-2 right-2 z-20 p-2 rounded-full transition-all active:scale-90 shadow-lg
-            ${like ? "bg-red-500 text-white" : "bg-white/40 backdrop-blur-md text-gray-600 hover:bg-white/20"}`}
+            ${like ? "bg-red-500 text-white" : "bg-gray-300 backdrop-blur-md text-gray-600 hover:bg-white/20"}`}
           onClick={() => client ? setLike(!like) : setRegisterSectionExist(true)}
         >
           <img src={like ? "/icons/heart-white.png" : "/icons/heart-white.png"} className="w-6 h-6" alt="like" />

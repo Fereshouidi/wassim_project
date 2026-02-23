@@ -3,6 +3,7 @@
 import { ProductImage, ProductSpecification } from '@/types'
 import React, { useState, useMemo } from 'react'
 import { useScreen } from '@/contexts/screenProvider';
+import { ReactSVG } from 'react-svg';
 
 type Props = {
     product?: ProductImage[]; 
@@ -13,20 +14,20 @@ type Props = {
 }
 
 const DiamondIcon = ({ color, size, isLight }: { color: string, size: string, isLight: boolean }) => (
-    <svg 
-        width={size} 
-        height={size} 
-        viewBox="0 0 24 24" 
-        fill="none" 
-        xmlns="http://www.w3.org/2000/svg"
-        style={{ 
-            filter: isLight ? `drop-shadow(0px 0px 1.5px rgba(0,0,0,0.3))` : 'none',
-            transition: 'all 0.3s ease'
+    <ReactSVG 
+        src="/icons/diamond2.svg" 
+        beforeInjection={(svg) => {
+            // هنا نتحكم في الحجم واللون برمجياً قبل حقن الـ SVG في الصفحة
+            svg.setAttribute('style', `width: ${size}; height: ${size}; fill: ${color};`);
+            
+            // إضافة ظل إذا كانت الإضاءة فاتحة
+            if (isLight) {
+                svg.style.filter = 'drop-shadow(0px 0px 1.5px rgba(0,0,0,0.3))';
+            }
         }}
-    >
-        <path d="M6 3L2 9L12 21L22 9L18 3H6Z" fill={color} />
-        <path d="M6 3L12 9M18 3L12 9M2 9H22M6 3L2 9M18 3L22 9M12 21L6 9M12 21L18 9" stroke="white" strokeOpacity="0.7" strokeWidth="1.2" />
-    </svg>
+        wrapper="span"
+        className="flex items-center justify-center transition-all duration-300"
+    />
 );
 
 const SpecificationsSlider = ({ 

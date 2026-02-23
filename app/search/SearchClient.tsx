@@ -167,7 +167,7 @@ const Page = () => {
 
             <div className="flex flex-col lg:flex-row items-start w-full relative min-h-screen">
                 
-                {/* Overlay: يعمل كحماية لمنع الضغط خارج الفلتر في الموبايل */}
+                {/* Overlay: Prevents clicks outside filter on mobile */}
                 {screenWidth <= 1024 && filteBarActive && (
                     <div 
                         className="fixed inset-0 bg-black/40 z-[45] backdrop-blur-sm lg:hidden transition-all duration-300"
@@ -185,8 +185,8 @@ const Page = () => {
                         }
                     `}
                     style={{
-                        top: screenWidth > 1024 ? `${headerHeight + 73}px` : `0px`,
-                        height: screenWidth > 1024 ? `calc(100dvh - ${headerHeight}px - 73px)` : `100dvh`,
+                        top: screenWidth > 1024 ? `${headerHeight + 73}px` : `${headerHeightForPhones}px`,
+                        height: screenWidth > 1024 ? `calc(100dvh - ${headerHeight}px - 73px)` : `calc(100dvh - ${headerHeightForPhones}px)`,
                         backgroundColor: colors.light[100],
                         borderColor: colors.light[200]
                     }}
@@ -210,8 +210,8 @@ const Page = () => {
                     </div>
                 </aside>
 
-                {/* Main Content: شبكة المنتجات */}
-                <main className="flex-1 w-full py-4 sm:py-8 px-3 sm:px-6 lg:px-10 z-[1]">
+                {/* Main Content: Product Grid */}
+                <main className="flex-1 w-full py-18 sm:py-8 px-3 sm:px-6 lg:px-10 z-[1]">
                     <div className={`
                         w-full grid justify-items-center gap-2 sm:gap-4
                         grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5
@@ -231,7 +231,7 @@ const Page = () => {
                         )}
                     </div>
 
-                    {/* Load More */}
+                    {/* Load More Section */}
                     {productsFound.length < productsCount && (
                         <div className="w-full flex justify-center mt-12 mb-10">
                             <MoreBotton

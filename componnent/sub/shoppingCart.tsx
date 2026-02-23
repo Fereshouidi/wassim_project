@@ -2,7 +2,6 @@
 
 import { backEndUrl } from '@/api';
 import { useClient } from '@/contexts/client';
-// تم حذف استيراد useSocket
 import { useTheme } from '@/contexts/themeProvider';
 import { useCartSide } from '@/contexts/cart';
 import axios from 'axios';
@@ -14,7 +13,6 @@ const ShoppingCart = () => {
     const { client } = useClient();
     const { setIsActive, purchases, setPurchases } = useCartSide();
 
-    // جلب المشتريات الموجودة في السلة عند تحميل الصفحة لأول مرة
     const fetchPurchasesInCart = async () => {
         if (!client?._id) return;
         try {
@@ -27,12 +25,10 @@ const ShoppingCart = () => {
         }
     }
 
-    // يتم الجلب عند تغيير العميل (أو عند الدخول المباشر للرابط كما ناقشنا في البداية)
     useEffect(() => { 
         fetchPurchasesInCart(); 
     }, [client?._id]); 
 
-    // تم حذف الـ useEffect الثاني الذي كان يحتوي على socket.on بالكامل
 
     return (
         <>
@@ -46,15 +42,12 @@ const ShoppingCart = () => {
                     className="w-full h-full object-contain"
                 />
                 
-                {/* سيظل هذا الرقم محدثاً لأن setPurchases تُستدعى من المكونات الأخرى عبر الـ Context */}
-                {purchases.length > 0 && (
-                    <span 
-                        className='absolute -top-2 -right-2 w-5 h-5 flex justify-center items-center text-[11px] font-bold rounded-full'
-                        style={{ backgroundColor: colors.dark[100], color: colors.light[100] }}
-                    >
-                        {purchases.length}
-                    </span>
-                )}
+                <span 
+                    className='absolute -top-2 -right-2 w-5 h-5 flex justify-center items-center text-[11px] font-bold rounded-full'
+                    style={{ backgroundColor: colors.dark[100], color: colors.light[100] }}
+                >
+                    {purchases.length}
+                </span>
                 
             </div>
             <CartSide />

@@ -31,9 +31,9 @@ const AccountPage = () => {
     const [sideBarActive, setSideBarActive] = useState<boolean>(false);
     const { colors, activeTheme } = useTheme(); // Added activeTheme
     const { ownerInfo, setOwnerInfo } = useOwner();
-    const [ updatedClient, setUpdatedClient ] = useState<ClientType | undefined>(undefined);
+    const [updatedClient, setUpdatedClient] = useState<ClientType | undefined>(undefined);
     const { setStatusBanner } = useStatusBanner();
-    const [ verificationAccountBannerVisible, setVerificationAccountBannerVisible ] = useState<boolean>(false);
+    const [verificationAccountBannerVisible, setVerificationAccountBannerVisible] = useState<boolean>(false);
     const { activeLanguage } = useLanguage();
     const { screenWidth } = useScreen();
     const { setPurchases } = useCartSide();
@@ -52,23 +52,24 @@ const AccountPage = () => {
 
     const handleSubmit = async () => {
         // 1. Validation check
-        if (!isValidEmail(updatedClient?.email?? "")) {
+        if (!isValidEmail(updatedClient?.email ?? "")) {
             setStatusBanner(true, null, <ErrorBanner show={true} message="Please enter a valid email address" />);
             setTimeout(() => setStatusBanner(false), 3500);
-            return; 
+            return;
         }
 
-        if (!isValidPhone(updatedClient?.phone?? "" )) {
+        if (!isValidPhone(updatedClient?.phone ?? "")) {
             setStatusBanner(true, null, <ErrorBanner show={true} message="Phone number must be exactly 8 digits" />);
             setTimeout(() => setStatusBanner(false), 3500);
-            return; 
+            return;
         }
 
         // 2. Contact Backend
         setLoadingScreen(true);
         try {
             const response = await axios.put(backEndUrl + "/updateClient", {
-                updatedClientData: updatedClient
+                updatedClientData: updatedClient,
+                lang: activeLanguage.language
             });
 
             setLoadingScreen(false);
@@ -94,7 +95,38 @@ const AccountPage = () => {
         }
     }
 
-    if (!ownerInfo || !updatedClient) return <LoadingScreen/>
+    const handleLogout = async () => {
+        try {
+            setLoadingScreen(true);
+
+            // 1. Call the backend to clear token/deviceId in DB
+            // We use the client name from your current state
+            if (client?.fullName) {
+                await axios.get(`${backEndUrl}/logoutClient`, {
+                    params: { fullName: client.fullName }
+                });
+            }
+
+            // 2. Clear Local State & Storage
+            setPurchases([]);
+            localStorage.removeItem('clientToken');
+            setClient(null);
+
+            // 3. Redirect to Home
+            route.replace('/');
+
+        } catch (error) {
+            console.error("Logout error:", error);
+            // Even if the network fails, we usually want to clear the local session
+            localStorage.removeItem('clientToken');
+            setClient(null);
+            route.replace('/');
+        } finally {
+            setLoadingScreen(false);
+        }
+    };
+
+    if (!ownerInfo || !updatedClient) return <LoadingScreen />
 
     return (
         <div
@@ -104,7 +136,7 @@ const AccountPage = () => {
                 color: colors.dark[200]
             }}
         >
-            <AnnouncementBar/>
+            <AnnouncementBar />
             <Header
                 isSideBarActive={sideBarActive}
                 setIsSideBarActive={setSideBarActive}
@@ -115,11 +147,11 @@ const AccountPage = () => {
                 isActive={sideBarActive}
                 setIsActive={setSideBarActive}
                 ownerInfo={ownerInfo}
-                setOwnerInfo={() => {}}
+                setOwnerInfo={() => { }}
             />
 
             {/* --- Main Content Area --- */}
-            <div 
+            <div
                 className='flex-grow flex justify-center py-12 px-4 ms:px-8'
                 style={{ paddingTop: screenWidth > 1000 ? headerHeight : 10 }}
             >
@@ -145,7 +177,7 @@ const AccountPage = () => {
                     {/* --- Card Body (Form) --- */}
                     <div className='p-4 sm:p-10'>
                         <div className='grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8 w-full'>
-                            
+
                             <CustomInputText
                                 label={activeLanguage.sideMatter.fullName}
                                 type='text'
@@ -157,7 +189,7 @@ const AccountPage = () => {
                                 onChange={(e) => setUpdatedClient({ ...updatedClient, fullName: e.target.value })}
                                 maxLength={25}
                             />
-                            
+
                             <CustomInputText
                                 label={activeLanguage.sideMatter.phone}
                                 type='tel'
@@ -172,7 +204,7 @@ const AccountPage = () => {
                                 }}
                                 maxLength={8}
                             />
-                            
+
                             <CustomInputText
                                 label={activeLanguage.sideMatter.email}
                                 type='text'
@@ -184,7 +216,7 @@ const AccountPage = () => {
                                 onChange={(e) => setUpdatedClient({ ...updatedClient, email: e.target.value })}
                                 maxLength={50}
                             />
-                            
+
                             <CustomInputText
                                 label={activeLanguage.sideMatter.address}
                                 type='text'
@@ -196,7 +228,7 @@ const AccountPage = () => {
                                 onChange={(e) => setUpdatedClient({ ...updatedClient, address: e.target.value })}
                                 maxLength={100}
                             />
-                            
+
                             <CustomInputText
                                 label={activeLanguage.sideMatter.password}
                                 type='text' // Consider changing to 'password' for security
@@ -207,18 +239,20 @@ const AccountPage = () => {
                                 defaultValue={updatedClient?.password}
                                 onChange={(e) => setUpdatedClient({ ...updatedClient, password: e.target.value })}
                             />
-                    
+
                             <CustomInputText
                                 label={activeLanguage.dateOfBirth}
                                 type="date"
                                 className="w-full"
                                 labelClassName='font-semibold mb-2 block text-sm'
-                                placeholder={activeLanguage.inputYourDateOfBirth} 
+                                placeholder={activeLanguage.inputYourDateOfBirth}
                                 inputClassName='w-full px-4 py-3 rounded-xl border  rounded transition-all  bg-transparent'
                                 //@ts-ignore
                                 defaultValue={updatedClient?.dateOfBirth ? new Date(updatedClient.dateOfBirth).toISOString().slice(0, 10) : ''}
-                                onChange={(e) => setUpdatedClient({ ...updatedClient, //@ts-ignore
-                                    dateOfBirth: new Date(e.target.value) })}
+                                onChange={(e) => setUpdatedClient({
+                                    ...updatedClient, //@ts-ignore
+                                    dateOfBirth: new Date(e.target.value)
+                                })}
                             />
                         </div>
 
@@ -228,15 +262,7 @@ const AccountPage = () => {
                             {/* Logout Button (Ghost Style for Secondary/Destructive) */}
                             <button
                                 className='group flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-red-500 font-medium hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors w-full sm:w-auto'
-                                onClick={() => {
-                                    setLoadingScreen(true);
-                                    setPurchases([])
-                                    localStorage.removeItem('clientToken');
-                                    setClient(null);
-                                    setClient(null);
-                                    route.replace('/');
-                                    setLoadingScreen(false);
-                                }}
+                                onClick={handleLogout}
                             >
                                 <img
                                     src="/icons/logout-red.png" // Ensure this icon works on light bg, or use CSS filter
@@ -258,18 +284,18 @@ const AccountPage = () => {
                             </button>
 
                         </div>
-                    </div>               
+                    </div>
                 </div>
             </div>
 
             {/* --- Modals/Overlays --- */}
-            {verificationAccountBannerVisible && 
+            {verificationAccountBannerVisible &&
                 <div className='fixed inset-0 z-50 flex justify-center items-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200'>
-                    <div 
+                    <div
                         className="w-full max-w-md relative bg-white rounded-xl shadow-2xl overflow-hidden"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <VerificationAccountBanner 
+                        <VerificationAccountBanner
                             verificationAccountBannerVisible={verificationAccountBannerVisible}
                             setVerificationAccountBannerVisible={setVerificationAccountBannerVisible}
                             clientFound={updatedClient}
@@ -279,7 +305,7 @@ const AccountPage = () => {
                 </div>
             }
 
-            <Footer/>
+            <Footer />
         </div>
     )
 }

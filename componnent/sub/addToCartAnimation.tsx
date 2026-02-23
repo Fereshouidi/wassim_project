@@ -5,7 +5,7 @@ import { useRef, useState } from "react";
 
 type Props = {
   productImage: string;
-  isInCart: boolean; // أضفنا هذا الـ Prop لمعرفة الحالة الحالية
+  isInCart: boolean;
   onToggle: () => Promise<boolean>; 
 };
 
@@ -33,7 +33,6 @@ export default function AddToCartAnimation({ productImage, isInCart, onToggle }:
     const cartX = cartRect.left + (cartRect.width / 2);
     const cartY = cartRect.top + (cartRect.height / 2);
 
-    // إنشاء العنصر الطائر
     const clone = document.createElement("img");
     clone.src = productImage;
     Object.assign(clone.style, {
@@ -44,9 +43,7 @@ export default function AddToCartAnimation({ productImage, isInCart, onToggle }:
       transition: "all 0.8s cubic-bezier(0.2, 1, 0.2, 1)",
     });
 
-    // --- تحديد مسار البداية بناءً على الحالة ---
     if (isInCart) {
-      // إذا كان في السلة، يبدأ من السلة متجهاً للزر (خروج)
       Object.assign(clone.style, {
         left: `${cartX}px`,
         top: `${cartY}px`,
@@ -56,7 +53,6 @@ export default function AddToCartAnimation({ productImage, isInCart, onToggle }:
         opacity: "0.2",
       });
     } else {
-      // إذا لم يكن في السلة، يبدأ من الزر متجهاً للسلة (دخول)
       Object.assign(clone.style, {
         left: `${buttonRect.left}px`,
         top: `${buttonRect.top}px`,
@@ -70,10 +66,8 @@ export default function AddToCartAnimation({ productImage, isInCart, onToggle }:
     document.body.appendChild(clone);
     clone.getBoundingClientRect(); // Force Reflow
 
-    // --- تنفيذ الحركة ---
     requestAnimationFrame(() => {
       if (isInCart) {
-        // العودة للزر
         clone.style.left = `${buttonRect.left}px`;
         clone.style.top = `${buttonRect.top}px`;
         clone.style.width = `${buttonRect.width}px`;
@@ -81,7 +75,6 @@ export default function AddToCartAnimation({ productImage, isInCart, onToggle }:
         clone.style.borderRadius = "8px";
         clone.style.opacity = "0.5";
       } else {
-        // الذهاب للسلة
         clone.style.left = `${cartX}px`;
         clone.style.top = `${cartY}px`;
         clone.style.width = "20px";
@@ -93,12 +86,9 @@ export default function AddToCartAnimation({ productImage, isInCart, onToggle }:
 
     await new Promise((r) => setTimeout(r, 800));
 
-    // تنفيذ العملية الفعلية (Socket/API)
     const success = await onToggle();
 
     if (!success) {
-      // إذا فشلت العملية، نعيد العنصر لمكانه الأصلي قبل الحذف
-      // (اختياري: يمكنك إضافة أنميشن عكسي هنا أيضاً)
     }
 
     clone.remove();

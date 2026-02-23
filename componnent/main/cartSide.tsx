@@ -52,11 +52,14 @@ const CartSide = () => {
         setLoadingScreen(true);
 
         const purchasesId = purchases.map(p => p._id);
+        
+        // --- FIX APPLIED HERE ---
         const orderData = {
+            clientId: client._id, // Keep this for backend logic if needed
             orderForm: { 
                 ...clientForm, 
-                client: client?._id, 
-                shippingCoast: ownerInfo?.shippingCost, 
+                client: client._id, // ADDED: This satisfies Mongoose's "client" required field
+                shippingCost: ownerInfo?.shippingCost, // Spelled correctly as Cost
                 clientNote: clientForm.note 
             }, 
             purchasesId 
@@ -66,16 +69,12 @@ const CartSide = () => {
             const { data } = await axios.post(`${backEndUrl}/addOrder`, orderData);
 
             if (data.success) {
-                // 1. تفريغ السلة محلياً بعد نجاح الطلب
                 setPurchases([]);
-                // 2. إغلاق السلة الجانبية
                 setIsActive(false);
-                // 3. التوجيه لصفحة الطلبات لمشاهدة حالة الطلب
                 router.push('/orders');
             }
         } catch (err: any) {
             console.error("Order Error:", err.response?.data?.message || "Error");
-            // هنا يمكنك إضافة تنبيه للمستخدم في حال فشل الطلب
         } finally {
             setLoadingScreen(false);
         }

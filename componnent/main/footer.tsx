@@ -73,14 +73,14 @@ const Footer = ({
                     </div>
                 </div>
 
-                <div className='h-full bg-red-500- flex flex-1 flex-col justify-start items-center '>
+                { screenWidth > 1000 && <div className='h-full bg-red-500- flex flex-1 flex-col justify-start items-center '>
                     <p>{activeLanguage.haveGoodShop}</p>
                     <img 
                         src="/logo-simple-black.jpg" 
                         className='w-14 h-14 mt-8'
                         alt="" 
                     />
-                </div>
+                </div>}
                 
                 <div className='w-fit- h-full flex flex-1 bg-green-400- flex-col justify-center items-center bg-red-500- gap-3 bg-green-500- text-white'>
 
@@ -112,15 +112,24 @@ const Footer = ({
                     </div>
                 </div>
 
+                { screenWidth < 1000 && <div className='h-full bg-red-500- flex flex-1 flex-col justify-start items-center '>
+                    <p className=' text-center text-sm opacity-80 mt-5'>{activeLanguage.haveGoodShop}</p>
+                    <img 
+                        src="/logo-simple-black.jpg" 
+                        className='w-10 h-10 mt-4'
+                        alt="" 
+                    />
+                </div>}
+
             </div>
 
             {/* ----------- NEW BOTTOM SECTION ----------- */}
             <div className='w-full flex flex-col sm:flex-row justify-between items-center pt-6 opacity-30 text-[10px] uppercase tracking-widest'>
                 <p>© 2026 SilverWayShop. All Rights Reserved.</p>
-                <div className='flex gap-6 mt-4 sm:mt-0'>
+                {/* <div className='flex gap-6 mt-4 sm:mt-0'>
                     <span className='cursor-pointer hover:underline'>Privacy Policy</span>
                     <span className='cursor-pointer hover:underline'>Terms of Service</span>
-                </div>
+                </div> */}
             </div>
              {/* ------------------------------------------ */}
 

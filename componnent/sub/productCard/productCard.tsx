@@ -46,7 +46,6 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
     // --- States ---
     const [currentImage, setCurrentImage] = useState<string | null>(null);
     const [like, setLike] = useState<boolean | null>(null);
-    // حالة لتتبع المواصفة المختارة (تبدأ بأول مواصفة)
     const [activeSpecifications, setActiveSpecifications] = useState<ProductSpecification | null>(null);
 
     // --- UseMemo ---
@@ -174,6 +173,36 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
         }
     };
 
+
+    const handleLike = async () => {
+        if (!product || !client || like == null) return;
+
+        if (!like) {
+          await axios.post( backEndUrl + "/addLike", {
+            likeData: {
+              client: client?._id,
+              product: product._id
+            }
+          })
+          .then(() => {setLike(true)})
+          .catch((err) => {
+            console.log(err);
+            setStatusBanner(true, "something went wrong !");
+          })
+        } else {
+          await axios.delete( backEndUrl + "/deleteLike", {
+            data: {
+              clientId: client?._id,
+              productId: product._id
+            }
+          })
+          .then(() => {setLike(false)})
+          .catch(() => {
+            setStatusBanner(true, "something went wrong !");
+          })
+        }
+    }
+    
     const isMobile = screenWidth < 640;
 
     // --- Shared Render Parts ---
@@ -181,13 +210,24 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
         const isMob = layout === 'mobile';
         return (
             <>
-                {useLike && (
-                    <div className={`absolute ${isMob ? 'top-2 right-2 p-1.5' : 'top-4 right-4 p-2'} rounded-full transition-transform active:scale-75 z-20 shadow-md cursor-pointer`}
-                        style={{ backgroundColor: like ? "#ef4444" : "rgba(255, 255, 255, 0.9)" }}
-                        onClick={(e) => { e.stopPropagation(); /* هنا يمكن إضافة وظيفة اللايك */ }}>
-                        <img src={like ? "/icons/heart-white.png" : "/icons/heart-black.png"} className={isMob ? "w-4 h-4" : "w-5 h-5"} alt="Like" />
-                    </div>
-                )}
+        {useLike && <div 
+            className={`absolute top-1 right-2 rounded-full p-[5px] ${like ? "bg-red-500" : "bg-gray-400 opacity-75"} transition-transform active:scale-75 w-8 h-8 z-[2] cursor-pointer`}
+            onClick={(e) => {
+                e.stopPropagation();
+                if (client) {
+                    setLike(!like);
+                    handleLike()
+                } else {
+                    setRegisterSectionExist(true)
+                }
+            }}
+        >
+            <img 
+                src="/icons/heart-white.png" 
+                className='w-full h-full'
+                alt="like" 
+            />
+        </div>}
                 <div className={`w-full overflow-hidden bg-gray-50 relative ${isMob ? 'aspect-square' : 'aspect-square'}`}>
                     {currentImage ? (
                         <img src={currentImage} className={`w-full h-full object-cover transition-all duration-500 ${!isMob && 'group-hover:scale-110'}`} alt="Product" />
