@@ -18,74 +18,59 @@ const MoreDetailsTable = ({
 
     const { client } = useClient();
     const { activeLanguage } = useLanguage();
-    const { colors } = useTheme();
-    const { ownerInfo } = useOwner();
-    const [ deliveryWorker, setDeliveryWorker ] = useState<DeliveryWorkerType | undefined>(undefined);
-
-    
+    const { colors, activeTheme } = useTheme();
+    const [deliveryWorker, setDeliveryWorker] = useState<DeliveryWorkerType | undefined>(undefined);
 
     useEffect(() => {
         const fetchDeliveryWorker = async () => {
-            await axios.get( backEndUrl + "/getDeliveryWorker" )
-            .then(({ data }) => {
-                setDeliveryWorker(data.deliveryWorker)
-            })
-            .catch(( err ) => {
+            try {
+                const { data } = await axios.get(backEndUrl + "/getDeliveryWorker");
+                setDeliveryWorker(data.deliveryWorker);
+            } catch (err) {
                 console.error({ err });
-            })
+            }
         }
         fetchDeliveryWorker();
     }, [order])
 
+    const details = [
+        { label: activeLanguage.receiver, value: client?.fullName, icon: "👤" },
+        { label: activeLanguage.sideMatter.address, value: order?.address, icon: "📍" },
+        { label: activeLanguage.deliveryPhone, value: deliveryWorker?.phone ? `+216 ${deliveryWorker.phone}` : "...", icon: "📞" },
+        { label: activeLanguage.orderedAt, value: order.createdAt ? showTimeWithTranslate(order.createdAt, activeLanguage.language) : "...", icon: "🕒" },
+    ];
+
     return (
-        <div 
-            className='w-full cursor-auto'
+        <div
+            className='w-full cursor-auto rounded-2xl overflow-hidden'
+            style={{
+                backgroundColor: colors.light[100],
+                border: `1px solid ${colors.light[250]}`,
+                boxShadow: activeTheme === 'dark' ? '0 4px 20px rgba(0,0,0,0.4)' : '0 4px 20px rgba(0,0,0,0.05)'
+            }}
             onClick={(e) => e.stopPropagation()}
         >
-            <h2 className='font-bold text-[12px] m-2'>{activeLanguage.moreDetails + " : "}</h2>
+            <div className='p-4 border-b' style={{ borderColor: colors.light[250] }}>
+                <h2 className='font-bold text-sm flex items-center gap-2' style={{ color: colors.dark[100] }}>
+                    <span className='w-1 h-4 rounded-full' style={{ backgroundColor: colors.dark[200] }} />
+                    {activeLanguage.moreDetails}
+                </h2>
+            </div>
 
-            <table className='w-full bord-collapse'>
-                <thead>
-                    <tr>
-                        <th 
-                            className='p-2 text-[10px] sm:text-[12px] bord text-center'
-                            style={{ border: `0.5px solid ${colors.light[300]}` }}
-                        >{activeLanguage.receiver}</th>
-                        <th 
-                            className='p-2 text-[10px] sm:text-[12px] bord text-center'
-                            style={{ border: `0.5px solid ${colors.light[300]}` }}
-                        >{activeLanguage.sideMatter.address}</th>
-                        <th 
-                            className='p-2 text-[10px] sm:text-[12px] bord text-center'
-                            style={{ border: `0.5px solid ${colors.light[300]}` }}
-                        >{activeLanguage.deliveryPhone}</th>
-                        <th 
-                            className='p-2 text-[10px] sm:text-[12px] bord text-center'
-                            style={{ border: `0.5px solid ${colors.light[300]}` }}
-                        >{activeLanguage.orderedAt}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td
-                            className='p-2 text-[10px] sm:text-[12px] bord text-center'
-                            style={{ border: `0.5px solid ${colors.light[300]}` }}
-                        >{client?.fullName}</td>
-                        <td 
-                            className='p-2 text-[10px] sm:text-[12px] bord text-center'
-                            style={{ border: `0.5px solid ${colors.light[300]}` }}
-                        >{order?.address}</td>
-                        <td 
-                            className='p-2 text-[10px] sm:text-[12px] bord text-center'
-                            style={{ border: `0.5px solid ${colors.light[300]}` }}
-                        >{ "+216" + deliveryWorker?.phone}</td>
-                        <td 
-                            className='p-2 text-[10px] sm:text-[12px] bord text-center'
-                            style={{ border: `0.5px solid ${colors.light[300]}` }}
-                        >{order.createdAt && showTimeWithTranslate(order.createdAt, activeLanguage.language)}</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div className='grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 divide-x divide-y' style={{ borderColor: colors.light[200] }}>
+                {details.map((detail, idx) => (
+                    <div key={idx} className='p-3 sm:p-4 flex flex-col gap-1 hover:bg-opacity-50 transition-colors'
+                        style={{ backgroundColor: activeTheme === 'dark' ? 'rgba(255,255,255,0.02)' : 'transparent' }}>
+                        <div className='flex items-center gap-1.5 opacity-60'>
+                            <span className='text-xs'>{detail.icon}</span>
+                            <span className='text-[9px] sm:text-[10px] uppercase font-bold tracking-wider'>{detail.label}</span>
+                        </div>
+                        <span className='text-[11px] sm:text-xs font-medium line-clamp-2' style={{ color: colors.dark[200] }}>
+                            {detail.value || "..."}
+                        </span>
+                    </div>
+                ))}
+            </div>
         </div>
     )
 }

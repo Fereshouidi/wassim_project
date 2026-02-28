@@ -20,7 +20,7 @@ import { useAiChatBubble } from '@/contexts/AiChatBubble';
 const SideBar = ({
     isActive,
     setIsActive,
-    ownerInfo, 
+    ownerInfo,
     setOwnerInfo
 }: SideBarProps) => {
 
@@ -34,146 +34,137 @@ const SideBar = ({
     const { setBubbleProps, bubbleProps } = useAiChatBubble()
 
 
-  return (
-    <div 
-        className={`
+    return (
+        <div
+            className={`
             w-screen h-dvh z-50 fixed top-0 left-0
             transition-all duration-300 ease-in-out
             ${isActive ? "opacity-100 visible" : "opacity-0 invisible delay-300"} 
             no-sellect
         `}
-        style={{
-            backgroundColor: "rgba(74, 74, 74, 0.677)",
-        }}
-        onClick={() => setIsActive(false)}
-    >
-        <div    
-            className={`
+            style={{
+                backgroundColor: "rgba(74, 74, 74, 0.677)",
+            }}
+            onClick={() => setIsActive(false)}
+        >
+            <div
+                className={`
                 w-[320px] h-full bg-white absolute top-0
                 ${isActive ? "left-0" : "left-[-320px]"}
                 flex flex-col items-center justify-between p-2
                 overflow-y-scroll overflow-x-visible scrollbar-hidden
                 transition-all duration-300 ease-in-out
             `}
-            style={{
-                boxShadow: '0 0px 10px rgba(13, 13, 13, 0.02)',
-                backgroundColor: colors.dark[100],
-            }}
-            onClick={(e) => e.stopPropagation()}
-        >
+                style={{
+                    boxShadow: '0 0px 10px rgba(13, 13, 13, 0.02)',
+                    backgroundColor: colors.dark[100],
+                }}
+                onClick={(e) => e.stopPropagation()}
+            >
 
-            <div className='w-full flex flex-1- flex-col items-center gap-4 '>
-                <div 
-                    className='  w-3xs  flex items-center justify-center  p-7'
-                    style={{
-                        height: headerHeight*1.5,
-                    }}
-                >
-              {
-                activeTheme == "light" ? 
-                  <img 
-                    src={ownerInfo?.logo?.dark}
-                    className=' h-full object-contain no-sellect'
-                  /> : 
-                activeTheme == "dark" ?
-                  <img 
-                    src={ownerInfo?.logo?.light}
-                    className=' h-full object-contain no-sellect'
-                  /> :
-                null
-              }
-                </div>
-
-                <SearchBar
-                    containerClassName='w-full border-[0.5px]'
-                    containerStyle={{
-                        borderColor: colors.dark[300],
-                    }}
-                    className='w-20 border-[0.5px]- border-gray-100 h-14'
-                    inputClassName='w-20 bg-transparent'
-                    style={{
-                        borderColor: colors.dark[300],
-                        backgroundColor: colors.dark[100]
-                    }}
-                    inputStyle={{
-                        borderColor: colors.dark[300],
-                        color: colors.light[300],
-                    }}
-                    searchIcon={ activeTheme == "light" ? "/icons/searchBlack.png" : "/icons/searchWhite.png" }
-                    searchIconStyle={{
-                        backgroundColor: colors.light[100],
-                        color: colors.dark[100]
-                    }}
-                    resSectionStyle={{
-                        backgroundColor: colors.dark[100],
-                        color: colors.light[100],
-                        borderRight: `0.02px solid ${colors.light[900]}`,
-                        borderBottom: `0.02px solid ${colors.light[900]}`,
-                        borderLeft: `0.02px solid ${colors.light[900]}`,
-                        borderTop: 'none',
-                        zIndex: 999
-                    }}
-                    aiIconStyle={{
-                        backgroundColor: colors.dark[100],
-                    }}
-                    importedFrom='sidBar'
-                />
-
-                <ul className='w-full bg-green-100- mt-5'>
-                    <li
-                        className='flex h-14 border-b-[1px] border-b-gray-100 text-sm cursor-pointer'
+                <div className='w-full flex flex-1- flex-col items-center gap-4 '>
+                    <div
+                        className='  w-3xs  flex items-center justify-center  p-7'
                         style={{
-                            borderBottomColor: colors.dark[200]
+                            height: headerHeight * 1.5,
                         }}
                     >
-                        <div 
-                            className='w-full h-ful flex items-center px-7'
-                            style={{
-                                color: colors.light[200]
-                            }}    
-                            onClick={() => {
-                                setLoadingScreen(true);
-                                router.push('/')
-                            }}
-                        >{activeLanguage.nav.home}</div>
-                    </li>
-                    <li
-                        className='w-full bg-green-400- flex h-14 border-b-[1px] border-b-gray-100 text-sm cursor-pointer'
-                        style={{
-                            borderBottomColor: colors.dark[200]
+                        {
+                            activeTheme == "light" ?
+                                <img
+                                    src={ownerInfo?.logo?.dark}
+                                    className=' h-full object-contain no-sellect'
+                                /> :
+                                activeTheme == "dark" ?
+                                    <img
+                                        src={ownerInfo?.logo?.light}
+                                        className=' h-full object-contain no-sellect'
+                                    /> :
+                                    null
+                        }
+                    </div>
+
+                    <SearchBar
+                        containerClassName='w-full border-[0.5px]'
+                        containerStyle={{
+                            borderColor: colors.dark[300],
                         }}
-                    >
-                        <div  
-                            onClick={() => {
-                                setLoadingScreen(true);
-                                router.push('/collections')
-                            }}
-                            className='w-full min-w-full h-full flex items-center bg-blue-400- pl-7 pr-2'
+                        className='w-20 border-[0.5px]- border-gray-100 h-14'
+                        inputClassName='w-20 bg-transparent'
+                        style={{
+                            borderColor: colors.dark[300],
+                            backgroundColor: colors.dark[100]
+                        }}
+                        inputStyle={{
+                            borderColor: colors.dark[300],
+                            color: colors.light[300],
+                        }}
+                        searchIcon={activeTheme == "light" ? "/icons/searchBlack.png" : "/icons/searchWhite.png"}
+                        searchIconStyle={{
+                            backgroundColor: colors.light[100],
+                            color: colors.dark[100]
+                        }}
+                        resSectionStyle={{
+                            backgroundColor: colors.dark[100],
+                            color: colors.light[100],
+                            borderRight: `0.02px solid ${colors.light[900]}`,
+                            borderBottom: `0.02px solid ${colors.light[900]}`,
+                            borderLeft: `0.02px solid ${colors.light[900]}`,
+                            borderTop: 'none',
+                            zIndex: 999
+                        }}
+                        aiIconStyle={{
+                            backgroundColor: colors.dark[100],
+                        }}
+                        importedFrom='sidBar'
+                    />
+
+                    <ul className='w-full bg-green-100- mt-5'>
+                        <li
+                            className='flex h-14 border-b-[1px] border-b-gray-100 text-sm cursor-pointer'
                             style={{
-                                color: colors.light[200]
-                            }}    
+                                borderBottomColor: colors.dark[200]
+                            }}
                         >
-                            <Collections sideBarActive={isActive}/>
-                        </div>
-                    </li>
-                    {client?._id && <li
-                        className='flex h-14 border-b-[1px] border-b-gray-100 text-sm cursor-pointer'
-                        style={{
-                            borderBottomColor: colors.dark[200]
-                        }}
-                    >
-                        <div 
-                            onClick={() => {
-                                setLoadingScreen(true);
-                                router.push('/favorite')
-                            }}
-                            className='w-full h-full flex items-center px-7'
+                            <div
+                                className='w-full h-ful flex items-center px-7'
+                                style={{
+                                    color: colors.light[200]
+                                }}
+                                onClick={() => {
+                                    setLoadingScreen(true);
+                                    router.push('/')
+                                }}
+                            >{activeLanguage.nav.home}</div>
+                        </li>
+                        <li
+                            className='w-full flex h-14 border-b-[1px] border-b-gray-100 text-sm'
                             style={{
-                                color: colors.light[200]
-                            }}    
-                        >{activeLanguage.nav.favorite}</div>
-                    </li>}
-                    {/* {client?._id && <li
+                                borderBottomColor: colors.dark[200]
+                            }}
+                        >
+                            <div className='w-full h-full px-7'>
+                                <Collections sideBarActive={isActive} />
+                            </div>
+                        </li>
+                        {client?._id && <li
+                            className='flex h-14 border-b-[1px] border-b-gray-100 text-sm cursor-pointer'
+                            style={{
+                                borderBottomColor: colors.dark[200]
+                            }}
+                        >
+                            <div
+                                onClick={() => {
+                                    setLoadingScreen(true);
+                                    router.push('/favorite')
+                                }}
+                                className='w-full h-full flex items-center px-7'
+                                style={{
+                                    color: colors.light[200]
+                                }}
+                            >{activeLanguage.nav.favorite}</div>
+                        </li>}
+                        {/* {client?._id && <li
                         className='flex h-14 border-b-[1px] border-b-gray-100 text-sm cursor-pointer'
                         style={{
                             borderBottomColor: colors.dark[200]
@@ -190,95 +181,95 @@ const SideBar = ({
                             }}    
                         >{activeLanguage.nav.order}</div>
                     </li>} */}
-                    <li
-                        className='flex h-14 border-b-[1px] border-b-gray-100 text-sm cursor-pointer'
-                        style={{
-                            borderBottomColor: colors.dark[200]
-                        }}
-                    >
-                        <a href="/pages/contactUs" 
-                            onClick={() => setLoadingScreen(true)}
-                            className='w-full h-full flex items-center px-7'
+                        <li
+                            className='flex h-14 border-b-[1px] border-b-gray-100 text-sm cursor-pointer'
                             style={{
-                                color: colors.light[200]
-                            }}    
-                        >{activeLanguage.nav.contact}</a>
-                    </li>
+                                borderBottomColor: colors.dark[200]
+                            }}
+                        >
+                            <a href="/pages/contactUs"
+                                onClick={() => setLoadingScreen(true)}
+                                className='w-full h-full flex items-center px-7'
+                                style={{
+                                    color: colors.light[200]
+                                }}
+                            >{activeLanguage.nav.contact}</a>
+                        </li>
 
-                    <li
-                        className='flex h-14 border-b-[1px] border-b-gray-100 text-sm cursor-pointer'
-                        style={{
-                            borderBottomColor: colors.dark[200]
-                        }}
-                    >
-                        <span
-                            onClick={() => setBubbleProps({...bubbleProps, exist: true})}
-                            className='w-full h-full flex items-center px-7'
+                        <li
+                            className='flex h-14 border-b-[1px] border-b-gray-100 text-sm cursor-pointer'
                             style={{
-                                color: colors.light[200]
-                            }}    
-                        >{activeLanguage.nav.askAi}</span>
-                    </li>
-                    
-                </ul>
-            </div>
-            
+                                borderBottomColor: colors.dark[200]
+                            }}
+                        >
+                            <span
+                                onClick={() => setBubbleProps({ ...bubbleProps, exist: true })}
+                                className='w-full h-full flex items-center px-7'
+                                style={{
+                                    color: colors.light[200]
+                                }}
+                            >{activeLanguage.nav.askAi}</span>
+                        </li>
 
-            <div className='w-full h-fit flex flex-col'>
-                
-                {swreenWidth < 1000 && <div className='h-[30vh]- flex flex-col justify-start items-center gap-10 py-5-'>
-                    <ThemeModeSelectorForMobiles/>
-                    <LanguageSelectorForMobile
-                        className="w-full p-2 bg-red-500-"
-                    />
-                </div>}
-
-                <div 
-                    className='w-full bg-red-500- mb-0 p-3 pt-8- bg-red-500- rounded-xl flex justify-start items-center fixed- bottom-5- cursor-pointer'
-                    style={{
-                        color: colors.light[150],
-                        // border: `1px solid ${colors.dark[300]}`,
-                        // boxShadow: `0 0px 15px ${colors.dark[250]}`
-                    }}
-                    onClick={() => {
-                        if (client && client.password) {
-                            setLoadingScreen(true)
-                            router.push('/account')
-                        } else { 
-                            setRegisterSectionExist(true);
-                        }
-                    }}
-                >
-                    <div
-                        className='flex flex-1 flex-row justify-start items-center '
-                    >
-                        <img 
-                            src={activeTheme == "dark" ? '/icons/user-black.png' : '/icons/user-white.png'} 
-                            className='w-6 h-6 p-[3px] mr-2 bg-red-500-'
-                            alt="" 
-                        />
-                        <h4 className='text-sm bg-red-500- text-end'>
-                            {   
-                                client?.fullName ??
-                                activeLanguage.connection
-                            }
-                        </h4>
-                    </div>
-
-                    {client?._id && <img 
-                        src={activeTheme == "dark" ? "/icons/settingBlack.png" : "/icons/settingWhite.png" }
-                        className=' w-4 h-4'
-                        alt="" 
-                    />}
-
+                    </ul>
                 </div>
-            </div>
 
+
+                <div className='w-full h-fit flex flex-col'>
+
+                    {swreenWidth < 1000 && <div className='h-[30vh]- flex flex-col justify-start items-center gap-10 py-5-'>
+                        <ThemeModeSelectorForMobiles />
+                        <LanguageSelectorForMobile
+                            className="w-full p-2 bg-red-500-"
+                        />
+                    </div>}
+
+                    <div
+                        className='w-full bg-red-500- mb-0 p-3 pt-8- bg-red-500- rounded-xl flex justify-start items-center fixed- bottom-5- cursor-pointer'
+                        style={{
+                            color: colors.light[150],
+                            // border: `1px solid ${colors.dark[300]}`,
+                            // boxShadow: `0 0px 15px ${colors.dark[250]}`
+                        }}
+                        onClick={() => {
+                            if (client && client.password) {
+                                setLoadingScreen(true)
+                                router.push('/account')
+                            } else {
+                                setRegisterSectionExist(true);
+                            }
+                        }}
+                    >
+                        <div
+                            className='flex flex-1 flex-row justify-start items-center '
+                        >
+                            <img
+                                src={activeTheme == "dark" ? '/icons/user-black.png' : '/icons/user-white.png'}
+                                className='w-6 h-6 p-[3px] mr-2 bg-red-500-'
+                                alt=""
+                            />
+                            <h4 className='text-sm bg-red-500- text-end'>
+                                {
+                                    client?.fullName ??
+                                    activeLanguage.connection
+                                }
+                            </h4>
+                        </div>
+
+                        {client?._id && <img
+                            src={activeTheme == "dark" ? "/icons/settingBlack.png" : "/icons/settingWhite.png"}
+                            className=' w-4 h-4'
+                            alt=""
+                        />}
+
+                    </div>
+                </div>
+
+
+            </div>
 
         </div>
-      
-    </div>
-  )
+    )
 }
 
 export default SideBar

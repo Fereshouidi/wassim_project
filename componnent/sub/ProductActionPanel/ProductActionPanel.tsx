@@ -107,7 +107,9 @@ const ProductActionPanel = ({
 
         setLoadingScreen(true);
 
+        alert(client?._id)
         const orderData = { 
+            clientId: client?._id,
             orderForm: { 
                 ...clientForm, 
                 client: client?._id, 

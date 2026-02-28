@@ -1,12 +1,13 @@
 export function slideInFromLeft(delay: number) {
   return {
-    hidden: { x: -100, opacity: 0 },
+    hidden: { x: -40, opacity: 0 },
     visible: {
       x: 0,
       opacity: 1,
       transition: {
         delay: delay,
-        duration: 0.5,
+        duration: 0.4,
+        ease: "easeOut"
       },
     },
   };
@@ -14,13 +15,14 @@ export function slideInFromLeft(delay: number) {
 
 export function slideInFromRight(delay: number) {
   return {
-    hidden: { x: 100, opacity: 0 },
+    hidden: { x: 40, opacity: 0 },
     visible: {
       x: 0,
       opacity: 1,
       transition: {
         delay: delay,
-        duration: 0.5,
+        duration: 0.4,
+        ease: "easeOut"
       },
     },
   };
@@ -40,13 +42,14 @@ export const slideInFromTop = {
 
 export function slideInFromBottom(delay: number) {
   return {
-    hidden: { y: 100, opacity: 0 },
+    hidden: { y: 40, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
       transition: {
         delay: delay,
-        duration: 0.5,
+        duration: 0.4,
+        ease: "easeOut"
       },
     },
   };
@@ -64,19 +67,19 @@ export const staggerContainer = {
 };
 
 export const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { 
-    opacity: 1, 
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
     y: 0,
-    transition: { type: "spring", stiffness: 50, damping: 20 }
+    transition: { type: "spring", stiffness: 180, damping: 25 } as any
   }
 };
 
 export const fadeInDownTitle = {
   initial: { opacity: 0, y: -20 },
-  animate: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { duration: 0.6 } 
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6 }
   }
 };

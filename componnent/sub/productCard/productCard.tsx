@@ -6,7 +6,7 @@ import axios from 'axios';
 
 // Framer Motion
 import { motion } from 'framer-motion';
-import { slideInFromBottom } from '@/lib/motion';
+import { slideInFromBottom, fadeInUp } from '@/lib/motion';
 
 // Contexts
 import { useLanguage } from '@/contexts/languageContext';
@@ -50,9 +50,9 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
 
     // --- UseMemo ---
     const isInCart = useMemo(() => {
-        return purchases.some(pur => 
+        return purchases.some(pur =>
             //@ts-ignore
-            (typeof pur?.product === 'string' ? pur.product === product._id : pur?.product?._id === product._id) && 
+            (typeof pur?.product === 'string' ? pur.product === product._id : pur?.product?._id === product._id) &&
             pur?.status === 'inCart'
         );
     }, [purchases, product._id]);
@@ -61,11 +61,9 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
     useEffect(() => {
         if (product.thumbNail) setCurrentImage(product.thumbNail);
         else if (product.images?.[0]) setCurrentImage(product.images[0].uri || null);
-        
-        // تعيين المواصفة الافتراضية عند تحميل المنتج
-        if (product.specifications?.length > 0) {
-            setActiveSpecifications(product.specifications[0]);
-        }
+
+        // We specifically DO NOT set a default active specification here 
+        // to show the base product price until a user interacts with colors.
     }, [product]);
 
     useEffect(() => {
@@ -85,12 +83,12 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
     const handleColorChange = (hex: string | null) => {
         if (!hex) {
             setCurrentImage(product.thumbNail || product.images?.[0]?.uri || null);
-            setActiveSpecifications(product.specifications?.[0] || null);
+            setActiveSpecifications(null);
             return;
         }
 
         // تحديث الصورة
-        const targetImage = product.images?.find(img => 
+        const targetImage = product.images?.find(img =>
             (img.specification as ProductSpecification)?.colorHex === hex
         );
         if (targetImage?.uri) setCurrentImage(targetImage.uri);
@@ -116,17 +114,17 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
 
         try {
             if (isInCart) {
-                const purchaseToRemove = purchases.find(pur => 
+                const purchaseToRemove = purchases.find(pur =>
                     //@ts-ignore
                     (typeof pur.product === 'string' ? pur.product === product._id : pur.product?._id === product._id)
                 );
 
                 if (purchaseToRemove) {
                     setPurchases(prev => prev.filter(p => p._id !== purchaseToRemove._id));
-                    await axios.put(`${backEndUrl}/updatePurchase`, { 
-                        ...purchaseToRemove, 
-                        cart: null, 
-                        status: 'viewed' 
+                    await axios.put(`${backEndUrl}/updatePurchase`, {
+                        ...purchaseToRemove,
+                        cart: null,
+                        status: 'viewed'
                     });
                 }
             } else {
@@ -141,8 +139,8 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
 
                 setPurchases(prev => [...prev, optimisticPurchase]);
 
-                const { data: getRes } = await axios.get(`${backEndUrl}/getPurchaseByClientAndProduct`, { 
-                    params: { productId: product._id, clientId: client._id } 
+                const { data: getRes } = await axios.get(`${backEndUrl}/getPurchaseByClientAndProduct`, {
+                    params: { productId: product._id, clientId: client._id }
                 });
 
                 const targetPurchase = getRes.purchase;
@@ -158,8 +156,8 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
 
                 if (updateRes.success) {
                     setPurchases(prev => {
-                        const filtered = prev.filter(p => 
-                            p._id !== tempId && 
+                        const filtered = prev.filter(p =>
+                            p._id !== tempId &&
                             //@ts-ignore
                             (typeof p.product === 'string' ? p.product !== product._id : p.product?._id !== product._id)
                         );
@@ -178,31 +176,31 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
         if (!product || !client || like == null) return;
 
         if (!like) {
-          await axios.post( backEndUrl + "/addLike", {
-            likeData: {
-              client: client?._id,
-              product: product._id
-            }
-          })
-          .then(() => {setLike(true)})
-          .catch((err) => {
-            console.log(err);
-            setStatusBanner(true, "something went wrong !");
-          })
+            await axios.post(backEndUrl + "/addLike", {
+                likeData: {
+                    client: client?._id,
+                    product: product._id
+                }
+            })
+                .then(() => { setLike(true) })
+                .catch((err) => {
+                    console.log(err);
+                    setStatusBanner(true, "something went wrong !");
+                })
         } else {
-          await axios.delete( backEndUrl + "/deleteLike", {
-            data: {
-              clientId: client?._id,
-              productId: product._id
-            }
-          })
-          .then(() => {setLike(false)})
-          .catch(() => {
-            setStatusBanner(true, "something went wrong !");
-          })
+            await axios.delete(backEndUrl + "/deleteLike", {
+                data: {
+                    clientId: client?._id,
+                    productId: product._id
+                }
+            })
+                .then(() => { setLike(false) })
+                .catch(() => {
+                    setStatusBanner(true, "something went wrong !");
+                })
         }
     }
-    
+
     const isMobile = screenWidth < 640;
 
     // --- Shared Render Parts ---
@@ -210,24 +208,24 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
         const isMob = layout === 'mobile';
         return (
             <>
-        {useLike && <div 
-            className={`absolute top-1 right-2 rounded-full p-[5px] ${like ? "bg-red-500" : "bg-gray-400 opacity-75"} transition-transform active:scale-75 w-8 h-8 z-[2] cursor-pointer`}
-            onClick={(e) => {
-                e.stopPropagation();
-                if (client) {
-                    setLike(!like);
-                    handleLike()
-                } else {
-                    setRegisterSectionExist(true)
-                }
-            }}
-        >
-            <img 
-                src="/icons/heart-white.png" 
-                className='w-full h-full'
-                alt="like" 
-            />
-        </div>}
+                {useLike && <div
+                    className={`absolute top-1 right-2 rounded-full p-[5px] ${like ? "bg-red-500" : "bg-gray-400 opacity-75"} transition-transform active:scale-75 w-8 h-8 z-[2] cursor-pointer`}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        if (client && product._id) {
+                            setLike(!like);
+                            handleLike()
+                        } else {
+                            setRegisterSectionExist(true)
+                        }
+                    }}
+                >
+                    <img
+                        src="/icons/heart-white.png"
+                        className='w-full h-full'
+                        alt="like"
+                    />
+                </div>}
                 <div className={`w-full overflow-hidden bg-gray-50 relative ${isMob ? 'aspect-square' : 'aspect-square'}`}>
                     {currentImage ? (
                         <img src={currentImage} className={`w-full h-full object-cover transition-all duration-500 ${!isMob && 'group-hover:scale-110'}`} alt="Product" />
@@ -247,7 +245,7 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
                     <SpecificationsSlider product={product.images} importedFrom="slider" onColorSelect={handleColorChange} />
                 </div>
                 <div className={`w-full flex ${isMob ? 'flex-col' : 'justify-between'} items-center gap-2 p-2 border-t border-gray-100`}>
-                    <button 
+                    <button
                         className={`flex items-center justify-center gap-2 flex-1 py-2.5 rounded-xl transition-all cursor-pointer w-full ${isInCart ? 'bg-green-50' : 'hover:bg-gray-100'}`}
                         onClick={handleCartToggle}
                     >
@@ -266,12 +264,13 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
     };
 
     return (
-        <motion.div 
+        <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
-            variants={slideInFromBottom(isMobile ? 0 : 0.1)}
-            className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl transition-all duration-500 hover:shadow-2xl ${className} ${isMobile ? 'w-full h-[380px]' : 'w-full max-w-[320px] min-h-[400px]'}`}
+            viewport={{ once: true, margin: "-50px" }}
+            variants={fadeInUp}
+            whileTap={{ scale: 0.98 }}
+            className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl transition-all duration-500 ${className} ${isMobile ? 'w-full h-[380px]' : 'w-full max-w-[320px] min-h-[400px]'}`}
             style={{
                 ...style,
                 backgroundColor: colors.light[100],
@@ -279,7 +278,7 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
                 boxShadow: activeTheme === 'dark' ? `0 10px 30px rgba(0,0,0,0.5)` : `0 10px 30px ${colors.light[400]}`,
             }}
             onClick={() => {
-                if (!product?._id) return;
+                if (!product?._id || product._id.length < 4) return;
                 setLoadingScreen(true);
                 router.push(`/product/${product._id}`);
             }}

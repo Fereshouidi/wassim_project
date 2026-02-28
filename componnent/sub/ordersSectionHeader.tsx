@@ -1,12 +1,10 @@
 import { useScreen } from '@/contexts/screenProvider';
 import { useTheme } from '@/contexts/themeProvider';
-import { OrdersByStatusType, OrderType } from '@/types';
+import { OrderType } from '@/types';
 import React, { useState } from 'react'
-import LoadingHomePage from '../main/loading/loadingHomePage';
-import { LoaderIcon } from 'lucide-react';
-import LoadingIcon from './loading/loadingIcon';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { useLanguage } from '@/contexts/languageContext';
+import { motion } from 'framer-motion';
 
 type props = {
     orders: OrderType[]
@@ -17,13 +15,12 @@ type props = {
     limit: number,
     skip: number
     getMore: () => void
-    getLess: () => void    
+    getLess: () => void
 }
+
 const OrdersSectionHeader = ({
-    orders,
     activePage,
     setActivePage,
-    ordersCount,
     totalOrdersCount,
     limit,
     skip,
@@ -32,283 +29,170 @@ const OrdersSectionHeader = ({
 }: props) => {
 
     const { screenWidth } = useScreen();
-    const [ cardsOpenedByDefault, setCardsOpenedByDefault ] = useState<boolean>(false);
     const { activeTheme, colors } = useTheme();
     const { activeLanguage } = useLanguage();
 
-    const currentPage = Math.floor(skip / limit);
+    // The skip prop represents the next page's offset, so we subtract limit to get current page offset
+    const currentOffset = Math.max(0, skip - limit);
+    const currentPage = Math.floor(currentOffset / limit) + 1;
     const totalPages = Math.ceil(totalOrdersCount / limit) || 1;
 
-    const [loadingLeftArrow, setLoadingLeftArrow] = useState<boolean>(false);
     const [loadingRightArrow, setLoadingRightArrow] = useState<boolean>(false);
 
     const handleLeftArrowClick = async () => {
-        if (loadingLeftArrow) return;
-        if (currentPage < 1) return
-        await getLess()
+        if (currentPage <= 1) return;
+        await getLess();
     }
 
-    const handleRigthArrowClick = async () => {
-        if (loadingRightArrow) return;
-        if (currentPage == totalPages) return;
+    const handleRightArrowClick = async () => {
+        if (currentPage >= totalPages) return;
         setLoadingRightArrow(true);
-        await getMore()
+        await getMore();
         setLoadingRightArrow(false);
     }
 
-    if (screenWidth < 1000) {
-        return (
-            <div className='w-full- h-[80px]- px-4 flex flex-col justify-between py-2 items-center gap-2 bg-red-500-'>
+    const tabs = [
+        { id: "pending", label: activeLanguage.pending, iconWhite: "/icons/pendingWhite.png", iconBlack: "/icons/pendingBlack.png" },
+        { id: "failed", label: activeLanguage.failed, iconWhite: "/icons/closeWhite.png", iconBlack: "/icons/closeBlack.png" },
+        { id: "delivered", label: activeLanguage.delivered, iconWhite: "/icons/checkWhite.png", iconBlack: "/icons/checkBlack.png" },
+    ] as const;
 
-                <div className='flex gap-2'>
-
-                    <div 
-                        className='flex justify-center items-center text-[11px] sm:text-[13px] p-2 gap-2 duration-150'
-                        onClick={() => setActivePage("pending")}
+    const renderTabs = () => (
+        <div
+            className='flex items-center p-1 rounded-xl shadow-inner border'
+            style={{
+                backgroundColor: activeTheme === 'dark' ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)',
+                borderColor: colors.light[250]
+            }}
+        >
+            {tabs.map((tab) => {
+                const isActive = activePage === tab.id;
+                return (
+                    <button
+                        key={tab.id}
+                        onClick={() => setActivePage(tab.id as any)}
+                        className={`relative flex items-center justify-center gap-1.5 px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-[9px] sm:text-[11px] font-semibold uppercase tracking-wider transition-all duration-500`}
                         style={{
-                        border: `0.5px solid ${colors.light[200]}`,
-                        borderRadius: "10px 0px 10px 0px",
-                        transform: activePage == "pending" ? 'scale(100%)' : 'scale(105%)',
-                        boxShadow: activePage == "pending" ? "" : `2px 2px 5px ${colors.dark[900]}`,
-                        backgroundColor: activePage == "pending" ? colors.dark[200] : colors.light[100],
-                        color: activePage == "pending" ? colors.light[200] : colors.dark[100],
+                            color: isActive ? colors.light[100] : colors.dark[400],
+                            flex: screenWidth < 500 ? 1 : 'none'
                         }}
                     >
-                        <img 
-                        src={activeTheme == "dark" || activePage == "pending" ? "/icons/pendingWhite.png": "/icons/pendingBlack.png"} 
-                        className='w-3 h-3 sm:w-3 sm:h-3'
-                        alt="" 
+                        {isActive && (
+                            <motion.div
+                                layoutId="activeTabGlow"
+                                className="absolute inset-0 rounded-lg sm:rounded-xl shadow-lg"
+                                style={{
+                                    backgroundColor: colors.dark[100],
+                                    boxShadow: activeTheme === 'dark' ? '0 2px 10px rgba(255,255,255,0.05)' : '0 2px 10px rgba(0,0,0,0.1)'
+                                }}
+                                transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
+                            />
+                        )}
+                        <img
+                            src={activeTheme === "dark" || isActive ? tab.iconWhite : tab.iconBlack}
+                            className='w-3 sm:w-3.5 h-3 sm:h-3.5 relative z-10'
+                            alt=""
                         />
-                        <h4>{activeLanguage.pending}</h4>
-                    </div>
-                    
-                    <div 
-                        className='flex justify-center items-center text-[11px] sm:text-[13px] p-2 gap-2 duration-150'
-                        onClick={() => setActivePage("failed")}
-                        style={{
-                        border: `0.5px solid ${colors.light[200]}`,
-                        borderRadius: "10px 0px 10px 0px",
-                        transform: activePage == "failed" ? 'scale(100%)' : 'scale(105%)',
-                        boxShadow: activePage == "failed" ? "" : `2px 2px 5px ${colors.dark[900]}`,
-                        backgroundColor: activePage == "failed" ? colors.dark[200] : colors.light[100],
-                        color: activePage == "failed" ? colors.light[200] : colors.dark[100],
-                        }}
-                    >
-                        <img 
-                        src={activeTheme == "dark" || activePage == "failed" ? "/icons/closeWhite.png" : "/icons/closeBlack.png"} 
-                        className='w-2 h-2 sm:w-2 sm:h-2'
-                        alt="" 
-                        />
-                        <h4>{activeLanguage.failed}</h4>
-                    </div>
-                
-                    <div 
-                        className='flex justify-center items-center text-[11px] sm:text-[13px] p-2 gap-2 duration-150'
-                        onClick={() => setActivePage("delivered")}
-                        style={{
-                        border: `0.5px solid ${colors.light[200]}`,
-                        borderRadius: "10px 0px 10px 0px",
-                        transform: activePage == "delivered" ? 'scale(100%)' : 'scale(105%)',
-                        boxShadow: activePage == "delivered" ? "" : `2px 2px 5px ${colors.dark[900]}`,
-                        backgroundColor: activePage == "delivered" ? colors.dark[200] : colors.light[100],
-                        color: activePage == "delivered" ? colors.light[200] : colors.dark[100],
-                        }}
-                    >
-                        <img 
-                        src={activeTheme == "dark" || activePage == "delivered" ? "/icons/checkWhite.png" : "/icons/checkBlack.png"} 
-                        className='w-2 h-2 sm:w-2 sm:h-2'
-                        alt="" 
-                        />
-                        <h4>{activeLanguage.delivered}</h4>
-                    </div>
+                        <span className='relative z-10'>{tab.label}</span>
+                    </button>
+                );
+            })}
+        </div>
+    );
 
+    const renderPagination = () => (
+        <div
+            className='flex items-center gap-1 p-1 rounded-xl border'
+            style={{
+                backgroundColor: colors.light[100],
+                borderColor: colors.light[250],
+            }}
+        >
+            <button
+                onClick={handleLeftArrowClick}
+                disabled={currentPage <= 1}
+                className='w-7 h-7 sm:w-9 sm:h-9 flex items-center justify-center rounded-lg sm:rounded-xl hover:bg-black hover:bg-opacity-5 transition-all active:scale-90 disabled:opacity-20'
+            >
+                <img
+                    src={activeTheme === "dark" ? "/icons/left-arrow-white.png" : "/icons/left-arrow-black.png"}
+                    className='w-2.5 sm:w-3.5 h-2.5 sm:h-3.5'
+                    alt="prev"
+                />
+            </button>
+
+            <div
+                className='flex flex-col items-center justify-center px-2 sm:px-4 h-7 sm:h-9 rounded-lg sm:rounded-xl border border-dashed'
+                style={{ borderColor: colors.light[350] }}
+            >
+                <div className='flex items-baseline gap-1'>
+                    <span className='text-[10px] sm:text-xs font-semibold' style={{ color: colors.dark[100] }}>{currentPage}</span>
+                    <span className='text-[8px] sm:text-[10px] opacity-30 font-semibold'>OF</span>
+                    <span className='text-[10px] sm:text-xs font-semibold' style={{ color: colors.dark[100] }}>{totalPages}</span>
                 </div>
-
-                <div
-                    className='w-full flex justify-between items-center my-2 mx-4- mt-7- text-[12px] sm:text-[14px]'
-                    style={{
-                        // fontSize: screenWidth > 1000 ? "14px" : "14px"
-                    }}
-                >
-                    <h2>{
-                        activePage == "pending" ? `${activeLanguage.pendingOrders} : (${totalOrdersCount})`
-                        : activePage == "failed" ? `${activeLanguage.failedgOrders} : (${totalOrdersCount})`
-                        : activePage == "delivered" ? `${activeLanguage.deliveredOrders} : (${totalOrdersCount})`
-                        : null
-                    }</h2>
-                    <div className='pl-5 flex fkex-row justify-center items-center gap-4'>
-
-                        <img 
-                            src={
-                                currentPage == 1 ? 
-                                    "/icons/left-arrow-gary.png"
-                                :
-                                    activeTheme == "dark" ? "/icons/left-arrow-white.png" : "/icons/left-arrow-black.png"
-                            }
-                            className='w-3 h-3'
-                            onClick={handleLeftArrowClick}
-                        />       
-
-                        <h4>{`${currentPage}/${totalPages}`}</h4>
-
-                        <div className='w-3 h-3'>
-                            {
-                               loadingRightArrow ? 
-                                <DotLottieReact
-                                    src="/icons/LoadingDotsBlack.json"
-                                    className='w-full h-full scale-[200%]'
-                                    loop
-                                    autoplay
-                                /> 
-                               :
-                                <img 
-                                    src={
-                                        currentPage == totalPages ? 
-                                            "/icons/right-arrow-gray.png"
-                                        :
-                                            activeTheme == "dark" ? "/icons/right-arrow-white.png" : "/icons/right-arrow-black.png"
-                                    }
-                                    className='w-full h-full'
-                                    onClick={handleRigthArrowClick}
-                                /> 
-                            }
-                        </div>
-  
-
-                    </div>
-
-                </div>
-
             </div>
 
-        )
-    }
+            <button
+                onClick={handleRightArrowClick}
+                disabled={currentPage >= totalPages || loadingRightArrow}
+                className='w-7 h-7 sm:w-9 sm:h-9 flex items-center justify-center rounded-lg sm:rounded-xl hover:bg-black hover:bg-opacity-5 transition-all active:scale-90 disabled:opacity-20'
+            >
+                {loadingRightArrow ? (
+                    <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }}>
+                        <LoaderIcon className='w-3 h-3 sm:w-4 sm:h-4 opacity-50' />
+                    </motion.div>
+                ) : (
+                    <img
+                        src={activeTheme === "dark" ? "/icons/right-arrow-white.png" : "/icons/right-arrow-black.png"}
+                        className='w-2.5 sm:w-3.5 h-2.5 sm:h-3.5'
+                        alt="next"
+                    />
+                )}
+            </button>
+        </div>
+    );
 
     return (
-        <div className='w-full- h-[80px] flex justify-between items-center px-4'>
-            <h2
-                className=' mx-4- mt-7- text-[12px] sm:text-[14px]'
-                style={{
-                    // fontSize: screenWidth > 1000 ? "14px" : "14px"
-                }}
-            >
-                {
-                    activePage == "pending" ? `${activeLanguage.pendingOrders} : (${totalOrdersCount})`
-                    : activePage == "failed" ? `${activeLanguage.failedgOrders} : (${totalOrdersCount})`
-                    : activePage == "delivered" ? `${activeLanguage.deliveredOrders} : (${totalOrdersCount})`
-                    : null
-                }
-            </h2>
-
-            <div className='flex gap-5'>
-                <div className='pl-5 flex fkex-row justify-center items-center gap-4'>
-
-                    <img 
-                        src={
-                            currentPage == 1 ? 
-                                "/icons/left-arrow-gary.png"
-                            :
-                                activeTheme == "dark" ? "/icons/left-arrow-white.png" : "/icons/left-arrow-black.png"
-                        }
-                        className='w-3 h-3 cursor-pointer'
-                        onClick={handleLeftArrowClick}
-                    />       
-
-                    <h4>{`${currentPage}/${totalPages}`}</h4>
-
-                    <div className='w-3 h-3 cursor-pointer'>
-                        {
-                            loadingRightArrow ? 
-                            <DotLottieReact
-                                src="/icons/LoadingDotsBlack.json"
-                                className='w-full h-full scale-[200%]'
-                                loop
-                                autoplay
-                            /> 
-                            :
-                            <img 
-                                src={
-                                    currentPage == totalPages ? 
-                                        "/icons/right-arrow-gray.png"
-                                    :
-                                        activeTheme == "dark" ? "/icons/right-arrow-white.png" : "/icons/right-arrow-black.png"
-                                }
-                                className='w-full h-full'
-                                onClick={handleRigthArrowClick}
-                            /> 
-                        }
-                    </div> 
-
+        <div className={`w-full flex-col flex ${screenWidth < 1100 ? 'gap-3 sm:gap-6' : 'gap-8'} p-4 sm:p-8`}>
+            {/* Upper Row: Title and Stats */}
+            <div className='flex flex-row justify-between items-end'>
+                <div className='flex flex-col gap-1'>
+                    <div className='flex items-center gap-2 sm:gap-3'>
+                        <div className='w-1.5 h-6 sm:w-2 sm:h-8 rounded-full' style={{ backgroundColor: colors.dark[100] }} />
+                        <h1 className='text-lg sm:text-2xl font-semibold tracking-tighter leading-none' style={{ color: colors.dark[100] }}>
+                            {activePage === "pending" ? activeLanguage.pendingOrders
+                                : activePage === "failed" ? activeLanguage.failedgOrders
+                                    : activeLanguage.deliveredOrders}
+                        </h1>
+                    </div>
+                    <div className='flex items-center gap-1.5 sm:gap-2 pl-4 sm:pl-5'>
+                        <span className='flex h-1 w-1 sm:h-1.5 sm:w-1.5 rounded-full animate-pulse' style={{ backgroundColor: colors.dark[300] }} />
+                        <p className='text-[9px] sm:text-[11px] uppercase font-semibold tracking-widest opacity-40'>
+                            {totalOrdersCount} orders total
+                        </p>
+                    </div>
                 </div>
 
-                <div className='flex flex-row gap-2'>
-
-                    <div 
-                        className='flex justify-center items-center text-[11px] sm:text-[13px] p-2 gap-2 duration-150'
-                        onClick={() => setActivePage("pending")}
-                        style={{
-                        border: `0.5px solid ${colors.light[200]}`,
-                        borderRadius: "10px 0px 10px 0px",
-                        transform: activePage == "pending" ? 'scale(100%)' : 'scale(105%)',
-                        boxShadow: activePage == "pending" ? "" : `2px 2px 5px ${colors.dark[900]}`,
-                        backgroundColor: activePage == "pending" ? colors.dark[200] : colors.light[100],
-                        color: activePage == "pending" ? colors.light[200] : colors.dark[100],
-                        }}
-                    >
-                        <img 
-                            src={activeTheme == "dark" || activePage == "pending" ? "/icons/pendingWhite.png": "/icons/pendingBlack.png"} 
-                            className='w-3 h-3 sm:w-3 sm:h-3'
-                            alt="" 
-                        />
-                        <h4>{activeLanguage.pending}</h4>
-                    </div>
-                    
-                    <div 
-                        className='flex justify-center items-center text-[11px] sm:text-[13px] p-2 gap-2 duration-150'
-                        onClick={() => setActivePage("failed")}
-                        style={{
-                        border: `0.5px solid ${colors.light[200]}`,
-                        borderRadius: "10px 0px 10px 0px",
-                        transform: activePage == "failed" ? 'scale(100%)' : 'scale(105%)',
-                        boxShadow: activePage == "failed" ? "" : `2px 2px 5px ${colors.dark[900]}`,
-                        backgroundColor: activePage == "failed" ? colors.dark[200] : colors.light[100],
-                        color: activePage == "failed" ? colors.light[200] : colors.dark[100],
-                        }}
-                    >
-                        <img 
-                        src={activeTheme == "dark" || activePage == "failed" ? "/icons/closeWhite.png" : "/icons/closeBlack.png"} 
-                        className='w-2 h-2 sm:w-2 sm:h-2'
-                        alt="" 
-                        />
-                        <h4>{activeLanguage.failed}</h4>
-                    </div>
-                
-                    <div 
-                        className='flex justify-center items-center text-[11px] sm:text-[13px] p-2 gap-2 duration-150'
-                        onClick={() => setActivePage("delivered")}
-                        style={{
-                        border: `0.5px solid ${colors.light[200]}`,
-                        borderRadius: "10px 0px 10px 0px",
-                        transform: activePage == "delivered" ? 'scale(100%)' : 'scale(105%)',
-                        boxShadow: activePage == "delivered" ? "" : `2px 2px 5px ${colors.dark[900]}`,
-                        backgroundColor: activePage == "delivered" ? colors.dark[200] : colors.light[100],
-                        color: activePage == "delivered" ? colors.light[200] : colors.dark[100],
-                        }}
-                    >
-                        <img 
-                        src={activeTheme == "dark" || activePage == "delivered" ? "/icons/checkWhite.png" : "/icons/checkBlack.png"} 
-                        className='w-2 h-2 sm:w-2 sm:h-2'
-                        alt="" 
-                        />
-                        <h4>{activeLanguage.delivered}</h4>
-                    </div>
-
-                </div>
+                {screenWidth > 800 && renderPagination()}
             </div>
 
+            {/* Lower Row: Switcher and Search/Filters (Could be added later) */}
+            <div className={`flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4 border-t pt-4 sm:pt-8`} style={{ borderColor: colors.light[250] }}>
+                {renderTabs()}
+                {screenWidth <= 800 && (
+                    <div className='w-full flex justify-end'>
+                        {renderPagination()}
+                    </div>
+                )}
+            </div>
         </div>
+    );
+};
 
-    )
-}
+// Simple Loader Icon since we need it
+const LoaderIcon = ({ className }: { className?: string }) => (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+    </svg>
+);
 
-export default OrdersSectionHeader
+export default OrdersSectionHeader;
