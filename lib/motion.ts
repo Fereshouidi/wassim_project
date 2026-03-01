@@ -53,7 +53,7 @@ export function slideInFromBottom(delay: number) {
       },
     },
   };
-}
+}.
 
 export const staggerContainer = {
   initial: { opacity: 0 },

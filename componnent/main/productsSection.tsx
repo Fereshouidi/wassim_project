@@ -118,6 +118,7 @@ const ProductsSection = ({
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
+                //@ts-ignore
                 variants={slideInFromBottom(0.5)}
                 className='text-xl sm:text-4xl sm:mb-20 m-10'
                 style={{
