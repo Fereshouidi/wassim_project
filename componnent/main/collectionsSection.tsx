@@ -93,10 +93,10 @@ const CollectionsSection = ({
 
       <div className='w-full flex flex-wrap justify-center sm:justify-start- gap-5 sm:p-10'>
 
-        {collections?.map((collection) => (
+        {collections?.map((collection, index) => (
 
             <CollectionCard
-                key={collection._id}
+                key={index}
                 collection={collection}
                 isLoading={isLoading}
                 // mostProductExpensive={mostProductExpensive}

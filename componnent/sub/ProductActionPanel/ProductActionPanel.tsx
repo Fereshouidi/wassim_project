@@ -97,7 +97,6 @@ const ProductActionPanel = ({
         
         if (
             !purchase._id || 
-            !ownerInfo?.shippingCost || 
             !clientForm.fullName || 
             !clientForm.phone || 
             !clientForm.address

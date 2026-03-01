@@ -128,6 +128,7 @@ const SearchBar = ({
                 agent: "SEARCH"
             });
             if (data.uiAction && data.uiAction.element === 'cart') setIsActive(data.uiAction.state === 'open');
+            // alert(data.filtrationUsed || data.searchQuery)
             if (data.filtrationUsed || data.searchQuery) {
                 setFiltration(data.filtrationUsed);
                 router.push(`/search?searchInput=${encodeURIComponent(data.searchQuery ?? "")}&filter=${encodeURIComponent(JSON.stringify(data.filtrationUsed))}`);
