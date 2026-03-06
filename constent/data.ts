@@ -1,5 +1,6 @@
 import { CollectionType, ProductType } from "@/types";
 
+//@ts-ignore
 export const fakeProducts = Array.from({ length: 8 }, (_, i) => ({
   _id: (i + 1).toString(),
   name: { fr: `Produit ${i + 1}`, en: `Product ${i + 1}` },
@@ -24,6 +25,7 @@ const loadingPlaceholder: ProductType = {
   _id: null,
   name: { fr: null, en: null },
   price: null,
+  oldPrice: null,
   thumbNail: null,
   images: [
     { 
