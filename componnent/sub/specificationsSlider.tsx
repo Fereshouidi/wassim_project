@@ -17,10 +17,7 @@ const DiamondIcon = ({ color, size, isLight }: { color: string, size: string, is
     <ReactSVG 
         src="/icons/diamond2.svg" 
         beforeInjection={(svg) => {
-            // هنا نتحكم في الحجم واللون برمجياً قبل حقن الـ SVG في الصفحة
             svg.setAttribute('style', `width: ${size}; height: ${size}; fill: ${color};`);
-            
-            // إضافة ظل إذا كانت الإضاءة فاتحة
             if (isLight) {
                 svg.style.filter = 'drop-shadow(0px 0px 1.5px rgba(0,0,0,0.3))';
             }
@@ -38,7 +35,6 @@ const SpecificationsSlider = ({
     availableColors 
 }: Props) => {
     const { screenWidth } = useScreen();
-    
     const isProductDetails = importedFrom === "productDetails";
     const isMobile = screenWidth < 640;
 
@@ -47,14 +43,24 @@ const SpecificationsSlider = ({
             ? product.map(img => img.specification).filter(Boolean) as ProductSpecification[]
             : specifications || [];
 
+        const seenHex = new Set();
+
         return source.filter(spec => {
+            const hex = spec.colorHex;
             const colorName = spec.color;
             const isAvailable = !isProductDetails || !availableColors || (colorName && availableColors.includes(colorName));
-            return spec.colorHex && isAvailable;
+            
+            if (!hex || !isAvailable || seenHex.has(hex)) return false;
+
+            seenHex.add(hex);
+            return true;
         });
     }, [product, specifications, availableColors, isProductDetails]);
 
     const [selectedColor, setSelectedColor] = useState<string | null>(null);
+
+    // --- إذا كان هناك خيار واحد فقط أو لا توجد خيارات، لا تظهر المكون نهائياً ---
+    if (uniqueSpecs.length <= 1) return null;
 
     const isLightColor = (hex: string) => {
         const color = hex.replace('#', '');
@@ -97,7 +103,6 @@ const SpecificationsSlider = ({
                 {uniqueSpecs.map((spec, index) => {
                     const hex = spec.colorHex || "";
                     const isSelected = selectedColor === hex;
-                    if (!hex) return null;
 
                     return (
                         <div

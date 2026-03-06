@@ -32,7 +32,7 @@ const ProductsSection = ({
     autoScroll,
     product,
     tittleStyle,
-    isThereProducts, 
+    isThereProducts,
     setIsThereProducts,
     useLike
 }: ProductsSectionType) => {
@@ -51,16 +51,16 @@ const ProductsSection = ({
     // الـ Variants الخاصة بالعنوان
     const titleAnimation = {
         hidden: { y: -20, opacity: 0 },
-        visible: { 
-            y: 0, 
-            opacity: 1, 
-            transition: { duration: 0.6, ease: "easeOut" } 
+        visible: {
+            y: 0,
+            opacity: 1,
+            transition: { duration: 0.6, ease: "easeOut" }
         }
     };
 
     useEffect(() => {
         setIsThereProducts && setIsThereProducts(products.length > 0)
-            // alert(isThereProducts)
+        // alert(isThereProducts)
 
     }, [products])
 
@@ -69,33 +69,35 @@ const ProductsSection = ({
 
         const fetchData = async () => {
 
-                if (loading) return;
-                
-                setLoading(true);
+            if (loading) return;
 
-                if (collection._id?.length && collection._id?.length < 3) return setProducts(productsLoading);
+            setLoading(true);
 
-                await axios.get(backEndUrl + "/getProductsByCollection", { params: { 
-                    collectionId: collection._id, 
-                    limit, 
+            if (collection._id?.length && collection._id?.length < 3) return setProducts(productsLoading);
+
+            await axios.get(backEndUrl + "/getProductsByCollection", {
+                params: {
+                    collectionId: collection._id,
+                    limit,
                     skip,
-                }})
+                }
+            })
 
-                .then(({data}) => {
+                .then(({ data }) => {
 
-                    console.log({data});
-                    
+                    console.log({ data });
+
 
                     const filterTheProduct = data.products?.filter((product_: ProductType) => product_._id != product?._id)
 
                     !isFirstRender && data.products ?
-                        setProducts([...products, ...filterTheProduct]) : 
+                        setProducts([...products, ...filterTheProduct]) :
                         setProducts(filterTheProduct);
 
                     setProductsCount(data.productsCount - 1);
                     setIsFirstRender(false);
                     setLoading(false);
-                    
+
                 })
                 .catch((err) => {
                     console.log(err);
@@ -109,105 +111,104 @@ const ProductsSection = ({
 
     if (!isThereProducts) return;
 
-  return (
+    return (
 
-    <div className='w-full flex flex-col justify-center items-center sm:my-5 overflow-hidden'>
+        <div className='w-full flex flex-col justify-center items-center sm:my-5- overflow-hidden'>
 
-        {collection.name[activeLanguage.language] ?
-            <motion.h2 
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                //@ts-ignore
-                variants={slideInFromBottom(0.5)}
-                className='text-xl sm:text-4xl sm:mb-20 m-10'
-                style={{
-                    color: colors.dark[100],
-                    ...tittleStyle
-                }}
-            >
-                {collection.name[activeLanguage.language]}
-            </motion.h2>
-            :
-            <div className='w-[150px] h-8 rounded-xl overflow-hidden text-2xl sm:text-5xl sm:m-20 m-10'>
-                <SkeletonLoading/>
-            </div>
-        }
+            {collection.name[activeLanguage.language] ?
+                <motion.h2
+                    initial="hidden"
+                    animate="visible"
+                    //@ts-ignore
+                    variants={slideInFromBottom(0.1)}
+                    className='text-xl sm:text-4xl sm:mb-20 mt-10 m-5 sm:m-10'
+                    style={{
+                        color: colors.dark[100],
+                        ...tittleStyle
+                    }}
+                >
+                    {collection.name[activeLanguage.language]}
+                </motion.h2>
+                :
+                <div className='w-[150px] h-8 rounded-xl overflow-hidden text-2xl sm:text-5xl sm:m-20 m-10'>
+                    <SkeletonLoading />
+                </div>
+            }
 
-        {
-            collection.display == "vertical" ?
+            {
+                collection.display == "vertical" ?
 
-                <div className='w-full sm:px-5 flex flex-col justify-center items-center'>
+                    <div className='w-full sm:px-5 flex flex-col justify-center items-center '>
 
-                    <div className='w-full flex flex-wrap wrap-break-word- justify-center items-center px-4- bg-red-500- py-10 gap-2 sm:gap-4'>
+                        <div className='w-full flex flex-wrap wrap-break-word- justify-center items-center px-4- bg-red-500- py-10 gap-2 sm:gap-4'>
+
+                            {
+                                products?.map((product, index) => (
+                                    <ProductCard
+                                        key={index}
+                                        product={product}
+                                        className="w-[45%]- sm:w-[500px]- h-[370px] sm:min-h-[500px] bg-red-500- my-3- p-2-"
+                                        useLike={useLike}
+                                        style={{
+                                            width: screenWidth > 800 ? "300px" : "47%",
+                                            // height: 
+                                        }}
+                                    />
+                                ))
+                            }
+
+                        </div>
+
+                        {/* <div>{products?.length}, {productsCount}</div> */}
 
                         {
-                            products?.map((product, index) => (
-                                <ProductCard
-                                    key={index}
-                                    product={product}
-                                    className="w-[45%]- sm:w-[500px]- h-[370px] sm:min-h-[500px] bg-red-500- my-3- p-2-"
-                                    useLike={useLike}
-                                    style={{
-                                        width: screenWidth > 800 ? "300px"  : "47%",
-                                        // height: 
-                                    }}
-                                />
-                            ))
-                        }
-
-                    </div>
-
-                    {/* <div>{products?.length}, {productsCount}</div> */}
-
-                    { 
-                        products?.length < productsCount &&  
+                            products?.length < productsCount &&
 
                             <MoreBotton
                                 skip={skip}
                                 setSkip={setSkip}
                                 limit={limit}
                                 isLoading={loading}
-                            /> 
+                            />
 
-                    }
+                        }
 
-                </div>
+                    </div>
 
 
-            :
-                
-                screenWidth > 750 ?
+                    :
 
-                    <Slider
-                        products={products}
-                        productsCount={productsCount}
-                        isFirstRender={isFirstRender}
-                        setIsFirstRender={setIsFirstRender}
-                        skip={skip}
-                        setSkip={setSkip}
-                        limit={limit}
-                        autoScroll={autoScroll}
-                        useLike={useLike}
-                    /> 
-                :
-                    <SliderForPhones
-                        products={products}
-                        productsCount={productsCount}
-                        isFirstRender={isFirstRender}
-                        setIsFirstRender={setIsFirstRender}
-                        skip={skip}
-                        setSkip={setSkip}
-                        limit={limit}
-                        autoScroll={autoScroll}
-                        useLike={useLike}
-                    />
-            
-        }
+                    screenWidth > 750 ?
 
-    </div>
+                        <Slider
+                            products={products}
+                            productsCount={productsCount}
+                            isFirstRender={isFirstRender}
+                            setIsFirstRender={setIsFirstRender}
+                            skip={skip}
+                            setSkip={setSkip}
+                            limit={limit}
+                            autoScroll={autoScroll}
+                            useLike={useLike}
+                        />
+                        :
+                        <SliderForPhones
+                            products={products}
+                            productsCount={productsCount}
+                            isFirstRender={isFirstRender}
+                            setIsFirstRender={setIsFirstRender}
+                            skip={skip}
+                            setSkip={setSkip}
+                            limit={limit}
+                            autoScroll={autoScroll}
+                            useLike={useLike}
+                        />
 
-  )
+            }
+
+        </div>
+
+    )
 }
 
 export default ProductsSection

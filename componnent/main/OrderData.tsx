@@ -1,9 +1,10 @@
+"use client";
+
 import { useLanguage } from '@/contexts/languageContext'
 import { useOwner } from '@/contexts/ownerInfo'
 import { useTheme } from '@/contexts/themeProvider'
 import { PurchaseType } from '@/types'
 import React, { useMemo } from 'react'
-import { motion } from 'framer-motion'
 
 type Props = { purchases?: PurchaseType[] }
 
@@ -20,51 +21,65 @@ const OrderData = ({ purchases }: Props) => {
         }, 0) || 0;
     }, [purchases]);
 
-    if (!ownerInfo) return <div className="h-20 animate-pulse bg-gray-100 rounded-2xl" />;
+    if (!ownerInfo) return <div className="h-20 animate-pulse rounded-xl" style={{ backgroundColor: colors.light[200] }} />;
 
     const finalTotal = subTotal + (ownerInfo?.shippingCost || 0);
 
     return (
         <div
-            className='flex flex-col gap-4 w-full p-5 rounded-2xl border'
+            className='w-full p-6 rounded-xl border transition-all duration-300'
             style={{
                 backgroundColor: colors.light[100],
                 borderColor: colors.light[250],
-                boxShadow: activeTheme === 'dark' ? '0 4px 20px rgba(0,0,0,0.2)' : '0 4px 20px rgba(0,0,0,0.02)'
             }}
         >
-            <div className='flex items-center gap-2 mb-1'>
-                <div className='w-1 h-3 rounded-full' style={{ backgroundColor: colors.dark[300] }} />
-                <h4 className="text-[10px] uppercase font-bold tracking-[0.2em] opacity-40">{activeLanguage.orderSummary}</h4>
+            {/* Header with Technical Accent */}
+            <div className='flex items-center justify-between mb-6'>
+                <div className='flex items-center gap-3'>
+                    <div className='w-2 h-2 rounded-full' style={{ backgroundColor: colors.dark[100] }} />
+                    <h4 className="text-[10px] uppercase font-black tracking-[0.3em] opacity-40">
+                        {activeLanguage.orderSummary}
+                    </h4>
+                </div>
+                {/* <span className='text-[10px] font-semibold opacity-20 tracking-tighter'>SECURE_CHECKOUT</span> */}
             </div>
 
-            <div className='flex flex-col gap-3'>
-                <div className="flex justify-between items-center text-xs">
-                    <span className="opacity-60 font-medium">{activeLanguage.totalPrice}</span>
-                    <span className="font-bold">{subTotal.toFixed(2)} <span className="text-[10px] opacity-50">D.T</span></span>
+            {/* Price Details */}
+            <div className='flex flex-col gap-4 mb-6'>
+                <div className="flex justify-between items-center text-[10px]">
+                    <span className="opacity-50 font-semibold uppercase tracking-wider">{activeLanguage.totalPrice}</span>
+                    <span className="font-semibold text-[14px] " style={{ color: colors.dark[100] }}>
+                        {subTotal.toFixed(2)} <span className="text-[12px] opacity-40 ml-1">D.T</span>
+                    </span>
                 </div>
 
-                <div className="flex justify-between items-center text-xs">
-                    <span className="opacity-60 font-medium">{activeLanguage.shippingCoast}</span>
-                    <span className="font-bold">{(ownerInfo.shippingCost || 0).toFixed(2)} <span className="text-[10px] opacity-50">D.T</span></span>
+                <div className="flex justify-between items-center text-[10px]">
+                    <span className="opacity-50 font-semibold uppercase tracking-wider">{activeLanguage.shippingCoast}</span>
+                    <span className="font-semibold text-[14px] " style={{ color: colors.dark[100] }}>
+                        {(ownerInfo.shippingCost || 0).toFixed(2)} <span className="text-[12px] opacity-40 ml-1">D.T</span>
+                    </span>
                 </div>
             </div>
 
-            <div className="h-[1px] border-t border-dashed" style={{ borderColor: colors.light[350] }} />
+            {/* Minimalist Divider */}
+            <div className="w-full h-[1px] mb-6 opacity-10" style={{ backgroundColor: colors.dark[100] }} />
 
-            <div
-                className="flex justify-between items-center p-4 rounded-xl shadow-inner"
-                style={{ backgroundColor: activeTheme === 'dark' ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)' }}
-            >
+            {/* Grand Total Area */}
+            <div className="flex justify-between items-end">
                 <div className='flex flex-col'>
-                    <span className="text-[10px] uppercase font-bold tracking-tight opacity-50">{activeLanguage.totalAmmount}</span>
-                    <span className='text-[9px] opacity-30'>Tax included</span>
+                    <span className="text-[11px] uppercase font-semibold tracking-widest" style={{ color: colors.dark[100] }}>
+                        {activeLanguage.totalAmmount}
+                    </span>
+                    <span className='text-[11px] font-semibold opacity-30 uppercase mt-1'>
+                        Net Payable / VAT Inc.
+                    </span>
                 </div>
-                <div className='text-right'>
-                    <span className="text-xl font-black tracking-tight" style={{ color: colors.dark[100] }}>
+                
+                <div className='flex items-baseline gap-1'>
+                    <span className="text-2xl font-semibold tracking-tighter" style={{ color: colors.dark[100] }}>
                         {finalTotal.toFixed(2)}
                     </span>
-                    <span className="text-[10px] ml-1 font-bold opacity-60">D.T</span>
+                    <span className="text-[10px] font-semibold opacity-40">D.T</span>
                 </div>
             </div>
         </div>

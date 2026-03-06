@@ -235,15 +235,20 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
                     <h4 className={`font-md text-center line-clamp-1 mt-2`} style={{ color: colors.dark[200], fontSize: isMob ? '14px' : '16px' }}>
                         {product.name[activeLanguage.language] ? handleLongText(product.name[activeLanguage.language]!, isMob ? 20 : 25) : "..."}
                     </h4>
-                    <div className="text-center">
+                    <div className="text-center flex items-center justify-center gap-2">
                         <span className={`font-semibold`} style={{ color: colors.dark[100], fontSize: isMob ? '16px' : '20px' }}>
                             {activeSpecifications?.price || product.price} DT
                         </span>
+                        {product.oldPrice && product.oldPrice > (activeSpecifications?.price || product.price || 0) && (
+                            <span className="text-xs line-through opacity-30 mt-1">
+                                {product.oldPrice} DT
+                            </span>
+                        )}
                     </div>
                 </div>
-                <div className="px-1" onClick={(e) => e.stopPropagation()}>
+                {product.images.length > 1 && <div className="px-1" onClick={(e) => e.stopPropagation()}>
                     <SpecificationsSlider product={product.images} importedFrom="slider" onColorSelect={handleColorChange} />
-                </div>
+                </div>}
                 <div className={`w-full flex ${isMob ? 'flex-col' : 'justify-between'} items-center gap-2 p-2 border-t border-gray-100`}>
                     <button
                         className={`flex items-center justify-center gap-2 flex-1 py-2.5 rounded-xl transition-all cursor-pointer w-full ${isInCart ? 'bg-green-50' : 'hover:bg-gray-100'}`}
@@ -267,7 +272,7 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
         <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
+            viewport={{ once: true, amount: 0.1 }}
             variants={fadeInUp}
             whileTap={{ scale: 0.98 }}
             className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl transition-all duration-500 ${className} ${isMobile ? 'w-full h-[380px]' : 'w-full max-w-[320px] min-h-[400px]'}`}
@@ -280,6 +285,7 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
             onClick={() => {
                 if (!product?._id || product._id.length < 4) return;
                 setLoadingScreen(true);
+                localStorage.removeItem('purchaseId');
                 router.push(`/product/${product._id}`);
             }}
         >

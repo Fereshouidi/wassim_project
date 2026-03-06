@@ -59,7 +59,7 @@ const CartSide = () => {
             orderForm: { 
                 ...clientForm, 
                 client: client._id, // ADDED: This satisfies Mongoose's "client" required field
-                shippingCost: ownerInfo?.shippingCost, // Spelled correctly as Cost
+                shippingCoast: ownerInfo?.shippingCost, // Spelled correctly as Cost
                 clientNote: clientForm.note 
             }, 
             purchasesId 
@@ -116,7 +116,7 @@ const CartSide = () => {
                 </div>
 
                 {/* --- BODY --- */}
-                <div className='flex-1 overflow-y-scroll px-2 sm:px-6 py-6 scrollbar-hidden'>
+                <div className='flex-1 overflow-y-scroll px-2 sm:px-6 py-6 scrollbar-hidden-'>
                     {purchases.length === 0 ? (
                         <div className='h-full flex flex-col justify-center items-center opacity-40 gap-4'>
                             <img src="/icons/shopping-bag-black.png" className="w-12 h-12 grayscale opacity-20" alt=""/>
@@ -134,7 +134,7 @@ const CartSide = () => {
 
                             <div className='space-y-6'>
                                 <OrderData purchases={purchases} />
-                                <div className='p-4 border rounded-xl' style={{ borderColor: colors.light[300], backgroundColor: activeTheme === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)' }}>
+                                <div className='p-4 border rounded-xl' style={{ borderColor: colors.light[300], backgroundColor: colors.light[100] }}>
                                     <InputForm clientForm={clientForm} setClientForm={setClientForm} />
                                 </div>
                             </div>

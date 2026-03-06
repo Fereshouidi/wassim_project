@@ -1,30 +1,31 @@
 import { useClient } from '@/contexts/client';
 import { useTheme } from '@/contexts/themeProvider'
 import { EvaluationType, ClientType } from '@/types'
-import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import { faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { calcGeneratorDuration } from 'framer-motion';
 import React from 'react'
 import { timeAgo } from '@/lib';
 import { useLanguage } from '@/contexts/languageContext';
 
 type Props = {
-    addEvaluationActive: boolean, 
+    addEvaluationActive: boolean,
     setAddEvaluationActive: (value: boolean) => void
     evaluation: EvaluationType
-    editEvaluationActive: boolean, 
+    editEvaluationActive: boolean,
     setEditEvaluationActive: (value: boolean) => void
     newEvaluation: EvaluationType,
     setNewEvaluation: (value: EvaluationType) => void
+    onDelete?: (id: string) => void
 }
-const EvaluationItem = ({ 
+const EvaluationItem = ({
     addEvaluationActive,
     setAddEvaluationActive,
     evaluation,
     editEvaluationActive,
     setEditEvaluationActive,
     newEvaluation,
-    setNewEvaluation
+    setNewEvaluation,
+    onDelete
 }: Props) => {
 
     const { colors } = useTheme();
@@ -32,9 +33,9 @@ const EvaluationItem = ({
     const { activeLanguage } = useLanguage();
 
     return (
-        <div 
-            className='sm:w-[300px] w-[100%] h-fit p-5 mb-4- rounded-xl transition-all'
-            style={{ 
+        <div
+            className='sm:w-[300px]- w-[100%]- w-full h-full p-5 mb-4- rounded-xl transition-all'
+            style={{
                 backgroundColor: colors.light[100],
                 border: `0.5px solid ${colors.light[250]}`,
                 boxShadow: `0 2px 10px ${colors.light[200]}`
@@ -51,16 +52,16 @@ const EvaluationItem = ({
                             }
                         </h4>
                         {
-                            evaluation.createdAt && 
+                            evaluation.createdAt &&
                             <span
                                 className='text-[12px] opacity-45 ml-2'
                             >{
-                                 "" + timeAgo(evaluation.createdAt, activeLanguage.language) + ""
-                            }</span>
+                                    "" + timeAgo(evaluation.createdAt, activeLanguage.language) + ""
+                                }</span>
                         }
                     </div>
 
-                    
+
                     <div className='flex gap-0.5'>
                         {[1, 2, 3, 4, 5].map((star) => (
                             <span key={star} className='text-md text-yellow-400 transition-transform active:scale-90'>
@@ -73,27 +74,46 @@ const EvaluationItem = ({
                 {
                     //@ts-ignore
                     evaluation.client?._id === client?._id && (
-                        <div 
-                            className='flex items-center gap-1 cursor-pointer transition-all hover:opacity-100 opacity-40'
-                            style={{ color: colors.dark[100] }}
-                            onClick={() => {
-                                setEditEvaluationActive(true);
-                                setNewEvaluation(evaluation)
-                            }}
-                        >
-                            <FontAwesomeIcon 
-                                icon={faPencilAlt} 
-                                className="text-[10px]" 
-                            />
-                            <span className='text-[10px] italic underline-offset-2 hover:underline'>
-                                Edit
-                            </span>
+                        <div className='flex items-center gap-3'>
+                            <div
+                                className='flex items-center gap-1 cursor-pointer transition-all hover:opacity-100 opacity-40'
+                                style={{ color: colors.dark[100] }}
+                                onClick={() => {
+                                    setEditEvaluationActive(true);
+                                    setNewEvaluation(evaluation)
+                                }}
+                            >
+                                <FontAwesomeIcon
+                                    icon={faPencilAlt}
+                                    className="text-[10px]"
+                                />
+                                <span className='text-[10px] italic underline-offset-2 hover:underline'>
+                                    {activeLanguage.edit}
+                                </span>
+                            </div>
+
+                            <div
+                                className='flex items-center gap-1 cursor-pointer transition-all hover:opacity-100 opacity-40 text-red-500'
+                                onClick={() => {
+                                    if (evaluation._id && window.confirm(activeLanguage.areYouSure)) {
+                                        onDelete?.(evaluation._id)
+                                    }
+                                }}
+                            >
+                                <FontAwesomeIcon
+                                    icon={faTrash}
+                                    className="text-[10px]"
+                                />
+                                <span className='text-[10px] italic underline-offset-2 hover:underline'>
+                                    {activeLanguage.delete}
+                                </span>
+                            </div>
                         </div>
-                )}
+                    )}
             </div>
 
             {evaluation.note && (
-                <p 
+                <p
                     className='text-[12px] leading-relaxed opacity-75'
                     style={{ color: colors.dark[200] }}
                 >

@@ -1,55 +1,55 @@
 import { CSSProperties } from "react"
 
 type language = {
-    fr: string | null,
-    en: string | null
+  fr: string | null,
+  en: string | null
 }
 
 export type ScreenContextType = {
-    screenWidth: number
-    setScreenWidth: (value: number) => void
-    screenHeight: number
-    setScreenHeight: (value: number) => void
+  screenWidth: number
+  setScreenWidth: (value: number) => void
+  screenHeight: number
+  setScreenHeight: (value: number) => void
 }
 
 export type SideBarProps = {
-    isActive: boolean
-    setIsActive: (value: boolean) => void
-    ownerInfo?: OwnerInfoType 
-    setOwnerInfo: (value: OwnerInfoType) => void
+  isActive: boolean
+  setIsActive: (value: boolean) => void
+  ownerInfo?: OwnerInfoType
+  setOwnerInfo: (value: OwnerInfoType) => void
 }
 
 export type MenuIconProps = {
-    isSideBarActive: boolean,
-    setIsSideBarActive: (value: boolean) => void
+  isSideBarActive: boolean,
+  setIsSideBarActive: (value: boolean) => void
 }
 
 export type HeaderProps = {
-    isSideBarActive: boolean,
-    setIsSideBarActive: (value: boolean) => void
-    ownerInfo?: OwnerInfoType 
-    setOwnerInfo?: (value: OwnerInfoType) => void
-    searchInput?: string | null
-    className?: string
-    style?: CSSProperties
+  isSideBarActive: boolean,
+  setIsSideBarActive: (value: boolean) => void
+  ownerInfo?: OwnerInfoType
+  setOwnerInfo?: (value: OwnerInfoType) => void
+  searchInput?: string | null
+  className?: string
+  style?: CSSProperties
 }
 
 export type SearchBarProps = {
-    className?: string
-    inputClassName?: string
-    style?: CSSProperties ,
-    inputStyle?: CSSProperties,
-    searchIcon: string,
-    searchIconClassName?: string,
-    searchIconStyle?: CSSProperties,
-    containerClassName?: string,
-    resSectionStyle?: CSSProperties
-    aiIconStyle?: CSSProperties,
-    aiIconContentStyle?: CSSProperties
-    searchInput?: string | null
-    searchIconClicked?: Function
-    importedFrom?: 'header' | 'sidBar' | 'phoneHeader'
-    containerStyle?: CSSProperties
+  className?: string
+  inputClassName?: string
+  style?: CSSProperties,
+  inputStyle?: CSSProperties,
+  searchIcon: string,
+  searchIconClassName?: string,
+  searchIconStyle?: CSSProperties,
+  containerClassName?: string,
+  resSectionStyle?: CSSProperties
+  aiIconStyle?: CSSProperties,
+  aiIconContentStyle?: CSSProperties
+  searchInput?: string | null
+  searchIconClicked?: Function
+  importedFrom?: 'header' | 'sidBar' | 'phoneHeader'
+  containerStyle?: CSSProperties
 }
 
 export type Themes = "system" | "dark" | "light"
@@ -64,163 +64,172 @@ export type ThemeProps = {
 }
 
 export type ThemeContextType = {
-    themeDispo: ThemeProps[]
-    activeTheme: Themes
-    setActiveTheme: (value: "light" | "dark") => void
-    colors: Colors
+  themeDispo: ThemeProps[]
+  activeTheme: Themes
+  setActiveTheme: (value: "light" | "dark") => void
+  colors: Colors
 }
 
 export type LanguageStracture = {
-    label: "english" | "français",
-    language: "en" | "fr",
-    nav: {
-        home: string,
-        collection: string,
-        collections: string,
-        contact: string,
-        favorite: string,
-        askAi: string,
-        order: string
+  label: "english" | "français",
+  language: "en" | "fr",
+  nav: {
+    home: string,
+    collection: string,
+    collections: string,
+    contact: string,
+    favorite: string,
+    askAi: string,
+    order: string
+  },
+  sideMatter: {
+    search: string,
+    theme: {
+      system: string,
+      dark: string,
+      light: string,
     },
-    sideMatter: {
-        search: string,
-        theme: {
-            system: string,
-            dark: string,
-            light: string,
-        },
-        more: string,
-        allCollections: string,
-        noRes: string,
-        loading: string,
-        colors: string,
-        sizes: string,
-        types: string,
-        fillOutTheForm: string
-        fullName: string
-        address: string
-        phone: string
-        email: string
-        password: string
-        rePassword: string
-        note: string
-        resultsFound: string
-        price: string
-        color: string
-        size: string
-        type: string
-        name: string
-        date: string
-        Oldest: string
-        newest: string
-        cheapest: string
-        mostExpensive: string,
-        max: string,
-        min: string,
-        priceZone: string
-        all: string,
-        filter: string,
-        SortBy: string,
-        confirm: string
-    },
-    register: string
-    signIn: string
-    signUp: string
-    inputYourName: string
-    inputYourPhone: string
-    inputYourEmail: string
-    inputYourPassword: string
-    inputYourPasswordAgain: string
-    AlreadyHaveAnAccount: string
-    DontHaveAnAccount: string
-    connection: string
-    welcomeMr: string
-    welcomeBackMr: string
-    thanksForJoining: string
-    thanksForComingBack: string
-    somethingWentWrongWhileSignUp: string
-    AccountWithTheseNameAndPasswordNotFound: string
-    wrongPassword: string
-    allFildAreRequired: string
-    addToCart: string
-    inCart: string
-    askAi: string
-    contact: string
-    aboutUs: string
-    myCart: string
-    cancel: string
-    confirmOrder: string
-    totalPrice: string
-    shippingCoast: string
-    totalAmmount: string
-    emptyCart: string
-    filYourCart: string
-    here: string
-    recommended: string
-    forgotPassword: string
-    confirmedOrder : string
-    invalidVerificationToken: string
-    invalidVerificationTokenParagraph: string
-    accounntVerified: string
-    accounntVerifiedParagraph: string
-    FailedToSendEmail: string
-    FailedToSendEmailParagraph: string
-    GetBackMyAccount: string,
-    GetBackMyAccountParagraph: string
-    sendingEmailParagraph: string
-    resend: string
-    myFavorites: string
-    myOrders: string
-    pending: string
-    delivered: string
-    failed: string
-    pendingOrders: string
-    failedgOrders: string
-    deliveredOrders: string
-    noOrders: string,
-    orderNum: string,
-    purchasesDetails: string,
-    product: string,
-    specification: string,
-    quantity: string,
-    price: string
-    moreDetails: string,
-    receiver: string,
-    deliveryPhone: string,
-    orderedAt: string
-    viewMyOrder: string
-    yourInfomations: string
-    inputYourDateOfBirth: string,
-    dateOfBirth: string
-    logOut: string,
-    submit: string,
-    searchByAi: string
-    orderSummary: string
-    orderNow: string
-    addEvaluation: string,
-    evaluations: string,
-    reviewsForProduct: string,
-    noEvaluationsYet: string,
-    verifiedPurchasesOnly: string,
-    rateThisProduct: string,
-    writeNotes: string,
-    editEvaluation: string,
-    artificialIntelligence: string,
+    more: string,
+    allCollections: string,
+    noRes: string,
     loading: string,
-    noResults: string
-    support: string,
-    social_directory: string
-    reviews: string
-    opinion: string
-    socialMedia: string
-    collections: string
-    close: string,
-    haveGoodShop: string
+    colors: string,
+    sizes: string,
+    types: string,
+    fillOutTheForm: string
+    fullName: string
+    address: string
+    phone: string
+    email: string
+    password: string
+    rePassword: string
+    note: string
+    resultsFound: string
+    price: string
+    color: string
+    size: string
+    type: string
+    name: string
+    date: string
+    Oldest: string
+    newest: string
+    cheapest: string
+    mostExpensive: string,
+    max: string,
+    min: string,
+    priceZone: string
+    all: string,
+    filter: string,
+    SortBy: string,
+    confirm: string
+  },
+  register: string
+  signIn: string
+  signUp: string
+  inputYourName: string
+  inputYourPhone: string
+  inputYourEmail: string
+  inputYourPassword: string
+  inputYourPasswordAgain: string
+  AlreadyHaveAnAccount: string
+  DontHaveAnAccount: string
+  connection: string
+  welcomeMr: string
+  welcomeBackMr: string
+  thanksForJoining: string
+  thanksForComingBack: string
+  somethingWentWrongWhileSignUp: string
+  AccountWithTheseNameAndPasswordNotFound: string
+  wrongPassword: string
+  allFildAreRequired: string
+  addToCart: string
+  inCart: string
+  askAi: string
+  contact: string
+  aboutUs: string
+  myCart: string
+  cancel: string
+  confirmOrder: string
+  totalPrice: string
+  shippingCoast: string
+  totalAmmount: string
+  emptyCart: string
+  filYourCart: string
+  here: string
+  recommended: string
+  forgotPassword: string
+  confirmedOrder: string
+  invalidVerificationToken: string
+  invalidVerificationTokenParagraph: string
+  accounntVerified: string
+  accounntVerifiedParagraph: string
+  FailedToSendEmail: string
+  FailedToSendEmailParagraph: string
+  GetBackMyAccount: string,
+  GetBackMyAccountParagraph: string
+  sendingEmailParagraph: string
+  resend: string
+  myFavorites: string
+  myOrders: string
+  pending: string
+  delivered: string
+  failed: string
+  pendingOrders: string
+  failedgOrders: string
+  deliveredOrders: string
+  noOrders: string,
+  orderNum: string,
+  purchasesDetails: string,
+  product: string,
+  specification: string,
+  quantity: string,
+  price: string
+  moreDetails: string,
+  receiver: string,
+  deliveryPhone: string,
+  orderedAt: string
+  viewMyOrder: string
+  yourInfomations: string
+  inputYourDateOfBirth: string,
+  dateOfBirth: string
+  logOut: string,
+  submit: string,
+  searchByAi: string
+  orderSummary: string
+  orderNow: string
+  addEvaluation: string,
+  evaluations: string,
+  reviewsForProduct: string,
+  noEvaluationsYet: string,
+  verifiedPurchasesOnly: string,
+  rateThisProduct: string,
+  writeNotes: string,
+  editEvaluation: string,
+  artificialIntelligence: string,
+  loading: string,
+  noResults: string
+  support: string,
+  social_directory: string
+  reviews: string
+  opinion: string
+  socialMedia: string
+  collections: string
+  close: string,
+  haveGoodShop: string,
+  edit: string,
+  delete: string,
+  areYouSure: string,
+  youMayLike: string,
+  productNotFound: string,
+  productNotFoundDesc: string,
+  continueShopping: string,
+  goBack: string
 }
 
+
 export type LanguageContextType = {
-    activeLanguage: LanguageStracture
-    setActiveLanguage: (value: LanguageStracture) => void
+  activeLanguage: LanguageStracture
+  setActiveLanguage: (value: LanguageStracture) => void
 }
 
 export interface OrderType {
@@ -255,24 +264,24 @@ export type Colors = {
 
 
 export type PubType = {
-    topBar?: {
-        fr: string;
-        en: string;
-    };
-    heroBanner?: {
-        sm: string;
-        md: string;
-    };
-    bottomBanner?: {
-        sm: string;
-        md: string;
-    };
-    createdAt?: Date;
-    updatedAt?: Date;
+  topBar?: {
+    fr: string;
+    en: string;
+  };
+  heroBanner?: {
+    sm: string;
+    md: string;
+  };
+  bottomBanner?: {
+    sm: string;
+    md: string;
+  };
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface OwnerInfoType {
-  _id?: string ;
+  _id?: string;
   name?: string;
   logo?: {
     dark?: string;
@@ -302,6 +311,7 @@ export type ProductType = {
     en: string | null;
   };
   price: number | null;
+  oldPrice: number | null;
   thumbNail: string | null;
   images: [{
     uri: string,
@@ -319,11 +329,11 @@ export type ProductType = {
 }
 
 export type CollectionType = {
-    _id?: string | null;
-    name: language;
-    thumbNail?: string | null;
-    type: "private" | "public";
-    display: "vertical" | "horizontal"
+  _id?: string | null;
+  name: language;
+  thumbNail?: string | null;
+  type: "private" | "public";
+  display: "vertical" | "horizontal"
 }
 
 export interface PurchaseType {
@@ -349,12 +359,12 @@ export interface CartType {
 }
 
 export type CollectionWithProductsType = {
-    _id?: string | null;
-    name: language;
-    thumbNail?: string | null;
-    type: "private" | "public";
-    display: "vertical" | "horizontal";
-    products: ProductType[]
+  _id?: string | null;
+  name: language;
+  thumbNail?: string | null;
+  type: "private" | "public";
+  display: "vertical" | "horizontal";
+  products: ProductType[]
 }
 
 export type ProductSpecification = {
@@ -365,6 +375,7 @@ export type ProductSpecification = {
   type?: string | null;
   price?: number | null;
   quantity?: number | null;
+  unlimited?: boolean;
 }
 
 export type ProductImage = {
@@ -373,10 +384,10 @@ export type ProductImage = {
 }
 
 export type ClientFormType = {
-    fullName: string,
-    address: string,
-    phone: string,
-    note: string
+  fullName: string,
+  address: string,
+  phone: string,
+  note: string
 }
 
 export type ClientType = {
@@ -395,7 +406,7 @@ export type AdminType = {
   _id?: string
   fullName?: string
   email?: string
-  phone?:  Number
+  phone?: Number
   password?: string
   aiNote?: string
   createdAt?: Date | null;
@@ -403,43 +414,43 @@ export type AdminType = {
 }
 
 export type FiltrationType = {
-    price: {
-        from: number
-        to: number
-    }
-    collections: string[]
-    colors: string[]
-    types: string[]
-    sizes: string[]
+  price: {
+    from: number
+    to: number
+  }
+  collections: string[]
+  colors: string[]
+  types: string[]
+  sizes: string[]
 
-    sortBy: 'price' | 'name' | 'date'
-    sortDirection: 'asc' | 'desc'
-    activeLanguage: "fr" | "en"
+  sortBy: 'price' | 'name' | 'date'
+  sortDirection: 'asc' | 'desc'
+  activeLanguage: "fr" | "en"
 
 }
 
 export type CustomSelectType = {
-    options: OptionType[]
-    currentOption: OptionType
-    setCurrentOption: (value: OptionType) => void
-    className?: string
-    style?: CSSProperties
+  options: OptionType[]
+  currentOption: OptionType
+  setCurrentOption: (value: OptionType) => void
+  className?: string
+  style?: CSSProperties
 }
 
 export type CustomSelectManyType = {
-    label: string
-    options: OptionType[]
-    currentOptions: OptionType[]
-    setCurrentOptions: (value: OptionType[]) => void
-    className?: string
-    style?: CSSProperties
+  label: string
+  options: OptionType[]
+  currentOptions: OptionType[]
+  setCurrentOptions: (value: OptionType[]) => void
+  className?: string
+  style?: CSSProperties
 
 
 }
 
 export type OptionType = {
-    value: string,
-    label: string
+  value: string,
+  label: string
 }
 
 
@@ -468,7 +479,7 @@ export type DeliveryWorkerType = {
   _id?: string
   fullName?: string
   email?: string
-  phone?:  Number
+  phone?: Number
   password?: string
   address?: string
   createdAt?: Date | null;

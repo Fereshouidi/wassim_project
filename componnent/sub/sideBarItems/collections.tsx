@@ -130,7 +130,7 @@ const Collections = ({ sideBarActive }: props) => {
                 style={{ color: colors.light[200] }}
                 onClick={() => {
                     setLoadingScreen(true);
-                    router.push('/search');
+                    router.push('/collections');
                 }}
             >
                 {activeLanguage.nav.collections}

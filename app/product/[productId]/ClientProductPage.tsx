@@ -12,7 +12,15 @@ import AnnouncementBar from "@/componnent/sub/AnnouncementBar";
 import ProductActionPanel from "@/componnent/sub/ProductActionPanel/ProductActionPanel";
 import { useScreen } from "@/contexts/screenProvider";
 import { useTheme } from "@/contexts/themeProvider";
-import { getUniqueImagesByColor, handleShareOnFacebook } from "@/lib";
+import {
+    getUniqueImagesByColor,
+    handleShareOnFacebook,
+    handleShareOnInstagram,
+    handleShareOnTwitter,
+    handleShareOnWhatsApp,
+    handleShareOnLinkedIn,
+    handleSocialMediaClick
+} from "@/lib";
 import { headerHeight, productActionPanelHeight } from "@/constent";
 import { fakeProducts } from "@/constent/data";
 import { useLoadingScreen } from "@/contexts/loadingScreen";
@@ -27,7 +35,7 @@ import SkeletonLoading from "@/componnent/sub/SkeletonLoading";
 import { useLanguage } from "@/contexts/languageContext";
 
 interface Props {
-  product: ProductType;
+    product: ProductType;
 }
 
 export default function ClientProductPage({ product }: Props) {
@@ -41,10 +49,10 @@ export default function ClientProductPage({ product }: Props) {
 
     const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
     const [sideBarActive, setSideBarActive] = useState(false);
-    
+
     const [activeSpecifications, setActiveSpecifications] = useState<ProductSpecification | null>(null);
-    const [purchase, setPurchase] = useState<PurchaseType | null>(null); 
-    
+    const [purchase, setPurchase] = useState<PurchaseType | null>(null);
+
     const [collections, setCollections] = useState<CollectionType[]>([]);
     const [loadingGettingCollection, setLoadingGettingCollection] = useState<boolean>(true);
     const [cart, setCart] = useState<CartType>({});
@@ -55,44 +63,44 @@ export default function ClientProductPage({ product }: Props) {
     useEffect(() => {
         window.scrollTo(0, 0);
         setLoadingScreen(false);
-        
+
     }, [product._id]); // يتم التنفيذ عند تحميل الصفحة أو تغير المنتج
 
     useEffect(() => {
 
-        console.log({client});
+        console.log({ client });
 
         if (!client || !product._id) return;
 
-      if (!purchase?._id) {
-        axios.get(backEndUrl + "/getPurchaseByClientAndProduct", {
-            params: {
-                productId: product._id,
-                clientId: client?._id
-            }
-        })
-        .then(({data}) => {
-            setPurchase(data?.purchase)
-            // alert(data.purchase._id)
-        })
-        .catch(( err ) => {
-            alert(err)
-        })
-        // setPurchase({
-        //     client: client?._id ?? undefined,
-        //     product: product._id ?? undefined,
-        //     specification: null, 
-        //     quantity: 1,
-        //     like: false
-        // })
-      }
+        if (!purchase?._id) {
+            axios.get(backEndUrl + "/getPurchaseByClientAndProduct", {
+                params: {
+                    productId: product._id,
+                    clientId: client?._id
+                }
+            })
+                .then(({ data }) => {
+                    setPurchase(data?.purchase)
+                    // alert(data.purchase._id)
+                })
+                .catch((err) => {
+                    alert(err)
+                })
+            // setPurchase({
+            //     client: client?._id ?? undefined,
+            //     product: product._id ?? undefined,
+            //     specification: null, 
+            //     quantity: 1,
+            //     like: false
+            // })
+        }
     }, [client, product])
 
     useEffect(() => {
         if (activeSpecifications && purchase) {
             setPurchase(prev => prev ? ({
-              ...prev,
-              specification: activeSpecifications
+                ...prev,
+                specification: activeSpecifications
             }) : null);
         }
     }, [activeSpecifications])
@@ -106,7 +114,7 @@ export default function ClientProductPage({ product }: Props) {
                 const { data } = await axios.get(`${backEndUrl}/getCollectionsByProduct`, { params: { productId: product._id } });
                 const filtered = data.collections.filter((c: CollectionType) => c.type === "public");
                 setCollections(filtered.map((c: CollectionType) => ({ ...c, display: "horizental" })));
-            } catch (err) { console.error(err); } 
+            } catch (err) { console.error(err); }
             finally { setLoadingGettingCollection(false); }
 
             if (client?._id) {
@@ -115,11 +123,18 @@ export default function ClientProductPage({ product }: Props) {
 
                 axios.get(`${backEndUrl}/getCartByClient`, { params: { clientId: client._id } })
                     .then(({ data }) => setCart(data.cart));
-                
+
                 const purchaseId = localStorage.getItem('purchaseId');
                 if (purchaseId) {
                     axios.get(`${backEndUrl}/getPurchaseById`, { params: { purchaseId } })
-                        .then(({ data }) => { if(data.purchase) setPurchase(data.purchase); });
+                        .then(({ data }) => {
+                            if (data.purchase) {
+                                setPurchase(data.purchase);
+                                if (data.purchase.specification) {
+                                    setActiveSpecifications(data.purchase.specification);
+                                }
+                            }
+                        });
                 }
             }
         };
@@ -144,24 +159,36 @@ export default function ClientProductPage({ product }: Props) {
     }
 
     const uniqueImages = useMemo(() => getUniqueImagesByColor(product?.images), [product?.images]);
-    
-    if (!ownerInfo) return <LoadingScreen/>
+
+    if (!ownerInfo) return <LoadingScreen />
 
     return (
         <div className="page bg-transparent" style={{ backgroundColor: colors.light[100], color: colors.dark[150], paddingBottom: productActionPanelHeight }}>
-            <AnnouncementBar/>
-            <Header isSideBarActive={sideBarActive} setIsSideBarActive={setSideBarActive} ownerInfo={ownerInfo} setOwnerInfo={() => {}} />
+            <AnnouncementBar />
+            <Header isSideBarActive={sideBarActive} setIsSideBarActive={setSideBarActive} ownerInfo={ownerInfo} setOwnerInfo={() => { }} />
 
-            <div className={`w-full relative flex ${screenWidth > 1200 ? 'h-[90vh] flex-row justify-center' : 'flex-col justify-start items-center'} pt-5`} style={{ minHeight: screenHeight - (headerHeight * 1.5) }}>
-                
+            <div className={`w-full relative flex ${screenWidth > 1200 ? 'h-[90vh] bg-red-500- flex-row justify-center' : 'flex-col justify-start items-center'} pt-5 mb-24-`} style={{ minHeight: screenHeight - (headerHeight * 1.5) }}>
+
                 {screenWidth > 1200 && (
-                    <div className="w-24 flex flex-col gap-4 justify-center items-center mr-4">
-                        {ownerInfo?.socialMedia?.map((media) => (
-                            <img key={media.platform} src={media.icon} className="w-8 h-8 cursor-pointer opacity-70 hover:opacity-100" onClick={() => media.platform === "Facebook" && handleShareOnFacebook(window.location.href)} />
-                        ))}
+                    <div className="w-24 flex flex-col gap-4 justify-center items-center mb-20 mr-4-">
+                        {ownerInfo?.socialMedia
+                            ?.filter((media) =>
+                                //@ts-ignore
+                                ["facebook", "whatsapp"].includes(media?.platform?.toLowerCase())
+                            )
+                            .map((media) => (
+                                <img
+                                    key={media.platform}
+                                    src={media.icon}
+                                    alt={media.platform}
+                                    className="w-8 h-8 cursor-pointer opacity-90 hover:opacity-100 transition-opacity"
+                                    onClick={() => handleSocialMediaClick(media)}
+                                />
+                            ))
+                        }
                     </div>
                 )}
-                
+
                 <div className={`max-w-full flex flex-1 ${screenWidth > 1200 ? 'min-h-[90vh] flex-row justify-center items-start' : 'flex-col items-center'}`}>
                     {screenWidth < 1200 && (
                         <h4 className='font-bold text-lg sm:text-xl px-10 my-3'>
@@ -169,12 +196,12 @@ export default function ClientProductPage({ product }: Props) {
                         </h4>
                     )}
 
-                    <ImagesSwitcher 
-                        images={product?.images || []} 
-                        currentImageIndex={currentImageIndex} 
-                        setCurrentImageIndex={setCurrentImageIndex} 
-                        like={like ?? false} 
-                        setLike={handleLike} 
+                    <ImagesSwitcher
+                        images={product?.images || []}
+                        currentImageIndex={currentImageIndex}
+                        setCurrentImageIndex={setCurrentImageIndex}
+                        like={like ?? false}
+                        setLike={handleLike}
                     />
 
                     <ProductDetails
@@ -184,7 +211,8 @@ export default function ClientProductPage({ product }: Props) {
                         loadingGettingProduct={false}
                         quantity={purchase?.quantity ?? 1}
                         setQuantity={handlePurchaseQuantity}
-                        activeSpecifications={activeSpecifications?? product.specifications[0]}
+                        activeSpecifications={activeSpecifications ?? product.specifications[0]}
+                        isExplicitlySelected={activeSpecifications !== null}
                         collections={collections}
                         loadingGettingCollection={loadingGettingCollection}
                         setActiveSpecifications={setActiveSpecifications}
@@ -197,29 +225,45 @@ export default function ClientProductPage({ product }: Props) {
                 </div>
             </div>
 
-            <div className="my-10 sm:my-24">
+            <div className="my-0 sm:my-24">
                 {product?._id && <OtherSimilarChose collections={collections} product={product} />}
             </div>
 
             <div className="w-full fixed bottom-0 left-0 flex flex-row justify-center items-center p-2 z-20" style={{ backgroundColor: colors.light[100], boxShadow: `0 -2px 10px rgba(0,0,0,0.1)`, height: productActionPanelHeight }}>
-                <div className="w-full flex flex-row justify-center items-center gap-10 sm:w-[600px]">
-                    {screenWidth > 1000 && <div>
-                        {screenWidth > 1000 && 
-                        <div className="mr-10 flex flex-row gap-1">
-                            {ownerInfo?.socialMedia?.map((media) => (
-                            <img 
-                            key={media.platform}
-                            src={media.icon}
-                            onClick={() => {
-                                media.platform == "Facebook" ? handleShareOnFacebook(window.location.href)
-                                : null
-                            }}
-                            
-                            className="w-10 h-10"
-                            />
-                        ))}
-                        </div>}
-                    </div>}
+                <div className="w-full flex flex-row justify-center items-center gap-10 sm:w-[800px]">
+                    {screenWidth > 1000 && (
+                        <div className="mr-10- flex flex-row gap-3">
+                            {ownerInfo?.socialMedia
+                                //@ts-ignore
+                                ?.filter((media) =>
+                                    //@ts-ignore
+                                    ["facebook", "whatsapp"].includes(media?.platform?.toLowerCase())
+                                )
+                                .map((media) => {
+                                    const isFacebook = media?.platform?.toLowerCase() === "facebook";
+                                    const platformColor = isFacebook ? "#1877F2" : "#25D366";
+
+                                    return (
+                                        <div
+                                            key={media.platform}
+                                            onClick={() => handleSocialMediaClick(media)}
+                                            className="flex items-center justify-center gap-2.5 px-5 py-2.5 rounded-xl cursor-pointer transition-all hover:scale-105 active:scale-95 shadow-sm"
+                                            style={{ backgroundColor: platformColor }}
+                                        >
+                                            <img
+                                                src={media.icon}
+                                                alt={media.platform}
+                                                className="w-5 h-5 brightness-0- invert-"
+                                            />
+                                            <span className="text-[11px] font-black uppercase tracking-widest text-white">
+                                                {media.platform}
+                                            </span>
+                                        </div>
+                                    );
+                                })
+                            }
+                        </div>
+                    )}
                     <ProductActionPanel
                         quantity={purchase?.quantity ?? 1}
                         setQuantity={handlePurchaseQuantity}
@@ -235,8 +279,8 @@ export default function ClientProductPage({ product }: Props) {
                 </div>
             </div>
 
-            <Footer/>
-            <SideBar isActive={sideBarActive} setIsActive={setSideBarActive} ownerInfo={ownerInfo} setOwnerInfo={() => {}} />
+            <Footer />
+            <SideBar isActive={sideBarActive} setIsActive={setSideBarActive} ownerInfo={ownerInfo} setOwnerInfo={() => { }} />
         </div>
     );
 }

@@ -22,6 +22,7 @@ const FilterSize = ({
     const { activeLanguage } = useLanguage();
     const { colors } = useTheme();
     
+    // إنشاء الخيارات مع خيار "الكل"
     const options: OptionType[] = useMemo(() => [
         {
             label: `${activeLanguage.sideMatter.all} ${activeLanguage.sideMatter.sizes}`, 
@@ -35,6 +36,7 @@ const FilterSize = ({
 
     const [currentOptions, setCurrentOptions] = useState<OptionType[]>([]);
 
+    // مزامنة الخيارات المختارة مع القيم الافتراضية (من الـ URL أو الحالة الأب)
     useEffect(() => {
         if (!defaultOptions || defaultOptions.length === 0 || options.length <= 1) {
             setCurrentOptions([options[0]]);
@@ -51,8 +53,16 @@ const FilterSize = ({
         }
     }, [defaultOptions, options]);
 
+    // تحديث الحالة في المكون الأب عند تغيير الاختيار
     useEffect(() => {
-        const selectedValues = currentOptions.map(opt => opt.value);
+        const hasAll = currentOptions.some(opt => opt.value === "all");
+        
+        /**
+         * التعديل الجوهري:
+         * إذا تم اختيار "all"، نرسل مصفوفة فارغة لتبسيط منطق السيرفر
+         * وضمان عدم تداخل الفلاتر مع البحث النصي.
+         */
+        const selectedValues = hasAll ? [] : currentOptions.map(opt => opt.value);
         
         if (JSON.stringify(selectedValues) !== JSON.stringify(filtrationCopy.sizes)) {
             setFiltrationCopy({
@@ -63,7 +73,7 @@ const FilterSize = ({
     }, [currentOptions]);
     
     return (
-        <div className="w-full px-4- py-2- border-b" style={{ borderColor: colors.light[200] }}>
+        <div className="w-full py-2 border-b" style={{ borderColor: colors.light[200] }}>
             <h4 
                 className="text-[13px] font-black uppercase tracking-widest mb-3 opacity-80"
                 style={{ color: colors.dark[100] }}

@@ -4,6 +4,7 @@ import ProductsSection from './productsSection'
 import axios from 'axios'
 import { backEndUrl } from '@/api'
 import { collectionsLoading } from '@/constent/data'
+import { useLanguage } from '@/contexts/languageContext'
 
 type OtherSimilarChoseType = {
     collections: CollectionType[]
@@ -20,6 +21,7 @@ const OtherSimilarChose = ({
     const [limit, setLimit] = useState<number>(5);
     const [skip, setSkip] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(false);
+    const { activeLanguage } = useLanguage();
 
     useEffect(() => {
         collectinsWithProducts.map(col => {
@@ -34,10 +36,10 @@ const OtherSimilarChose = ({
     ) return <div className='bg-red-400'>{isThereProducts}</div>
 
   return (
-    <div className='w-full h-full flex flex-col justify-center items-center'>
+    <div className='w-full h-full flex flex-col justify-center items-center mb-10'>
 
 
-        {isThereProducts && <h2 className='text-lg sm:text-xl font-semibold pb-5 sm:pb-10'>You may like : </h2>}
+        {isThereProducts && <h2 className='text-lg sm:text-xl font-semibold pb-5 sm:pb-10'>{activeLanguage.youMayLike} : </h2>}
 
         <div className='w-full h-full flex flex-col justify-center items-center overflow-scroll- scrollbar-hidden'>
             {

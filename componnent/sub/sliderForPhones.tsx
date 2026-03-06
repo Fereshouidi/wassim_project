@@ -4,10 +4,11 @@ import ProductLoading from './productCard/productLoading'
 import { useScreen } from '@/contexts/screenProvider'
 import { useTheme } from '@/contexts/themeProvider'
 import ProductCard from './productCard/productCardForSlider'
+import { motion } from 'framer-motion'
 
 type sliderProps = {
     products: ProductType[]
-    productsCount: number, 
+    productsCount: number,
     isFirstRender: boolean
     setIsFirstRender: (value: boolean) => void
     skip: number,
@@ -36,7 +37,7 @@ const SliderForPhones = ({
     const productLoading = useRef<HTMLDivElement>(null);
     const [productLoadingVisible, setProductLoadingVisible] = useState(false);
     const [productLoadingShowUp, setProductLoadingShowUp] = useState<boolean>(true);
-    
+
     const { screenWidth } = useScreen();
     const { activeTheme, colors } = useTheme();
     const slidesRef = useRef<HTMLDivElement>(null);
@@ -101,43 +102,52 @@ const SliderForPhones = ({
     }, [userScroll])
 
     return (
-        <div className={`w-full ${screenWidth < 1000 && 'px-5-'}`}>
+        <div className={`w-full ${screenWidth < 1000 && 'px-5-'} `}>
             <div className={`w-full flex flex-row items-center justify-between `}>
-                
-                <div 
-                    className='flex relative overflow-x-scroll scrollbar-hidden slide flex-1 justify-between'
+
+                <div
+                    className='h-fit bg-blue-500- py-3- my-2- flex justify-start items-center relative- overflow-x-scroll scrollbar-hidden slide flex-1- justify-between-'
                     ref={sliderRef}
-                    onMouseDown={() => setUserScroll(true)} 
-                    onTouchStart={() => setUserScroll(true)}             
+                    onMouseDown={() => setUserScroll(true)}
+                    onTouchStart={() => setUserScroll(true)}
                     onMouseEnter={() => setUserScroll(true)}
                 >
-                    <div 
-                        className='w-max h-full flex flex-row justify-start slide' 
+                    <div
+                        className='w-max h-full  flex flex-row justify-start slide  '
                         ref={slidesRef}
                     >
-                        <div className='w-max h-full flex flex-row justify-start gap-2- smpx-5'>
+                        <motion.div
+                            initial="initial"
+                            animate="animate"
+                            variants={{
+                                initial: { opacity: 0 },
+                                animate: {
+                                    opacity: 1,
+                                    transition: {
+                                        staggerChildren: 0.05
+                                    }
+                                }
+                            }}
+                            className='w-max h-full flex flex-row justify-start gap-2- sm:px-5-'
+                        >
                             {products.map((product, index) => (
-                                <div 
+                                <div
                                     key={index}
-                                    className='w-[180px] sm:w-[250px] rounded-xl overflow-hidden'
-                                    style={{
-                                        // width: cardWidth  + "px"
-                                        // width="w-"
-                                    }}
+                                    className='w-[180px] sm:w-[250px] py-2 h-full- flex justify-center items-center bg-red-500- rounded-xl overflow-hidden'
                                 >
                                     <ProductCard
                                         product={product}
-                                        className='w-[95%] h-[97%] rounded-xl overflow-hidden'
+                                        className='w-[95%] h-[270px] rounded-xl overflow-hidden'
                                         useLike={useLike}
                                     />
                                 </div>
                             ))}
-                        </div>
+                        </motion.div>
 
                         {productLoadingShowUp && (
                             <div ref={productLoading} className=''>
                                 <ProductLoading
-                                    className='w-[170px] sm:w-[220px] min-h-[150px] sm:min-h-[220px] m-0 '
+                                    className='w-[170px] h-[280px] sm:w-[220px] min-h-[150px] sm:min-h-[220px] m-0 '
                                 />
                             </div>
                         )}

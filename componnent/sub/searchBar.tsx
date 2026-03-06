@@ -28,12 +28,12 @@ const SearchBar = ({
     const { activeLanguage } = useLanguage();
     const { setIsActive } = useCartSide();
     const { setBubbleProps, addMessage } = useAiChatBubble();
-    
+
     const [input, setInput] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [aiModeActive, setAiModeActive] = useState<boolean>(false);
     const [resSecVisible, setResSecVisible] = useState<boolean>(false);
-    
+
     const searchRef = useRef<HTMLInputElement | null>(null);
     const filterBarRef = useRef<HTMLDivElement | null>(null);
     const searchResultDivRef = useRef<HTMLDivElement>(null);
@@ -93,10 +93,10 @@ const SearchBar = ({
     useEffect(() => {
         setFiltration({
             price: { from: 0, to: mostProductExpensive?.price ?? 100 },
-            collections: allCollections.map(collection => (collection._id ?? '')),
+            collections: [],
             colors: availableColors,
             types: availableTypes,
-            sizes: availableTypes,
+            sizes: availableSizes,
             sortBy: "price",
             sortDirection: "asc",
             activeLanguage: activeLanguage.language
@@ -123,20 +123,19 @@ const SearchBar = ({
 
         try {
             const { data } = await axios.post(`${backEndUrl}/getAnswerFromAi`, {
-                userId: client?._id, 
-                message: currentMsg, 
+                userId: client?._id,
+                message: currentMsg,
                 agent: "SEARCH"
             });
             if (data.uiAction && data.uiAction.element === 'cart') setIsActive(data.uiAction.state === 'open');
-            // alert(data.filtrationUsed || data.searchQuery)
             if (data.filtrationUsed || data.searchQuery) {
                 setFiltration(data.filtrationUsed);
                 router.push(`/search?searchInput=${encodeURIComponent(data.searchQuery ?? "")}&filter=${encodeURIComponent(JSON.stringify(data.filtrationUsed))}`);
             }
             addMessage('assistant', data.answer);
             setBubbleProps(prev => ({ ...prev, isTherAnswer: true, exist: true }));
-        } catch (err) { 
-            setBubbleProps(prev => ({ ...prev, answer: "Connection error..." })); 
+        } catch (err) {
+            setBubbleProps(prev => ({ ...prev, answer: "Connection error..." }));
         } finally {
             setIsLoading(false);
         }
@@ -152,7 +151,7 @@ const SearchBar = ({
     }, []);
 
     return (
-        <div 
+        <div
             className={`relative w-[60%] flex flex-row items-center justify-center transition-all duration-500 rounded-xl p-[1.2px] ${containerClassName}`}
             style={{ ...containerStyle, background: aiModeActive ? aiGradient : 'transparent' }}
         >
@@ -162,34 +161,34 @@ const SearchBar = ({
                 </div>
             )}
 
-            <div className={`w-full rounded-[11px] relative flex flex-row transition-all duration-300 z-10 overflow-hidden ${className}`} style={{ ...style, backgroundColor: importedFrom == "sidBar" ? "" : colors.light[100] }}> 
-                <input 
-                    type="text" 
+            <div className={`w-full rounded-[11px] relative flex flex-row transition-all duration-300 z-10 overflow-hidden ${className}`} style={{ ...style, backgroundColor: importedFrom == "sidBar" ? "" : colors.light[100], borderRadius: "10px" }}>
+                <input
+                    type="text"
                     placeholder={(aiModeActive ? activeLanguage.searchByAi : activeLanguage.sideMatter.search) + "..."}
-                    className={`h-full flex flex-1 pl-[20px] bg-transparent outline-none text-sm ${inputClassName}`} 
-                    style={{...inputStyle}} 
+                    className={`h-full flex flex-1 pl-[20px] bg-transparent outline-none text-sm ${inputClassName}`}
+                    style={{ ...inputStyle }}
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSearchIconClicked()}
                     ref={searchRef}
                 />
-                
-                <div className='h-full flex items-center px-2 gap-2'>
+
+                <div className='h-full flex items-center px-1 gap-2'>
                     {importedFrom !== "sidBar" && (
                         <AiMode aiModeActive={aiModeActive} setAiModeActive={setAiModeActive} aiIconStyle={aiIconStyle} aiIconContentStyle={aiIconContentStyle} />
                     )}
-                    <div 
-                        className={`h-[42px] w-[42px] flex items-center justify-center rounded-xl cursor-pointer`}
+                    <div
+                        className={`h-[45px] w-[45px] flex items-center justify-center rounded-xl cursor-pointer`}
                         style={{ background: aiModeActive ? aiGradient : (isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)') }}
                         onClick={handleSearchIconClicked}
                     >
-                        {aiModeActive ? 
-                            <FontAwesomeIcon icon={faPaperPlane} className="text-white text-xs" /> : 
-                            <div 
-                                className='w-full h-full p-3 rounded-xl overflow-hidden' 
-                                style={{...searchIconStyle, backgroundColor: importedFrom == "sidBar" ? colors.light[100] : colors.dark[100] }}
+                        {aiModeActive ?
+                            <FontAwesomeIcon icon={faPaperPlane} className="text-white text-xs" /> :
+                            <div
+                                className='w-full h-full p-3 rounded-xl overflow-hidden'
+                                style={{ ...searchIconStyle, backgroundColor: importedFrom == "sidBar" ? colors.light[100] : colors.dark[100] }}
                             >
-                                <img src={searchIcon} className={`h-full w-full opacity-70-`} style={{...searchIconStyle, backgroundColor: importedFrom == "sidBar" ? "" : colors.dark[100] }} alt="search" />
+                                <img src={searchIcon} className={`h-full w-full opacity-70-`} style={{ ...searchIconStyle, backgroundColor: importedFrom == "sidBar" ? "" : colors.dark[100] }} alt="search" />
                             </div>
                         }
                     </div>
@@ -217,7 +216,7 @@ const SearchBar = ({
 
             {/* Live Search Result Section (Re-added) */}
             {!aiModeActive && resSecVisible && input.length > 0 && (
-                <div 
+                <div
                     className={`w-full max-h-[400px] absolute top-full rounded-2xl overflow-y-auto z-[998] shadow-2xl mt-3 p-2 border border-white/5 transition-all duration-300`}
                     style={{ ...resSectionStyle, backgroundColor: isDark ? '#121212' : '#fff' }}
                     ref={searchResultDivRef}

@@ -33,6 +33,9 @@ const AddEvaluationCard = ({
     const { activeLanguage } = useLanguage();
 
     const handleSubmit = async () => {
+
+        console.log(newEvaluation.client , newEvaluation.product , newEvaluation.number , newEvaluation.note);
+        
         if (!newEvaluation.client || !newEvaluation.product || !newEvaluation.number || !newEvaluation.note) return;
 
         setEvaluations([newEvaluation, ...evaluations])

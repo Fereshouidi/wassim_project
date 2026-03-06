@@ -2,20 +2,46 @@ import { EvaluationType, OrderType, ProductImage, ProductSpecification, ProductT
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
 export const handleShareOnFacebook = (shareUrl: string) => {
-    console.log({shareUrl});
-    
+  console.log({ shareUrl });
+
   window.open(
     `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
     "_blank",
     "noopener,noreferrer,width=600,height=400")
-    
+
 };
 
 export const handleShareOnInstagram = (shareUrl: string) => {
-    console.log({shareUrl});
-    
-  const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
-  window.open(facebookShareUrl, "_blank", "noopener,noreferrer");
+  // Instagram doesn't have a direct share URL like Facebook or Twitter.
+  // Usually, we just copy the link to clipboard or redirect to Instagram.
+  // For now, let's just copy the link as a fallback or show a message.
+  navigator?.clipboard?.writeText(shareUrl).then(() => {
+    alert("Link copied to clipboard! You can now share it on Instagram.");
+  });
+};
+
+export const handleShareOnTwitter = (shareUrl: string) => {
+  window.open(
+    `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}`,
+    "_blank",
+    "noopener,noreferrer,width=600,height=400"
+  );
+};
+
+export const handleShareOnWhatsApp = (shareUrl: string) => {
+  window.open(
+    `https://wa.me/?text=${encodeURIComponent(shareUrl)}`,
+    "_blank",
+    "noopener,noreferrer"
+  );
+};
+
+export const handleShareOnLinkedIn = (shareUrl: string) => {
+  window.open(
+    `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`,
+    "_blank",
+    "noopener,noreferrer,width=600,height=400"
+  );
 };
 
 export function timeAgo(date: string | number | Date, activeLanguage: "en" | "fr"): string {
@@ -45,7 +71,7 @@ export function timeAgo(date: string | number | Date, activeLanguage: "en" | "fr
   };
 
   console.log(date);
-  
+
 
   const lang = i18n[activeLanguage];
   const prefix = activeLanguage === "fr" ? "il y a " : "";
@@ -72,66 +98,66 @@ export function timeAgo(date: string | number | Date, activeLanguage: "en" | "fr
 }
 
 export const showTimeWithTranslate = (date: Date | string, activeLanguage: "en" | "fr") => {
-    const d = new Date(date);
+  const d = new Date(date);
 
-    const options: Intl.DateTimeFormatOptions = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit', 
-        minute: '2-digit',
-        hour12: false    
-    };
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
+  };
 
-    const locale = activeLanguage === "en" ? "en-US" : "fr-FR";
+  const locale = activeLanguage === "en" ? "en-US" : "fr-FR";
 
-    return d.toLocaleString(locale, options);
+  return d.toLocaleString(locale, options);
 };
 
 export const calcTotalPrice = (order: OrderType) => {
-    let totalPrice = 0;
+  let totalPrice = 0;
 
-    if (!order.purchases) return totalPrice.toFixed(2);
-    order.purchases.map((purchase) => {
+  if (!order.purchases) return totalPrice.toFixed(2);
+  order.purchases.map((purchase) => {
 
-        //@ts-ignore
-        if (!purchase.specification?.price || !purchase.quantity) return;
-        //@ts-ignore
-        totalPrice = totalPrice + (purchase.specification.price * purchase.quantity);
-    })
+    //@ts-ignore
+    if (!purchase.specification?.price || !purchase.quantity) return;
+    //@ts-ignore
+    totalPrice = totalPrice + (purchase.specification.price * purchase.quantity);
+  })
 
-    return totalPrice.toFixed(2)
+  return totalPrice.toFixed(2)
 }
 
 export const calculPurshaseTotalPrice = (purchases: PurchaseType[]) => {
-    //@ts-ignore
-    const total =purchases.reduce((total, purchase) => total + (purchase.specification?.price * purchase.quantity), 0);
-    return total.toFixed(2);
-  }
+  //@ts-ignore
+  const total = purchases.reduce((total, purchase) => total + (purchase.specification?.price * purchase.quantity), 0);
+  return total.toFixed(2);
+}
 
 export const isValidEmail = (email: string): boolean => {
 
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    
-    if (!email) return false;
-    
-    const trimmedEmail = email.trim();
 
-    return (
-        emailRegex.test(trimmedEmail) && 
-        !trimmedEmail.includes(" ") &&
-        trimmedEmail.length >= 6
-    );
+  if (!email) return false;
+
+  const trimmedEmail = email.trim();
+
+  return (
+    emailRegex.test(trimmedEmail) &&
+    !trimmedEmail.includes(" ") &&
+    trimmedEmail.length >= 6
+  );
 };
 
 export const isValidPhone = (phone: string | number): boolean => {
-    const phoneStr = phone?.toString().replace(/\s/g, "");
-    return /^\d{8}$/.test(phoneStr);
+  const phoneStr = phone?.toString().replace(/\s/g, "");
+  return /^\d{8}$/.test(phoneStr);
 };
 
 export const handleLongText = (text: string, limitLength: number): string => {
   if (!text) return "";
-  
+
   if (text.length <= limitLength) {
     return text;
   }
@@ -140,24 +166,24 @@ export const handleLongText = (text: string, limitLength: number): string => {
 };
 
 export const calculateRatingStats = (evaluations: EvaluationType[]) => {
-    if (!evaluations || evaluations.length === 0) {
-        return {
-            average: 0,
-            total: 0
-        };
-    }
-
-    const sum = evaluations.reduce((acc, curr) => {
-        return acc + (curr.number || 0);
-    }, 0);
-
-    const rawAverage = parseFloat((sum / evaluations.length).toFixed(1));
-    const average = Math.round(rawAverage * 2) / 2;
-
+  if (!evaluations || evaluations.length === 0) {
     return {
-        average: average,
-        total: evaluations.length
+      average: 0,
+      total: 0
     };
+  }
+
+  const sum = evaluations.reduce((acc, curr) => {
+    return acc + (curr.number || 0);
+  }, 0);
+
+  const rawAverage = parseFloat((sum / evaluations.length).toFixed(1));
+  const average = Math.round(rawAverage * 2) / 2;
+
+  return {
+    average: average,
+    total: evaluations.length
+  };
 };
 
 export const getUniqueColorsFomSpecification = (specs: any[]) => {
@@ -189,7 +215,7 @@ export const getProductUniqueColors = (images: ProductType['images']): string[] 
   images.forEach((img) => {
     // بما أن specification كائن (Object)، نصل للون مباشرة بدون forEach
     const hex = img.specification?.colorHex;
-    
+
     if (hex) {
       hexSet.add(hex);
     }
@@ -199,32 +225,32 @@ export const getProductUniqueColors = (images: ProductType['images']): string[] 
 };
 
 export const getUniqueImagesByColor = (images: ProductImage[]) => {
-    if (!images || !Array.isArray(images)) return [];
+  if (!images || !Array.isArray(images)) return [];
 
-    const seenHex = new Set<string>();
-    let hasGeneralImage = false; // لمتابعة الصور التي ليس لها لون
-    
-    return images.filter((img) => {
-        const spec = img.specification as ProductSpecification;
-        const hex = spec?.colorHex;
+  const seenHex = new Set<string>();
+  let hasGeneralImage = false; // لمتابعة الصور التي ليس لها لون
 
-        if (hex) {
-            // إذا كان اللون موجوداً مسبقاً، نحذفه
-            if (seenHex.has(hex)) return false;
-            
-            seenHex.add(hex);
-            return true;
-        }
+  return images.filter((img) => {
+    const spec = img.specification as ProductSpecification;
+    const hex = spec?.colorHex;
 
-        // التعامل مع الصور العامة (التي لا تملك لون)
-        // إذا أردت السماح بصورة واحدة فقط بدون لون:
-        if (!hasGeneralImage) {
-            hasGeneralImage = true;
-            return true;
-        }
+    if (hex) {
+      // إذا كان اللون موجوداً مسبقاً، نحذفه
+      if (seenHex.has(hex)) return false;
 
-        return false; // أي صورة عامة إضافية سيتم حذفها
-    });
+      seenHex.add(hex);
+      return true;
+    }
+
+    // التعامل مع الصور العامة (التي لا تملك لون)
+    // إذا أردت السماح بصورة واحدة فقط بدون لون:
+    if (!hasGeneralImage) {
+      hasGeneralImage = true;
+      return true;
+    }
+
+    return false; // أي صورة عامة إضافية سيتم حذفها
+  });
 };
 
 export const getDeviceId = async () => {
@@ -232,6 +258,35 @@ export const getDeviceId = async () => {
   const result = await fp.get();
   return result.visitorId;
   // setDeviceId(result.visitorId)
-  console.log({deviceId: result.visitorId});
-  
+  console.log({ deviceId: result.visitorId });
+
 };
+
+export const handleSocialMediaClick = (media: any) => {
+    const url = window?.location?.href;
+    const platform = media?.platform?.toLowerCase() || "";
+
+    switch (platform) {
+        case "facebook":
+            handleShareOnFacebook(url);
+            break;
+        case "instagram":
+            handleShareOnInstagram(url);
+            break;
+        case "twitter":
+        case "x":
+            handleShareOnTwitter(url);
+            break;
+        case "whatsapp":
+            handleShareOnWhatsApp(url);
+            break;
+        case "linkedin":
+            handleShareOnLinkedIn(url);
+            break;
+        default:
+            if (media?.link) {
+                window.open(media?.link, "_blank", "noopener,noreferrer");
+            }
+            break;
+    }
+}

@@ -23,6 +23,7 @@ const FilterCollection = ({
     const { colors } = useTheme();
     const [options, setOptions] = useState<OptionType[]>([]);
     
+    // Define the "All" option
     const allOption: OptionType = {
         label: `${activeLanguage.sideMatter.all} ${activeLanguage.nav.collections}`, 
         value: "all"
@@ -30,6 +31,7 @@ const FilterCollection = ({
 
     const [currentOptions, setCurrentOptions] = useState<OptionType[]>([allOption]);
 
+    // Update options when collections or language change
     useEffect(() => {
         const mappedOptions = allCollections.map(collection => ({
             label: collection.name[activeLanguage.language] ?? "", 
@@ -39,13 +41,20 @@ const FilterCollection = ({
         setOptions([allOption, ...mappedOptions]);
     }, [allCollections, activeLanguage]);
 
+    // Handle selection changes
     useEffect(() => {
         const hasAll = currentOptions.some(opt => opt.value === "all");
         
+        /**
+         * FIX: If "All" is selected, we send an empty array [].
+         * This prevents the server from applying the { $all: [...] } filter,
+         * which was hiding products that don't belong to EVERY collection.
+         */
         const selectedIds = hasAll 
-            ? allCollections.map(col => col._id ?? "") 
+            ? [] 
             : currentOptions.map(opt => opt.value);
 
+        // Update parent state only if the value actually changed
         if (JSON.stringify(filtrationCopy.collections) !== JSON.stringify(selectedIds)) {
             setFiltrationCopy({
                 ...filtrationCopy,
@@ -54,13 +63,14 @@ const FilterCollection = ({
         }
     }, [currentOptions]);
 
+    // Sync with defaultOptions (e.g., from URL or Initial state)
     useEffect(() => {
         if (!defaultOptions || defaultOptions.length === 0 || options.length <= 1) {
             setCurrentOptions([allOption]);
             return;
         }
 
-        const isAllSelected = defaultOptions.length >= allCollections.length;
+        const isAllSelected = defaultOptions.length === 0 || defaultOptions.length >= allCollections.length;
 
         if (isAllSelected) {
             setCurrentOptions([allOption]);
@@ -68,12 +78,14 @@ const FilterCollection = ({
             const selectedOptions = options.filter(opt => defaultOptions.includes(opt.value));
             if (selectedOptions.length > 0) {
                 setCurrentOptions(selectedOptions);
+            } else {
+                setCurrentOptions([allOption]);
             }
         }
     }, [defaultOptions, options]);
 
     return (
-        <div className="w-full px-4- py-2- border-b" style={{ borderColor: colors.light[200] }}>
+        <div className="w-full py-2 border-b" style={{ borderColor: colors.light[200] }}>
             <h4 
                 className="text-[13px] font-black uppercase tracking-widest mb-3 opacity-80"
                 style={{ color: colors.dark[100] }}

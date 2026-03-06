@@ -219,7 +219,7 @@ const Page = () => {
                         {productsFound.length > 0 ? (
                             productsFound.map((product, index) => (
                                 <ProductCard
-                                    key={product._id || index}
+                                    key={index}
                                     product={product}
                                     className="w-full"
                                 />

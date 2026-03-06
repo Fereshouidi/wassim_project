@@ -22,6 +22,7 @@ const FilterColor = ({
     const { activeLanguage } = useLanguage();
     const { colors } = useTheme();
     
+    // Memoize options to prevent unnecessary re-renders
     const options: OptionType[] = React.useMemo(() => [
         {
             label: `${activeLanguage.sideMatter.all} ${activeLanguage.sideMatter.colors}`, 
@@ -35,6 +36,7 @@ const FilterColor = ({
 
     const [currentOptions, setCurrentOptions] = useState<OptionType[]>([]);
 
+    // Sync state with defaultOptions (e.g., from URL or parent)
     useEffect(() => {
         if (!defaultOptions || defaultOptions.length === 0 || options.length === 0) {
             setCurrentOptions([options[0]]);
@@ -51,8 +53,13 @@ const FilterColor = ({
         }
     }, [defaultOptions, options]);
 
+    // Update parent state when selection changes
     useEffect(() => {
-        const selectedValues = currentOptions.map(opt => opt.value);
+        const hasAll = currentOptions.some(opt => opt.value === "all");
+        
+        // Consistent logic: Send empty array for "All"
+        // This makes the server-side 'isFilterActive' check much cleaner
+        const selectedValues = hasAll ? [] : currentOptions.map(opt => opt.value);
         
         if (JSON.stringify(selectedValues) !== JSON.stringify(filtrationCopy.colors)) {
             setFiltrationCopy({
@@ -63,7 +70,7 @@ const FilterColor = ({
     }, [currentOptions]);
 
     return (
-        <div className="w-full px-4- py-2- border-b" style={{ borderColor: colors.light[200] }}>
+        <div className="w-full py-2 border-b" style={{ borderColor: colors.light[200] }}>
             <h4 
                 className="text-[13px] font-black uppercase tracking-widest mb-3 opacity-80"
                 style={{ color: colors.dark[100] }}

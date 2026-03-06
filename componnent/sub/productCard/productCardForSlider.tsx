@@ -96,7 +96,6 @@ const ProductCard = ({
         fetchLike();
     }, [client?._id, product._id])
 
-    // الدالة المحدثة بدون سوكيت
     const handlePuttingInCart = async () => {
         if (!client) {
             setRegisterSectionExist(true);
@@ -105,82 +104,82 @@ const ProductCard = ({
 
         if (!cart) return;
 
-        // حفظ النسخة الاحتياطية للتراجع في حال الخطأ
         const previousPurchases = [...purchases];
-        const isCurrentlyInCart = purchases.some(pur =>
-            //@ts-ignore
-            (typeof pur?.product === 'string' ? pur.product === product._id : pur?.product?._id === product._id)
-        );
-
-        // 1. التحديث المحلي الفوري (Optimistic Update)
-        if (isCurrentlyInCart) {
-            setPurchases(prev => prev.filter(p =>
-                //@ts-ignore
-                (typeof p.product === 'string' ? p.product !== product._id : p.product?._id !== product._id)
-            ));
-        } else {
-            const tempPurchase = {
-                _id: `temp-${Date.now()}`,
-                product: product,
-                specification: product.specifications[0],
-                quantity: 1,
-                status: 'inCart'
-            } as unknown as PurchaseType;
-            setPurchases(prev => [...prev, tempPurchase]);
-        }
+        const tempId = `temp-${Date.now()}`;
 
         try {
-            let purchase: PurchaseType | null = null;
+            if (isInCart) {
+                // 1. العثور على العنصر المراد حذفه من السلة (محلياً)
+                const purchaseToRemove = purchases.find(pur =>
+                    //@ts-ignore
+                    (typeof pur.product === 'string' ? pur.product === product._id : pur.product?._id === product._id) &&
+                    pur.status === 'inCart'
+                );
 
-            // 2. طلبات الـ API في الخلفية
-            const { data: getRes } = await axios.get(`${backEndUrl}/getPurchaseByClientAndProduct`, {
-                params: { productId: product._id, clientId: client._id }
-            });
-            purchase = getRes.purchase;
+                if (purchaseToRemove) {
+                    // تحديث محلي فوري (حذف)
+                    setPurchases(prev => prev.filter(p => p._id !== purchaseToRemove._id));
 
-            if (!purchase) {
-                const purchaseData = {
-                    product: product._id,
-                    specification: product.specifications[0],
-                    quantity: 1
-                };
-                const { data: addRes } = await axios.post(`${backEndUrl}/addPurchase`, { purchaseData, clientId: client._id });
-                purchase = addRes.newPurchase;
-            }
+                    // تحديث السيرفر
+                    await axios.put(`${backEndUrl}/updatePurchase`, {
+                        ...purchaseToRemove,
+                        cart: null,
+                        status: 'viewed'
+                    });
+                }
+            } else {
+                // 2. تحديث محلي فوري (إضافة)
+                const optimisticPurchase = {
+                    _id: tempId,
+                    product: product,
+                    specification: product.specifications?.[0],
+                    quantity: 1,
+                    status: 'inCart'
+                } as unknown as PurchaseType;
 
-            if (!purchase) throw new Error("Purchase creation failed");
+                setPurchases(prev => [...prev, optimisticPurchase]);
 
-            const isRemoving = !!purchase.cart;
-            const updatedData = {
-                ...purchase,
-                cart: isRemoving ? null : cart?._id,
-                status: isRemoving ? 'viewed' : 'inCart'
-            };
+                // جلب Purchase الموجود أو إنشاء واحد جديد
+                const { data: getRes } = await axios.get(`${backEndUrl}/getPurchaseByClientAndProduct`, {
+                    params: { productId: product._id, clientId: client._id }
+                });
 
-            const { data: updateRes } = await axios.put(`${backEndUrl}/updatePurchase`, updatedData);
+                let targetPurchase = getRes.purchase;
 
-            if (updateRes.success) {
-                // 3. مزامنة البيانات النهائية من السيرفر
-                if (isRemoving) {
-                    setPurchases(prev => prev.filter(p => p._id !== purchase?._id));
-                } else {
-                    // استبدال العنصر المؤقت بالعنصر الحقيقي من قاعدة البيانات
+                if (!targetPurchase) {
+                    const purchaseData = {
+                        product: product._id,
+                        specification: product.specifications?.[0],
+                        quantity: 1,
+                        client: client._id
+                    };
+                    const { data: addRes } = await axios.post(`${backEndUrl}/addPurchase`, { purchaseData, clientId: client._id });
+                    targetPurchase = addRes.newPurchase;
+                }
+
+                if (!targetPurchase) throw new Error("Purchase action failed");
+
+                // وضع المنتج في السلة
+                const { data: updateRes } = await axios.put(`${backEndUrl}/updatePurchase`, {
+                    ...targetPurchase,
+                    cart: cart?._id,
+                    status: 'inCart'
+                });
+
+                if (updateRes.success) {
                     setPurchases(prev => {
                         const filtered = prev.filter(p =>
-                            // @ts-ignore
-                            !p._id.toString().startsWith('temp-') &&
+                            p._id !== tempId &&
                             //@ts-ignore
                             (typeof p.product === 'string' ? p.product !== product._id : p.product?._id !== product._id)
                         );
                         return [...filtered, updateRes.purchase];
                     });
                 }
-                return true;
             }
-
+            return true;
         } catch (error) {
             console.error("Cart action failed:", error);
-            // التراجع عن التحديث المحلي في حال الفشل
             setPurchases(previousPurchases);
             setStatusBanner(true, "Failed to update cart");
         }
@@ -190,11 +189,10 @@ const ProductCard = ({
     return (
         <motion.div
             initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-20px" }}
+            animate="visible"
             variants={fadeInUp}
             whileTap={{ scale: 0.98 }}
-            className={`flex relative flex-col items-center gap-2 rounded-xl overflow-hidden cursor-pointer pb-2 px-2 transition-all duration-300 ${className}`}
+            className={`flex relative flex-col items-center gap-2 rounded-xl overflow-hidden cursor-pointer py-1 px-1 sm:py-2 sm:px-2 transition-all duration-300 ${className}`}
             style={{
                 ...style,
                 color: colors.dark[200],
@@ -209,7 +207,7 @@ const ProductCard = ({
             }}
         >
             {useLike && <div
-                className={`absolute top-1 right-2 rounded-full p-[5px] ${like ? "bg-red-500" : "bg-gray-400 opacity-75"} transition-transform active:scale-75 w-8 h-8 z-[2] cursor-pointer`}
+                className={`absolute top-1 right-1 sm:top-3 sm:right-3 rounded-full p-[5px] ${like ? "bg-red-500" : "bg-gray-400 opacity-75"} transition-transform active:scale-75 w-8 h-8 z-[2] cursor-pointer`}
                 onClick={(e) => {
                     e.stopPropagation();
                     if (client) {
@@ -228,7 +226,7 @@ const ProductCard = ({
             </div>}
 
             <div
-                className='w-full h-[200px] rounded-xl overflow-hidden'
+                className='w-full h-[150px] sm:h-[300px] pt-2- bg-red-500- rounded-xl overflow-hidden'
                 style={{ backgroundColor: colors.light[300] }}
             >
                 {

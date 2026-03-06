@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import axios from "axios";
 import { backEndUrl } from "@/api";
 import { ProductType, OwnerInfoType, PurchaseType } from "@/types";
+import ProductNotFound from "@/app/pages/productNotFound";
 
 export async function generateMetadata({ 
   params 
@@ -64,11 +65,11 @@ export default async function ProductPage({
     // const ownerRes = await axios.get<{ ownerInfo: OwnerInfoType }>(`${backEndUrl}/getOwnerInfo`);
     // const ownerInfo = ownerRes.data.ownerInfo;
 
-    if (!product) return <div>Product not found</div>;
+    if (!product) return <ProductNotFound />;
 
     return <ClientProductPage product={product}  />;
   } catch (err) {
     console.error(err);
-    return <div>Failed to load product.</div>;
+    return < ProductNotFound />;
   }
 }

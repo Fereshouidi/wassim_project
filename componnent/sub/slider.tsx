@@ -6,10 +6,11 @@ import ProductLoading from './productCard/productLoading'
 import { useScreen } from '@/contexts/screenProvider'
 import { useTheme } from '@/contexts/themeProvider'
 import ProductCard from './productCard/productCardForSlider'
+import { motion } from 'framer-motion'
 
 type sliderProps = {
     products: ProductType[]
-    productsCount: number, 
+    productsCount: number,
     isFirstRender: boolean
     setIsFirstRender: (value: boolean) => void
     skip: number,
@@ -31,19 +32,19 @@ const Slider = ({
     useLike
 }: sliderProps) => {
 
-    const [cardWidth, setCardWidth] = useState<number>(250);
+    const [cardWidth, setCardWidth] = useState<number>(270);
     const [userScroll, setUserScroll] = useState<boolean>(false);
 
     const sliderRef = useRef<HTMLDivElement>(null);
     const productLoading = useRef<HTMLDivElement>(null);
     const [productLoadingVisible, setProductLoadingVisible] = useState(false);
-    
+
     const [productLoadingShowUp, setProductLoadingShowUp] = useState<boolean>(true);
-    
+
     const { screenWidth } = useScreen();
     const { activeTheme, colors } = useTheme();
-    const [ leftArrowHover, setLeftArrowHover ] = useState<boolean>(false);
-    const [ rightArrowHover, setRightArrowHover ] = useState<boolean>(false);
+    const [leftArrowHover, setLeftArrowHover] = useState<boolean>(false);
+    const [rightArrowHover, setRightArrowHover] = useState<boolean>(false);
 
     const slidesRef = useRef<HTMLDivElement>(null);
 
@@ -111,13 +112,13 @@ const Slider = ({
 
     if (products.length < 1) return;
 
-    return ( 
+    return (
         <div className={`w-full- max-w-full- bg-red-500- ${screenWidth < 1000 && 'px-5-'}`}>
             <div className={`w-full flex flex-row items-center justify-between `}>
 
                 {/* Left Arrow */}
-                <button 
-                    onClick={handleLeftArrowClick} 
+                <button
+                    onClick={handleLeftArrowClick}
                     onMouseEnter={() => setLeftArrowHover(true)}
                     onMouseLeave={() => setLeftArrowHover(false)}
                     className="p-2.5 mr-5 rounded-full shrink-0 border shadow-sm active:scale-90 transition-transform"
@@ -127,43 +128,56 @@ const Slider = ({
                         transform: leftArrowHover ? 'scale(1.2)' : 'scale(1)'
                     }}
                 >
-                    <img 
-                        src={activeTheme === "dark" ? "/icons/left-arrow-white.png" : "/icons/left-arrow-black.png"} 
-                        className="w-4 h-4" 
-                        alt="prev" 
+                    <img
+                        src={activeTheme === "dark" ? "/icons/left-arrow-white.png" : "/icons/left-arrow-black.png"}
+                        className="w-4 h-4"
+                        alt="prev"
                     />
                 </button>
-                
+
                 {/* Main Slider Window */}
-                <div 
-                    className='flex relative overflow-x-scroll scrollbar-hidden slide flex-1 justify-between'
+                <div
+                    className='flex relative overflow-x-scroll scrollbar-hidden bg-blue-500- slide flex-1 justify-start'
                     ref={sliderRef}
-                    onMouseDown={() => setUserScroll(true)} 
-                    onTouchStart={() => setUserScroll(true)}             
+                    onMouseDown={() => setUserScroll(true)}
+                    onTouchStart={() => setUserScroll(true)}
                     onMouseEnter={() => setUserScroll(true)}
                     style={{
                         width: screenWidth > 1800 ?
-                                cardWidth * 6 + "px" 
-                            :screenWidth < 1800 && screenWidth > 1500 ? 
-                                cardWidth * 5 + "px" 
-                            :screenWidth < 1500 && screenWidth > 1300 ? 
-                                cardWidth * 4 + "px" 
-                            : screenWidth < 1300 && screenWidth > 1000 ?
-                                cardWidth * 3 + "px"
-                            : cardWidth * 2 + "px"
+                            cardWidth * 6 + "px"
+                            : screenWidth < 1800 && screenWidth > 1500 ?
+                                cardWidth * 5 + "px"
+                                : screenWidth < 1500 && screenWidth > 1300 ?
+                                    cardWidth * 4 + "px"
+                                    : screenWidth < 1300 && screenWidth > 1000 ?
+                                        cardWidth * 3 + "px"
+                                        : cardWidth * 2 + "px"
                     }}
                 >
-                    <div 
-                        className='w-max h-full flex flex-row justify-start slide bg-red-500-' 
+                    <div
+                        className='w-max h-full flex flex-row justify-start slide bg-red-500-'
                         ref={slidesRef}
                     >
-                        <div className='w-max h-full  flex flex-row justify-start gap-5-'>
+                        <motion.div
+                            initial="initial"
+                            animate="animate"
+                            variants={{
+                                initial: { opacity: 0 },
+                                animate: {
+                                    opacity: 1,
+                                    transition: {
+                                        staggerChildren: 0.05
+                                    }
+                                }
+                            }}
+                            className='w-max h-full  flex flex-row justify-start gap-5-'
+                        >
                             {products.map((product, index) => (
-                                <div 
+                                <div
                                     key={index}
-                                    className=' h-[250px] h-fit- bg-red-500- sm:h-[320px] m-2- px-2 rounded-xl overflow-hidden'
+                                    className=' h-[290px] h-fit- bg-red-500- sm:h-[370px] m-2- px-2 rounded-xl overflow-hidden'
                                     style={{
-                                        width: cardWidth  + "px",
+                                        width: cardWidth + "px",
                                     }}
                                 >
                                     <ProductCard
@@ -173,14 +187,14 @@ const Slider = ({
                                     />
                                 </div>
                             ))}
-                        </div>
+                        </motion.div>
 
                         {productLoadingShowUp && (
-                            <div 
+                            <div
                                 ref={productLoading}
                                 className=' h-[250px] h-fit- bg-red-500- sm:h-[320px] m-2- px-2 rounded-xl overflow-hidden'
                                 style={{
-                                    width: cardWidth  + "px",
+                                    width: cardWidth + "px",
                                 }}
                             >
                                 <ProductLoading
@@ -193,8 +207,8 @@ const Slider = ({
                 </div>
 
                 {/* Right Arrow */}
-                <button 
-                    onClick={handleRightArrowClick} 
+                <button
+                    onClick={handleRightArrowClick}
                     onMouseEnter={() => setRightArrowHover(true)}
                     onMouseLeave={() => setRightArrowHover(false)}
                     className="p-2.5 ml-5 rounded-full shrink-0 border shadow-sm active:scale-90 transition-transform"
@@ -204,10 +218,10 @@ const Slider = ({
                         transform: rightArrowHover ? 'scale(1.2)' : 'scale(1)'
                     }}
                 >
-                    <img 
-                        src={activeTheme === "dark" ? "/icons/right-arrow-white.png" : "/icons/right-arrow-black.png"} 
-                        className="w-4 h-4" 
-                        alt="next" 
+                    <img
+                        src={activeTheme === "dark" ? "/icons/right-arrow-white.png" : "/icons/right-arrow-black.png"}
+                        className="w-4 h-4"
+                        alt="next"
                     />
                 </button>
             </div>

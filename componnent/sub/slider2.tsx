@@ -135,7 +135,7 @@ const Slider2 = ({
 
         return ( 
 
-            <div className={`w-full- ${screenWidth < 1000 && 'px-5-'}`}>
+            <div className={`w-full- bg-blue-500 ${screenWidth < 1000 && 'px-5-'}`}>
 
                 <div className={`w-full flex flex-row items-center justify-between `}>
 

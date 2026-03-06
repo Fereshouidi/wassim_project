@@ -13,6 +13,7 @@ import { backEndUrl } from '@/api'
 import axios from 'axios'
 import AddToCartAnimation from '../addToCartAnimation'
 import { useCartSide } from '@/contexts/cart'
+import { useRouter } from 'next/navigation'
 
 type Props = {
     quantity: number,
@@ -48,6 +49,7 @@ const ProductActionPanel = ({
     const { setRegisterSectionExist } = useRegisterSection();
     const { setLoadingScreen } = useLoadingScreen();
     const { purchases, setPurchases } = useCartSide();
+    const router = useRouter();
 
     /**
      * 1. Cart Toggle Handler
@@ -68,9 +70,9 @@ const ProductActionPanel = ({
         };
 
         // Optimistic UI update for the cart side panel
-        setPurchases(prev => 
-            isRemoving 
-                ? prev.filter(p => p._id !== purchase._id) 
+        setPurchases(prev =>
+            isRemoving
+                ? prev.filter(p => p._id !== purchase._id)
                 : [...prev, purchase]
         );
 
@@ -79,7 +81,7 @@ const ProductActionPanel = ({
 
             if (data.success) {
                 // Synchronize state with the latest server data
-                setPurchase(data.purchase); 
+                setPurchase(data.purchase);
                 return true;
             }
             return false;
@@ -94,11 +96,11 @@ const ProductActionPanel = ({
      * Validates form data and processes the final checkout via HTTP POST.
      */
     const handleOrder = async () => {
-        
+
         if (
-            !purchase._id || 
-            !clientForm.fullName || 
-            !clientForm.phone || 
+            !purchase._id ||
+            !clientForm.fullName ||
+            !clientForm.phone ||
             !clientForm.address
         ) {
             return setRegisterSectionExist(true);
@@ -106,15 +108,15 @@ const ProductActionPanel = ({
 
         setLoadingScreen(true);
 
-        alert(client?._id)
-        const orderData = { 
+        // alert(product?._id).
+        const orderData = {
             clientId: client?._id,
-            orderForm: { 
-                ...clientForm, 
-                client: client?._id, 
-                shippingCoast: ownerInfo?.shippingCost, 
-                clientNote: clientForm.note 
-            }, 
+            orderForm: {
+                ...clientForm,
+                client: client?._id,
+                shippingCoast: ownerInfo?.shippingCost,
+                clientNote: clientForm.note
+            },
             purchasesId: [purchase._id]
         };
 
@@ -122,9 +124,10 @@ const ProductActionPanel = ({
             // Ensure purchase data is synced before finalizing order
             await axios.put(`${backEndUrl}/updatePurchase`, purchase);
             const { data } = await axios.post(`${backEndUrl}/addOrder`, orderData);
-            
+
             if (data.success) {
                 console.log("Order Successful:", data.newOrder);
+                router.push('/orders');
                 // Success redirect or notification logic goes here
             }
         } catch (err: any) {
@@ -137,27 +140,27 @@ const ProductActionPanel = ({
 
     return (
         <div className='w-full flex flex-row justify-center items-center my-5 mx-2 px-5 gap-4'>
-            
+
             <ChoseQuantity
                 quantity={quantity}
                 setQuantity={setQuantity}
-                max={activeSpecifications?.quantity ?? 1}
+                max={activeSpecifications?.unlimited ? 1000 : (activeSpecifications?.quantity ?? 1)}
             />
 
             {
-                activeButtong == "putInCart" ? 
-                
-                product?.thumbNail && (
-                    <AddToCartAnimation
-                        productImage={product.thumbNail}
-                        isInCart={!!purchase?.cart}
-                        onToggle={handlePuttingInCart}
+                activeButtong == "putInCart" ?
+
+                    product?.thumbNail && (
+                        <AddToCartAnimation
+                            productImage={product.thumbNail}
+                            isInCart={!!purchase?.cart}
+                            onToggle={handlePuttingInCart}
+                        />
+                    )
+                    :
+                    <OrderNowButton
+                        onOrder={handleOrder}
                     />
-                )
-                :
-                <OrderNowButton 
-                    onOrder={handleOrder} 
-                />
             }
 
         </div>

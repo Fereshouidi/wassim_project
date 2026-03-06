@@ -8,11 +8,13 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { backEndUrl } from '@/api';
+import { useCartSide } from '@/contexts/cart';
 
 type Props = {
     purchase: PurchaseType;
     // setPurchases تستخدم لتحديث القائمة الأب (Parent List)
     setPurchases: (purchases: PurchaseType[] | ((prev: PurchaseType[]) => PurchaseType[])) => void;
+
 };
 
 const PurchaseItem = ({ purchase, setPurchases }: Props) => {
@@ -20,6 +22,7 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
     const { colors, activeTheme } = useTheme();
     const router = useRouter();
     const [purchase_, setPurchase_] = useState<PurchaseType | null>(null);
+    const { setIsActive } = useCartSide();
 
     useEffect(() => { setPurchase_(purchase); }, [purchase]);
 
@@ -37,7 +40,7 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
                     setPurchases((prev: PurchaseType[]) => prev.filter(p => p._id !== updatedData._id));
                 } else {
                     // 3. إذا كان تحديثاً للكمية فقط، نحدث القائمة في المكون الأب
-                    setPurchases((prev: PurchaseType[]) => 
+                    setPurchases((prev: PurchaseType[]) =>
                         prev.map(p => p._id === data.purchase._id ? data.purchase : p)
                     );
                 }
@@ -50,9 +53,9 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
     if (!purchase_ || !purchase) return null;
 
     return (
-        <div 
+        <div
             className='group flex gap-3 p-3 rounded-xl border transition-all hover:border-gray-400 bg-white cursor-pointer'
-            style={{ 
+            style={{
                 borderColor: colors.light[200],
                 backgroundColor: activeTheme === 'dark' ? 'rgba(255,255,255,0.02)' : '#fff'
             }}
@@ -60,15 +63,16 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
                 localStorage.setItem('purchaseId', purchase?._id ?? "");
                 // @ts-ignore
                 router.push(`/product/${purchase?.product?._id}`);
+                setIsActive(false);
             }}
         >
             {/* Thumbnail */}
             <div className="w-20 h-24 flex-shrink-0 overflow-hidden rounded-xl bg-gray-50 border" style={{ borderColor: colors.light[200] }}>
-                <img 
+                <img
                     // @ts-ignore
-                    src={purchase?.product?.thumbNail} 
+                    src={purchase?.product?.thumbNail}
                     className='w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-300'
-                    alt="" 
+                    alt=""
                 />
             </div>
 
@@ -83,14 +87,14 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
                             }
                         </h3>
                         {/* Remove Icon */}
-                        <button 
-                            className='w-3 h-3 opacity-50 hover:opacity-100 transition-opacity'
+                        <button
+                            className='w-4 h-4 opacity-50 hover:opacity-100 transition-opacity'
                             onClick={(e) => {
                                 e.stopPropagation();
-                                updatePurchaseData({...purchase, cart: null, status: "viewed"});
+                                updatePurchaseData({ ...purchase, cart: null, status: "viewed" });
                             }}
                         >
-                            <img src="/icons/trash.png" className="w-full h-full" alt="remove"/>
+                            <img src="/icons/trash.png" className="w-full h-full" alt="remove" />
                         </button>
                     </div>
 
@@ -98,38 +102,38 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
                         {/* @ts-ignore */}
                         {purchase?.specification?.color && <span>{purchase?.specification.color}</span>}
                         {/* @ts-ignore */}
-                        {purchase?.specification?.size && <span className="border-l pl-2" style={{borderColor: colors.dark[200]}}>{purchase?.specification.size}</span>}
+                        {purchase?.specification?.size && <span className="border-l pl-2" style={{ borderColor: colors.dark[200] }}>{purchase?.specification.size}</span>}
                         {/* @ts-ignore */}
-                        {purchase?.specification?.type && <span className="border-l pl-2" style={{borderColor: colors.dark[200]}}>{purchase?.specification.type}</span>}
+                        {purchase?.specification?.type && <span className="border-l pl-2" style={{ borderColor: colors.dark[200] }}>{purchase?.specification.type}</span>}
                     </div>
                 </div>
 
                 <div className='flex justify-between items-end mt-2'>
                     <div className='flex items-center border rounded-xl h-7' style={{ borderColor: colors.light[300] }}>
-                        <button 
+                        <button
                             className='w-7 h-full flex items-center justify-center hover:bg-black/5'
                             onClick={(e) => {
                                 e.stopPropagation();
                                 if ((purchase?.quantity || 0) <= 1) return;
-                                updatePurchaseData({...purchase, quantity: (purchase?.quantity || 0) - 1});
+                                updatePurchaseData({ ...purchase, quantity: (purchase?.quantity || 0) - 1 });
                             }}
                         >
                             <img src={activeTheme == "dark" ? "/icons/minus-light.png" : "/icons/minus-dark.png"} className='w-2 h-2 opacity-60' alt="-" />
                         </button>
                         <span className='px-2 text-xs font-bold w-6 text-center'>{purchase?.quantity}</span>
-                        <button 
+                        <button
                             className='w-7 h-full flex items-center justify-center hover:bg-black/5'
                             onClick={(e) => {
                                 e.stopPropagation();
                                 // @ts-ignore
-                                if ((purchase?.quantity || 0) >= (purchase?.specification?.quantity || 100)) return;
-                                updatePurchaseData({...purchase, quantity: (purchase?.quantity || 0) + 1});
+                                if (!purchase?.specification?.unlimited && (purchase?.quantity || 0) >= (purchase?.specification?.quantity || 100)) return;
+                                updatePurchaseData({ ...purchase, quantity: (purchase?.quantity || 0) + 1 });
                             }}
                         >
                             <img src={activeTheme == "dark" ? "/icons/add-white.png" : "/icons/add-black.png"} className='w-2 h-2 opacity-60' alt="+" />
                         </button>
                     </div>
-                    
+
                     <p className='text-sm font-bold' style={{ color: colors.dark[100] }}>
                         {/* @ts-ignore */}
                         {purchase?.specification?.price} <span className="text-[10px] font-normal">T.D</span>

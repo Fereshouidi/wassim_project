@@ -8,11 +8,11 @@ import { useTheme } from '@/contexts/themeProvider';
 import { useScreen } from '@/contexts/screenProvider';
 import { useOwner } from '@/contexts/ownerInfo';
 import { useClient } from '@/contexts/client';
-import { 
-  CartType, CollectionType, EvaluationType, 
-  ProductSpecification, ProductType, PurchaseType 
+import {
+  CartType, CollectionType, EvaluationType,
+  ProductSpecification, ProductType, PurchaseType
 } from '@/types';
-import { calculateRatingStats } from '@/lib';
+import { calculateRatingStats, handleSocialMediaClick } from '@/lib';
 
 // Sub Components
 import ProductActionPanel from '../sub/ProductActionPanel/ProductActionPanel';
@@ -41,15 +41,16 @@ type ProductDetailsType = {
   cart: CartType;
   onSpecificationChange?: (index: number) => void;
   loadingGettingCollection?: boolean;
-  clientForm: any, 
-  setClientForm: (value: any) => void
+  clientForm: any,
+  setClientForm: (value: any) => void;
+  isExplicitlySelected?: boolean;
 };
 
 const ProductDetails = ({
   className, style, product, currentImageIndex, setCurrentImageIndex,
   quantity, setQuantity, activeSpecifications, setActiveSpecifications,
   collections, purchase, setPurchase, cart, onSpecificationChange,
-  loadingGettingCollection, clientForm, setClientForm
+  loadingGettingCollection, clientForm, setClientForm, isExplicitlySelected
 }: ProductDetailsType) => {
 
   const { screenWidth } = useScreen();
@@ -57,239 +58,265 @@ const ProductDetails = ({
   const { colors, activeTheme } = useTheme();
   const { client } = useClient();
 
-  // --- Selection States ---
-  const [selectedColor, setSelectedColor] = useState<string | null>(null);
-  const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const [selectedType, setSelectedType] = useState<string | null>(null);
-  
-  // --- Evaluation States ---
+  const [selectedColor, setSelectedColor] = useState<string | null>(isExplicitlySelected ? activeSpecifications?.color || null : null);
+  const [selectedSize, setSelectedSize] = useState<string | null>(isExplicitlySelected ? activeSpecifications?.size || null : null);
+  const [selectedType, setSelectedType] = useState<string | null>(isExplicitlySelected ? activeSpecifications?.type || null : null);
+
   const [evaluations, setEvaluations] = useState<EvaluationType[]>([]);
   const [evaluationSectionActive, setEvaluationSectionActive] = useState(false);
   const [addEvaluationActive, setAddEvaluationActive] = useState(false);
   const [editEvaluationActive, setEditEvaluationActive] = useState(false);
   const [newEvaluation, setNewEvaluation] = useState<EvaluationType>({});
   const [clientCanRate, setClientCanRate] = useState<boolean>(false);
+  const { ownerInfo } = useOwner();
 
   const allSpecs = useMemo(() => product.specifications || [], [product.specifications]);
 
-  // --- Attribute Extraction ---
   const allColors = useMemo(() => Array.from(new Set(allSpecs.map(s => s.color).filter(Boolean))), [allSpecs]);
   const allSizes = useMemo(() => Array.from(new Set(allSpecs.map(s => s.size).filter(Boolean))), [allSpecs]);
   const allTypes = useMemo(() => Array.from(new Set(allSpecs.map(s => s.type).filter(Boolean))), [allSpecs]);
 
-  // --- Dynamic Availability Mapping ---
-  const availableColorsForContext = useMemo(() => 
-    allSpecs.filter(s => (!selectedSize || s.size === selectedSize) && (!selectedType || s.type === selectedType) && (s.quantity ?? 0) > 0).map(s => s.color),
-  [selectedSize, selectedType, allSpecs]);
+  const availableColorsForContext = useMemo(() =>
+    allSpecs.filter(s => (!selectedSize || s.size === selectedSize) && (!selectedType || s.type === selectedType) && (s.unlimited || (s.quantity ?? 0) > 0)).map(s => s.color),
+    [selectedSize, selectedType, allSpecs]);
 
-  const availableSizesForContext = useMemo(() => 
-    allSpecs.filter(s => (!selectedColor || s.color === selectedColor) && (!selectedType || s.type === selectedType) && (s.quantity ?? 0) > 0).map(s => s.size), 
-  [selectedColor, selectedType, allSpecs]);
+  const availableSizesForContext = useMemo(() =>
+    allSpecs.filter(s => (!selectedColor || s.color === selectedColor) && (!selectedType || s.type === selectedType) && (s.unlimited || (s.quantity ?? 0) > 0)).map(s => s.size),
+    [selectedColor, selectedType, allSpecs]);
 
-  const availableTypesForContext = useMemo(() => 
-    allSpecs.filter(s => (!selectedColor || s.color === selectedColor) && (!selectedSize || s.size === selectedSize) && (s.quantity ?? 0) > 0).map(s => s.type), 
-  [selectedColor, selectedSize, allSpecs]);
+  const availableTypesForContext = useMemo(() =>
+    allSpecs.filter(s => (!selectedColor || s.color === selectedColor) && (!selectedSize || s.size === selectedSize) && (s.unlimited || (s.quantity ?? 0) > 0)).map(s => s.type),
+    [selectedColor, selectedSize, allSpecs]);
 
-  // --- Selection Handlers ---
+  const findAndSetSpec = (color: string | null, size: string | null, type: string | null) => {
+    const matched = allSpecs.find(s =>
+      (!color || s.color === color) &&
+      (!size || s.size === size) &&
+      (!type || s.type === type)
+    ) as ProductSpecification;
+
+    if (matched) {
+      setActiveSpecifications(matched);
+    }
+  };
+
   const handleColorSelect = (color: string) => {
-    if (selectedColor === color) {
-      setSelectedColor(null);
-    } else {
-      setSelectedColor(color);
-      // Sync image with selected color if hex match found
-      const specWithColor = allSpecs.find(s => s.color === color);
+    const newColor = selectedColor === color ? null : color;
+    setSelectedColor(newColor);
+
+    if (newColor) {
+      const specWithColor = allSpecs.find(s => s.color === newColor);
       if (specWithColor?.colorHex) {
         const imageIndex = product.images.findIndex(img => (img.specification as ProductSpecification)?.colorHex === specWithColor.colorHex);
         if (imageIndex !== -1) setCurrentImageIndex(imageIndex);
       }
     }
+
+    findAndSetSpec(newColor, selectedSize, selectedType);
   };
 
   const handleSizeSelect = (size: string) => {
-    if (selectedSize === size) {
-      setSelectedSize(null);
-    } else {
-      setSelectedSize(size);
-      const isStillAvailable = allSpecs.some(s => s.size === size && s.color === selectedColor && (s.quantity ?? 0) > 0);
-      if (!isStillAvailable) setSelectedColor(null);
+    const newSize = selectedSize === size ? null : size;
+    setSelectedSize(newSize);
+
+    // Check if current color is still valid with this size
+    if (newSize && selectedColor) {
+      const isStillAvailable = allSpecs.some(s => s.size === newSize && s.color === selectedColor && (s.unlimited || (s.quantity ?? 0) > 0));
+      if (!isStillAvailable) {
+        setSelectedColor(null);
+        findAndSetSpec(null, newSize, selectedType);
+        return;
+      }
     }
+
+    findAndSetSpec(selectedColor, newSize, selectedType);
   };
 
   const handleTypeSelect = (type: string) => {
-    if (selectedType === type) {
-      setSelectedType(null);
-    } else {
-      setSelectedType(type);
-      const isStillAvailable = allSpecs.some(s => s.type === type && s.color === selectedColor && (s.quantity ?? 0) > 0);
-      if (!isStillAvailable) setSelectedColor(null);
+    const newType = selectedType === type ? null : type;
+    setSelectedType(newType);
+
+    if (newType && selectedColor) {
+      const isStillAvailable = allSpecs.some(s => s.type === newType && s.color === selectedColor && (s.unlimited || (s.quantity ?? 0) > 0));
+      if (!isStillAvailable) {
+        setSelectedColor(null);
+        findAndSetSpec(null, selectedSize, newType);
+        return;
+      }
     }
+
+    findAndSetSpec(selectedColor, selectedSize, newType);
   };
 
-  // --- Component Effects ---
+  // Sync internal selection states when activeSpecifications is modified from above
   useEffect(() => {
-    const matched = allSpecs.find(s => 
-      (!selectedColor || s.color === selectedColor) && 
-      (!selectedSize || s.size === selectedSize) &&
-      (!selectedType || s.type === selectedType)
-    ) as ProductSpecification;
-    setActiveSpecifications(matched || null);
-  }, [selectedColor, selectedSize, selectedType, allSpecs, setActiveSpecifications]);
+    if (activeSpecifications && isExplicitlySelected) {
+      if (activeSpecifications.color !== selectedColor) setSelectedColor(activeSpecifications.color || null);
+      if (activeSpecifications.size !== selectedSize) setSelectedSize(activeSpecifications.size || null);
+      if (activeSpecifications.type !== selectedType) setSelectedType(activeSpecifications.type || null);
+
+      // Sync image if specification has a color hex
+      if (activeSpecifications.colorHex) {
+        const imageIndex = product.images.findIndex(img =>
+          (img.specification as ProductSpecification)?.colorHex === activeSpecifications.colorHex
+        );
+        if (imageIndex !== -1 && imageIndex !== currentImageIndex) {
+          setCurrentImageIndex(imageIndex);
+        }
+      }
+    }
+  }, [activeSpecifications, allSpecs, isExplicitlySelected]);
 
   useEffect(() => {
     if (!product._id) return;
+
     axios.get(`${backEndUrl}/getEvaluationByProduct`, { params: { productId: product._id } })
-      .then(({ data }) => setEvaluations(data.evaluations || []))
+      .then(({ data }) => {
+        const fetchedEvaluations = data.evaluations || [];
+        setEvaluations(fetchedEvaluations);
+
+        if (client?._id) {
+          axios.get(`${backEndUrl}/verifyClientPurchase`, { params: { productId: product._id, clientId: client._id } })
+            .then(({ data: purchaseData }) => {
+              const hasPurchased = (purchaseData.purchaseCount || 0) > 0;
+              const hasAlreadyRated = fetchedEvaluations.some((e: any) => (e.client?._id || e.client) === client._id);
+              setClientCanRate(hasPurchased && !hasAlreadyRated);
+            })
+            .catch(err => console.error(err));
+
+          //@ts-ignore
+          setNewEvaluation(prev => ({ ...prev, client: client?._id, product: product?._id }));
+        }
+      })
       .catch(err => console.error(err));
 
-    if (!client?._id) return;
-    axios.get(`${backEndUrl}/verifyClientPurchase`, { params: { productId: product._id, clientId: client._id } })
-      .then(({ data }) => setClientCanRate((data?.purchaseCount || 0) > 0))
-      .catch(err => console.error(err));
-  }, [product._id, client?._id]);
+  }, [product?._id, client?._id]);
 
   return (
-    <div className={`h-full overflow-y-auto scrollbar-hidden p-5 ${screenWidth > 1000 ? "w-[50%]" : "w-full"} ${className}`} style={style}>
-      
-      <section>
-        <h1 className='font-bold text-xl sm:text-2xl opacity-90' style={{ color: colors.dark[150] }}>
+    <div className={`h-full overflow-y-auto scrollbar-hidden px-6 pt-8 ${screenWidth > 1000 ? "w-[50%]" : "w-full"} ${className}`} style={style}>
+
+      {/* Product Title & Price Section */}
+      <section className="mb-6">
+        <div className="flex flex-wrap items-center gap-2 mb-2">
+          {collections.map((collection) => (
+            <span key={collection._id} className="text-[10px] font-black uppercase tracking-widest opacity-30">
+              {collection.name[activeLanguage.language]}
+            </span>
+          ))}
+        </div>
+        <h1 className='font-bold text-2xl sm:text-3xl tracking-tight mb-2' style={{ color: colors.dark[150] }}>
           {product.name[activeLanguage.language]}
         </h1>
-        <h2 className='font-semibold text-3xl my-3' style={{ color: colors.dark[150] }}>
-          {activeSpecifications?.price || product.price || 0} <span className="text-sm font-medium opacity-60">D.T</span>
-        </h2>
+        <div className="flex items-baseline gap-3">
+          <span className='font-black text-4xl' style={{ color: colors.dark[150] }}>
+            {activeSpecifications?.price || product.price || 0}
+            <span className="text-sm font-bold opacity-40 ml-1">D.T</span>
+          </span>
+          {product.oldPrice && product.oldPrice > (activeSpecifications?.price || product.price || 0) && (
+            <span className="text-xl font-bold line-through opacity-20">
+              {product.oldPrice} DT
+            </span>
+          )}
+        </div>
       </section>
 
-      <div className='flex items-center gap-4 py-2 mb-4'>
-        <div className='flex items-center gap-1 cursor-pointer' onClick={() => setEvaluationSectionActive(true)}>
+      {/* Ratings Quick View */}
+      <div className='flex items-center gap-4 py-4 border-y border-black/5 mb-8'>
+        <div className='flex items-center gap-2 cursor-pointer' onClick={() => setEvaluationSectionActive(true)}>
           <StarsRatingDisplay rating={calculateRatingStats(evaluations).average} />
-          <p className='text-xs opacity-50 underline'>( {evaluations.length} {activeLanguage?.opinion} )</p>
+          <p className='text-[12px] font-bold opacity-50 underline underline-offset-4'>
+            {evaluations.length} {activeLanguage?.opinion}
+          </p>
         </div>
         {clientCanRate && (
-          <button onClick={() => setAddEvaluationActive(true)} className='p-1.5 rounded-full transition-transform active:scale-90' style={{ backgroundColor: colors.dark[300] }}>
-            <img src={activeTheme === "dark" ? "/icons/add-black.png" : "/icons/add-white.png"} className='w-3 h-3' alt="add" />
+          <button
+            onClick={() => setAddEvaluationActive(true)}
+            className='flex items-center gap-2 px-4 py-2 rounded-xl transition-all active:scale-95 shadow-sm'
+            style={{ backgroundColor: colors.dark[100], color: colors.light[100] }}
+          >
+            <span className="text-[11px] font-black uppercase tracking-wider">{activeLanguage.addEvaluation}</span>
+            <span className="text-lg leading-none">+</span>
           </button>
         )}
       </div>
 
-        <div className='w-full mb-5'>
-          <h4 className='font-bold text-md mb-2'>{activeLanguage.nav.collections + " :"}</h4>
-
-          <div className='w-full flex flex-wrap gap-2'>
-            {
-              loadingGettingCollection ?
-                [1, 2, 3].map((x) => (
-                  <div key={x} className='w-[70px] h-8 overflow-hidden text-xs font-bold rounded-xl transition-all duration-300'><SkeletonLoading /></div>
-                ))
-                : collections.map((collection => (
-                  <h4
-                    key={collection._id}
-                    className={`px-4 py-2 text-xs font-bold rounded-xl transition-all duration-300`}
+      {/* Attributes Selection */}
+      <div className="space-y-8 mb-10">
+        {[
+          { label: activeLanguage.sideMatter.colors, items: allColors, selected: selectedColor, handler: handleColorSelect, available: availableColorsForContext },
+          { label: activeLanguage.sideMatter.sizes, items: allSizes, selected: selectedSize, handler: handleSizeSelect, available: availableSizesForContext },
+          { label: activeLanguage.sideMatter.types || "Types", items: allTypes, selected: selectedType, handler: handleTypeSelect, available: availableTypesForContext }
+        ].map((attr, idx) => attr.items.length > 1 && (
+          <div key={idx}>
+            <h4 className='text-[11px] font-black uppercase tracking-widest mb-4 opacity-40'>{attr.label}</h4>
+            <div className='flex flex-wrap gap-2'>
+              {attr.items.map(val => {
+                const isSelected = attr.selected === val;
+                const isAvailable = attr.available.includes(val!);
+                return (
+                  <button
+                    key={val}
+                    disabled={!isAvailable}
+                    onClick={() => attr.handler(val!)}
+                    className={`px-[14px] py-[10px] text-[13px] font-semibold rounded-xl border-2 transition-all duration-300 ${isSelected ? 'scale-105' : 'hover:border-black/20'}`}
                     style={{
-                      backgroundColor: colors.light[250],
-                      color: colors.dark[500]
+                      backgroundColor: isSelected ? colors.dark[100] : 'transparent',
+                      color: isSelected ? colors.light[150] : colors.dark[150],
+                      borderColor: isSelected ? colors.dark[100] : colors.light[300],
+                      opacity: isAvailable ? 1 : 0.2,
                     }}
                   >
-                    {collection.name[activeLanguage.language]}
-                  </h4>
-                )))
-            }
+                    {val}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        ))}
+      </div>
 
-      {/* 1. Color Selection Buttons */}
-      {allColors.length > 0 && (
-        <div className='mb-6'>
-          <h4 className='font-bold text-sm mb-2' style={{ color: colors.dark[150] }}>{activeLanguage.sideMatter.colors} :</h4>
-          <div className='flex flex-wrap gap-2'>
-            {allColors.map(color => {
-              const isSelected = selectedColor === color;
-              const isAvailable = availableColorsForContext.includes(color!);
-              return (
-                <button
-                  key={color}
-                  onClick={() => handleColorSelect(color!)}
-                  className={`px-4 py-2 text-xs font-bold rounded-xl border transition-all duration-300 ${isSelected ? 'scale-105' : ''}`}
-                  style={{ 
-                      backgroundColor: isSelected ? colors.dark[150] : 'transparent',
-                      color: isSelected ? colors.light[100] : colors.dark[150],
-                      borderColor: colors.dark[150],
-                      opacity: isAvailable ? 1 : 0.3,
-                      textDecoration: isAvailable ? 'none' : 'line-through'
-                  }}
-                >
-                  {color}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* 2. Size Selection Buttons */}
-      {allSizes.length > 0 && (
-        <div className='mb-6'>
-          <h4 className='font-bold text-sm mb-2' style={{ color: colors.dark[150] }}>{activeLanguage.sideMatter.sizes} :</h4>
-          <div className='flex flex-wrap gap-2'>
-            {allSizes.map(size => {
-              const isSelected = selectedSize === size;
-              const isAvailable = availableSizesForContext.includes(size!);
-              return (
-                <button
-                  key={size}
-                  onClick={() => handleSizeSelect(size!)}
-                  className={`px-4 py-2 text-xs font-bold rounded-xl border transition-all duration-300 ${isSelected ? 'scale-105' : ''}`}
-                  style={{ 
-                      backgroundColor: isSelected ? colors.dark[150] : 'transparent',
-                      color: isSelected ? colors.light[100] : colors.dark[150],
-                      borderColor: colors.dark[150],
-                      opacity: isAvailable ? 1 : 0.3,
-                      textDecoration: isAvailable ? 'none' : 'line-through'
-                  }}
-                >
-                  {size}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* 3. Type Selection Buttons */}
-      {allTypes.length > 0 && (
-        <div className='mb-6'>
-          <h4 className='font-bold text-sm mb-2' style={{ color: colors.dark[150] }}>{activeLanguage.sideMatter.types || "Types"} :</h4>
-          <div className='flex flex-wrap gap-2'>
-            {allTypes.map(type => {
-              const isSelected = selectedType === type;
-              const isAvailable = availableTypesForContext.includes(type!);
-              return (
-                <button
-                  key={type}
-                  onClick={() => handleTypeSelect(type!)}
-                  className={`px-4 py-2 text-xs font-bold rounded-xl border transition-all duration-300 ${isSelected ? 'scale-105' : ''}`}
-                  style={{ 
-                      backgroundColor: isSelected ? colors.dark[150] : 'transparent',
-                      color: isSelected ? colors.light[100] : colors.dark[150],
-                      borderColor: colors.dark[150],
-                      opacity: isAvailable ? 1 : 0.3,
-                      textDecoration: isAvailable ? 'none' : 'line-through'
-                  }}
-                >
-                  {type}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      <article className='my-6 py-6 border-t border-b' style={{ borderColor: colors.dark[150] + '20' }}>
-        <p className='text-sm opacity-80 whitespace-pre-line' style={{ color: colors.dark[150] }}>
+      {/* Description Article */}
+      <article className='mb-10 p-6 rounded-xl bg-black/[0.02] border border-black/5'>
+        <p className='text-[14px] leading-relaxed font-medium opacity-70 whitespace-pre-line' style={{ color: colors.dark[250] }}>
           {product.description[activeLanguage.language]}
         </p>
       </article>
 
-      <div className='flex flex-col gap-6 my-5'>
+      {screenWidth < 1000 && (
+        <div className="w-full flex gap-3 justify-center items-center opacity-80 backdrop-opacity-75 mb-10">
+          {ownerInfo?.socialMedia
+            ?.filter((media) =>
+              media.platform && ["facebook", "whatsapp"].includes(media.platform.toLowerCase())
+            )
+            .map((media) => {
+              const isFacebook = media.platform?.toLowerCase() === "facebook";
+              // تحديد الألوان الرسمية (أزرق للفيس، أخضر للواتساب)
+              const platformColor = isFacebook ? "#1877F2" : "#25D366";
+
+              return (
+                <div
+                  key={media.platform}
+                  onClick={() => handleSocialMediaClick(media)}
+                  className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl cursor-pointer transition-transform active:scale-95 shadow-sm"
+                  style={{ backgroundColor: platformColor }}
+                >
+                  <img
+                    src={media.icon}
+                    alt={media.platform}
+                    className="w-5 h-5 brightness-0- invert-" // لجعل الأيقونة بيضاء لتتناسب مع الخلفية الملونة
+                  />
+                  <span className="text-[12px] font-black uppercase tracking-wider text-white">
+                    {media.platform}
+                  </span>
+                </div>
+              );
+            })
+          }
+        </div>
+      )}
+
+      {/* Order & Form Section */}
+      <div className='space-y-8 mb-20'>
         <OrderData
           purchases={[{
             product: product._id,
@@ -298,19 +325,22 @@ const ProductDetails = ({
             specification: activeSpecifications
           }]}
         />
-        <InputForm clientForm={clientForm} setClientForm={setClientForm} />
+
+        <div className='sm:pr-4'>
+          <InputForm clientForm={clientForm} setClientForm={setClientForm} />
+        </div>
+
+        <ProductActionPanel
+          quantity={quantity} setQuantity={setQuantity}
+          activeSpecifications={activeSpecifications}
+          purchase={purchase} setPurchase={setPurchase}
+          cart={cart} product={product}
+          clientForm={clientForm}
+          setClientForm={setClientForm}
+        />
       </div>
 
-      <ProductActionPanel
-        quantity={quantity} setQuantity={setQuantity}
-        activeSpecifications={activeSpecifications}
-        purchase={purchase} setPurchase={setPurchase}
-        cart={cart} product={product}
-        clientForm={clientForm}
-        setClientForm={setClientForm}
-      />
-
-      {/* Modals and Overlays */}
+      {/* Modals & Overlays */}
       {evaluationSectionActive && (
         <EvaluationsSection
           evaluations={evaluations} setEvaluations={setEvaluations}
@@ -321,7 +351,7 @@ const ProductDetails = ({
           clientCanRate={clientCanRate}
         />
       )}
-      
+
       {addEvaluationActive && (
         <AddEvaluationCard
           addEvaluationActive={addEvaluationActive} setAddEvaluationActive={setAddEvaluationActive}

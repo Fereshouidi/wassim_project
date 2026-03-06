@@ -147,9 +147,15 @@ export const english = {
     socialMedia: "Social Media",
     collections: "Collections",
     close: "Close",
-    haveGoodShop: "have a good shop with SilverWayShop 💫"
-
-
+    haveGoodShop: "have a good shop with SilverWayShop 💫",
+    edit: "Edit",
+    delete: "Delete",
+    areYouSure: "Are you sure?",
+    youMayLike: "You may like",
+    productNotFound: "Product Not Found",
+    productNotFoundDesc: "Sorry, it seems the link you followed is incorrect or the product has been removed from the store.",
+    continueShopping: "Continue Shopping",
+    goBack: "Go Back"
 } as LanguageStracture;
 
 export const frensh = {
@@ -298,9 +304,15 @@ export const frensh = {
     socialMedia: "Réseaux sociaux",
     collections: "Collections",
     close: "fermer",
-    haveGoodShop: "Bon shopping avec SilverWayShop 💫"
-
-
+    haveGoodShop: "Bon shopping avec SilverWayShop 💫",
+    edit: "Modifier",
+    delete: "Supprimer",
+    areYouSure: "Êtes-vous sûr ?",
+    youMayLike: "Vous aimerez peut-être",
+    productNotFound: "Produit non trouvé",
+    productNotFoundDesc: "Désolé, il semble que le lien que vous avez suivi soit incorrect ou que le produit ait été retiré de la boutique.",
+    continueShopping: "Continuer mes achats",
+    goBack: "Retourner"
 } as LanguageStracture;
 
 
