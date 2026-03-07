@@ -214,7 +214,7 @@ const Page = () => {
                 <main className="flex-1 w-full py-18 sm:py-8 px-3 sm:px-6 lg:px-10 z-[1]">
                     <div className={`
                         w-full grid justify-items-center gap-2 sm:gap-4
-                        grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4.5-
+                        grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4
                     `}>
                         {productsFound.length > 0 ? (
                             productsFound.map((product, index) => (
