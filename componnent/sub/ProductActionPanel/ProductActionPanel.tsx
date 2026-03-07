@@ -25,7 +25,7 @@ type Props = {
     product: ProductType
     clientForm: any
     setClientForm: (value: any) => void
-    activeButtong?: "orderNow" | "putInCart"
+    activeButton?: "orderNow" | "putInCart"
 }
 
 const ProductActionPanel = ({
@@ -38,7 +38,7 @@ const ProductActionPanel = ({
     product,
     clientForm,
     setClientForm,
-    activeButtong
+    activeButton
 }: Props) => {
 
     const { screenWidth } = useScreen();
@@ -144,22 +144,24 @@ const ProductActionPanel = ({
             <ChoseQuantity
                 quantity={quantity}
                 setQuantity={setQuantity}
-                max={activeSpecifications?.unlimited ? 1000 : (activeSpecifications?.quantity ?? 1)}
+                max={activeSpecifications?.unlimited ? 1000 : ((activeSpecifications?.quantity || 0) > 0 ? activeSpecifications!.quantity! : 1000)}
             />
 
             {
-                activeButtong == "putInCart" ?
+                activeButton == "putInCart" ?
 
                     product?.thumbNail && (
                         <AddToCartAnimation
                             productImage={product.thumbNail}
                             isInCart={!!purchase?.cart}
                             onToggle={handlePuttingInCart}
+                            disabled={!activeSpecifications && !purchase?.cart}
                         />
                     )
                     :
                     <OrderNowButton
                         onOrder={handleOrder}
+                        disabled={!activeSpecifications}
                     />
             }
 

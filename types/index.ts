@@ -313,10 +313,10 @@ export type ProductType = {
   price: number | null;
   oldPrice: number | null;
   thumbNail: string | null;
-  images: [{
+  images: {
     uri: string,
     specification: ProductSpecification;
-  }];
+  }[];
   description: {
     fr: string | null;
     en: string | null;

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState, useEffect, CSSProperties } from 'react';
+import React, { useMemo, useState, useEffect, useRef, CSSProperties } from 'react';
 import axios from 'axios';
 import { backEndUrl } from '@/api';
 import { useLanguage } from '@/contexts/languageContext';
@@ -33,8 +33,8 @@ type ProductDetailsType = {
   loadingGettingProduct: boolean;
   quantity: number;
   setQuantity: (value: number) => void;
-  activeSpecifications: ProductSpecification;
-  setActiveSpecifications: (value: ProductSpecification) => void;
+  activeSpecifications: ProductSpecification | null;
+  setActiveSpecifications: (value: ProductSpecification | null) => void;
   collections: CollectionType[];
   purchase: PurchaseType;
   setPurchase: (value: PurchaseType) => void;
@@ -44,13 +44,17 @@ type ProductDetailsType = {
   clientForm: any,
   setClientForm: (value: any) => void;
   isExplicitlySelected?: boolean;
+  hasInteracted: boolean;
+  setHasInteracted: (value: boolean) => void;
+  fromCart?: boolean;
 };
 
 const ProductDetails = ({
   className, style, product, currentImageIndex, setCurrentImageIndex,
   quantity, setQuantity, activeSpecifications, setActiveSpecifications,
   collections, purchase, setPurchase, cart, onSpecificationChange,
-  loadingGettingCollection, clientForm, setClientForm, isExplicitlySelected
+  loadingGettingCollection, clientForm, setClientForm, isExplicitlySelected,
+  hasInteracted, setHasInteracted, fromCart
 }: ProductDetailsType) => {
 
   const { screenWidth } = useScreen();
@@ -58,9 +62,10 @@ const ProductDetails = ({
   const { colors, activeTheme } = useTheme();
   const { client } = useClient();
 
-  const [selectedColor, setSelectedColor] = useState<string | null>(isExplicitlySelected ? activeSpecifications?.color || null : null);
-  const [selectedSize, setSelectedSize] = useState<string | null>(isExplicitlySelected ? activeSpecifications?.size || null : null);
-  const [selectedType, setSelectedType] = useState<string | null>(isExplicitlySelected ? activeSpecifications?.type || null : null);
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [selectedType, setSelectedType] = useState<string | null>(null);
+  const cartSyncDone = useRef(false);
 
   const [evaluations, setEvaluations] = useState<EvaluationType[]>([]);
   const [evaluationSectionActive, setEvaluationSectionActive] = useState(false);
@@ -77,37 +82,57 @@ const ProductDetails = ({
   const allTypes = useMemo(() => Array.from(new Set(allSpecs.map(s => s.type).filter(Boolean))), [allSpecs]);
 
   const availableColorsForContext = useMemo(() =>
-    allSpecs.filter(s => (!selectedSize || s.size === selectedSize) && (!selectedType || s.type === selectedType) && (s.unlimited || (s.quantity ?? 0) > 0)).map(s => s.color),
+    allSpecs.filter(s => (!selectedSize || s.size === selectedSize) && (!selectedType || s.type === selectedType)).map(s => s.color),
     [selectedSize, selectedType, allSpecs]);
 
   const availableSizesForContext = useMemo(() =>
-    allSpecs.filter(s => (!selectedColor || s.color === selectedColor) && (!selectedType || s.type === selectedType) && (s.unlimited || (s.quantity ?? 0) > 0)).map(s => s.size),
+    allSpecs.filter(s => (!selectedColor || s.color === selectedColor) && (!selectedType || s.type === selectedType)).map(s => s.size),
     [selectedColor, selectedType, allSpecs]);
 
   const availableTypesForContext = useMemo(() =>
-    allSpecs.filter(s => (!selectedColor || s.color === selectedColor) && (!selectedSize || s.size === selectedSize) && (s.unlimited || (s.quantity ?? 0) > 0)).map(s => s.type),
+    allSpecs.filter(s => (!selectedColor || s.color === selectedColor) && (!selectedSize || s.size === selectedSize)).map(s => s.type),
     [selectedColor, selectedSize, allSpecs]);
 
   const findAndSetSpec = (color: string | null, size: string | null, type: string | null) => {
-    const matched = allSpecs.find(s =>
+    // Find the best matching spec based on whatever is selected so far
+    // Filter specs that match all the selected (non-null) attributes
+    const candidates = allSpecs.filter(s =>
       (!color || s.color === color) &&
       (!size || s.size === size) &&
       (!type || s.type === type)
-    ) as ProductSpecification;
+    );
+
+    // Use first matching candidate, or fallback to first spec overall
+    const matched = candidates[0] || allSpecs[0];
 
     if (matched) {
-      setActiveSpecifications(matched);
+      setActiveSpecifications(matched as ProductSpecification);
     }
   };
 
   const handleColorSelect = (color: string) => {
+    setHasInteracted(true);
     const newColor = selectedColor === color ? null : color;
     setSelectedColor(newColor);
 
     if (newColor) {
       const specWithColor = allSpecs.find(s => s.color === newColor);
-      if (specWithColor?.colorHex) {
-        const imageIndex = product.images.findIndex(img => (img.specification as ProductSpecification)?.colorHex === specWithColor.colorHex);
+      if (specWithColor) {
+        // Try matching by colorHex first
+        let imageIndex = -1;
+        if (specWithColor.colorHex) {
+          imageIndex = product.images.findIndex(img => {
+            const imgSpec = img.specification as ProductSpecification;
+            return imgSpec?.colorHex === specWithColor.colorHex;
+          });
+        }
+        // Fallback: match by color name
+        if (imageIndex === -1) {
+          imageIndex = product.images.findIndex(img => {
+            const imgSpec = img.specification as ProductSpecification;
+            return imgSpec?.color === newColor;
+          });
+        }
         if (imageIndex !== -1) setCurrentImageIndex(imageIndex);
       }
     }
@@ -116,12 +141,13 @@ const ProductDetails = ({
   };
 
   const handleSizeSelect = (size: string) => {
+    setHasInteracted(true);
     const newSize = selectedSize === size ? null : size;
     setSelectedSize(newSize);
 
     // Check if current color is still valid with this size
     if (newSize && selectedColor) {
-      const isStillAvailable = allSpecs.some(s => s.size === newSize && s.color === selectedColor && (s.unlimited || (s.quantity ?? 0) > 0));
+      const isStillAvailable = allSpecs.some(s => s.size === newSize && s.color === selectedColor);
       if (!isStillAvailable) {
         setSelectedColor(null);
         findAndSetSpec(null, newSize, selectedType);
@@ -133,11 +159,12 @@ const ProductDetails = ({
   };
 
   const handleTypeSelect = (type: string) => {
+    setHasInteracted(true);
     const newType = selectedType === type ? null : type;
     setSelectedType(newType);
 
     if (newType && selectedColor) {
-      const isStillAvailable = allSpecs.some(s => s.type === newType && s.color === selectedColor && (s.unlimited || (s.quantity ?? 0) > 0));
+      const isStillAvailable = allSpecs.some(s => s.type === newType && s.color === selectedColor);
       if (!isStillAvailable) {
         setSelectedColor(null);
         findAndSetSpec(null, selectedSize, newType);
@@ -148,24 +175,27 @@ const ProductDetails = ({
     findAndSetSpec(selectedColor, selectedSize, newType);
   };
 
-  // Sync internal selection states when activeSpecifications is modified from above
+  // Sync image when activeSpecifications changes (e.g. coming from cart)
   useEffect(() => {
-    if (activeSpecifications && isExplicitlySelected) {
-      if (activeSpecifications.color !== selectedColor) setSelectedColor(activeSpecifications.color || null);
-      if (activeSpecifications.size !== selectedSize) setSelectedSize(activeSpecifications.size || null);
-      if (activeSpecifications.type !== selectedType) setSelectedType(activeSpecifications.type || null);
-
-      // Sync image if specification has a color hex
-      if (activeSpecifications.colorHex) {
-        const imageIndex = product.images.findIndex(img =>
-          (img.specification as ProductSpecification)?.colorHex === activeSpecifications.colorHex
-        );
-        if (imageIndex !== -1 && imageIndex !== currentImageIndex) {
-          setCurrentImageIndex(imageIndex);
-        }
+    if (activeSpecifications?.colorHex && hasInteracted) {
+      const imageIndex = product.images.findIndex(img =>
+        (img.specification as ProductSpecification)?.colorHex === activeSpecifications.colorHex
+      );
+      if (imageIndex !== -1 && imageIndex !== currentImageIndex) {
+        setCurrentImageIndex(imageIndex);
       }
     }
-  }, [activeSpecifications, allSpecs, isExplicitlySelected]);
+  }, [activeSpecifications, hasInteracted]);
+
+  // One-time sync: when opening from cart, highlight the saved selections
+  useEffect(() => {
+    if (fromCart && activeSpecifications && !cartSyncDone.current) {
+      cartSyncDone.current = true;
+      setSelectedColor(activeSpecifications.color || null);
+      setSelectedSize(activeSpecifications.size || null);
+      setSelectedType(activeSpecifications.type || null);
+    }
+  }, [fromCart, activeSpecifications]);
 
   useEffect(() => {
     if (!product._id) return;
@@ -209,10 +239,10 @@ const ProductDetails = ({
         </h1>
         <div className="flex items-baseline gap-3">
           <span className='font-black text-4xl' style={{ color: colors.dark[150] }}>
-            {activeSpecifications?.price || product.price || 0}
+            {activeSpecifications?.price || (!hasInteracted && product.specifications?.[0]?.price) || product.price || 0}
             <span className="text-sm font-bold opacity-40 ml-1">D.T</span>
           </span>
-          {product.oldPrice && product.oldPrice > (activeSpecifications?.price || product.price || 0) && (
+          {product.oldPrice && product.oldPrice > (activeSpecifications?.price || (!hasInteracted && product.specifications?.[0]?.price) || product.price || 0) && (
             <span className="text-xl font-bold line-through opacity-20">
               {product.oldPrice} DT
             </span>
@@ -251,7 +281,7 @@ const ProductDetails = ({
             <h4 className='text-[11px] font-black uppercase tracking-widest mb-4 opacity-40'>{attr.label}</h4>
             <div className='flex flex-wrap gap-2'>
               {attr.items.map(val => {
-                const isSelected = attr.selected === val;
+                const isSelected = hasInteracted && attr.selected === val;
                 const isAvailable = attr.available.includes(val!);
                 return (
                   <button
@@ -263,7 +293,8 @@ const ProductDetails = ({
                       backgroundColor: isSelected ? colors.dark[100] : 'transparent',
                       color: isSelected ? colors.light[150] : colors.dark[150],
                       borderColor: isSelected ? colors.dark[100] : colors.light[300],
-                      opacity: isAvailable ? 1 : 0.2,
+                      // Only dim if at least one selection has been made and this specific value is unavailable
+                      opacity: (isAvailable || (!selectedColor && !selectedSize && !selectedType)) ? 1 : 0.2,
                     }}
                   >
                     {val}
@@ -322,7 +353,7 @@ const ProductDetails = ({
             product: product._id,
             quantity: quantity,
             client: client?._id,
-            specification: activeSpecifications
+            specification: hasInteracted ? activeSpecifications : (product.specifications[0] || null)
           }]}
         />
 
@@ -332,7 +363,7 @@ const ProductDetails = ({
 
         <ProductActionPanel
           quantity={quantity} setQuantity={setQuantity}
-          activeSpecifications={activeSpecifications}
+          activeSpecifications={hasInteracted ? activeSpecifications : product.specifications[0]}
           purchase={purchase} setPurchase={setPurchase}
           cart={cart} product={product}
           clientForm={clientForm}

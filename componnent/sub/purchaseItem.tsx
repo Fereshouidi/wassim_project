@@ -62,7 +62,7 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
             onClick={() => {
                 localStorage.setItem('purchaseId', purchase?._id ?? "");
                 // @ts-ignore
-                router.push(`/product/${purchase?.product?._id}`);
+                router.push(`/product/${purchase?.product?._id}?fromCart=true`);
                 setIsActive(false);
             }}
         >

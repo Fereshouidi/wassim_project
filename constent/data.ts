@@ -5,12 +5,13 @@ export const fakeProducts = Array.from({ length: 8 }, (_, i) => ({
   _id: (i + 1).toString(),
   name: { fr: `Produit ${i + 1}`, en: `Product ${i + 1}` },
   price: 0.0,
+  oldPrice: 0.0,
   thumbNail: "",
   images: [
-    { 
-      uri: "", 
+    {
+      uri: "",
       // تم التغيير من [] إلى كائن فارغ أو قيم افتراضية ليطابق الكائن الواحد
-      specification: { color: "", colorHex: "", size: "", type: "", price: 0, quantity: 0 } 
+      specification: { color: "", colorHex: "", size: "", type: "", price: 0, quantity: 0 }
     }
   ],
   description: { fr: "", en: "" },
@@ -28,9 +29,9 @@ const loadingPlaceholder: ProductType = {
   oldPrice: null,
   thumbNail: null,
   images: [
-    { 
-      uri: '', 
-      specification: { color: null, colorHex: null, size: null, type: null, price: null, quantity: null } 
+    {
+      uri: '',
+      specification: { color: null, colorHex: null, size: null, type: null, price: null, quantity: null }
     }
   ],
   description: { fr: null, en: null },

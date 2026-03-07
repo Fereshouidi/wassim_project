@@ -1,71 +1,17 @@
-"use client";
-import { backEndUrl } from '@/api';
-import CollectionsSections from '@/componnent/main/collectionsSection';
-import Footer from '@/componnent/main/footer';
-import Header from '@/componnent/main/header';
-import SideBar from '@/componnent/main/sideBar';
-import LoadingScreen from '@/componnent/sub/loading/loadingScreen';
-import { useLoadingScreen } from '@/contexts/loadingScreen';
-import { useOwner } from '@/contexts/ownerInfo';
-import { useTheme } from '@/contexts/themeProvider'
-import { OwnerInfoType } from '@/types';
-import axios from 'axios';
-import React, { use, useEffect, useState } from 'react'
+import CollectionsContent from "./CollectionsContent";
+import { Metadata } from "next";
 
-const Page = () => {
+export const metadata: Metadata = {
+    title: "Nos Collections de Bijoux en Argent | Silver Way",
+    description: "Explorez nos collections exclusives : Bagues, Colliers, Bracelets et plus encore. Chaque pièce est conçue pour sublimer votre élégance.",
+    openGraph: {
+        title: "Toutes les Collections Silver Way",
+        description: "Trouvez le bijou en argent massif qui vous ressemble parmi nos collections.",
+        url: "https://silver-way.vercel.app/collections",
+        type: "website",
+    },
+};
 
-    const { colors } = useTheme();
-    const [sideBarActive, setSideBarActive] = useState<boolean>(false);
-    const { ownerInfo, setOwnerInfo } = useOwner();
-    const { setLoadingScreen } = useLoadingScreen();
-
-    useEffect(() => {
-        setLoadingScreen(false);
-    }, [])
-
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //     await axios.get(backEndUrl + "/getOwnerInfo")
-    //     .then(({ data }) => setOwnerInfo(data.ownerInfo))
-    //     .catch((err) => {
-    //         throw err
-    //     })
-    //     }
-    //     fetchData();
-    // }, [])
-
-    if (!ownerInfo) return <LoadingScreen/>
-    
-    return (
-        <div
-            className="page min-h-screen"
-            style={{
-                backgroundColor: colors.light[150]
-            }}
-        >
-            <Header
-                isSideBarActive={sideBarActive}
-                setIsSideBarActive={setSideBarActive}
-                ownerInfo={ownerInfo}
-                setOwnerInfo={setOwnerInfo}
-            />
-        
-
-            <CollectionsSections
-                importedFrom="collectionsPage"
-            />
-
-            <Footer/>
-        
-            <SideBar
-                isActive={sideBarActive}
-                setIsActive={setSideBarActive}
-                ownerInfo={ownerInfo}
-                setOwnerInfo={setOwnerInfo}
-            />
-
-        </div>
-    )
+export default function Page() {
+    return <CollectionsContent />;
 }
-
-export default Page;

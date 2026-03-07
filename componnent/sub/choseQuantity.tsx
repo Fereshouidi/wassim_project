@@ -8,7 +8,7 @@ type ChoseQuantityTyp = {
 }
 
 const ChoseQuantity = ({
-    quantity, 
+    quantity,
     setQuantity,
     max
 }: ChoseQuantityTyp) => {
@@ -17,33 +17,33 @@ const ChoseQuantity = ({
 
 
 
-  return (
-    <div className=' flex justify-between items-center pag-5'>
+    return (
+        <div className=' flex justify-between items-center gap-2'>
 
-        <img 
-            className='w-10 h-10 p-3 flex justify-center items-center rounded-xl text-2xl font-extrabold cursor-pointer'
-            src={activeTheme == "light" ? "/icons/minus-dark.png" : "/icons/minus-light.png" } 
-            style={{
-                backgroundColor: colors.light[300],
-            }}
-            onClick={() => quantity > 1 && setQuantity(quantity - 1)}
-        />
+            <img
+                className='w-10 h-10 p-3 flex justify-center items-center rounded-xl text-2xl font-extrabold cursor-pointer'
+                src={activeTheme == "light" ? "/icons/minus-dark.png" : "/icons/minus-light.png"}
+                style={{
+                    backgroundColor: colors.light[300],
+                }}
+                onClick={() => quantity > 1 && setQuantity(quantity - 1)}
+            />
 
-        <span
-            className='w-10 h-10 p-3 flex justify-center items-center rounded-xl '
-        >{quantity}</span>
+            <span
+                className='w-10 h-10 p-3 flex justify-center items-center rounded-xl '
+            >{quantity}</span>
 
-        <img 
-            className='w-10 h-10 p-3 flex justify-center items-center rounded-xl text-2xl font-extrabold cursor-pointer'
-            src={activeTheme == "light" ? "/icons/add-black.png" : "/icons/add-white.png" } 
-            style={{
-                backgroundColor: colors.light[300],
-            }}
-            onClick={() => quantity < max && setQuantity(quantity + 1)}
-        />
+            <img
+                className='w-10 h-10 p-3 flex justify-center items-center rounded-xl text-2xl font-extrabold cursor-pointer'
+                src={activeTheme == "light" ? "/icons/add-black.png" : "/icons/add-white.png"}
+                style={{
+                    backgroundColor: colors.light[300],
+                }}
+                onClick={() => quantity < max && setQuantity(quantity + 1)}
+            />
 
-    </div>
-  )
+        </div>
+    )
 }
 
 export default ChoseQuantity

@@ -42,10 +42,10 @@ const EvaluationItem = ({
             }}
         >
             <div className='flex justify-between items-start mb-3'>
-                <div className='flex flex-col gap-1'>
+                <div className={`flex flex-col gap-1 `}>
 
-                    <div className='flex flex-row'>
-                        <h4 className='font-bold text-sm' style={{ color: colors.dark[100] }}>
+                    <div className={`flex ${evaluation.client?._id === client?._id ? " flex-col" : " flex-row justify-center items-center " }`}>
+                        <h4 className='font-bold text-sm bg-red-500-' style={{ color: colors.dark[100] }}>
                             {
                                 //@ts-ignore
                                 evaluation?.client?.fullName
@@ -54,7 +54,7 @@ const EvaluationItem = ({
                         {
                             evaluation.createdAt &&
                             <span
-                                className='text-[12px] opacity-45 ml-2'
+                                className={`text-[10px] opacity-45 bg-red-500- ${evaluation.client?._id !== client?._id && " ml-2 "}`}
                             >{
                                     "" + timeAgo(evaluation.createdAt, activeLanguage.language) + ""
                                 }</span>

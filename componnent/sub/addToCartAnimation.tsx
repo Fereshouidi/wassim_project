@@ -6,10 +6,11 @@ import { useRef, useState } from "react";
 type Props = {
   productImage: string;
   isInCart: boolean;
-  onToggle: () => Promise<boolean>; 
+  onToggle: () => Promise<boolean>;
+  disabled?: boolean;
 };
 
-export default function AddToCartAnimation({ productImage, isInCart, onToggle }: Props) {
+export default function AddToCartAnimation({ productImage, isInCart, onToggle, disabled }: Props) {
 
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -26,8 +27,8 @@ export default function AddToCartAnimation({ productImage, isInCart, onToggle }:
     setIsLoading(true);
 
     const buttonRect = button.getBoundingClientRect();
-    const cartRect = cart 
-      ? cart.getBoundingClientRect() 
+    const cartRect = cart
+      ? cart.getBoundingClientRect()
       : { left: window.innerWidth - (screenWidth > 1000 ? 80 : 50), top: 50, width: 30, height: 30 };
 
     const cartX = cartRect.left + (cartRect.width / 2);
@@ -97,38 +98,38 @@ export default function AddToCartAnimation({ productImage, isInCart, onToggle }:
 
   return (
     <button
-        ref={buttonRef}
-        onClick={handleAction}
-        disabled={isLoading}
-        className={`flex flex-1 min-w-fit px-4 justify-center items-center w-12 h-12 text-sm sm:text-md rounded-xl cursor-pointer`}
-        style={{
-            backgroundColor: isInCart ? "transparent" : colors.dark[100],
-            border: isInCart ? `1px solid ${colors.dark[100]}` : "none",
-            color: isInCart ? colors.dark[200] : colors.light[200]
-        }}
+      ref={buttonRef}
+      onClick={handleAction}
+      disabled={isLoading || disabled}
+      className={`flex flex-1 min-w-fit px-4 justify-center items-center w-12 h-12 text-sm sm:text-md rounded-xl cursor-pointer ${disabled ? 'opacity-30 grayscale' : ''}`}
+      style={{
+        backgroundColor: isInCart ? "transparent" : colors.dark[100],
+        border: isInCart ? `1px solid ${colors.dark[100]}` : "none",
+        color: isInCart ? colors.dark[200] : colors.light[200]
+      }}
     >
 
-        {!isInCart && <img 
-            src= {activeTheme == "dark" ? "/icons/add-to-cart-black.png"  : "/icons/add-to-cart-white.png" }
-            className='w-6 h-6 mr-5'
-            alt="" 
-        />}
+      {!isInCart && <img
+        src={activeTheme == "dark" ? "/icons/add-to-cart-black.png" : "/icons/add-to-cart-white.png"}
+        className='w-6 h-6 mr-5'
+        alt=""
+      />}
 
-        {
-            isInCart ? 
-                activeLanguage.inCart
-            :  activeLanguage.addToCart
-        }
+      {
+        isInCart ?
+          activeLanguage.inCart
+          : activeLanguage.addToCart
+      }
 
 
-        <img
-            src={productImage}
-            alt="product"
-            className="w-0 h-0 rounded-full object-cover border border-white/20 duration-300"
-            style={{
-                visibility: "hidden"
-            }}
-        />
+      <img
+        src={productImage}
+        alt="product"
+        className="w-0 h-0 rounded-full object-cover border border-white/20 duration-300"
+        style={{
+          visibility: "hidden"
+        }}
+      />
 
     </button>
   );

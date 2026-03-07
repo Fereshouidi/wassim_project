@@ -33,6 +33,7 @@ import { useOwner } from "@/contexts/ownerInfo";
 import LoadingScreen from "@/componnent/sub/loading/loadingScreen";
 import SkeletonLoading from "@/componnent/sub/SkeletonLoading";
 import { useLanguage } from "@/contexts/languageContext";
+import { useSearchParams } from "next/navigation";
 
 interface Props {
     product: ProductType;
@@ -46,6 +47,8 @@ export default function ClientProductPage({ product }: Props) {
     const { client } = useClient()
     const { setLoadingScreen } = useLoadingScreen();
     const { ownerInfo } = useOwner();
+    const searchParams = useSearchParams();
+    const fromCart = searchParams.get('fromCart') === 'true';
 
     const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
     const [sideBarActive, setSideBarActive] = useState(false);
@@ -58,6 +61,7 @@ export default function ClientProductPage({ product }: Props) {
     const [cart, setCart] = useState<CartType>({});
     const [like, setLike] = useState<boolean | null>(null);
     const [clientForm, setClientForm] = useState({ fullName: "", address: "", phone: "", note: "" });
+    const [hasInteracted, setHasInteracted] = useState<boolean>(false);
 
     // --- الحل هنا: إجبار الصفحة على الصعود للأعلى عند الدخول ---
     useEffect(() => {
@@ -80,11 +84,32 @@ export default function ClientProductPage({ product }: Props) {
                 }
             })
                 .then(({ data }) => {
-                    setPurchase(data?.purchase)
-                    // alert(data.purchase._id)
+                    // Clear cart so button always starts as "Add to Cart"
+                    if (data?.purchase) {
+                        setPurchase({ ...data.purchase, cart: null });
+                    } else {
+                        // Initialize a default purchase if none exists on the server
+                        setPurchase({
+                            client: client?._id,
+                            product: product._id,
+                            quantity: 1,
+                            status: 'viewed',
+                            specification: null,
+                            like: false
+                        } as any);
+                    }
                 })
                 .catch((err) => {
-                    alert(err)
+                    console.error("Error fetching purchase:", err);
+                    // Initialize default even on error to allow interaction
+                    setPurchase({
+                        client: client?._id,
+                        product: product._id,
+                        quantity: 1,
+                        status: 'viewed',
+                        specification: null,
+                        like: false
+                    } as any);
                 })
             // setPurchase({
             //     client: client?._id ?? undefined,
@@ -97,7 +122,7 @@ export default function ClientProductPage({ product }: Props) {
     }, [client, product])
 
     useEffect(() => {
-        if (activeSpecifications && purchase) {
+        if (purchase) {
             setPurchase(prev => prev ? ({
                 ...prev,
                 specification: activeSpecifications
@@ -129,10 +154,14 @@ export default function ClientProductPage({ product }: Props) {
                     axios.get(`${backEndUrl}/getPurchaseById`, { params: { purchaseId } })
                         .then(({ data }) => {
                             if (data.purchase) {
-                                setPurchase(data.purchase);
+                                setPurchase({ ...data.purchase, cart: null });
                                 if (data.purchase.specification) {
-                                    setActiveSpecifications(data.purchase.specification);
+                                    setActiveSpecifications(data.purchase.specification || null);
+                                    if (fromCart) {
+                                        setHasInteracted(true);
+                                    }
                                 }
+                                localStorage.removeItem('purchaseId');
                             }
                         });
                 }
@@ -141,9 +170,16 @@ export default function ClientProductPage({ product }: Props) {
         fetchData();
     }, [product?._id, client?._id]);
 
-    const handlePurchaseQuantity = (quantity: number) => {
-        if (purchase) setPurchase({ ...purchase, quantity });
-    }
+    const handlePurchaseQuantity = (newQuantity: number) => {
+        setPurchase(prev => prev ? { ...prev, quantity: newQuantity } : ({
+            client: client?._id,
+            product: product._id,
+            quantity: newQuantity,
+            status: 'viewed',
+            specification: null,
+            like: false
+        } as any));
+    };
 
     const handleLike = async () => {
         if (!product || !client || like == null) return;
@@ -211,7 +247,7 @@ export default function ClientProductPage({ product }: Props) {
                         loadingGettingProduct={false}
                         quantity={purchase?.quantity ?? 1}
                         setQuantity={handlePurchaseQuantity}
-                        activeSpecifications={activeSpecifications ?? product.specifications[0]}
+                        activeSpecifications={activeSpecifications}
                         isExplicitlySelected={activeSpecifications !== null}
                         collections={collections}
                         loadingGettingCollection={loadingGettingCollection}
@@ -221,6 +257,9 @@ export default function ClientProductPage({ product }: Props) {
                         cart={cart}
                         clientForm={clientForm}
                         setClientForm={setClientForm}
+                        hasInteracted={hasInteracted}
+                        setHasInteracted={setHasInteracted}
+                        fromCart={fromCart}
                     />
                 </div>
             </div>
@@ -267,14 +306,14 @@ export default function ClientProductPage({ product }: Props) {
                     <ProductActionPanel
                         quantity={purchase?.quantity ?? 1}
                         setQuantity={handlePurchaseQuantity}
-                        activeSpecifications={activeSpecifications}
+                        activeSpecifications={hasInteracted ? activeSpecifications : product.specifications[0]}
                         purchase={purchase!}
                         setPurchase={setPurchase}
                         cart={cart}
                         product={product}
                         clientForm={clientForm}
                         setClientForm={setClientForm}
-                        activeButtong='putInCart'
+                        activeButton='putInCart'
                     />
                 </div>
             </div>

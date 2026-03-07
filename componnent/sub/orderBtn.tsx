@@ -3,22 +3,22 @@ import { useLanguage } from "@/contexts/languageContext";
 import { useTheme } from "@/contexts/themeProvider";
 import { useState } from "react";
 
-export default function OrderNowButton({ onOrder }: { onOrder: () => Promise<void> }) {
+export default function OrderNowButton({ onOrder, disabled }: { onOrder: () => Promise<void>, disabled?: boolean }) {
   const [status, setStatus] = useState<"idle" | "loading" | "success">("idle");
   const { activeTheme } = useTheme();
   const { activeLanguage } = useLanguage();
 
   const handleOrder = async () => {
     if (status !== "idle") return;
-    
+
     setStatus("loading");
-    
+
     // محاكاة وقت المعالجة أو انتظار البروميس الفعلي
     const orderPromise = onOrder();
-    
+
     // ننتظر قليلاً ليرى المستخدم أنميشن التحميل
     await Promise.all([orderPromise, new Promise(res => setTimeout(res, 1500))]);
-    
+
     setStatus("success");
 
     // العودة للحالة العادية بعد 3 ثوانٍ (اختياري)
@@ -32,15 +32,15 @@ export default function OrderNowButton({ onOrder }: { onOrder: () => Promise<voi
   return (
     <button
       onClick={handleOrder}
-      disabled={status === "loading"}
-      className="flex flex-1 min-w-fit px-4 justify-center items-center w-12 h-12 text-sm sm:text-md rounded-xl cursor-pointer"
+      disabled={status === "loading" || disabled}
+      className={`flex flex-1 min-w-fit px-4 justify-center items-center w-12 h-12 text-sm sm:text-md rounded-xl cursor-pointer ${disabled ? 'opacity-30 grayscale' : ''}`}
       style={{
         backgroundColor: status === "success" ? "#000" : mainColor,
         color: status === "success" ? "#fff" : contrastColor,
       }}
     >
       {status === "loading" && (
-        <div 
+        <div
           className="absolute inset-0 bg-black/20 dark:bg-white/20 origin-left animate-progress"
           style={{ backgroundColor: isDark ? "rgba(0,0,0,0.2)" : "rgba(255,255,255,0.3)" }}
         />
