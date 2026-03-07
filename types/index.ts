@@ -224,6 +224,7 @@ export type LanguageStracture = {
   productNotFoundDesc: string,
   continueShopping: string,
   goBack: string
+  add: string
 }
 
 

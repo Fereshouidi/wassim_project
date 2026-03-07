@@ -98,10 +98,10 @@ const ProductActionPanel = ({
     const handleOrder = async () => {
 
         if (
-            !purchase._id ||
-            !clientForm.fullName ||
-            !clientForm.phone ||
-            !clientForm.address
+            !purchase?._id ||
+            !clientForm?.fullName ||
+            !clientForm?.phone ||
+            !clientForm?.address
         ) {
             return setRegisterSectionExist(true);
         }

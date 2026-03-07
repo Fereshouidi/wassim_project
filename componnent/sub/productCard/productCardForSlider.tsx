@@ -192,7 +192,7 @@ const ProductCard = ({
             animate="visible"
             variants={fadeInUp}
             whileTap={{ scale: 0.98 }}
-            className={`flex relative flex-col items-center gap-2 rounded-xl overflow-hidden cursor-pointer py-1 px-1 sm:py-2 sm:px-2 transition-all duration-300 ${className}`}
+            className={`flex relative flex-col items-center justify-between gap-2 rounded-xl overflow-hidden cursor-pointer py-1 px-1 sm:py-2 sm:px-2 transition-all duration-300 ${className}`}
             style={{
                 ...style,
                 color: colors.dark[200],
@@ -238,20 +238,27 @@ const ProductCard = ({
                 }
             </div>
 
-            <h4 className={`w-full text-[14px] sm:text-[16px] text-center px-2 font-medium`}>
+            <h4 className={`w-full min-h-5 rounded-xl text-[14px] sm:text-[16px] text-center px-2 font-medium`}>
                 {product.name[activeLanguage.language]
                     ? handleLongText(product.name[activeLanguage.language] + "", 15)
                     : <SkeletonLoading />
                 }
             </h4>
 
-            <span className={`min-w-[50%] font-bold text-center text-[17px] sm:text-lg`} style={{ color: colors.dark[100] }}>
-                {product.price != null ? product.price + " D.T" : <SkeletonLoading />}
-            </span>
+            <div className="min-w-22 min-h-4 rounded-xl flex items-center justify-center gap-2">
+                <span className={`w-full h-full rounded-xl font-bold text-center text-[17px] sm:text-lg`} style={{ color: colors.dark[100] }}>
+                    {product.price != null ? product.price + " D.T" : <SkeletonLoading />}
+                </span>
+                {product.oldPrice && product.oldPrice > (product.price || 0) && (
+                    <span className="text-xs sm:text-sm line-through opacity-30 mt-0.5">
+                        {product.oldPrice} DT
+                    </span>
+                )}
+            </div>
 
             <div className="w-full flex flex-row justify-between items-center gap-2 pt-2 border-t border-gray-50 px-1 sm:px-2">
                 <div
-                    className={`flex items-center justify-center gap-2 w-full sm:w-auto px-3 py-2 rounded-lg active:scale-95 transition-all cursor-pointer ${isInCart ? 'bg-green-50' : 'hover:bg-gray-100'}`}
+                    className={`flex items-center justify-center gap-2 w-full sm:w-auto px-1 py-2 rounded-lg active:scale-95 transition-all cursor-pointer ${isInCart ? 'bg-green-50' : 'hover:bg-gray-100'}`}
                     onClick={async (e) => {
                         e.stopPropagation();
                         if (!product || (product._id?.length || 0) < 3) return;
@@ -259,12 +266,13 @@ const ProductCard = ({
                     }}
                 >
                     <img
-                        src={activeTheme === "dark" ? "/icons/shopping-bag-white.png" : "/icons/shopping-bag-black.png"}
+                        src={activeTheme === "dark" || isInCart ? "/icons/shopping-bag-white.png" : "/icons/shopping-bag-black.png"}
                         className={`w-3.5 h-3.5 ${isInCart ? 'opacity-100' : 'opacity-70'}`}
+                        style={{ filter: isInCart ? "invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%)" : "none" }}
                         alt="Cart"
                     />
                     <span className={`text-[10px] sm:text-[11px] font-medium uppercase ${isInCart ? 'text-green-600' : 'text-gray-600'}`}>
-                        {isInCart ? "In Cart" : "Panier"}
+                        {isInCart ? activeLanguage.inCart : activeLanguage.add}
                     </span>
                 </div>
 

@@ -199,7 +199,7 @@ const Slider = ({
                             >
                                 <ProductLoading
                                     style={{ width: cardWidth }}
-                                    className='w-[100%] h-[90%] py-2-'
+                                    className=' h-[250px] h-fit- bg-red-500- sm:h-[320px] m-2- px-2 rounded-xl overflow-hidden'
                                 />
                             </div>
                         )}
