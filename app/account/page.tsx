@@ -22,6 +22,8 @@ import { ClientType } from '@/types';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
+import { LogOut } from 'lucide-react';
+
 
 const AccountPage = () => {
 
@@ -257,26 +259,24 @@ const AccountPage = () => {
                         </div>
 
                         {/* --- Action Buttons --- */}
-                        <div className='w-full mt-12 flex flex-col-reverse sm:flex-row items-center justify-between gap-4 pt-8 border-t border-gray-100 dark:border-gray-800'>
+                        <div className='w-full mt-12 flex flex-col-reverse sm:flex-row items-center justify-between gap-6 pt-8 border-t border-gray-100 dark:border-gray-800'>
 
-                            {/* Logout Button (Ghost Style for Secondary/Destructive) */}
+                            {/* Logout Button */}
                             <button
-                                className='group flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-red-500 font-medium hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors w-full sm:w-auto'
+                                className='group flex items-center justify-center gap-3 px-8 py-3 rounded-2xl text-red-500 font-bold hover:bg-red-50 dark:hover:bg-red-950/30 transition-all duration-300 w-full sm:w-auto active:scale-95 border border-transparent hover:border-red-100 dark:hover:border-red-900/30'
                                 onClick={handleLogout}
                             >
-                                <img
-                                    src="/icons/logout-red.png" // Ensure this icon works on light bg, or use CSS filter
-                                    className='w-4 h-4 opacity-70 group-hover:opacity-100 transition-opacity invert dark:invert-0' // Invert colors for light mode if icon is white
-                                    alt="Logout"
-                                />
+                                <LogOut className='w-4 h-4 opacity-70 group-hover:opacity-100 transition-opacity' />
+
                                 <span>{activeLanguage.logOut}</span>
                             </button>
 
-                            {/* Submit Button (Solid Primary) */}
+                            {/* Submit Button */}
                             <button
-                                className='w-full sm:w-auto min-w-[150px] flex justify-center items-center py-3 px-8 rounded-xl font-bold text-white shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200'
+                                className='w-full sm:w-auto min-w-[200px] flex justify-center items-center py-4 px-10 rounded-2xl font-black text-white shadow-xl hover:-translate-y-1 active:translate-y-0 transition-all duration-300 active:scale-[0.98]'
                                 style={{
-                                    backgroundColor: colors.dark[100], // Primary brand color
+                                    backgroundColor: colors.dark[100],
+                                    boxShadow: `0 10px 25px -5px ${colors.dark[100]}40`
                                 }}
                                 onClick={handleSubmit}
                             >

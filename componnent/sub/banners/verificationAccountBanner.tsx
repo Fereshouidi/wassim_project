@@ -2,6 +2,8 @@ import { useClient } from '@/contexts/client';
 import { useTheme } from '@/contexts/themeProvider'
 import { ClientType } from '@/types';
 import React, { useEffect, useState } from 'react'
+import { Search, Mail, X } from 'lucide-react';
+
 import CustomInputText from '../customInputText';
 import CustomBotton from '../customBotton';
 import axios from 'axios';
@@ -119,33 +121,34 @@ const VerificationAccountBanner = ({
 
     // Step 1: No clientFound yet — show email lookup form (forgot password flow)
     if (!clientFound) return (
-        <div
-            className='w-full h-full flex flex-col justify-center items-center rounded-xl'
-        >
-            <img
-                src={activeTheme == "dark" ? "/icons/close-white.png" : "/icons/close-black.png"}
-                className='w-10 h-10 p-3 absolute top-1 right-1 cursor-pointer'
+        <div className='w-full h-full flex flex-col justify-center items-center rounded-3xl p-8 transition-all duration-300' style={{ backgroundColor: colors.light[100] }}>
+            <X
+                className='w-5 h-5 absolute top-4 right-4 cursor-pointer hover:rotate-90 transition-transform duration-300 opacity-40 hover:opacity-100'
                 onClick={() => setVerificationAccountBannerVisible(false)}
             />
 
-            <div
-                className='w-full h-full flex flex-col justify-center items-center rounded-xl p-5'
-            >
-                <h2 className='font-bold text-lg m-8'>{activeLanguage.GetBackMyAccount}</h2>
 
-                <p className='text-center text-sm px-5'>{activeLanguage.GetBackMyAccountParagraph}</p>
+            <div className='w-full flex flex-col items-center animate-in slide-in-from-bottom-4 duration-500'>
+                <div className="w-16 h-16 bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl flex items-center justify-center mb-6 shadow-sm border border-indigo-100/50">
+                    <Search className="w-8 h-8 opacity-80" style={{ color: colors.dark[100] }} />
+                </div>
 
-                <div className='w-[300px] my-5 flex flex-col justify-center items-center'>
+
+                <h2 className='font-black text-2xl tracking-tight mb-3 text-center'>{activeLanguage.GetBackMyAccount}</h2>
+                <p className='text-center text-sm font-medium opacity-60 px-4 leading-relaxed mb-8'>
+                    {activeLanguage.GetBackMyAccountParagraph}
+                </p>
+
+                <div className='w-full max-w-[320px] flex flex-col gap-5'>
                     <CustomInputText
-                        label='type your email here'
-                        placeholder='email...'
-                        className=''
-                        type={'email'}
+                        label='Email Address'
+                        placeholder='name@example.com'
+                        type='email'
                         onChange={(e) => setEmailInput(e.target.value)}
                     />
                     <CustomBotton
-                        label={'send'}
-                        className='my-2 px-3 py-2'
+                        label='Find Account'
+                        className='w-full h-12 shadow-lg'
                         onclick={getClientByEmail}
                     />
                 </div>
@@ -155,41 +158,48 @@ const VerificationAccountBanner = ({
 
     // Step 2: clientFound is set — show token input form
     return (
-        <div
-            className='w-full h-full flex flex-col justify-center items-center rounded-xl'
-        >
-            <img
-                src={activeTheme == "dark" ? "/icons/close-white.png" : "/icons/close-black.png"}
-                className='w-10 h-10 p-3 absolute top-1 right-1 cursor-pointer'
+        <div className='w-full h-full flex flex-col justify-center items-center rounded-3xl p-8 transition-all duration-300' style={{ backgroundColor: colors.light[100] }}>
+            <X
+                className='w-5 h-5 absolute top-4 right-4 cursor-pointer hover:rotate-90 transition-transform duration-300 opacity-40 hover:opacity-100'
                 onClick={() => setVerificationAccountBannerVisible(false)}
             />
 
-            <div
-                className='w-full h-full flex flex-col justify-center items-center rounded-xl p-5'
-            >
-                <h2 className='font-bold text-lg m-8'>{activeLanguage.GetBackMyAccount}</h2>
 
-                <p className='text-center text-sm'>{activeLanguage.sendingEmailParagraph + " " + clientFound.email}</p>
+            <div className='w-full flex flex-col items-center animate-in slide-in-from-bottom-4 duration-500'>
+                <div className="w-16 h-16 bg-green-50 dark:bg-green-900/20 rounded-2xl flex items-center justify-center mb-6 shadow-sm border border-green-100/50">
+                    <Mail className="w-8 h-8 opacity-80" style={{ color: colors.dark[100] }} />
+                </div>
 
-                <div className='w-[250px] my-5 flex flex-col justify-center items-center'>
+
+                <h2 className='font-black text-2xl tracking-tight mb-3 text-center'>Verify Identity</h2>
+                <p className='text-center text-sm font-medium opacity-60 px-4 leading-relaxed mb-2'>
+                    We've sent a 4-digit code to:
+                </p>
+                <p className='text-center text-sm font-bold mb-8 px-4 opacity-100 italic' style={{ color: colors.dark[100] }}>
+                    {clientFound.email}
+                </p>
+
+                <div className='w-full max-w-[280px] flex flex-col items-center gap-6'>
                     <CustomInputText
-                        label='type the code here'
-                        placeholder='Code...'
-                        className=''
-                        type={'number'}
+                        label='Enter 4-Digit Code'
+                        placeholder='0000'
+                        type='number'
+                        inputStyle={{ textAlign: 'center', fontSize: '24px', letterSpacing: '8px' }}
                         onChange={(e) => setInputToken(Number(e.target.value))}
                     />
+
                     <CustomBotton
-                        label={'submit'}
-                        className='my-2 px-3 py-2'
+                        label={activeLanguage.submit}
+                        className='w-full h-12 shadow-lg shadow-indigo-500/10'
                         onclick={handleVerification}
                     />
-                    <h6
-                        className='w-fit cursor-pointer underline text-sm opacity-70'
-                        onClick={() => clientFound._id && handleSendVerificationCode(clientFound._id as string)}
-                    >
-                        {activeLanguage.resend}
-                    </h6>
+
+                    <div className="flex flex-col items-center gap-1 group cursor-pointer" onClick={() => clientFound._id && handleSendVerificationCode(clientFound._id as string)}>
+                        <p className='text-xs font-medium opacity-50'>Didn't receive a code?</p>
+                        <h6 className='font-black text-xs underline decoration-2 underline-offset-4' style={{ color: colors.dark[100] }}>
+                            {activeLanguage.resend}
+                        </h6>
+                    </div>
                 </div>
 
             </div>

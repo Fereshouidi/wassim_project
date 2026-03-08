@@ -38,31 +38,32 @@ const CustomInputText = ({
     maxLength
 }: Props) => {
 
-    const {activeLanguage } = useLanguage();
+    const { activeLanguage } = useLanguage();
     const { colors } = useTheme();
 
     return (
-        <div 
-            className={`w-full  ${className}`}
+        <div
+            className={`w-full group ${className}`}
             style={{
                 ...style
             }}
         >
 
             <h4
-                className={`ml-5 my-3 text-[14px] ${labelClassName}`}
+                className={`ml-1 mb-2 text-[13px] font-bold transition-colors ${labelClassName}`}
                 style={{
-                    color: colors.dark[150],
+                    color: colors.dark[200],
                     ...LabelStyle
                 }}
             >
-                {label + " : "}
+                {label}
             </h4>
 
-            <input 
-                className={` w-full h-12 rounded-xl bg-blue-500- text-[12px] p-2 outline-0- ${inputClassName}`}
+            <input
+                className={`w-full h-11 rounded-xl bg-transparent text-[13px] px-4 outline-none transition-all duration-300 border focus:ring-2 focus:ring-opacity-20 ${inputClassName}`}
                 style={{
-                    border: `1px solid ${colors.light[500]}` ,
+                    borderColor: colors.light[500],
+                    color: colors.dark[100],
                     ...inputStyle
                 }}
                 type={type}
@@ -74,7 +75,6 @@ const CustomInputText = ({
                 minLength={minLength}
                 maxLength={maxLength}
             />
-            
 
         </div>
     )

@@ -37,7 +37,7 @@ const SideBar = ({
     return (
         <div
             className={`
-            w-screen h-dvh z-50 fixed top-0 left-0
+            w-screen h-dvh z-[70] fixed top-0 left-0
             transition-all duration-300 ease-in-out
             ${isActive ? "opacity-100 visible" : "opacity-0 invisible delay-300"} 
             no-sellect
@@ -197,18 +197,27 @@ const SideBar = ({
                         </li>
 
                         <li
-                            className='flex h-14 border-b-[1px] border-b-gray-100 text-sm cursor-pointer'
-                            style={{
-                                borderBottomColor: colors.dark[200]
-                            }}
+                            className='flex h-16 text-sm cursor-pointer my-2 px-3'
                         >
                             <span
-                                onClick={() => setBubbleProps({ ...bubbleProps, exist: true })}
-                                className='w-full h-full flex items-center px-7'
-                                style={{
-                                    color: colors.light[200]
+                                onClick={() => {
+                                    setBubbleProps({ ...bubbleProps, exist: true });
+                                    setIsActive(false);
                                 }}
-                            >{activeLanguage.nav.askAi}</span>
+                                className='w-full h-full flex items-center gap-3 px-5 rounded-2xl font-bold transition-all duration-300 hover:scale-[1.02]'
+                                style={{
+                                    background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.01), rgba(168, 85, 247, 0.01), rgba(236, 72, 153, 0.01))',
+                                    color: '#c4b5fd',
+                                    border: '1px solid rgba(139, 92, 246, 0.02)',
+                                }}
+                            >
+                                {/* <span className="text-lg">✨</span> */}
+                                <span className="flex-1">{activeLanguage.nav.askAi}</span>
+                                <span className="relative flex h-2.5 w-2.5">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-purple-500"></span>
+                                </span>
+                            </span>
                         </li>
 
                     </ul>

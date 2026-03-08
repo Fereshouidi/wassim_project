@@ -104,16 +104,17 @@ const AiChatBubble = () => {
                 limit: limit,
                 skip: currentSkip
             });
-            lastLoadedCountRef.current = data.length;
-            if (data.length < limit) setHasMore(false);
+            const messages = Array.isArray(data) ? data : (data.messages || []);
+            lastLoadedCountRef.current = messages.length;
+            if (messages.length < limit) setHasMore(false);
             pendingScrollRestore.current = currentSkip === 0 ? 'bottom' : 'preserve';
             setIsLoadingMore(false);
             if (currentSkip === 0) {
-                setHistory(data);
+                setHistory(messages);
             } else {
-                setHistory(prev => [...data, ...prev]);
+                setHistory(prev => [...messages, ...prev]);
             }
-            setSkip(currentSkip + data.length);
+            setSkip(currentSkip + messages.length);
         } catch (err) {
             console.error("History Error:", err);
             setIsLoadingMore(false);
@@ -226,7 +227,7 @@ const AiChatBubble = () => {
             <div ref={scrollRef} onScroll={(e) => e.currentTarget.scrollTop <= 100 && !isLoadingMore && hasMore && fetchChatHistory(skip)} className="p-4 md:p-6 h-[50vh] min-h-[300px] overflow-y-auto custom-scrollbar flex flex-col gap-6">
                 {isLoadingMore && <div className="h-4 bg-current/5 rounded w-1/3 self-center animate-pulse" />}
                 <div className={`prose prose-sm max-w-none ${isDark ? 'prose-invert' : ''}`}>
-                    {history.map((msg, idx) => (
+                    {(Array.isArray(history) ? history : []).map((msg, idx) => (
                         <div key={history.length - idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} mb-2`}>
                             <div className={`max-w-[88%] px-5 py-3 rounded-[22px] text-[14px] leading-relaxed shadow-sm ${msg.role === 'user' ? 'bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-tr-none' : 'bg-current/5 border border-current/5 rounded-tl-none'}`}>
                                 <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]} components={{

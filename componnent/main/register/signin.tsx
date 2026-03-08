@@ -15,14 +15,16 @@ import { getDeviceId } from '@/lib';
 import { ClientType, SignInForm, SignUpForm } from '@/types';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
+import { LockKeyhole } from 'lucide-react';
+
 
 type props = {
     activePage: "signIn" | "signUp"
     setActivePage: (value: "signIn" | "signUp") => void
-    signInForm: SignInForm, 
-    setSignInForm: (value: SignInForm) =>void
-    setRegisterSectionExist: (value: boolean) =>void
-    clientFound?: ClientType, 
+    signInForm: SignInForm,
+    setSignInForm: (value: SignInForm) => void
+    setRegisterSectionExist: (value: boolean) => void
+    clientFound?: ClientType,
     setClientFound?: (value: ClientType) => void
     setVerificationAccountBannerVisible: (value: boolean) => void
 }
@@ -30,7 +32,7 @@ type props = {
 const SignIn = ({
     activePage,
     setActivePage,
-    signInForm, 
+    signInForm,
     setSignInForm,
     setRegisterSectionExist,
     clientFound,
@@ -39,7 +41,7 @@ const SignIn = ({
 }: props) => {
 
     const { registerSectionExist } = useRegisterSection();
-    const {activeLanguage } = useLanguage();
+    const { activeLanguage } = useLanguage();
     const { colors } = useTheme();
     const { client, setClient } = useClient();
     const { setStatusBanner } = useStatusBanner();
@@ -48,60 +50,60 @@ const SignIn = ({
 
     const getClient = async () => {
         const deviceId = await getDeviceId();
-        await axios.get( backEndUrl + "/validateClientLogin", {
+        await axios.get(backEndUrl + "/validateClientLogin", {
             params: {
                 fullName: signInForm.fullName,
                 password: signInForm.password,
                 deviceId
             }
         })
-        .then(({data}) => {
+            .then(({ data }) => {
 
-            setStatusBanner(true, null, 
-                <div>
-                    <WelcomeIcon
-                        title={activeLanguage.welcomeBackMr + (signInForm.fullName.includes(' ') ? signInForm.fullName.slice(0, signInForm.fullName.indexOf(' ')) : signInForm.fullName) + '🖐️'}
-                        subtitle={activeLanguage.thanksForComingBack}
-                    />
-                </div>
-            )
-                            
-            if (data.client.token) {
-                localStorage.setItem("clientToken", data.client.token.toString());
-            }
-            setClient(data.client);
-            setClientFound && setClientFound(data.client as ClientType);
-            setRegisterSectionExist(false);
-        })
-        .catch((err) => {
+                setStatusBanner(true, null,
+                    <div>
+                        <WelcomeIcon
+                            title={activeLanguage.welcomeBackMr + (signInForm.fullName.includes(' ') ? signInForm.fullName.slice(0, signInForm.fullName.indexOf(' ')) : signInForm.fullName) + '🖐️'}
+                            subtitle={activeLanguage.thanksForComingBack}
+                        />
+                    </div>
+                )
 
-            if (err.status == 401) {
-                
-                setClientFound && setClientFound(err.response.data.client);
+                if (data.client.token) {
+                    localStorage.setItem("clientToken", data.client.token.toString());
+                }
+                setClient(data.client);
+                setClientFound && setClientFound(data.client as ClientType);
+                setRegisterSectionExist(false);
+            })
+            .catch((err) => {
+
+                if (err.status == 401) {
+
+                    setClientFound && setClientFound(err.response.data.client);
+                    setStatusBanner(
+                        true,
+                        null,
+                        <WrongPasswordBanner
+                            isVisible={true}
+                            message={activeLanguage.wrongPassword}
+                            onClose={() => setStatusBanner(false)}
+                        />
+                    )
+                    return;
+
+
+                }
+
                 setStatusBanner(
                     true,
                     null,
-                    <WrongPasswordBanner 
+                    <AccountNotFoundBanner
                         isVisible={true}
-                        message={activeLanguage.wrongPassword}
+                        message={activeLanguage.AccountWithTheseNameAndPasswordNotFound}
                         onClose={() => setStatusBanner(false)}
                     />
                 )
-                return;
-                
-
-            }
-
-            setStatusBanner(
-                true,
-                null,
-                <AccountNotFoundBanner 
-                    isVisible={true}
-                    message={activeLanguage.AccountWithTheseNameAndPasswordNotFound}
-                    onClose={() => setStatusBanner(false)}
-                />
-            )
-        })
+            })
     }
 
     const handleSignInButtonClicked = async () => {
@@ -109,7 +111,7 @@ const SignIn = ({
         if (!signInForm.fullName || !signInForm.password) return setStatusBanner(
             true,
             null,
-            <RequiredFieldsBanner 
+            <RequiredFieldsBanner
                 isVisible={true}
                 message={activeLanguage.allFildAreRequired}
                 onClose={() => setStatusBanner(false)}
@@ -129,26 +131,40 @@ const SignIn = ({
     const handleForgetPasswordClicked = async () => {
         setVerificationAccountBannerVisible(true);
     }
-        
+
     return (
-        <div 
-            className="w-full h-full overflow-y-scroll flex flex-col justify-center- items-center text-2xl font-bold bg-red-500- rounded-xl p-5 scrollbar-hidden"
+        <div
+            className="w-full h-full overflow-y-auto flex flex-col items-center bg-white rounded-3xl p-8 shadow-2xl scrollbar-hidden transition-all duration-300"
             style={{
                 backgroundColor: colors.light[100],
-                boxShadow: `0 10px 25px ${colors.dark[500]}`
             }}
         >
+            {/* --- Brand / Icon Section --- */}
+            <div className="mb-6 flex flex-col items-center">
+                <div
+                    className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4 shadow-inner"
+                    style={{ backgroundColor: colors.light[200] }}
+                >
+                    <LockKeyhole
+                        className="w-8 h-8 opacity-80"
+                        style={{ color: colors.dark[100] }}
+                    />
 
-            <h2 
-                className='my-6 font-2xl'
-            >{activeLanguage.signIn}</h2>
+                </div>
+                <h2 className='text-2xl font-black tracking-tight self-center'>
+                    {activeLanguage.signIn}
+                </h2>
+                <p className='text-xs font-medium opacity-50 mt-1 text-center'>
+                    Sign in to your account to continue
+                </p>
+            </div>
 
-            <div className='w-full px-4'>
+            <div className='w-full'>
 
                 <CustomInputText
                     label={activeLanguage.sideMatter.fullName}
                     placeholder={activeLanguage.inputYourName + ' ...'}
-                    className='my-5'
+                    className='mb-4'
                     type='text'
                     value={signInForm.fullName}
                     onChange={(e) => {
@@ -162,8 +178,8 @@ const SignIn = ({
                 <CustomInputText
                     label={activeLanguage.sideMatter.password}
                     placeholder={activeLanguage.inputYourPassword}
-                    className='my-5'
-                    type='text'
+                    className='mb-2'
+                    type='password'
                     value={signInForm.password}
                     onChange={(e) => {
                         setSignInForm({
@@ -173,42 +189,43 @@ const SignIn = ({
                     }}
                 />
 
-                <p  
-                    className='text-[12px] w-full text-center- pl-4 pt-5- pb-2-  opacity-50- cursor-pointer'
-                    style={{
-                        color: colors.dark[400]
-                    }}
-                    onClick={handleForgetPasswordClicked}
-                >                    
-                    {activeLanguage.forgotPassword} 
-                </p>
+                <div className="w-full flex justify-end px-1 mb-8">
+                    <p
+                        className='text-[12px] font-bold cursor-pointer hover:underline'
+                        style={{
+                            color: colors.dark[400]
+                        }}
+                        onClick={handleForgetPasswordClicked}
+                    >
+                        {activeLanguage.forgotPassword}
+                    </p>
+                </div>
 
                 <CustomBotton
                     label={activeLanguage.signIn}
-                    className='mt-2 w-full h-12 text-[14px]'
+                    className='w-full h-12 shadow-xl'
                     onclick={handleSignInButtonClicked}
                 />
 
-                <p  
-                    className='text-[13px] w-full text-center pt-5 pb-2  opacity-50-'
-                    style={{
-                        color: colors.dark[700]
-                    }}
-                >                    
-                    {activeLanguage.DontHaveAnAccount} 
-                    <span 
+                <div className='mt-8 pt-6 border-t w-full border-gray-100 flex flex-col items-center'>
+                    <p
+                        className='text-[13px] font-medium opacity-60 mb-2'
+                        style={{ color: colors.dark[200] }}
+                    >
+                        {activeLanguage.DontHaveAnAccount}
+                    </p>
+                    <button
                         onClick={() => setActivePage("signUp")}
-                        className='ml-2 cursor-pointer text-gray-500- underline'
+                        className='text-sm font-black underline hover:scale-105 transition-transform'
                         style={{
                             color: colors.dark[100]
                         }}
                     >
                         {activeLanguage.signUp}
-                    </span>
-                </p>
+                    </button>
+                </div>
 
             </div>
-
 
         </div>
     )

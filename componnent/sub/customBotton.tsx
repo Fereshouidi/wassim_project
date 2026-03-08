@@ -16,13 +16,13 @@ const CustomBotton = ({
 }: Props) => {
 
     const { colors } = useTheme();
-    
+
     return (
-        <button 
-            className={`${className} w-full- max-h-10 text-[14px]- rounded-xl cursor-pointer`}
+        <button
+            className={`flex items-center justify-center gap-2 h-11 px-6 rounded-xl font-bold cursor-pointer transition-all duration-300 hover:-translate-y-0.5 active:scale-95 shadow-md hover:shadow-lg ${className}`}
             style={{
                 backgroundColor: colors.dark[100],
-                color: colors.light[200],
+                color: 'white',
                 ...style
             }}
             onClick={onclick}

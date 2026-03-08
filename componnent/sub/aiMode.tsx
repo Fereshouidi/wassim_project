@@ -1,6 +1,5 @@
 import { useScreen } from '@/contexts/screenProvider';
 import { useTheme } from '@/contexts/themeProvider';
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import React, { CSSProperties, useState } from 'react'
 
 type PropsType = {
@@ -19,76 +18,65 @@ const AiMode = ({
 
     const [aiModeHover, setAiModeHover] = useState<boolean>(false);
     const { activeTheme, colors } = useTheme();
-    const aiIcon = "/ai.png"
     const { screenWidth } = useScreen();
-    
-    // activeTheme == "dark" ? "/icons/ai_black.png" : "/icons/ai_black.png" 
-    
+
     return (
-
-        <div 
-            className={`${screenWidth > 1000 || aiModeActive ? 'w-[100px]' : 'w-[50px]'} h-[80%] flex justify-center items-center relative overflow-hidden m-3 rounded-full transition-[width] duration-300`}
-            onClick={() => {
-                setAiModeActive(!aiModeActive)
-                setAiModeHover(aiModeActive ? false : aiModeHover)
-            }}
-        >
-
-            <div    
-                className={`${screenWidth > 1000 || aiModeActive ? 'w-[97px] p-3' : 'w-[47px] p-2'} h-[93%] flex justify-center items-center rounded-full z-10 overflow-hidden relative transition-[width] duration-300`}
-                style={{
-                    ...aiIconStyle,
-                    // backgroundColor: colors.light[200]
-                    
+        <>
+            <div
+                className={`${screenWidth > 1000 || aiModeActive ? 'w-[100px]' : 'w-[50px]'} h-[80%] flex justify-center items-center relative overflow-hidden m-3 rounded-full transition-[width] duration-300 cursor-pointer`}
+                onClick={() => {
+                    setAiModeActive(!aiModeActive)
+                    setAiModeHover(aiModeActive ? false : aiModeHover)
                 }}
-                onClick={() => setAiModeActive(!aiModeActive)}
-                onMouseEnter={() => setAiModeHover(true)}
-                onMouseLeave={() => setAiModeHover(false)}
             >
-                <h4 
-                    className={`
-                        text-sm ${screenWidth > 1000 || aiModeActive ? "opacity-100" : "opacity-0 invisible w-0"} 
-                        z-10 transition-[width] duration-300- whitespace-nowrap block text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-red-500
-                    `}
+                {/* Inner content */}
+                <div
+                    className={`${screenWidth > 1000 || aiModeActive ? 'w-[97px] p-3' : 'w-[47px] p-2'} h-[93%] flex justify-center items-center rounded-full z-10 overflow-hidden relative transition-[width] duration-300`}
                     style={{
-                        // color: colors.dark[400]
-                        ...aiIconContentStyle
+                        ...aiIconStyle,
                     }}
-                >Ai mode</h4>
+                    onMouseEnter={() => setAiModeHover(true)}
+                    onMouseLeave={() => setAiModeHover(false)}
+                >
+                    <h4
+                        className={`
+                            text-sm ${screenWidth > 1000 || aiModeActive ? "opacity-100 mr-2" : "opacity-0 invisible w-0"} 
+                            z-10 mr-2- whitespace-nowrap block text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 font-bold-
+                        `}
+                        style={{
+                            ...aiIconContentStyle
+                        }}
+                    >AI mode</h4>
 
-                <img 
-                    className='rounded-xl cursor-pointer mx-2 h-[80%] z-10'
-                    src={aiIcon} 
-                    alt="" 
+                    <img
+                        src="/ai.png"
+                        alt="AI"
+                        className="w-4 h-4 mr-1 object-contain relative z-10"
+                    />
+                </div>
+
+                {/* CSS Animated Gradient Background */}
+                <div
+                    className="absolute inset-0 rounded-full z-0 ai-gradient-bg"
                     style={{
-                        // backgroundColor: colors.dark[100]
-                        // ...searchIconStyle,
+                        background: 'linear-gradient(135deg, #6366f1, #a855f7, #ec4899, #6366f1)',
+                        backgroundSize: '300% 300%',
                     }}
                 />
-
             </div>
-        
 
-            <video 
-                src={"/AIBg.webm"}
-                autoPlay={true}
-                loop={true}
-                className={`absolute w-[500%] h-[500%] object-cover pointer-events-none opacity-100 transition-[width] duration-300 z-0`}
-            ></video>
-
-                        {/* <DotLottieReact
-                src={"/AIBg.json"}
-                autoplay
-                loop
-                // muted
-                className={`absolute w-[500%] h-[500%] object-cover pointer-events-none opacity-100 transition-[width] duration-300 z-0`}
-            /> */}
-        
-        </div>
+            <style jsx>{`
+                .ai-gradient-bg {
+                    animation: ai-gradient-shift 4s ease infinite;
+                }
+                @keyframes ai-gradient-shift {
+                    0% { background-position: 0% 50%; }
+                    50% { background-position: 100% 50%; }
+                    100% { background-position: 0% 50%; }
+                }
+            `}</style>
+        </>
     )
 }
 
 export default AiMode
-
-
-// AIBg

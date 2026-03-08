@@ -29,8 +29,8 @@ const CartSide = () => {
     const [confirmBTNWorks, setConfirmBTNWorks] = useState(false);
 
     useEffect(() => {
-        if(client) {
-             setClientForm({
+        if (client) {
+            setClientForm({
                 fullName: client.fullName || "",
                 address: client.address || "",
                 phone: client.phone ? String(client.phone) : "",
@@ -52,17 +52,17 @@ const CartSide = () => {
         setLoadingScreen(true);
 
         const purchasesId = purchases.map(p => p._id);
-        
+
         // --- FIX APPLIED HERE ---
         const orderData = {
             clientId: client._id, // Keep this for backend logic if needed
-            orderForm: { 
-                ...clientForm, 
+            orderForm: {
+                ...clientForm,
                 client: client._id, // ADDED: This satisfies Mongoose's "client" required field
                 shippingCoast: ownerInfo?.shippingCost, // Spelled correctly as Cost
-                clientNote: clientForm.note 
-            }, 
-            purchasesId 
+                clientNote: clientForm.note
+            },
+            purchasesId
         };
 
         try {
@@ -81,14 +81,13 @@ const CartSide = () => {
     };
 
     return (
-        <div 
-            className={`fixed inset-0 z-[100] transition-all duration-500 ease-in-out backdrop-blur-[2px] ${
-                isActive ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-            }`}
+        <div
+            className={`fixed inset-0 z-[100] transition-all duration-500 ease-in-out backdrop-blur-[2px] ${isActive ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+                }`}
             style={{ backgroundColor: "rgba(0, 0, 0, 0.4)" }}
             onClick={() => setIsActive(false)}
         >
-            <div 
+            <div
                 className={`
                     w-[90vw] sm:w-[450px] h-full absolute right-0 top-0 
                     flex flex-col shadow-2xl transition-transform duration-300
@@ -100,11 +99,29 @@ const CartSide = () => {
                 {/* --- HEADER --- */}
                 <div className='flex justify-between items-center px-6 py-5 border-b' style={{ borderColor: colors.light[300] }}>
                     <div className='flex gap-3 items-center'>
-                        <img 
-                            src={activeTheme === "dark" ? "/icons/shopping-bag-white.png" : "/icons/shopping-bag-black.png"} 
-                            className='w-5 h-5 opacity-80' alt="cart" 
+                        <img
+                            src={activeTheme === "dark" ? "/icons/shopping-bag-white.png" : "/icons/shopping-bag-black.png"}
+                            className='w-5 h-5 opacity-80' alt="cart"
                         />
-                        <h2 className='font-bold text-sm tracking-wide uppercase'>{activeLanguage.myCart}</h2>
+                        <div className='flex items-center gap-3'>
+                            <h2 className='font-black text-sm tracking-wide uppercase'>{activeLanguage.myCart}</h2>
+                            {client?._id && (
+                                <button
+                                    onClick={() => { router.push(`/orders`); setIsActive(false) }}
+                                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border transition-all duration-300 hover:scale-105 active:scale-95 group"
+                                    style={{ borderColor: colors.light[300], backgroundColor: colors.light[200] }}
+                                >
+                                    <img
+                                        src={activeTheme === "dark" ? "/icons/open-box-white.png" : "/icons/open-box-black.png"}
+                                        className="w-3 h-3 opacity-60 group-hover:opacity-100"
+                                        alt="orders"
+                                    />
+                                    <span className="text-[9px] font-black uppercase tracking-widest opacity-60 group-hover:opacity-100">
+                                        {activeLanguage.viewMyOrder}
+                                    </span>
+                                </button>
+                            )}
+                        </div>
                         <span className='px-2 py-0.5 rounded-xl text-[10px] font-bold opacity-60' style={{ backgroundColor: colors.light[300] }}>
                             {purchases.length}
                         </span>
@@ -119,7 +136,7 @@ const CartSide = () => {
                 <div className='flex-1 overflow-y-scroll px-2 sm:px-6 py-6 scrollbar-hidden-'>
                     {purchases.length === 0 ? (
                         <div className='h-full flex flex-col justify-center items-center opacity-40 gap-4'>
-                            <img src="/icons/shopping-bag-black.png" className="w-12 h-12 grayscale opacity-20" alt=""/>
+                            <img src="/icons/shopping-bag-black.png" className="w-12 h-12 grayscale opacity-20" alt="" />
                             <p className="text-sm font-medium uppercase tracking-widest">{activeLanguage.emptyCart}</p>
                         </div>
                     ) : (
@@ -129,7 +146,7 @@ const CartSide = () => {
                                     <PurchaseItem key={purchase._id || index} purchase={purchase} setPurchases={setPurchases} />
                                 ))}
                             </div>
-                            
+
                             <div className='border-t border-dashed' style={{ borderColor: colors.light[300] }} />
 
                             <div className='space-y-6'>
@@ -145,20 +162,12 @@ const CartSide = () => {
                 {/* --- FOOTER --- */}
                 <div className='p-5 border-t space-y-2 z-10' style={{ borderColor: colors.light[300], backgroundColor: colors.light[100] }}>
                     <button
-                        className={`w-full h-12 rounded-xl font-bold text-xs uppercase tracking-widest transition-all active:scale-[0.99] flex items-center justify-center ${
-                            confirmBTNWorks ? "hover:brightness-110" : "opacity-30 cursor-not-allowed grayscale"
-                        }`}
+                        className={`w-full h-12 rounded-xl font-bold text-xs uppercase tracking-widest transition-all active:scale-[0.99] flex items-center justify-center cursor-pointer ${confirmBTNWorks ? "hover:brightness-110" : "opacity-30 cursor-not-allowed grayscale"
+                            }`}
                         style={{ backgroundColor: colors.dark[100], color: colors.light[100] }}
                         onClick={handleConfirm}
                     >
                         {activeLanguage.confirmOrder}
-                    </button>
-                    <button
-                        className='w-full h-12 rounded-xl font-bold text-xs uppercase tracking-widest border transition-all active:scale-[0.99]'
-                        style={{ color: colors.dark[100], borderColor: colors.dark[100] }}
-                        onClick={() => {router.push(`/orders`); setIsActive(false)}}
-                    >
-                        {activeLanguage.viewMyOrder}
                     </button>
                 </div>
             </div>

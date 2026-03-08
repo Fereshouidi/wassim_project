@@ -36,6 +36,8 @@ const CollectionCard = ({
 
     const handleCardClicked = () => {
 
+        if (isLoading) return;
+
         let filter = null;
         try {
             filter = JSON.parse(localStorage.getItem("searchFilter") ?? "") as unknown as FiltrationType;
@@ -66,18 +68,18 @@ const CollectionCard = ({
             whileInView="visible"
             viewport={{ once: true, margin: "-20px" }}
             variants={fadeInUp}
-            whileTap={{ scale: 0.98 }}
-            className='w-[320px] sm:w-[250px] max-h-[320px] sm:max-h-[270px] rounded-xl cursor-pointer overflow-hidden transition-all duration-300'
+            whileTap={isLoading ? undefined : { scale: 0.98 }}
+            className={`w-[320px] sm:w-[250px] max-h-[320px] sm:max-h-[270px] rounded-2xl overflow-hidden transition-all duration-500 group ${isLoading ? 'cursor-default' : 'cursor-pointer'}`}
             style={{
                 backgroundColor: colors.light[100],
-                boxShadow: activeTheme === 'dark' ? '0 10px 30px rgba(0,0,0,0.3)' : '0 10px 30px rgba(0,0,0,0.05)',
+                boxShadow: activeTheme === 'dark' ? `0 10px 30px rgba(0,0,0,0.5)` : `0 10px 30px ${colors.light[400]}`,
                 border: `0.5px solid ${colors.light[400]}`
             }}
             onClick={handleCardClicked}
         >
 
             <div
-                className='w-full h-[270px] sm:h-[220px] flex flex-1 '
+                className='w-full h-[270px] sm:h-[220px] flex flex-1 overflow-hidden'
                 style={{
                     backgroundColor: colors.light[300],
                     border: 'none'
@@ -87,7 +89,7 @@ const CollectionCard = ({
                     <img
                         src={collection.thumbNail}
                         alt=""
-                        className='w-full h-full'
+                        className='w-full h-full object-cover transition-transform duration-500 group-hover:scale-110'
                     /> :
                     isLoading ?
                         <SkeletonLoading />

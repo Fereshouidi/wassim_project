@@ -19,6 +19,9 @@ import StatusBanner from "@/componnent/sub/banners/statusBanner";
 import LoadingScreen from "@/componnent/sub/loading/loadingScreen";
 import AiChatBubble from "@/componnent/sub/ai/AiChatBubble";
 import CartSide from "@/componnent/main/cartSide";
+import ScrollToTop from "@/componnent/sub/ScrollToTop";
+import AiFloatingButton from "@/componnent/sub/AiFloatingButton";
+
 
 export default function LayoutContent({
   children,
@@ -38,14 +41,14 @@ export default function LayoutContent({
       try {
         // 1. Get Device ID (Crucial for direct links/tracking)
         const deviceId = await getDeviceId();
-        
+
         // 2. Retrieve token from Local Storage
         const token = localStorage.getItem("clientToken");
 
         // 3. Parallel fetch of Owner and Client data for performance optimization
         const [ownerRes, clientRes] = await Promise.all([
           axios.get(`${backEndUrl}/getOwnerInfo`),
-          (token || deviceId) 
+          (token || deviceId)
             ? axios.get(`${backEndUrl}/getClientByToken`, { params: { token, deviceId } })
             : Promise.resolve({ data: { client: null } })
         ]);
@@ -78,9 +81,16 @@ export default function LayoutContent({
       {statusBannerExist && <StatusBanner />}
       {loadingScreen && <LoadingScreen />}
       {bubbleProps?.exist && <AiChatBubble />}
-      
+
       {/* Side Cart - Persistent across Layout */}
       <CartSide />
+
+      {/* Scroll to top button */}
+      <ScrollToTop />
+
+      {/* AI Floating Assistant Button */}
+      <AiFloatingButton />
     </>
+
   );
 }

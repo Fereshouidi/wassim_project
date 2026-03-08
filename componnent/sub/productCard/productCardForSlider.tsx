@@ -226,33 +226,39 @@ const ProductCard = ({
             </div>}
 
             <div
-                className='w-full h-[150px] sm:h-[300px] pt-2- bg-red-500- rounded-xl overflow-hidden'
+                className='w-full h-[150px] sm:h-[280px] pt-2- bg-red-500- rounded-xl overflow-hidden'
                 style={{ backgroundColor: colors.light[300] }}
             >
                 {
                     product.thumbNail ? <img
                         src={product.thumbNail}
-                        className='w-full h-full rounded-xl overflow-hidden hover:scale-110 duration-300 object-cover'
+                        className='w-full h-full rounded-2xl overflow-hidden hover:scale-110 duration-300 object-cover'
                         alt={product.name[activeLanguage.language] || ""}
                     /> : <SkeletonLoading />
                 }
             </div>
 
-            <h4 className={`w-full min-h-5 rounded-xl text-[14px] sm:text-[16px] text-center px-2 font-medium`}>
-                {product.name[activeLanguage.language]
+            <h4 className={`w-full h-7 flex items-center justify-center rounded-xl overflow-hidden z-50 text-[14px] sm:text-[16px] text-center px-4 font-medium`}>
+                {product.name?.[activeLanguage.language]
                     ? handleLongText(product.name[activeLanguage.language] + "", 15)
-                    : <SkeletonLoading />
+                    : <div className="w-28 h-4 opacity-50"><SkeletonLoading /></div>
                 }
             </h4>
 
-            <div className="min-w-22 min-h-4 rounded-xl flex items-center justify-center gap-2">
-                <span className={`w-full h-full rounded-xl font-bold text-center text-[17px] sm:text-lg`} style={{ color: colors.dark[100] }}>
-                    {product.price != null ? product.price + " D.T" : <SkeletonLoading />}
-                </span>
-                {product.oldPrice && product.oldPrice > (product.price || 0) && (
-                    <span className="text-xs sm:text-sm line-through opacity-30 mt-0.5">
-                        {product.oldPrice} DT
-                    </span>
+            <div className={`w-fit min-w-[90px] h-8 overflow-hidden rounded-xl flex flex-row items-center justify-center gap-2 px-2`}>
+                {product.price != null ? (
+                    <>
+                        <span className={`font-bold text-center text-[17px] sm:text-lg`} style={{ color: colors.dark[100] }}>
+                            {product.price} D.T
+                        </span>
+                        {product.oldPrice && product.oldPrice > (product.price || 0) && (
+                            <span className="text-xs sm:text-sm line-through opacity-30 mt-0.5 text-center">
+                                {product.oldPrice} DT
+                            </span>
+                        )}
+                    </>
+                ) : (
+                    <div className="w-20 h-5 opacity-50"><SkeletonLoading /></div>
                 )}
             </div>
 

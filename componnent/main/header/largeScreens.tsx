@@ -16,74 +16,76 @@ import { useOwner } from '@/contexts/ownerInfo';
 import { useRegisterSection } from '@/contexts/registerSec';
 import { useLoadingScreen } from '@/contexts/loadingScreen';
 import { useClient } from '@/contexts/client';
+import { Sparkles } from 'lucide-react';
 
 const LargeScreens = ({
-    isSideBarActive,
-    setIsSideBarActive,
-    searchInput,
-    className,
-    style
+  isSideBarActive,
+  setIsSideBarActive,
+  searchInput,
+  className,
+  style
 }: HeaderProps) => {
 
-    const screenWidth = useScreen().screenWidth;
-    const { activeTheme, colors } = useTheme();
-    const router = useRouter();
-    const { ownerInfo, setOwnerInfo } = useOwner();
-    const [searchBarActive, setSearchBarActive] = useState<boolean>(false)
-    const { setRegisterSectionExist } = useRegisterSection();
-    const { setLoadingScreen } = useLoadingScreen();
-    const { setClient, client } = useClient();
+  const screenWidth = useScreen().screenWidth;
+  const { activeTheme, colors } = useTheme();
+  const router = useRouter();
+  const { ownerInfo, setOwnerInfo } = useOwner();
+  const [searchBarActive, setSearchBarActive] = useState<boolean>(false)
+  const { setRegisterSectionExist } = useRegisterSection();
+  const { setLoadingScreen } = useLoadingScreen();
+  const { setClient, client } = useClient();
 
-    return (
-      <div 
-          className={`w-full bg-white flex items-center justify-between gap-5 px-10 sticky top-0 z-[50] ${className}`}
+  return (
+    <div
+      className={`w-full bg-white flex items-center justify-between gap-5 px-10 sticky top-0 z-[50] ${className}`}
+      style={{
+        height: headerHeight,
+        boxShadow: '0 0px 15px rgba(13, 13, 13, 0.07)',
+        backgroundColor: colors.light[100],
+        ...style
+      }}
+    >
+
+      <div className='w-[25%] h-full flex flex-row justify-between items-center '>
+
+        <MenuIcon
+          isSideBarActive={isSideBarActive}
+          setIsSideBarActive={setIsSideBarActive}
+        />
+
+        <div
+          className='flex-row gap-1.5 w-36 h-full flex items-center justify-center'
           style={{
-              height: headerHeight,
-              boxShadow: '0 0px 15px rgba(13, 13, 13, 0.07)',
-              backgroundColor: colors.light[100],
-              ...style
           }}
-      >
-
-        <div className='w-[25%] h-full flex flex-row justify-between items-center '>
-
-          <MenuIcon
-            isSideBarActive={isSideBarActive}
-            setIsSideBarActive={setIsSideBarActive}
-          />
-
-            <div 
-              className='flex-row gap-1.5 w-36 h-full flex items-center justify-center'
-              style={{
-              }}
-            >
-              <div 
-                className=' h-[50%] cursor-pointer'
-                onClick={() => router.replace('/')}
-              >
-                {
-                  activeTheme == "light" ? 
-                    <img 
-                      src={ownerInfo?.logo?.light}
-                      className=' h-full object-contain no-sellect'
-                    /> : 
-                  activeTheme == "dark" ?
-                    <img 
-                      src={ownerInfo?.logo?.dark}
-                      className=' h-full object-contain no-sellect'
-                    /> :
+        >
+          <div
+            className=' h-[50%] cursor-pointer'
+            onClick={() => router.replace('/')}
+          >
+            {
+              activeTheme == "light" ?
+                <img
+                  src={ownerInfo?.logo?.light}
+                  className=' h-full object-contain no-sellect'
+                /> :
+                activeTheme == "dark" ?
+                  <img
+                    src={ownerInfo?.logo?.dark}
+                    className=' h-full object-contain no-sellect'
+                  /> :
                   null
-                }
-              </div>
-
-            </div>
-
-          <div className='w-10'></div>
+            }
+          </div>
 
         </div>
 
-        <div className='w-[75%] h-full flex flex-row justify-between items-center'>
+        <div className='w-10'></div>
 
+      </div>
+
+      <div className='w-[75%] h-full flex flex-row justify-between items-center'>
+
+        {/* <div className="relative flex-1"> */}
           <SearchBar
             searchInput={searchInput}
             containerClassName="h-14 border-[0.5px]"
@@ -97,53 +99,63 @@ const LargeScreens = ({
               borderColor: colors.light[300]
             }}
             inputStyle={{
-                color: colors.dark[200],
+              color: colors.dark[200],
             }}
-            searchIcon={ activeTheme == "dark" ? "/icons/searchBlack.png" : "/icons/searchWhite.png" }
+            searchIcon={activeTheme == "dark" ? "/icons/searchBlack.png" : "/icons/searchWhite.png"}
             searchIconStyle={{
-                backgroundColor: colors.dark[100]
+              backgroundColor: colors.dark[100]
             }}
             resSectionStyle={{
-                backgroundColor: colors.light[100],
-                color: colors.dark[100],
-                borderRight: `0.02px solid ${colors.dark[800]}`,
-                borderBottom: `0.02px solid ${colors.dark[800]}`,
-                borderLeft: `0.02px solid ${colors.dark[800]}`,
-                borderTop: 'none'
+              backgroundColor: colors.light[100],
+              color: colors.dark[100],
+              borderRight: `0.02px solid ${colors.dark[800]}`,
+              borderBottom: `0.02px solid ${colors.dark[800]}`,
+              borderLeft: `0.02px solid ${colors.dark[800]}`,
+              borderTop: 'none'
             }}
             aiIconStyle={{
-                backgroundColor: colors.light[100]
+              backgroundColor: colors.light[100]
             }}
           />
+          {/* AI Badge */}
+          {/* <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-1 px-2.5 py-0.5 rounded-full opacity-50 hover:opacity-100 transition-opacity cursor-default"
+            style={{
+              background: 'linear-gradient(135deg, rgba(99,102,241,0.1), rgba(168,85,247,0.1))',
+            }}
+          >
+            <Sparkles className="w-2.5 h-2.5 text-purple-500" />
+            <span className="text-[9px] font-bold uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-pink-500">AI-Powered Search</span>
+          </div> */}
+        {/* </div> */}
 
-          <ThemeMode/>
+        <ThemeMode />
 
-          <LanguageSelector/>
+        <LanguageSelector />
 
-            <div 
-                className='w-fit h-full flex justify-center items-center cursor-pointer'
-                onClick={() => {
-                    if (client && client.password) {
-                        setLoadingScreen(true)
-                        router.push('/account')
-                    } else { 
-                        setRegisterSectionExist(true);
-                    }
-                }}
-            >
-            <img 
-                src={activeTheme == "dark" ? "/icons/user-circle-white.png" : "/icons/user-circle-black.png" } 
-                alt="" 
-                className='w-6 h-6'
-            />
-            
-            </div>
+        <div
+          className='w-fit h-full flex justify-center items-center cursor-pointer'
+          onClick={() => {
+            if (client && client.password) {
+              setLoadingScreen(true)
+              router.push('/account')
+            } else {
+              setRegisterSectionExist(true);
+            }
+          }}
+        >
+          <img
+            src={activeTheme == "dark" ? "/icons/user-circle-white.png" : "/icons/user-circle-black.png"}
+            alt=""
+            className='w-6 h-6'
+          />
 
-          <ShoppingCart/>
         </div>
 
+        <ShoppingCart />
       </div>
-    )
+
+    </div>
+  )
 }
 
 export default LargeScreens

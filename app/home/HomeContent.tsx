@@ -16,6 +16,8 @@ import { useTheme } from "@/contexts/themeProvider";
 import { PubType } from "@/types";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import AiPromoBanner from "@/componnent/sub/AiPromoBanner";
+
 
 export default function HomeContent() {
     const [sideBarActive, setSideBarActive] = useState<boolean>(false);
@@ -78,7 +80,11 @@ export default function HomeContent() {
                 }
             </div>
 
+            {/* AI Feature Promo */}
+            {/* <AiPromoBanner /> */}
+
             <HomeCollections />
+
             <CollectionsSections importedFrom="homePage" />
 
             <div
