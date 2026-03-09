@@ -243,7 +243,7 @@ const ProductCard = ({
                     ? handleLongText(product.name[activeLanguage.language] + "", 15)
                     : <div className="w-28 h-4 opacity-50"><SkeletonLoading /></div>
                 }
-            </h4>
+            </h4> 
 
             <div className={`w-fit min-w-[90px] h-8 overflow-hidden rounded-xl flex flex-row items-center justify-center gap-2 px-2`}>
                 {product.price != null ? (
