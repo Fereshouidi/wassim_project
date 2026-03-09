@@ -181,7 +181,7 @@ const ProductCard = ({
         } catch (error) {
             console.error("Cart action failed:", error);
             setPurchases(previousPurchases);
-            setStatusBanner(true, "Failed to update cart");
+            //setStatusBanner(true, "Failed to update cart");
         }
         return false;
     };
@@ -264,7 +264,7 @@ const ProductCard = ({
 
             <div className="w-full flex flex-row justify-between items-center gap-2 pt-2 border-t border-gray-50 px-1 sm:px-2">
                 <div
-                    className={`flex items-center justify-center gap-2 w-full sm:w-auto px-1 py-2 rounded-lg active:scale-95 transition-all cursor-pointer ${isInCart ? 'bg-green-50' : 'hover:bg-gray-100'}`}
+                    className={`flex items-center justify-center gap-1 w-full sm:w-auto px-1 py-2 rounded-lg active:scale-95 transition-all cursor-pointer ${isInCart ? 'bg-green-50' : 'hover:bg-gray-100'}`}
                     onClick={async (e) => {
                         e.stopPropagation();
                         if (!product || (product._id?.length || 0) < 3) return;
@@ -278,7 +278,7 @@ const ProductCard = ({
                         alt="Cart"
                     />
                     <span className={`text-[10px] sm:text-[11px] font-medium uppercase ${isInCart ? 'text-green-600' : 'text-gray-600'}`}>
-                        {isInCart ? activeLanguage.inCart : activeLanguage.add}
+                        {isInCart ? activeLanguage.cart : activeLanguage.add}
                     </span>
                 </div>
 

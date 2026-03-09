@@ -156,7 +156,8 @@ export const english = {
     productNotFoundDesc: "Sorry, it seems the link you followed is incorrect or the product has been removed from the store.",
     continueShopping: "Continue Shopping",
     goBack: "Go Back",
-    add: "Add"
+    add: "Add",
+    cart: "Cart"
 } as LanguageStracture;
 
 export const frensh = {
@@ -314,7 +315,8 @@ export const frensh = {
     productNotFoundDesc: "Désolé, il semble que le lien que vous avez suivi soit incorrect ou que le produit ait été retiré de la boutique.",
     continueShopping: "Continuer mes achats",
     goBack: "Retourner",
-    add: "Ajouter"
+    add: "Ajouter",
+    cart: "Panier"
 } as LanguageStracture;
 
 

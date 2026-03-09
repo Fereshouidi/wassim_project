@@ -255,7 +255,7 @@ const AiChatBubble = () => {
             </div>
             <div className="p-6 bg-gradient-to-b from-transparent to-current/[0.03]">
                 <div className="relative group">
-                    {/* <textarea value={userMessage} onChange={(e) => setUserMessage(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSendMessage(); } }} placeholder="Ask me anything..." className="w-full p-4 pb-12 bg-current/5 rounded-2xl text-[14px] border border-transparent focus:border-purple-500/30 outline-none transition-all resize-none shadow-inner" rows={2} /> */}
+                    <textarea value={userMessage} onChange={(e) => setUserMessage(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSendMessage(); } }} placeholder="Ask me anything..." className="w-full p-4 pb-12 bg-current/5 rounded-2xl text-[14px] border border-transparent focus:border-purple-500/30 outline-none transition-all resize-none shadow-inner" rows={2} />
                     <button onClick={handleSendMessage} disabled={isTyping || !userMessage.trim()} className="absolute bottom-3 right-3 p-2.5 rounded-xl transition-all hover:scale-105 active:scale-95 disabled:opacity-30" style={{ background: accentGradient, color: 'white' }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" strokeLinecap="round" strokeLinejoin="round" /></svg>
                     </button>

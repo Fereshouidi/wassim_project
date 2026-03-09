@@ -256,11 +256,11 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
                     >
                         {!isInCart && <img src={activeTheme === "dark" ? "/icons/shopping-bag-white.png" : "/icons/shopping-bag-black.png"} className="w-4 h-4 opacity-70" alt="Cart" />}
                         <span className={`text-[11px] font-bold uppercase tracking-tighter ${isInCart ? 'text-green-600' : ''}`}>
-                            {isInCart ? "In Cart" : "Panier"}
+                            {isInCart ? activeLanguage.inCart : activeLanguage.addToCart}
                         </span>
                     </button>
                     <button className="flex items-center justify-center gap-2 flex-1 py-2.5 rounded-xl cursor-pointer w-full" style={{ backgroundColor: colors.dark[200], color: colors.light[200] }}>
-                        <span className="text-[11px] font-bold uppercase tracking-tighter">Acheter</span>
+                        <span className="text-[11px] font-bold uppercase tracking-tighter">{activeLanguage.orderNow}</span>
                         <img src={activeTheme === "dark" ? "/icons/right-arrow-black.png" : "/icons/right-arrow-white.png"} className="w-3 h-3" alt="Buy" />
                     </button>
                 </div>

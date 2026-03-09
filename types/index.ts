@@ -225,6 +225,7 @@ export type LanguageStracture = {
   continueShopping: string,
   goBack: string
   add: string
+  cart: string
 }
 
 

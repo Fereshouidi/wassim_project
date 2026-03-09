@@ -4,15 +4,14 @@ import { useTheme } from '@/contexts/themeProvider';
 import { useAiChatBubble } from '@/contexts/AiChatBubble';
 import { useClient } from '@/contexts/client';
 import { useRegisterSection } from '@/contexts/registerSec';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, X, MessageCircle } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Sparkles, X } from 'lucide-react';
 
 const AiFloatingButton = () => {
     const { colors, activeTheme } = useTheme();
     const { bubbleProps, setBubbleProps } = useAiChatBubble();
     const { client } = useClient();
     const { setRegisterSectionExist } = useRegisterSection();
-    const [isHovered, setIsHovered] = useState(false);
     const isDark = activeTheme === 'dark';
 
     const handleClick = () => {
@@ -33,33 +32,11 @@ const AiFloatingButton = () => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ type: 'spring', stiffness: 200, damping: 20, delay: 1 }}
         >
-            {/* Tooltip / Label */}
-            <AnimatePresence>
-                {isHovered && (
-                    <motion.div
-                        initial={{ opacity: 0, x: 10, scale: 0.9 }}
-                        animate={{ opacity: 1, x: 0, scale: 1 }}
-                        exit={{ opacity: 0, x: 10, scale: 0.9 }}
-                        className="px-4 py-2.5 rounded-2xl shadow-xl border whitespace-nowrap"
-                        style={{
-                            backgroundColor: isDark ? 'rgba(20,20,20,0.95)' : 'rgba(255,255,255,0.95)',
-                            borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
-                            backdropFilter: 'blur(12px)',
-                        }}
-                    >
-                        <p className="text-xs font-bold" style={{ color: colors.dark[200] }}>
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">AI Assistant</span>
-                            <span className="ml-1 opacity-50">· Ask me anything</span>
-                        </p>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+
 
             {/* Main Button */}
             <motion.button
                 onClick={handleClick}
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
                 whileHover={{ scale: 1.08 }}
                 whileTap={{ scale: 0.92 }}
                 className="relative group cursor-pointer outline-none"
