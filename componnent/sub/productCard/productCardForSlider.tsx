@@ -238,7 +238,7 @@ const ProductCard = ({
                 }
             </div>
 
-            <h4 className={`w-full h-7 flex items-center justify-center rounded-xl overflow-hidden z-50 text-[14px] sm:text-[16px] text-center px-4 font-medium`}>
+            <h4 className={`w-full h-7 flex items-center justify-center rounded-xl overflow-hidden z-50- text-[14px] sm:text-[16px] text-center px-4 font-medium`}>
                 {product.name?.[activeLanguage.language]
                     ? handleLongText(product.name[activeLanguage.language] + "", 15)
                     : <div className="w-28 h-4 opacity-50"><SkeletonLoading /></div>

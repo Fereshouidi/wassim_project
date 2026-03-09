@@ -89,47 +89,51 @@ const CartSide = () => {
         >
             <div
                 className={`
-                    w-[90vw] sm:w-[450px] h-full absolute right-0 top-0 
-                    flex flex-col shadow-2xl transition-transform duration-300
-                    ${isActive ? "translate-x-0" : "translate-x-full"}
-                `}
+                w-[90vw] sm:w-[450px] h-full absolute right-0 top-0 
+                flex flex-col shadow-2xl transition-transform duration-300 ease-in-out
+                ${isActive ? "translate-x-0" : "translate-x-full"}
+            `}
                 style={{ backgroundColor: colors.light[100], color: colors.dark[200] }}
                 onClick={(e) => e.stopPropagation()}
             >
-                {/* --- HEADER --- */}
-                <div className='flex justify-between items-center px-6 py-5 border-b' style={{ borderColor: colors.light[300] }}>
-                    <div className='flex gap-3 items-center'>
-                        <img
-                            src={activeTheme === "dark" ? "/icons/shopping-bag-white.png" : "/icons/shopping-bag-black.png"}
-                            className='w-5 h-5 opacity-80' alt="cart"
-                        />
-                        <div className='flex items-center gap-3'>
-                            <h2 className='font-black text-sm tracking-wide uppercase'>{activeLanguage.myCart}</h2>
-                            {client?._id && (
-                                <button
-                                    onClick={() => { router.push(`/orders`); setIsActive(false) }}
-                                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border transition-all duration-300 hover:scale-105 active:scale-95 group"
-                                    style={{ borderColor: colors.light[300], backgroundColor: colors.light[200] }}
-                                >
-                                    <img
-                                        src={activeTheme === "dark" ? "/icons/open-box-white.png" : "/icons/open-box-black.png"}
-                                        className="w-3 h-3 opacity-60 group-hover:opacity-100"
-                                        alt="orders"
-                                    />
-                                    <span className="text-[9px] font-black uppercase tracking-widest opacity-60 group-hover:opacity-100">
-                                        {activeLanguage.viewMyOrder}
-                                    </span>
-                                </button>
-                            )}
+                {/* --- HEADER (Minimalist Premium - Single Line) --- */}
+                <div className='flex items-center justify-between px-6 sm:px-8 py-6 border-b' style={{ borderColor: colors.light[300], backgroundColor: colors.light[200] }}>
+                    <div className='flex items-center gap-4'>
+                        <div className='flex flex-col'>
+                            <h2 className='text-lg sm:text-xl font-black uppercase tracking-tight leading-none' style={{ color: colors.dark[100] }}>
+                                {activeLanguage.myCart}
+                            </h2>
+                            <span className='text-[8px] sm:text-[9px] font-black uppercase tracking-[2px] opacity-20 mt-1.5'>
+                                {purchases.length} Items Selected
+                            </span>
                         </div>
-                        <span className='px-2 py-0.5 rounded-xl text-[10px] font-bold opacity-60' style={{ backgroundColor: colors.light[300] }}>
-                            {purchases.length}
-                        </span>
                     </div>
 
-                    <button onClick={() => setIsActive(false)} className='opacity-40 hover:opacity-100 transition-opacity p-2'>
-                        <img src={`/icons/close-${activeTheme === "dark" ? "white" : "black"}.png`} className='w-3 h-3' alt="Close" />
-                    </button>
+                    <div className='flex items-center gap-2 sm:gap-4'>
+                        {client?._id && (
+                            <button
+                                onClick={() => { router.push(`/orders`); setIsActive(false) }}
+                                className="flex items-center gap-2 px-3.5 py-2 rounded-xl border border-neutral-100/50 hover:bg-white hover:shadow-sm transition-all active:scale-95 cursor-pointer"
+                                style={{ backgroundColor: colors.light[100] }}
+                            >
+                                <img
+                                    src={activeTheme === "dark" ? "/icons/open-box-white.png" : "/icons/open-box-black.png"}
+                                    className="w-3.5 h-3.5 opacity-30"
+                                    alt="orders"
+                                />
+                                <span className="text-[9px] font-black uppercase tracking-[1px] opacity-30">
+                                    {activeLanguage.nav.order}
+                                </span>
+                            </button>
+                        )}
+                        <div className='w-[1px] h-4 bg-neutral-300 opacity-30 mx-1' />
+                        <button
+                            onClick={() => setIsActive(false)}
+                            className='w-10 h-10 rounded-xl flex items-center justify-center hover:bg-neutral-50 transition-colors active:scale-90 group'
+                        >
+                            <img src={`/icons/close-${activeTheme === "dark" ? "white" : "black"}.png`} className='w-3 h-3 opacity-20 group-hover:opacity-100 transition-opacity' alt="Close" />
+                        </button>
+                    </div>
                 </div>
 
                 {/* --- BODY --- */}
