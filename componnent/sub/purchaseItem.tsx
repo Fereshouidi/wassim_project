@@ -60,19 +60,22 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
                 backgroundColor: activeTheme === 'dark' ? 'rgba(255,255,255,0.02)' : '#fff'
             }}
             onClick={() => {
+                const pId = purchase?.product?._id || purchase?.productId;
+                if (!pId) return;
+
                 localStorage.setItem('purchaseId', purchase?._id ?? "");
                 // @ts-ignore
-                router.push(`/product/${purchase?.product?._id}?fromCart=true`);
+                router.push(`/product/${pId}?fromCart=true`);
                 setIsActive(false);
             }}
         >
             {/* Thumbnail */}
             <div className="w-20 h-24 flex-shrink-0 overflow-hidden rounded-xl bg-gray-50 border" style={{ borderColor: colors.light[200] }}>
                 <img
-                    // @ts-ignore
-                    src={purchase?.product?.thumbNail}
+                    //@ts-ignore
+                    src={purchase.product?.thumbNail || purchase.productThumb || "/icons/shopping-bag-black.png"}
+                    alt="product"
                     className='w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-300'
-                    alt=""
                 />
             </div>
 
@@ -83,7 +86,7 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
                         <h3 className=' flex flex-1 text-[13px] font-bold leading-tight line-clamp-2'>
                             {
                                 // @ts-ignore
-                                purchase?.product?.name[activeLanguage.language]
+                                purchase.product?.name?.[activeLanguage.language] || purchase.productName?.[activeLanguage.language] || "Deleted Product"
                             }
                         </h3>
                         {/* Remove Icon */}
@@ -136,7 +139,7 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
 
                     <p className='text-sm font-bold' style={{ color: colors.dark[100] }}>
                         {/* @ts-ignore */}
-                        {purchase?.specification?.price} <span className="text-[10px] font-normal">T.D</span>
+                        {purchase?.specification?.price || purchase?.specPrice || 0} <span className="text-[10px] font-normal">T.D</span>
                     </p>
                 </div>
             </div>

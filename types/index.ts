@@ -341,10 +341,15 @@ export type CollectionType = {
 export interface PurchaseType {
   _id?: string;
   client?: ProductType | string | null;
-  product?: string | null;
+  product?: any | null;
   evaluation?: string | null;
-  specification?: ProductSpecification | string | null;
-  like?: boolean | null;
+  specification?: ProductSpecification | any | null;
+  productId?: string | null;
+  productName?: any | null;
+  productThumb?: string | null;
+  specPrice?: number | null;
+  specColor?: string | null;
+  specSize?: string | null;
   quantity?: number | null;
   cart?: string | null;
   order?: string | null;

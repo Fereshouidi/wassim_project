@@ -65,10 +65,13 @@ const PurshasesTable = ({ purchases, order }: Props) => {
                                 }}
                                 whileHover={{ backgroundColor: colors.light[200] }}
                                 onClick={() => {
+                                    const pId = purchase.product?._id || purchase.productId;
+                                    if (!pId) return;
+
                                     setLoadingScreen(true);
                                     localStorage.removeItem('purchaseId');
                                     //@ts-ignore
-                                    router.push(`/product/${purchase.product?._id || purchase.product}`)
+                                    router.push(`/product/${pId}`)
                                 }}
                             >
                                 <td className='p-3 sm:p-4'>
@@ -77,7 +80,7 @@ const PurshasesTable = ({ purchases, order }: Props) => {
                                             <img
                                                 src={
                                                     //@ts-ignore
-                                                    purchase.product?.thumbNail ?? ""
+                                                    purchase.product?.thumbNail || purchase.productThumb || "/icons/shopping-bag-black.png"
                                                 }
                                                 alt="product"
                                                 className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-300'
@@ -85,24 +88,20 @@ const PurshasesTable = ({ purchases, order }: Props) => {
                                         </div>
                                         <span className='text-[10px] sm:text-xs font-medium' style={{ color: colors.dark[200] }}>{
                                             //@ts-ignore
-                                            purchase.product?.name[activeLanguage.language]
+                                            purchase.product ? purchase.product.name[activeLanguage.language] : (purchase.productName ? purchase.productName[activeLanguage.language] : "Deleted Product")
                                         }</span>
                                     </div>
                                 </td>
                                 <td className='p-3 sm:p-4 text-center'>
                                     <div className='flex flex-col gap-1'>
-                                        {//@ts-ignore
-                                            purchase?.specification?.color && (
+                                        {(purchase.specification?.color || purchase.specColor) && (
                                                 <span className='text-[9px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 rounded-full inline-block mx-auto border'
                                                     style={{ borderColor: colors.light[350], color: colors.dark[600] }}>
-                                                    {//@ts-ignore
-                                                        purchase.specification.color}
+                                                    {purchase.specification?.color || purchase.specColor}
                                                 </span>
                                             )}
-                                        {//@ts-ignore
-                                            purchase?.specification?.size && (
-                                                <span className='text-[9px] sm:text-[10px] font-bold opacity-60 italic'>Size: {//@ts-ignore
-                                                    purchase.specification.size}</span>
+                                        {(purchase.specification?.size || purchase.specSize) && (
+                                                <span className='text-[9px] sm:text-[10px] font-bold opacity-60 italic'>Size: {purchase.specification?.size || purchase.specSize}</span>
                                             )}
                                     </div>
                                 </td>
@@ -114,8 +113,7 @@ const PurshasesTable = ({ purchases, order }: Props) => {
                                 <td className='p-3 sm:p-4 text-right'>
                                     <span className='text-[10px] sm:text-xs font-bold' style={{ color: colors.dark[100] }}>
                                         {
-                                            //@ts-ignore
-                                            (purchase.specification?.price * purchase.quantity).toFixed(2)
+                                            ((purchase.specification?.price || purchase.specPrice || 0) * (purchase.quantity || 0)).toFixed(2)
                                         } <span className='text-[8px] sm:text-[10px] opacity-60 font-normal'>D.T</span>
                                     </span>
                                 </td>

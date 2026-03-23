@@ -64,7 +64,7 @@ const OrderCard = ({
                             >
                                 <img
                                     //@ts-ignore
-                                    src={purchase.product?.thumbNail ?? ""}
+                                    src={purchase.product?.thumbNail || purchase.productThumb || "/icons/shopping-bag-black.png"}
                                     alt="product"
                                     className='w-full h-full object-cover'
                                 />

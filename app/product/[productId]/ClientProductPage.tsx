@@ -123,9 +123,14 @@ export default function ClientProductPage({ product }: Props) {
 
     useEffect(() => {
         if (purchase) {
+            const max = activeSpecifications?.unlimited ? 1000 : (activeSpecifications?.quantity ?? 0);
+            const currentQuantity = purchase.quantity || 1;
+            const newQuantity = currentQuantity > max ? Math.max(1, max) : currentQuantity;
+
             setPurchase(prev => prev ? ({
                 ...prev,
-                specification: activeSpecifications
+                specification: activeSpecifications,
+                quantity: newQuantity
             }) : null);
         }
     }, [activeSpecifications])

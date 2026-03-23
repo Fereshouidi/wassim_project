@@ -118,20 +118,21 @@ export const calcTotalPrice = (order: OrderType) => {
   let totalPrice = 0;
 
   if (!order.purchases) return totalPrice.toFixed(2);
-  order.purchases.map((purchase) => {
-
-    //@ts-ignore
-    if (!purchase.specification?.price || !purchase.quantity) return;
-    //@ts-ignore
-    totalPrice = totalPrice + (purchase.specification.price * purchase.quantity);
+  order.purchases.forEach((purchase) => {
+    const price = purchase.specification?.price || purchase.specPrice || 0;
+    const qty = purchase.quantity || 0;
+    totalPrice += (price * qty);
   })
 
   return totalPrice.toFixed(2)
 }
 
 export const calculPurshaseTotalPrice = (purchases: PurchaseType[]) => {
-  //@ts-ignore
-  const total = purchases.reduce((total, purchase) => total + (purchase.specification?.price * purchase.quantity), 0);
+  const total = purchases.reduce((total, purchase) => {
+    const price = purchase.specification?.price || purchase.specPrice || 0;
+    const qty = purchase.quantity || 0;
+    return total + (price * qty);
+  }, 0);
   return total.toFixed(2);
 }
 

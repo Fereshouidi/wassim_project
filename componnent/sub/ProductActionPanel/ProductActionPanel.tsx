@@ -144,7 +144,7 @@ const ProductActionPanel = ({
             <ChoseQuantity
                 quantity={quantity}
                 setQuantity={setQuantity}
-                max={activeSpecifications?.unlimited ? 1000 : ((activeSpecifications?.quantity || 0) > 0 ? activeSpecifications!.quantity! : 1000)}
+                max={activeSpecifications?.unlimited ? 1000 : (activeSpecifications?.quantity ?? 0)}
             />
 
             {
