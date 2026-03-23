@@ -234,13 +234,13 @@ const ProductDetails = ({
             </span>
           ))}
         </div>
-        <h1 className='font-bold text-2xl sm:text-3xl tracking-tight mb-2' style={{ color: colors.dark[150] }}>
-          {product.name[activeLanguage.language]}
+        <h1 className='font-semibold text-2xl sm:text-3xl tracking-tight- mb-3 mt-1 user-select-text' style={{ color: colors.dark[150] }}>
+          {product.name?.fr}
         </h1>
         <div className="flex items-baseline gap-3">
-          <span className='font-black text-4xl' style={{ color: colors.dark[150] }}>
+          <span className='font-bold text-4xl' style={{ color: colors.dark[150] }}>
             {activeSpecifications?.price || (!hasInteracted && product.specifications?.[0]?.price) || product.price || 0}
-            <span className="text-sm font-bold opacity-40 ml-1">D.T</span>
+            <span className="text-sm font-bold opacity-50 ml-1">D.T</span>
           </span>
           {product.oldPrice && product.oldPrice > (activeSpecifications?.price || (!hasInteracted && product.specifications?.[0]?.price) || product.price || 0) && (
             <span className="text-xl font-bold line-through opacity-20">
@@ -288,7 +288,7 @@ const ProductDetails = ({
                     key={val}
                     disabled={!isAvailable}
                     onClick={() => attr.handler(val!)}
-                    className={`px-[14px] py-[10px] text-[13px] font-semibold rounded-xl border-2 transition-all duration-300 ${isSelected ? 'scale-105' : 'hover:border-black/20'}`}
+                    className={`px-[14px] py-[9px] text-[13px] font-semibold rounded-xl border-1 transition-all duration-300 ${isSelected ? 'scale-105' : 'hover:border-black/20'}`}
                     style={{
                       backgroundColor: isSelected ? colors.dark[100] : 'transparent',
                       color: isSelected ? colors.light[150] : colors.dark[150],

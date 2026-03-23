@@ -77,16 +77,16 @@ const ImagesSwitcher = ({
   const handlePrev = () => setCurrentImageIndex((currentImageIndex - 1 + uniqueImages.length) % uniqueImages.length);
 
   return (
-    <div className={`bg-red-500- h-full relative flex flex-col items-center select-none w-full ${screenWidth > 1000 ? "max-w-[550px] max-h-[600px] bg-red-500-" : "max-w-[90%]"}  mx-auto ${className}`} style={style}>
+    <div className={`bg-red-500- h-full relative flex flex-col items-center select-none w-full ${screenWidth > 1000 ? "max-w-[525px] max-h-[5750px] bg-red-500-" : "max-w-[90%]"}  mx-auto ${className}`} style={style}>
       
       <div 
         className={`relative w-full overflow-hidden rounded-2xl border border-gray-100 shadow-xl bg-white
-          ${screenWidth > 500 ? "h-[500px]" : "h-[400px]"}`}
+          ${screenWidth > 500 ? "h-[475px]" : "h-[400px]"}`}
         onMouseMove={handleMouseMove}
         onMouseLeave={() => setZoomPos(prev => ({ ...prev, show: false }))}
       >
         <button
-          className={`absolute top-2 right-2 z-20 p-2 rounded-full transition-all active:scale-90 shadow-lg
+          className={`absolute top-2 right-2 z-20 p-2 rounded-full transition-all active:scale-90 shadow-lg cursor-pointer
             ${like ? "bg-red-500 text-white" : "bg-gray-300 backdrop-blur-md text-gray-600 hover:bg-white/20"}`}
           onClick={() => client ? setLike(!like) : setRegisterSectionExist(true)}
         >

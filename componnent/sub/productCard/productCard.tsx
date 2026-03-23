@@ -87,13 +87,11 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
             return;
         }
 
-        // تحديث الصورة
         const targetImage = product.images?.find(img =>
             (img.specification as ProductSpecification)?.colorHex === hex
         );
         if (targetImage?.uri) setCurrentImage(targetImage.uri);
 
-        // تحديث المواصفة النشطة لتتوافق مع اللون المختار
         const targetSpec = product.specifications?.find(s => s.colorHex === hex);
         if (targetSpec) setActiveSpecifications(targetSpec);
     };
@@ -105,7 +103,6 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
             return;
         }
 
-        // استخدام المواصفة المختارة أو الافتراضية
         const selectedSpec = activeSpecifications || product.specifications?.[0];
         if (!selectedSpec) return;
 
@@ -128,7 +125,6 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
                     });
                 }
             } else {
-                // إضافة تفاؤلية
                 const optimisticPurchase = {
                     _id: tempId,
                     product: product,
@@ -275,7 +271,7 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
             viewport={{ once: true, amount: 0.1 }}
             variants={fadeInUp}
             whileTap={{ scale: 0.98 }}
-            className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl transition-all duration-500 ${className} ${isMobile ? 'w-full h-[380px]' : 'w-full max-w-[320px] min-h-[400px]'}`}
+            className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl transition-all duration-500 ${className} ${isMobile ? 'w-full h-[380px]' : 'w-full max-w-[320px] min-h-[400px]'} cursor-pointer`}
             style={{
                 ...style,
                 backgroundColor: colors.light[100],

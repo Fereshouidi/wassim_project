@@ -35,8 +35,9 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
             const { data } = await axios.put(`${backEndUrl}/updatePurchase`, updatedData);
 
             if (data.success) {
-                // 2. إذا تم إزالة المنتج من السلة (cart: null)
-                if (!updatedData.cart) {
+                // 2. إذا تم إزالة المنتج من السلة (status was set to "viewed")
+                // نستخدم الحالة (status) بدلاً من (cart) لضمان الدقة
+                if (updatedData.status === "viewed") {
                     setPurchases((prev: PurchaseType[]) => prev.filter(p => p._id !== updatedData._id));
                 } else {
                     // 3. إذا كان تحديثاً للكمية فقط، نحدث القائمة في المكون الأب
