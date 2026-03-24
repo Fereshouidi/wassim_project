@@ -5,7 +5,7 @@ import React, { useRef, useState } from 'react'
 import SkeletonLoading from './SkeletonLoading'
 import { useRouter } from 'next/navigation'
 import { useLoadingScreen } from '@/contexts/loadingScreen'
-import { motion } from 'framer-motion'
+import { motion, number } from 'framer-motion'
 import { fadeInUp } from '@/lib/motion'
 
 type CollectionCardType = {
@@ -40,15 +40,29 @@ const CollectionCard = ({
         
         if (isLoading) return; 
 
-        let filter = null;
+        let filter: FiltrationType | null = null;
         try {
             filter = JSON.parse(localStorage.getItem("searchFilter") ?? "") as unknown as FiltrationType;
         } catch (err) {
             console.log({ err });
         }
 
-        // if (!filter) return;
+        if (!filter) {
+            filter = {
+                price: {
+                    from: 0,
+                    to: 9999
+                },
+                collections: [],
+                colors: ["all"],
+                types: ["all"],
+                sizes: ["all"],
+                sortBy: 'price',
+                sortDirection: 'asc'
 
+        } as unknown as FiltrationType;
+            
+        }
         setLoadingScreen(true);
 
         const updatedFilter = {
