@@ -5,7 +5,7 @@ import { CollectionType } from '@/types';
 import axios from 'axios';
 import React, { useEffect, useState, useMemo } from 'react'
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useLoadingScreen } from '@/contexts/loadingScreen';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useScreen } from '@/contexts/screenProvider';
@@ -32,6 +32,7 @@ const Collections = ({ sideBarActive }: props) => {
     const [navStack, setNavStack] = useState<NavLevel[]>([]);
     const [loadingId, setLoadingId] = useState<string | null>(null);
     const router = useRouter();
+    const pathname = usePathname();
     const { setLoadingScreen } = useLoadingScreen();
 
     const currentLevel = useMemo(() => navStack[navStack.length - 1], [navStack]);
@@ -126,9 +127,13 @@ const Collections = ({ sideBarActive }: props) => {
         <div className="w-full h-full relative flex items-center justify-between">
             {/* Root Label */}
             <div
-                className="flex-1 h-full flex items-center text-[13px] sm:text-sm font-normal cursor-pointer"
-                style={{ color: colors.light[200] }}
+                className={`flex-1 h-full flex items-center text-[13px] sm:text-sm cursor-pointer transition-all duration-200`}
+                style={{ 
+                    color: pathname === '/collections' ? colors.light[100] : colors.light[200],
+                    fontWeight: pathname === '/collections' ? '600' : '400'
+                }}
                 onClick={() => {
+                    if (pathname === '/collections') return;
                     setLoadingScreen(true);
                     router.push('/collections');
                 }}

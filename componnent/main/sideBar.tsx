@@ -9,7 +9,7 @@ import { useScreen } from '@/contexts/screenProvider';
 import { useTheme } from '@/contexts/themeProvider';
 import { useLanguage } from '@/contexts/languageContext';
 import LanguageSelectorForMobile from '../sub/languageSelectorForMobile';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useRegisterSection } from '@/contexts/registerSec';
 import { useLoadingScreen } from '@/contexts/loadingScreen';
@@ -32,6 +32,17 @@ const SideBar = ({
     const { setLoadingScreen } = useLoadingScreen();
     const { setClient, client } = useClient();
     const { setBubbleProps, bubbleProps } = useAiChatBubble()
+    const pathname = usePathname();
+
+    const handleNavigation = (path: string) => {
+        if (pathname === path) {
+            setIsActive(false);
+            return;
+        }
+        setLoadingScreen(true);
+        router.push(path);
+        setIsActive(false);
+    };
 
 
     return (
@@ -121,26 +132,26 @@ const SideBar = ({
 
                     <ul className='w-full bg-green-100- mt-5'>
                         <li
-                            className='flex h-14 border-b-[1px] border-b-gray-100 text-sm cursor-pointer'
+                            className='flex h-14 border-b-[1px] border-b-gray-100 text-sm cursor-pointer transition-colors duration-200'
                             style={{
-                                borderBottomColor: colors.dark[200]
+                                borderBottomColor: colors.dark[200],
+                                backgroundColor: pathname === '/' ? colors.dark[200] : 'transparent'
                             }}
+                            onClick={() => handleNavigation('/')}
                         >
                             <div
-                                className='w-full h-ful flex items-center px-7'
+                                className='w-full h-full flex items-center px-7'
                                 style={{
-                                    color: colors.light[200]
-                                }}
-                                onClick={() => {
-                                    setLoadingScreen(true);
-                                    router.push('/')
+                                    color: pathname === '/' ? colors.light[100] : colors.light[200],
+                                    fontWeight: pathname === '/' ? '600' : '400'
                                 }}
                             >{activeLanguage.nav.home}</div>
                         </li>
                         <li
-                            className='w-full flex h-14 border-b-[1px] border-b-gray-100 text-sm'
+                            className='w-full flex h-14 border-b-[1px] border-b-gray-100 text-sm transition-colors duration-200'
                             style={{
-                                borderBottomColor: colors.dark[200]
+                                borderBottomColor: colors.dark[200],
+                                backgroundColor: pathname === '/collections' ? colors.dark[200] : 'transparent'
                             }}
                         >
                             <div className='w-full h-full px-7'>
@@ -148,19 +159,18 @@ const SideBar = ({
                             </div>
                         </li>
                         {client?._id && <li
-                            className='flex h-14 border-b-[1px] border-b-gray-100 text-sm cursor-pointer'
+                            className='flex h-14 border-b-[1px] border-b-gray-100 text-sm cursor-pointer transition-colors duration-200'
                             style={{
-                                borderBottomColor: colors.dark[200]
+                                borderBottomColor: colors.dark[200],
+                                backgroundColor: pathname === '/favorite' ? colors.dark[200] : 'transparent'
                             }}
+                            onClick={() => handleNavigation('/favorite')}
                         >
                             <div
-                                onClick={() => {
-                                    setLoadingScreen(true);
-                                    router.push('/favorite')
-                                }}
                                 className='w-full h-full flex items-center px-7'
                                 style={{
-                                    color: colors.light[200]
+                                    color: pathname === '/favorite' ? colors.light[100] : colors.light[200],
+                                    fontWeight: pathname === '/favorite' ? '600' : '400'
                                 }}
                             >{activeLanguage.nav.favorite}</div>
                         </li>}
@@ -182,18 +192,20 @@ const SideBar = ({
                         >{activeLanguage.nav.order}</div>
                     </li>} */}
                         <li
-                            className='flex h-14 border-b-[1px] border-b-gray-100 text-sm cursor-pointer'
+                            className='flex h-14 border-b-[1px] border-b-gray-100 text-sm cursor-pointer transition-colors duration-200'
                             style={{
-                                borderBottomColor: colors.dark[200]
+                                borderBottomColor: colors.dark[200],
+                                backgroundColor: pathname === '/pages/contactUs' ? colors.dark[200] : 'transparent'
                             }}
+                            onClick={() => handleNavigation('/pages/contactUs')}
                         >
-                            <a href="/pages/contactUs"
-                                onClick={() => setLoadingScreen(true)}
+                            <div
                                 className='w-full h-full flex items-center px-7'
                                 style={{
-                                    color: colors.light[200]
+                                    color: pathname === '/pages/contactUs' ? colors.light[100] : colors.light[200],
+                                    fontWeight: pathname === '/pages/contactUs' ? '600' : '400'
                                 }}
-                            >{activeLanguage.nav.contact}</a>
+                            >{activeLanguage.nav.contact}</div>
                         </li>
 
                         <li
@@ -234,16 +246,14 @@ const SideBar = ({
                     </div>}
 
                     <div
-                        className='w-full bg-red-500- mb-0 p-3 pt-8- bg-red-500- rounded-xl flex justify-start items-center fixed- bottom-5- cursor-pointer'
+                        className='w-full bg-red-500- mb-0 p-3 pt-8- bg-red-500- rounded-xl flex justify-start items-center fixed- bottom-5- cursor-pointer transition-colors duration-200'
                         style={{
-                            color: colors.light[150],
-                            // border: `1px solid ${colors.dark[300]}`,
-                            // boxShadow: `0 0px 15px ${colors.dark[250]}`
+                            color: pathname === '/account' ? colors.light[100] : colors.light[150],
+                            backgroundColor: pathname === '/account' ? colors.dark[200] : 'transparent'
                         }}
                         onClick={() => {
                             if (client && client.password) {
-                                setLoadingScreen(true)
-                                router.push('/account')
+                                handleNavigation('/account');
                             } else {
                                 setRegisterSectionExist(true);
                             }
