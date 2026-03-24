@@ -36,7 +36,7 @@ const CollectionCard = ({
 
     const handleCardClicked = () => {
 
-        if (isLoading) return;
+        if (isLoading) return; 
 
         let filter = null;
         try {
