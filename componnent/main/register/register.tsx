@@ -37,11 +37,7 @@ const RegisterSection = ({
         fullName: '',
         password: ''
     });
-
-    useEffect(() => {
-        console.log({ clientFound });
-
-    }, [clientFound])
+    
 
     return (
         <div

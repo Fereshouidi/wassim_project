@@ -65,9 +65,7 @@ const OrdersPage = () => {
                 clientId: client?._id,
                 limit
             }})
-            .then(({ data }) => {
-                console.log({data});
-                
+            .then(({ data }) => {                
                 setOrders(data.orders)
                 setPendingOrdeCount(data.pendingOrdersCount);
                 setFailedgOrdeCount(data.failedOrdersCount);
@@ -81,10 +79,6 @@ const OrdersPage = () => {
         }
         fetchData();
     }, [client?._id])
-
-    useEffect(() => {
-        console.log({orders})
-    }, [orders])
 
     const getMorePendingOrder = async () => {
 

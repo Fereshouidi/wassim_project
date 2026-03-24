@@ -60,7 +60,6 @@ export default function LayoutContent({
 
         if (clientRes.data?.client) {
           setClient(clientRes.data.client);
-          console.log("Client Loaded:", clientRes.data.client);
         }
 
       } catch (error) {

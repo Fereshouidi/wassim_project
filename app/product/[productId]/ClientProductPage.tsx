@@ -72,8 +72,6 @@ export default function ClientProductPage({ product }: Props) {
 
     useEffect(() => {
 
-        console.log({ client });
-
         if (!client || !product._id) return;
 
         if (!purchase?._id) {

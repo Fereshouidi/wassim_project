@@ -123,10 +123,6 @@ const SignIn = ({
         setLoadingScreen(false);
     }
 
-    useEffect(() => {
-        console.log({ client });
-
-    }, [client]);
 
     const handleForgetPasswordClicked = async () => {
         setVerificationAccountBannerVisible(true);

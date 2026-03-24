@@ -85,9 +85,6 @@ const ProductsSection = ({
 
                 .then(({ data }) => {
 
-                    console.log({ data });
-
-
                     const filterTheProduct = data.products?.filter((product_: ProductType) => product_._id != product?._id)
 
                     !isFirstRender && data.products ?

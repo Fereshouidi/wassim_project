@@ -26,7 +26,6 @@ const OtherSimilarChose = ({
     useEffect(() => {
         collectinsWithProducts.map(col => {
             col.products.length > 0 && setIsThereProducts(true)
-            console.log({productsLen: col.products.length});
         })
     }, [])
 

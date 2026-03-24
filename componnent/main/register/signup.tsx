@@ -44,7 +44,6 @@ const SignUp = ({
     const [welcomeShown, setWelcomeShown] = useState<boolean>(false);
 
     useEffect(() => {
-        console.log({ signUpForm });
 
         const { fullName, password, retypePassword, email } = signUpForm;
 

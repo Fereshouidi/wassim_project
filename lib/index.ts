@@ -2,7 +2,6 @@ import { EvaluationType, OrderType, ProductImage, ProductSpecification, ProductT
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
 export const handleShareOnFacebook = (shareUrl: string) => {
-  console.log({ shareUrl });
 
   window.open(
     `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
@@ -69,8 +68,6 @@ export function timeAgo(date: string | number | Date, activeLanguage: "en" | "fr
       year: "ans"
     }
   };
-
-  console.log(date);
 
 
   const lang = i18n[activeLanguage];
@@ -259,7 +256,6 @@ export const getDeviceId = async () => {
   const result = await fp.get();
   return result.visitorId;
   // setDeviceId(result.visitorId)
-  console.log({ deviceId: result.visitorId });
 
 };
 
