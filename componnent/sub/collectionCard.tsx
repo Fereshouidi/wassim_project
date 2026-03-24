@@ -36,7 +36,7 @@ const CollectionCard = ({
 
     const handleCardClicked = () => {
 
-        alert(isLoading);
+        // alert(isLoading);
         
         if (isLoading) return; 
 
@@ -47,7 +47,7 @@ const CollectionCard = ({
             console.log({ err });
         }
 
-        if (!filter) return;
+        // if (!filter) return;
 
         setLoadingScreen(true);
 
