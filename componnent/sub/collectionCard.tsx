@@ -36,7 +36,7 @@ const CollectionCard = ({
 
     const handleCardClicked = () => {
 
-        console.log(isLoading);
+        alert(isLoading);
         
         if (isLoading) return; 
 
