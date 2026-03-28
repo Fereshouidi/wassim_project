@@ -12,7 +12,7 @@ const SkeletonLoading = () => {
         <div
             className='w-full h-full relative rounded-xl overflow-hidden'
             style={{
-                backgroundColor: colors.light[300]
+                backgroundColor: colors.light[200]
             }}
         >
             <div

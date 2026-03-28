@@ -170,7 +170,7 @@ const Slider = ({
                                     }
                                 }
                             }}
-                            className='w-max h-full  flex flex-row justify-start gap-5-'
+                            className='w-max h-full flex flex-row justify-start gap-5-'
                         >
                             {products.map((product, index) => (
                                 <div
@@ -192,14 +192,14 @@ const Slider = ({
                         {productLoadingShowUp && (
                             <div
                                 ref={productLoading}
-                                className=' h-[250px] h-fit- bg-red-500- sm:h-[320px] m-2- px-2 rounded-xl overflow-hidden'
+                                className=' h-[290px] h-fit- bg-red-500- sm:h-[390px] m-2- px-2 rounded-xl overflow-hidden'
                                 style={{
                                     width: cardWidth + "px",
                                 }}
                             >
                                 <ProductLoading
                                     style={{ width: cardWidth }}
-                                    className=' h-[250px] h-fit- bg-red-500- sm:h-[320px] m-2- px-2 rounded-xl overflow-hidden'
+                                    className=' h-[250px] h-fit- bg-red-500- sm:h-[330px] m-2- px-2 rounded-xl overflow-hidden'
                                 />
                             </div>
                         )}

@@ -35,18 +35,7 @@ const ProductCardSkeleton = ({ className, style }: ProductCardSkeletonProps) => 
                 <SkeletonLoading />
             </div>
 
-            {/* Buttons Row Skeleton */}
-            <div className="w-full flex flex-row justify-between items-center gap-2 pt-2 border-t border-gray-50 px-1 mt-auto">
-                {/* Cart Button Skeleton */}
-                <div className="w-full h-9 rounded-lg overflow-hidden">
-                    <SkeletonLoading />
-                </div>
-
-                {/* Buy Button Skeleton */}
-                <div className="w-full h-9 rounded-lg overflow-hidden">
-                    <SkeletonLoading />
-                </div>
-            </div>
+           
         </div>
     );
 };
