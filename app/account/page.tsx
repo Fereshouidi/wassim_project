@@ -2,7 +2,6 @@
 import { backEndUrl } from '@/api';
 import Footer from '@/componnent/main/footer';
 import Header from '@/componnent/main/header';
-import SideBar from '@/componnent/main/sideBar';
 import AnnouncementBar from '@/componnent/sub/AnnouncementBar';
 import { ErrorBanner } from '@/componnent/sub/banners/errorBanner';
 import VerificationAccountBanner from '@/componnent/sub/banners/verificationAccountBanner';
@@ -30,7 +29,6 @@ const AccountPage = () => {
     const route = useRouter();
     const { client, setClient } = useClient();
     const { setLoadingScreen } = useLoadingScreen();
-    const [sideBarActive, setSideBarActive] = useState<boolean>(false);
     const { colors, activeTheme } = useTheme(); // Added activeTheme
     const { ownerInfo, setOwnerInfo } = useOwner();
     const [updatedClient, setUpdatedClient] = useState<ClientType | undefined>(undefined);
@@ -103,9 +101,9 @@ const AccountPage = () => {
 
             // 1. Call the backend to clear token/deviceId in DB
             // We use the client name from your current state
-            if (client?.fullName) {
+            if (client?._id) {
                 await axios.get(`${backEndUrl}/logoutClient`, {
-                    params: { fullName: client.fullName }
+                    params: { _id: client._id }
                 });
             }
 
@@ -140,16 +138,8 @@ const AccountPage = () => {
         >
             <AnnouncementBar />
             <Header
-                isSideBarActive={sideBarActive}
-                setIsSideBarActive={setSideBarActive}
                 ownerInfo={ownerInfo}
                 setOwnerInfo={setOwnerInfo}
-            />
-            <SideBar
-                isActive={sideBarActive}
-                setIsActive={setSideBarActive}
-                ownerInfo={ownerInfo}
-                setOwnerInfo={() => { }}
             />
 
             {/* --- Main Content Area --- */}
@@ -263,7 +253,7 @@ const AccountPage = () => {
 
                             {/* Logout Button */}
                             <button
-                                className='group flex items-center justify-center gap-3 px-8 py-3 rounded-2xl text-red-500 font-bold hover:bg-red-50 dark:hover:bg-red-950/30 transition-all duration-300 w-full sm:w-auto active:scale-95 border border-transparent hover:border-red-100 dark:hover:border-red-900/30'
+                                className='group flex items-center justify-center gap-3 px-8 py-3 rounded-xl text-red-500 font-bold hover:bg-red-50 dark:hover:bg-red-950/30 transition-all duration-300 w-full sm:w-auto active:scale-95 border border-transparent hover:border-red-100 dark:hover:border-red-900/30'
                                 onClick={handleLogout}
                             >
                                 <LogOut className='w-4 h-4 opacity-70 group-hover:opacity-100 transition-opacity' />
@@ -273,7 +263,7 @@ const AccountPage = () => {
 
                             {/* Submit Button */}
                             <button
-                                className='w-full sm:w-auto min-w-[200px] flex justify-center items-center py-4 px-10 rounded-2xl font-black text-white shadow-xl hover:-translate-y-1 active:translate-y-0 transition-all duration-300 active:scale-[0.98]'
+                                className='w-full sm:w-auto min-w-[200px] flex justify-center items-center py-4 px-10 rounded-xl font-black text-white shadow-xl hover:-translate-y-1 active:translate-y-0 transition-all duration-300 active:scale-[0.98]'
                                 style={{
                                     backgroundColor: colors.dark[100],
                                     boxShadow: `0 10px 25px -5px ${colors.dark[100]}40`

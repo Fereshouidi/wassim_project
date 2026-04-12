@@ -153,7 +153,11 @@ const SearchBar = ({
     return (
         <div
             className={`relative w-[60%] flex flex-row items-center justify-center transition-all duration-500 rounded-xl p-[1.2px] ${containerClassName}`}
-            style={{ ...containerStyle, background: aiModeActive ? aiGradient : 'transparent' }}
+            style={{
+                ...containerStyle,
+                backgroundColor: aiModeActive ? 'transparent' : (containerStyle?.backgroundColor || 'transparent'),
+                backgroundImage: aiModeActive ? aiGradient : 'none'
+            }}
         >
             {importedFrom !== "sidBar" && !aiModeActive && (
                 <div className='w-14 h-14 flex justify-center items-center cursor-pointer' onClick={() => setFilterBarActive(!filteBarActive)}>
@@ -204,7 +208,7 @@ const SearchBar = ({
 
             {/* AI Search Info Section */}
             {aiModeActive && resSecVisible && input && (
-                <div className="absolute top-full left-0 w-full mt-4 p-[1.5px] rounded-2xl z-[999] animate-in fade-in slide-in-from-top-4 shadow-2xl" style={{ background: aiGradient }}>
+                <div className="absolute top-full left-0 w-full mt-4 p-[1.5px] rounded-xl z-[999] animate-in fade-in slide-in-from-top-4 shadow-2xl" style={{ background: aiGradient }}>
                     <div className="w-full h-full p-5 rounded-[15px] backdrop-blur-2xl" style={{ backgroundColor: isDark ? 'rgba(10, 10, 10, 0.98)' : 'rgba(255, 255, 255, 0.98)' }}>
                         <div className="flex items-center gap-4">
                             <span className="text-[10px] uppercase font-bold tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-pink-500">AI SEARCHING MODE</span>
@@ -217,7 +221,7 @@ const SearchBar = ({
             {/* Live Search Result Section (Re-added) */}
             {!aiModeActive && resSecVisible && input.length > 0 && (
                 <div
-                    className={`w-full max-h-[400px] absolute top-full rounded-2xl overflow-y-auto z-[998] shadow-2xl mt-3 p-2 border border-white/5 transition-all duration-300`}
+                    className={`w-full max-h-[400px] absolute top-full rounded-xl overflow-y-auto z-[998] shadow-2xl mt-3 p-2 border border-white/5 transition-all duration-300`}
                     style={{ ...resSectionStyle, backgroundColor: isDark ? '#121212' : '#fff' }}
                     ref={searchResultDivRef}
                 >

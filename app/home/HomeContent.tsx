@@ -5,7 +5,6 @@ import CollectionsSections from "@/componnent/main/collectionsSection";
 import Footer from "@/componnent/main/footer";
 import Header from "@/componnent/main/header";
 import HomeCollections from "@/componnent/main/homeCollections";
-import SideBar from "@/componnent/main/sideBar";
 import AnnouncementBar from "@/componnent/sub/AnnouncementBar";
 import LoadingScreen from "@/componnent/sub/loading/loadingScreen";
 import SkeletonLoading from "@/componnent/sub/SkeletonLoading";
@@ -20,7 +19,6 @@ import AiPromoBanner from "@/componnent/sub/AiPromoBanner";
 
 
 export default function HomeContent() {
-    const [sideBarActive, setSideBarActive] = useState<boolean>(false);
     const { colors } = useTheme();
     const { screenWidth } = useScreen();
     const { setLoadingScreen } = useLoadingScreen();
@@ -53,8 +51,6 @@ export default function HomeContent() {
         >
             <AnnouncementBar />
             <Header
-                isSideBarActive={sideBarActive}
-                setIsSideBarActive={setSideBarActive}
                 ownerInfo={ownerInfo}
                 setOwnerInfo={setOwnerInfo}
             />
@@ -109,12 +105,6 @@ export default function HomeContent() {
             </div>
 
             <Footer />
-            <SideBar
-                isActive={sideBarActive}
-                setIsActive={setSideBarActive}
-                ownerInfo={ownerInfo}
-                setOwnerInfo={setOwnerInfo}
-            />
         </div>
     );
 }

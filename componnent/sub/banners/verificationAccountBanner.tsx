@@ -121,7 +121,7 @@ const VerificationAccountBanner = ({
 
     // Step 1: No clientFound yet — show email lookup form (forgot password flow)
     if (!clientFound) return (
-        <div className='w-full h-full flex flex-col justify-center items-center rounded-3xl p-8 transition-all duration-300' style={{ backgroundColor: colors.light[100] }}>
+        <div className='w-full h-full flex flex-col justify-center items-center rounded-xl p-8 transition-all duration-300' style={{ backgroundColor: colors.light[100] }}>
             <X
                 className='w-5 h-5 absolute top-4 right-4 cursor-pointer hover:rotate-90 transition-transform duration-300 opacity-40 hover:opacity-100'
                 onClick={() => setVerificationAccountBannerVisible(false)}
@@ -129,7 +129,7 @@ const VerificationAccountBanner = ({
 
 
             <div className='w-full flex flex-col items-center animate-in slide-in-from-bottom-4 duration-500'>
-                <div className="w-16 h-16 bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl flex items-center justify-center mb-6 shadow-sm border border-indigo-100/50">
+                <div className="w-16 h-16 bg-indigo-50 dark:bg-indigo-900/20 rounded-xl flex items-center justify-center mb-6 shadow-sm border border-indigo-100/50">
                     <Search className="w-8 h-8 opacity-80" style={{ color: colors.dark[100] }} />
                 </div>
 
@@ -158,7 +158,7 @@ const VerificationAccountBanner = ({
 
     // Step 2: clientFound is set — show token input form
     return (
-        <div className='w-full h-full flex flex-col justify-center items-center rounded-3xl p-8 transition-all duration-300' style={{ backgroundColor: colors.light[100] }}>
+        <div className='w-full h-full flex flex-col justify-center items-center rounded-xl p-8 transition-all duration-300' style={{ backgroundColor: colors.light[100] }}>
             <X
                 className='w-5 h-5 absolute top-4 right-4 cursor-pointer hover:rotate-90 transition-transform duration-300 opacity-40 hover:opacity-100'
                 onClick={() => setVerificationAccountBannerVisible(false)}
@@ -166,7 +166,7 @@ const VerificationAccountBanner = ({
 
 
             <div className='w-full flex flex-col items-center animate-in slide-in-from-bottom-4 duration-500'>
-                <div className="w-16 h-16 bg-green-50 dark:bg-green-900/20 rounded-2xl flex items-center justify-center mb-6 shadow-sm border border-green-100/50">
+                <div className="w-16 h-16 bg-green-50 dark:bg-green-900/20 rounded-xl flex items-center justify-center mb-6 shadow-sm border border-green-100/50">
                     <Mail className="w-8 h-8 opacity-80" style={{ color: colors.dark[100] }} />
                 </div>
 

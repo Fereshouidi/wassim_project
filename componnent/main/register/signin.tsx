@@ -130,7 +130,7 @@ const SignIn = ({
 
     return (
         <div
-            className="w-full h-full overflow-y-auto flex flex-col items-center bg-white rounded-3xl p-8 shadow-2xl scrollbar-hidden transition-all duration-300"
+            className="w-full h-full overflow-y-auto flex flex-col items-center bg-white rounded-xl p-8 shadow-2xl scrollbar-hidden transition-all duration-300"
             style={{
                 backgroundColor: colors.light[100],
             }}
@@ -138,7 +138,7 @@ const SignIn = ({
             {/* --- Brand / Icon Section --- */}
             <div className="mb-6 flex flex-col items-center">
                 <div
-                    className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4 shadow-inner"
+                    className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 shadow-inner"
                     style={{ backgroundColor: colors.light[200] }}
                 >
                     <LockKeyhole

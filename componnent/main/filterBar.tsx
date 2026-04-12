@@ -102,7 +102,7 @@ const FilterBar = ({
                 <div className="flex flex-col gap-5 sm:gap-8 mt-4">
                     
                     {/* Price Range Section - Compact Layout */}
-                    <div className="w-full lg:w-3/4 mx-auto p-4 sm:p-6 rounded-2xl" style={{ backgroundColor: colors.light[200] }}>
+                    <div className="w-full lg:w-3/4 mx-auto p-4 sm:p-6 rounded-xl" style={{ backgroundColor: colors.light[200] }}>
                         {mostProductExpensive && (
                             <FilterPriceRange
                                 filtration={filtration}

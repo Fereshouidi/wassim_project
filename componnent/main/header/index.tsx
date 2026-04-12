@@ -14,10 +14,9 @@ import { backEndUrl } from '@/api';
 import { useRouter } from 'next/navigation';
 import SmallScreens from './smallScreens';
 import LargeScreens from './largeScreens';
+import { useSidebar } from '@/contexts/sidebarContext';
 
 const Header = ({
-    isSideBarActive,
-    setIsSideBarActive,
     ownerInfo, 
     setOwnerInfo,
     searchInput,
@@ -34,8 +33,6 @@ const Header = ({
 
   return screenWidth < 1200 ? 
     <SmallScreens
-      isSideBarActive={isSideBarActive}
-      setIsSideBarActive={setIsSideBarActive}
       searchInput={searchInput}
       className={className}
       style={style}
@@ -44,8 +41,6 @@ const Header = ({
     : 
 
     <LargeScreens
-      isSideBarActive={isSideBarActive}
-      setIsSideBarActive={setIsSideBarActive}
       searchInput={searchInput}
       className={className}
       style={style}

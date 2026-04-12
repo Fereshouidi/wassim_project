@@ -16,13 +16,12 @@ import { useLoadingScreen } from '@/contexts/loadingScreen';
 import { useClient } from '@/contexts/client';
 import Collections from '../sub/sideBarItems/collections';
 import { useAiChatBubble } from '@/contexts/AiChatBubble';
+import { useSidebar } from '@/contexts/sidebarContext';
 
 const SideBar = ({
-    isActive,
-    setIsActive,
     ownerInfo,
     setOwnerInfo
-}: SideBarProps) => {
+}: any) => {
 
     const swreenWidth = useScreen().screenWidth;
     const { activeTheme, colors } = useTheme();
@@ -32,16 +31,17 @@ const SideBar = ({
     const { setLoadingScreen } = useLoadingScreen();
     const { setClient, client } = useClient();
     const { setBubbleProps, bubbleProps } = useAiChatBubble()
+    const { isSidebarOpen, setIsSidebarOpen, closeSidebar } = useSidebar();
     const pathname = usePathname();
 
     const handleNavigation = (path: string) => {
         if (pathname === path) {
-            setIsActive(false);
+            closeSidebar();
             return;
         }
         setLoadingScreen(true);
         router.push(path);
-        setIsActive(false);
+        closeSidebar();
     };
 
 
@@ -50,18 +50,18 @@ const SideBar = ({
             className={`
             w-screen h-dvh z-[70] fixed top-0 left-0
             transition-all duration-300 ease-in-out
-            ${isActive ? "opacity-100 visible" : "opacity-0 invisible delay-300"} 
+            ${isSidebarOpen ? "opacity-100 visible" : "opacity-0 invisible delay-300"} 
             no-sellect
         `}
             style={{
                 backgroundColor: "rgba(74, 74, 74, 0.677)",
             }}
-            onClick={() => setIsActive(false)}
+            onClick={() => closeSidebar()}
         >
             <div
                 className={`
                 w-[320px] h-full bg-white absolute top-0
-                ${isActive ? "left-0" : "left-[-320px]"}
+                ${isSidebarOpen ? "left-0" : "left-[-320px]"}
                 flex flex-col items-center justify-between p-2
                 overflow-y-scroll overflow-x-visible scrollbar-hidden
                 transition-all duration-300 ease-in-out
@@ -155,7 +155,7 @@ const SideBar = ({
                             }}
                         >
                             <div className='w-full h-full px-7'>
-                                <Collections sideBarActive={isActive} />
+                                <Collections sideBarActive={isSidebarOpen} />
                             </div>
                         </li>
                         {client?._id && <li
@@ -214,9 +214,9 @@ const SideBar = ({
                             <span
                                 onClick={() => {
                                     setBubbleProps({ ...bubbleProps, exist: true });
-                                    setIsActive(false);
+                                    closeSidebar();
                                 }}
-                                className='w-full h-full flex items-center gap-3 px-5 rounded-2xl font-bold transition-all duration-300 hover:scale-[1.02]'
+                                className='w-full h-full flex items-center gap-3 px-5 rounded-xl font-bold transition-all duration-300 hover:scale-[1.02]'
                                 style={{
                                     background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.01), rgba(168, 85, 247, 0.01), rgba(236, 72, 153, 0.01))',
                                     color: '#c4b5fd',

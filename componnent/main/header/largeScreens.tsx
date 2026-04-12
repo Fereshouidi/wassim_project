@@ -19,8 +19,6 @@ import { useClient } from '@/contexts/client';
 import { Sparkles } from 'lucide-react';
 
 const LargeScreens = ({
-  isSideBarActive,
-  setIsSideBarActive,
   searchInput,
   className,
   style
@@ -48,10 +46,7 @@ const LargeScreens = ({
 
       <div className='w-[25%] h-full flex flex-row justify-between items-center '>
 
-        <MenuIcon
-          isSideBarActive={isSideBarActive}
-          setIsSideBarActive={setIsSideBarActive}
-        />
+        <MenuIcon />
 
         <div
           className='flex-row gap-1.5 w-36 h-full flex items-center justify-center'
@@ -63,14 +58,14 @@ const LargeScreens = ({
             onClick={() => router.replace('/')}
           >
             {
-              activeTheme == "light" ?
+              activeTheme == "dark" ?
                 <img
-                  src={ownerInfo?.logo?.light}
+                  src={ownerInfo?.logo?.dark}
                   className=' h-full object-contain no-sellect'
                 /> :
-                activeTheme == "dark" ?
+                activeTheme == "light" ?
                   <img
-                    src={ownerInfo?.logo?.dark}
+                    src={ownerInfo?.logo?.light}
                     className=' h-full object-contain no-sellect'
                   /> :
                   null

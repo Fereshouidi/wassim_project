@@ -1,0 +1,9 @@
+tunnel: 62ae12d6-e02a-42b8-a8c1-2a827b7dcd87
+credentials-file: C:\Users\feres_hdkp00s\.cloudflared\62ae12d6-e02a-42b8-a8c1-2a827b7dcd87.json
+
+ingress:
+  - hostname: silverway.yourdomain.com
+    service: http://localhost:3000    # هذا بورت الـ Node.js Backend
+  - hostname: ai.yourdomain.com
+    service: http://localhost:8080    # هذا بورت الـ AI Model
+  - service: http_status:404

@@ -10,13 +10,17 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import { useCartSide } from '@/contexts/cart';
+import { useSidebar } from '@/contexts/sidebarContext';
+import { useRouter } from 'next/navigation';
+
+
 const AiChatBubble = () => {
     const { ownerInfo } = useOwner();
-    // استخدام history و addMessage من الـ Context
     const { bubbleProps, setBubbleProps, history, setHistory, addMessage } = useAiChatBubble();
     const { client } = useClient();
-    const { setIsActive } = useCartSide();
-    const { activeTheme, colors } = useTheme();
+    const { setIsActive, fetchPurchasesInCart } = useCartSide();
+    const { activeTheme, setActiveTheme, colors } = useTheme();
+    const [statusMessage, setStatusMessage] = useState('Thinking...');
     const containerRef = useRef<HTMLDivElement>(null);
     const posRef = useRef({ x: 0, y: 0 });
     const isDragging = useRef(false);
@@ -33,6 +37,9 @@ const AiChatBubble = () => {
     const lastLoadedCountRef = useRef(0);
     const pendingScrollRestore = useRef<'bottom' | 'preserve' | null>(null);
     const isDark = activeTheme === 'dark';
+    const { setIsSidebarOpen } = useSidebar();
+    const router = useRouter();
+
     const accentGradient = "linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%)";
     useEffect(() => {
         const handleResize = () => {
@@ -176,6 +183,29 @@ const AiChatBubble = () => {
         window.removeEventListener('touchmove', updatePositionTouch);
         window.removeEventListener('touchend', handleMouseUp);
     };
+    const handleUiAction = (uiAction: any) => {
+        if (!uiAction) return;
+
+        // If uiAction is an array, process each action
+        if (Array.isArray(uiAction)) {
+            uiAction.forEach(action => handleUiAction(action));
+            return;
+        }
+
+        if (uiAction.element === 'cart') setIsActive(uiAction.state === 'open');
+        if (uiAction.element === 'theme') {
+            const activeChoise = uiAction.state === 'dark' ? 'dark' : 'light';
+            setActiveTheme(activeChoise);
+            localStorage.setItem('activeTheme', activeChoise);
+        }
+        if (uiAction.element == 'sidebar') {
+            const activeChoise = uiAction.state === 'open' ? true : false;
+            setIsSidebarOpen(activeChoise)
+        }
+        if (uiAction.element == 'navigation') {
+            router.push(uiAction.state);
+        }
+    }
     const handleSendMessage = async () => {
         if (!userMessage.trim() || isTyping) return;
         const msg = userMessage;
@@ -185,11 +215,52 @@ const AiChatBubble = () => {
         setIsTyping(true);
         try {
             setBubbleProps(prev => ({ ...prev, isTherAnswer: true }));
-            const { data } = await axios.post(`${backEndUrl}/getAnswerFromAi`, {
-                userId: client?._id, message: msg,
+            setStatusMessage('Thinking...');
+
+            const response = await fetch(`${backEndUrl}/getAnswerFromAi`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: client?._id, message: msg }),
             });
-            if (data.uiAction && data.uiAction.element === 'cart') setIsActive(data.uiAction.state === 'open');
-            addMessage('assistant', data.answer);
+
+            if (!response.body) throw new Error("No response body");
+
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let aiData = null;
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                const chunk = decoder.decode(value, { stream: true });
+                const lines = chunk.split('\n');
+
+                let currentEvent = '';
+                for (const line of lines) {
+                    if (line.startsWith('event:')) {
+                        currentEvent = line.replace('event:', '').trim();
+                    } else if (line.startsWith('data:')) {
+                        const dataStr = line.replace('data:', '').trim();
+                        try {
+                            const data = JSON.parse(dataStr);
+                            if (currentEvent === 'status') {
+                                setStatusMessage(data.message);
+                            } else if (currentEvent === 'answer') {
+                                aiData = data;
+                            }
+                        } catch (e) {
+                            console.error("Error parsing SSE chunk", e);
+                        }
+                    }
+                }
+            }
+
+            if (aiData) {
+                if (aiData.uiAction) handleUiAction(aiData.uiAction);
+                if (aiData.cartChanged) fetchPurchasesInCart();
+                addMessage('assistant', aiData.answer);
+            }
             pendingScrollRestore.current = 'bottom';
         } catch (err) {
             setBubbleProps(prev => ({ ...prev, answer: "Error." }));
@@ -197,7 +268,9 @@ const AiChatBubble = () => {
             setIsTyping(false);
         }
     };
+
     if (!bubbleProps.exist) return null;
+
     return (
         <div
             ref={containerRef}
@@ -208,7 +281,7 @@ const AiChatBubble = () => {
                 backdropFilter: 'blur(12px)',
                 borderColor: isDark ? '#333' : '#e5e7eb',
             }}
-            className="fixed z-[9999] w-[95vw] sm:w-[85vw] md:w-[480px] max-h-[90vh] flex flex-col rounded-3xl overflow-hidden border shadow-[0_20px_50px_rgba(0,0,0,0.2)]"
+            className="fixed z-[9999] w-[95vw] sm:w-[85vw] md:w-[480px] max-h-[90vh] flex flex-col rounded-xl overflow-hidden border shadow-[0_20px_50px_rgba(0,0,0,0.2)]"
         >
             <div onMouseDown={handleMouseDown} onTouchStart={handleMouseDown} className="flex items-center justify-between px-6 py-5 cursor-grab active:cursor-grabbing border-b border-current/5 select-none touch-none">
                 <div className="flex items-center gap-3">
@@ -227,7 +300,7 @@ const AiChatBubble = () => {
             <div ref={scrollRef} onScroll={(e) => e.currentTarget.scrollTop <= 100 && !isLoadingMore && hasMore && fetchChatHistory(skip)} className="p-4 md:p-6 h-[50vh] min-h-[300px] overflow-y-auto custom-scrollbar flex flex-col gap-6">
                 {isLoadingMore && <div className="h-4 bg-current/5 rounded w-1/3 self-center animate-pulse" />}
                 <div className={`prose prose-sm max-w-none ${isDark ? 'prose-invert' : ''}`}>
-                    {(Array.isArray(history) ? history : []).map((msg, idx) => (
+                    {(Array.isArray(history) ? history : [])?.filter((msg, idx) => msg.content && (msg.role == "user" || msg.role == "assistant")).map((msg, idx) => (
                         <div key={history.length - idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} mb-2`}>
                             <div className={`max-w-[88%] px-5 py-3 rounded-[22px] text-[14px] leading-relaxed shadow-sm ${msg.role === 'user' ? 'bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-tr-none' : 'bg-current/5 border border-current/5 rounded-tl-none'}`}>
                                 <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]} components={{
@@ -243,11 +316,20 @@ const AiChatBubble = () => {
                     ))}
                     {isTyping && (
                         <div className="flex justify-start animate-in fade-in slide-in-from-left-2">
-                            <div className="bg-current/5 px-5 py-4 rounded-[22px] rounded-tl-none w-2/3 flex flex-col gap-2">
-                                <div className="h-2 bg-current/10 rounded-full w-full overflow-hidden">
+                            <div className="bg-current/5 px-5 py-4 rounded-[22px] rounded-tl-none w-fit flex flex-col gap-2 border border-current/5">
+                                <div className="flex items-center gap-2">
+                                    <div className="flex gap-1">
+                                        <div className="w-1 h-1 rounded-full bg-purple-500 animate-bounce" style={{ animationDelay: '0ms' }} />
+                                        <div className="w-1 h-1 rounded-full bg-purple-500 animate-bounce" style={{ animationDelay: '200ms' }} />
+                                        <div className="w-1 h-1 rounded-full bg-purple-500 animate-bounce" style={{ animationDelay: '400ms' }} />
+                                    </div>
+                                    <span className="text-[11px] font-black uppercase tracking-[0.15em] opacity-40">
+                                        Agent: {statusMessage}
+                                    </span>
+                                </div>
+                                <div className="h-1 bg-current/10 rounded-full w-32 overflow-hidden">
                                     <div className="h-full w-1/2" style={{ background: accentGradient, animation: 'shimmer 1.5s infinite' }} />
                                 </div>
-                                <div className="h-2 bg-current/10 rounded-full w-2/3" />
                             </div>
                         </div>
                     )}
@@ -255,7 +337,7 @@ const AiChatBubble = () => {
             </div>
             <div className="p-6 bg-gradient-to-b from-transparent to-current/[0.03]">
                 <div className="relative group">
-                    <textarea value={userMessage} onChange={(e) => setUserMessage(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSendMessage(); } }} placeholder="Ask me anything..." className="w-full p-4 pb-12 bg-current/5 rounded-2xl text-[14px] border border-transparent focus:border-purple-500/30 outline-none transition-all resize-none shadow-inner" rows={2} />
+                    <textarea value={userMessage} onChange={(e) => setUserMessage(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSendMessage(); } }} placeholder="Ask me anything..." className="w-full p-4 pb-12 bg-current/5 rounded-xl text-[14px] border border-transparent focus:border-purple-500/30 outline-none transition-all resize-none shadow-inner" rows={2} />
                     <button onClick={handleSendMessage} disabled={isTyping || !userMessage.trim()} className="absolute bottom-3 right-3 p-2.5 rounded-xl transition-all hover:scale-105 active:scale-95 disabled:opacity-30" style={{ background: accentGradient, color: 'white' }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" strokeLinecap="round" strokeLinejoin="round" /></svg>
                     </button>

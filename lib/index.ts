@@ -287,3 +287,10 @@ export const handleSocialMediaClick = (media: any) => {
             break;
     }
 }
+
+// export const handleUiAction = (uiAction: any) => {
+//     if (uiAction && uiAction.element === 'cart') setIsActive(uiAction.state === 'open');
+//     if (uiAction && uiAction.element === 'theme') {
+//         setActiveTheme(uiAction.state === 'dark' ? 'dark' : 'light');
+//     }
+// }

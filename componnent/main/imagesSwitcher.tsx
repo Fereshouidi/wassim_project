@@ -78,9 +78,9 @@ const ImagesSwitcher = ({
 
   return (
     <div className={`bg-red-500- h-full relative flex flex-col items-center select-none w-full ${screenWidth > 1000 ? "max-w-[525px] max-h-[5750px] bg-red-500-" : "max-w-[90%]"}  mx-auto ${className}`} style={style}>
-      
-      <div 
-        className={`relative w-full overflow-hidden rounded-2xl border border-gray-100 shadow-xl bg-white
+
+      <div
+        className={`relative w-full overflow-hidden rounded-xl border border-gray-100 shadow-xl bg-white
           ${screenWidth > 500 ? "h-[475px]" : "h-[400px]"}`}
         onMouseMove={handleMouseMove}
         onMouseLeave={() => setZoomPos(prev => ({ ...prev, show: false }))}
@@ -94,7 +94,7 @@ const ImagesSwitcher = ({
         </button>
 
         {zoomPos.show && uniqueImages[currentImageIndex]?.uri && (
-          <div 
+          <div
             className="absolute inset-0 z-10 pointer-events-none"
             style={{
               backgroundImage: `url(${uniqueImages[currentImageIndex]?.uri})`,
@@ -107,7 +107,7 @@ const ImagesSwitcher = ({
 
         {uniqueImages.length > 0 ? (
           <img
-            src={uniqueImages[currentImageIndex]?.uri?? ""}
+            src={uniqueImages[currentImageIndex]?.uri ?? ""}
             alt="Product"
             className={`w-full h-full object-cover transition-opacity duration-200 ${zoomPos.show ? 'opacity-0' : 'opacity-100'}`}
           />
@@ -116,57 +116,57 @@ const ImagesSwitcher = ({
         )}
       </div>
 
-        {uniqueImages.length > 0 && (
+      {uniqueImages.length > 0 && (
         <div className="w-full flex items-center gap-3 mt-5 px-3">
 
-            {screenWidth > 1000 && <button 
-                onClick={handlePrev} 
-                className="p-2.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-900 shrink-0 border border-gray-100 dark:border-gray-900 shadow-sm active:scale-90 transition-transform"
-            >
-                <img 
-                    src={activeTheme === "dark" ? "/icons/left-arrow-white.png" : "/icons/left-arrow-black.png"} 
-                    className="w-4 h-4" 
-                    alt="prev" 
-                />
-            </button>}
+          {screenWidth > 1000 && <button
+            onClick={handlePrev}
+            className="p-2.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-900 shrink-0 border border-gray-100 dark:border-gray-900 shadow-sm active:scale-90 transition-transform"
+          >
+            <img
+              src={activeTheme === "dark" ? "/icons/left-arrow-white.png" : "/icons/left-arrow-black.png"}
+              className="w-4 h-4"
+              alt="prev"
+            />
+          </button>}
 
-            <div 
-            ref={sliderRef} 
+          <div
+            ref={sliderRef}
             className="flex-1 overflow-x-auto scrollbar-hidden scroll-smooth px-1 py-3"
-            >
+          >
             <div className="flex flex-row gap-4">
-                {uniqueImages.map((img, index) => (
+              {uniqueImages.map((img, index) => (
                 <button
-                    key={index}
-                    onClick={() => setCurrentImageIndex(index)}
-                    className={`relative shrink-0 w-20 h-20 rounded-2xl overflow-hidden border-2 transition-all duration-300
-                    ${currentImageIndex === index 
-                        ? 'border-black scale-105 shadow-lg z-10' 
-                        : 'border-transparent opacity-60 hover:opacity-100 hover:scale-105'}`}
+                  key={index}
+                  onClick={() => setCurrentImageIndex(index)}
+                  className={`relative shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all duration-300
+                    ${currentImageIndex === index
+                      ? 'border-black scale-105 shadow-lg z-10'
+                      : 'border-transparent opacity-60 hover:opacity-100 hover:scale-105'}`}
                 >
-                    <img 
-                        src={img.uri || ""} 
-                        className="w-full h-full object-cover" 
-                        alt={`thumbnail ${index}`} 
-                    />
+                  <img
+                    src={img.uri || ""}
+                    className="w-full h-full object-cover"
+                    alt={`thumbnail ${index}`}
+                  />
                 </button>
-                ))}
+              ))}
             </div>
-            </div>
+          </div>
 
-            {screenWidth > 1000 && <button 
-                onClick={handleNext} 
-                className="p-2.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-900 shrink-0 border border-gray-100 dark:border-gray-900 shadow-sm active:scale-90 transition-transform"
-            >
-                <img 
-                    src={activeTheme === "dark" ? "/icons/right-arrow-white.png" : "/icons/right-arrow-black.png"} 
-                    className="w-4 h-4" 
-                    alt="next" 
-                />
-            </button>}
-            
+          {screenWidth > 1000 && <button
+            onClick={handleNext}
+            className="p-2.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-900 shrink-0 border border-gray-100 dark:border-gray-900 shadow-sm active:scale-90 transition-transform"
+          >
+            <img
+              src={activeTheme === "dark" ? "/icons/right-arrow-white.png" : "/icons/right-arrow-black.png"}
+              className="w-4 h-4"
+              alt="next"
+            />
+          </button>}
+
         </div>
-        )}
+      )}
     </div>
   );
 };

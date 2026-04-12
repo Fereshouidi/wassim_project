@@ -232,7 +232,7 @@ const ProductCard = ({
                 {
                     product.thumbNail ? <img
                         src={product.thumbNail}
-                        className='w-full h-full rounded-2xl overflow-hidden hover:scale-110 duration-300 object-cover'
+                        className='w-full h-full rounded-xl overflow-hidden hover:scale-110 duration-300 object-cover'
                         alt={product.name[activeLanguage.language] || ""}
                     /> : <SkeletonLoading />
                 }
@@ -243,7 +243,7 @@ const ProductCard = ({
                     ? handleLongText(product.name[activeLanguage.language] + "", 15)
                     : <div className="w-28 h-4 opacity-50"><SkeletonLoading /></div>
                 }
-            </h4> 
+            </h4>
 
             <div className={`w-fit min-w-[90px] h-8 overflow-hidden rounded-xl flex flex-row items-center justify-center gap-2 px-2`}>
                 {product.price != null ? (

@@ -25,7 +25,7 @@ const ProductNotFound = () => {
                     style={{ background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)" }}
                 />
                 <div
-                    className="relative w-24 h-24 rounded-3xl flex items-center justify-center border shadow-xl"
+                    className="relative w-24 h-24 rounded-xl flex items-center justify-center border shadow-xl"
                     style={{
                         backgroundColor: colors.light[200],
                         borderColor: colors.light[250]

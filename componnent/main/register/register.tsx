@@ -37,7 +37,7 @@ const RegisterSection = ({
         fullName: '',
         password: ''
     });
-    
+
 
     return (
         <div
@@ -83,9 +83,9 @@ const RegisterSection = ({
                 }
 
                 {verificationAccountBannerVisible &&
-                    <div className='w-full h-full rounded-2xl overflow-hidden bg-transparent- backdrop:blur-2xl fixed top-0 left-0 flex justify-center items-center overflow-y-scroll- z-50'>
+                    <div className='w-full h-full rounded-xl overflow-hidden bg-transparent- backdrop:blur-2xl fixed top-0 left-0 flex justify-center items-center overflow-y-scroll- z-50'>
                         <div
-                            className={`${screenWidth > 1000 ? "w-[450px]" : "w-[350px]"} h-full- max-h-[90%] rounded-2xl overflow-hidden relative`}
+                            className={`${screenWidth > 1000 ? "w-[450px]" : "w-[350px]"} h-full- max-h-[90%] rounded-xl overflow-hidden relative`}
                             onClick={(e) => e.stopPropagation()}
                             style={{
                                 backgroundColor: colors.light[100],

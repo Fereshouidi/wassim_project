@@ -1,7 +1,6 @@
 "use client";
 
 import { useLanguage } from '@/contexts/languageContext';
-// حذف استيراد useSocket
 import { useTheme } from '@/contexts/themeProvider';
 import { PurchaseType } from '@/types';
 import { useRouter } from 'next/navigation';
@@ -12,7 +11,6 @@ import { useCartSide } from '@/contexts/cart';
 
 type Props = {
     purchase: PurchaseType;
-    // setPurchases تستخدم لتحديث القائمة الأب (Parent List)
     setPurchases: (purchases: PurchaseType[] | ((prev: PurchaseType[]) => PurchaseType[])) => void;
 
 };
@@ -26,28 +24,44 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
 
     useEffect(() => { setPurchase_(purchase); }, [purchase]);
 
-    // تحويل الدالة لتعمل بنظام HTTP
+    // Optimistic UI update function
     const updatePurchaseData = async (updatedData: PurchaseType) => {
         if (!updatedData) return;
 
+        // Save original data for potential revert
+        const originalPurchase = { ...purchase };
+
+        // 1. Optimistically update the UI in the parent state
+        setPurchases((prev: PurchaseType[]) => {
+            if (updatedData.status === "viewed") {
+                return prev.filter(p => p._id === updatedData._id ? false : true);
+            }
+            return prev.map(p => p._id === updatedData._id ? updatedData : p);
+        });
+
         try {
-            // 1. إرسال التحديث للسيرفر
+            // 2. Send update to server in background
             const { data } = await axios.put(`${backEndUrl}/updatePurchase`, updatedData);
 
-            if (data.success) {
-                // 2. إذا تم إزالة المنتج من السلة (status was set to "viewed")
-                // نستخدم الحالة (status) بدلاً من (cart) لضمان الدقة
-                if (updatedData.status === "viewed") {
-                    setPurchases((prev: PurchaseType[]) => prev.filter(p => p._id !== updatedData._id));
-                } else {
-                    // 3. إذا كان تحديثاً للكمية فقط، نحدث القائمة في المكون الأب
-                    setPurchases((prev: PurchaseType[]) =>
-                        prev.map(p => p._id === data.purchase._id ? data.purchase : p)
-                    );
-                }
+            if (!data.success) {
+                throw new Error("Server update failed");
             }
+            
+            // Optionally, sync with server's returned data to ensure consistency (e.g., final price/stock)
+            setPurchases((prev: PurchaseType[]) =>
+                prev.map(p => p._id === data.purchase._id ? data.purchase : p)
+            );
         } catch (err) {
-            console.error("Failed to update purchase:", err);
+            console.error("Failed to update purchase, reverting:", err);
+            // 3. Revert to original state on error
+            setPurchases((prev: PurchaseType[]) => {
+                const itemExists = prev.find(p => p._id === originalPurchase._id);
+                if (!itemExists && originalPurchase.status !== "viewed") {
+                    // Re-add if it was optimistically removed
+                    return [...prev, originalPurchase];
+                }
+                return prev.map(p => p._id === originalPurchase._id ? originalPurchase : p);
+            });
         }
     };
 
@@ -71,7 +85,7 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
             }}
         >
             {/* Thumbnail */}
-            <div className="w-20 h-24 flex-shrink-0 overflow-hidden rounded-xl bg-gray-50 border" style={{ borderColor: colors.light[200] }}>
+            <div className="w-22 h-22 flex-shrink-0 overflow-hidden rounded-xl bg-gray-50 border" style={{ borderColor: colors.light[200] }}>
                 <img
                     //@ts-ignore
                     src={purchase.product?.thumbNail || purchase.productThumb || "/icons/shopping-bag-black.png"}
@@ -115,7 +129,7 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
                 <div className='flex justify-between items-end mt-2'>
                     <div className='flex items-center border rounded-xl h-7' style={{ borderColor: colors.light[300] }}>
                         <button
-                            className='w-7 h-full flex items-center justify-center hover:bg-black/5'
+                            className='w-7 h-full rounded-full flex items-center justify-center hover:bg-black/5'
                             onClick={(e) => {
                                 e.stopPropagation();
                                 if ((purchase?.quantity || 0) <= 1) return;
@@ -126,7 +140,7 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
                         </button>
                         <span className='px-2 text-xs font-bold w-6 text-center'>{purchase?.quantity}</span>
                         <button
-                            className='w-7 h-full flex items-center justify-center hover:bg-black/5'
+                            className='w-7 rounded-full h-full flex items-center justify-center hover:bg-black/5'
                             onClick={(e) => {
                                 e.stopPropagation();
                                 // @ts-ignore

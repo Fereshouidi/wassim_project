@@ -26,7 +26,7 @@ const PurshasesTable = ({ purchases, order }: Props) => {
 
     return (
         <div
-            className='w-full cursor-auto overflow-hidden rounded-2xl'
+            className='w-full cursor-auto overflow-hidden rounded-xl'
             style={{
                 backgroundColor: colors.light[100],
                 border: `1px solid ${colors.light[250]}`,
@@ -95,14 +95,14 @@ const PurshasesTable = ({ purchases, order }: Props) => {
                                 <td className='p-3 sm:p-4 text-center'>
                                     <div className='flex flex-col gap-1'>
                                         {(purchase.specification?.color || purchase.specColor) && (
-                                                <span className='text-[9px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 rounded-full inline-block mx-auto border'
-                                                    style={{ borderColor: colors.light[350], color: colors.dark[600] }}>
-                                                    {purchase.specification?.color || purchase.specColor}
-                                                </span>
-                                            )}
+                                            <span className='text-[9px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 rounded-full inline-block mx-auto border'
+                                                style={{ borderColor: colors.light[350], color: colors.dark[600] }}>
+                                                {purchase.specification?.color || purchase.specColor}
+                                            </span>
+                                        )}
                                         {(purchase.specification?.size || purchase.specSize) && (
-                                                <span className='text-[9px] sm:text-[10px] font-bold opacity-60 italic'>Size: {purchase.specification?.size || purchase.specSize}</span>
-                                            )}
+                                            <span className='text-[9px] sm:text-[10px] font-bold opacity-60 italic'>Size: {purchase.specification?.size || purchase.specSize}</span>
+                                        )}
                                     </div>
                                 </td>
                                 <td className='p-3 sm:p-4 text-center'>

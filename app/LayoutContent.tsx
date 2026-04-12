@@ -21,6 +21,7 @@ import AiChatBubble from "@/componnent/sub/ai/AiChatBubble";
 import CartSide from "@/componnent/main/cartSide";
 import ScrollToTop from "@/componnent/sub/ScrollToTop";
 import AiFloatingButton from "@/componnent/sub/AiFloatingButton";
+import SideBar from "@/componnent/main/sideBar";
 
 
 export default function LayoutContent({
@@ -33,8 +34,8 @@ export default function LayoutContent({
   const { statusBannerExist } = useStatusBanner();
   const { loadingScreen } = useLoadingScreen();
   const { setClient } = useClient();
-  const { setOwnerInfo } = useOwner();
   const { bubbleProps } = useAiChatBubble();
+  const { ownerInfo, setOwnerInfo } = useOwner();
 
   useEffect(() => {
     const initializeAppData = async () => {
@@ -70,6 +71,8 @@ export default function LayoutContent({
     initializeAppData();
   }, []); // Runs once on initial mount or page refresh
 
+  if (!ownerInfo) return null;
+
   return (
     <>
       {/* Render Page Content */}
@@ -89,6 +92,9 @@ export default function LayoutContent({
 
       {/* AI Floating Assistant Button */}
       <AiFloatingButton />
+
+      {/* SideBar - Persistent across Layout */}
+      <SideBar ownerInfo={ownerInfo} setOwnerInfo={setOwnerInfo} />
     </>
 
   );

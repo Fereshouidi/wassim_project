@@ -271,7 +271,7 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
             viewport={{ once: true, amount: 0.1 }}
             variants={fadeInUp}
             whileTap={{ scale: 0.98 }}
-            className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl transition-all duration-500 ${className} ${isMobile ? 'w-full h-[380px]' : 'w-full max-w-[320px] min-h-[400px]'} cursor-pointer`}
+            className={`group relative flex flex-col justify-between overflow-hidden rounded-xl transition-all duration-500 ${className} ${isMobile ? 'w-full h-[380px]' : 'w-full max-w-[320px] min-h-[400px]'} cursor-pointer`}
             style={{
                 ...style,
                 backgroundColor: colors.light[100],

@@ -157,7 +157,8 @@ export const english = {
     continueShopping: "Continue Shopping",
     goBack: "Go Back",
     add: "Add",
-    cart: "Cart"
+    cart: "Cart",
+    IncludingDeliveryCost: "Including Delivery Cost"
 } as LanguageStracture;
 
 export const frensh = {
@@ -316,7 +317,8 @@ export const frensh = {
     continueShopping: "Continuer mes achats",
     goBack: "Retourner",
     add: "Ajouter",
-    cart: "Panier"
+    cart: "Panier",
+    IncludingDeliveryCost: "Incluant les frais de livraison"
 } as LanguageStracture;
 
 

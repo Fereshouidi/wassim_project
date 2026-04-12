@@ -11,19 +11,7 @@ import CartSide from '../main/cartSide';
 const ShoppingCart = () => {
     const { activeTheme, colors } = useTheme();
     const { client } = useClient();
-    const { setIsActive, purchases, setPurchases } = useCartSide();
-
-    const fetchPurchasesInCart = async () => {
-        if (!client?._id) return;
-        try {
-            const { data } = await axios.get(`${backEndUrl}/getPurchasesInCartByClient`, {
-                params: { clientId: client._id }
-            });
-            setPurchases(data.purchases || []); 
-        } catch (err) {
-            console.error("Error fetching cart items:", err);
-        }
-    }
+    const { setIsActive, purchases, fetchPurchasesInCart } = useCartSide();
 
     useEffect(() => { 
         fetchPurchasesInCart(); 

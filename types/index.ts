@@ -25,8 +25,8 @@ export type MenuIconProps = {
 }
 
 export type HeaderProps = {
-  isSideBarActive: boolean,
-  setIsSideBarActive: (value: boolean) => void
+  isSideBarActive?: boolean,
+  setIsSideBarActive?: (value: boolean) => void
   ownerInfo?: OwnerInfoType
   setOwnerInfo?: (value: OwnerInfoType) => void
   searchInput?: string | null
@@ -226,6 +226,7 @@ export type LanguageStracture = {
   goBack: string
   add: string
   cart: string
+  IncludingDeliveryCost: string
 }
 
 
@@ -301,6 +302,7 @@ export interface OwnerInfoType {
   homeCollections?: CollectionType[];
   topCollections?: CollectionType[];
   shippingCost?: number;
+  freeShippingThreshold?: number;
   createdAt?: Date;
   updatedAt?: Date;
 }

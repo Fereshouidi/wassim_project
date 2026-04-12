@@ -10,6 +10,7 @@ import { ClientProvider } from "@/contexts/client";
 import { OwnerProvider } from "@/contexts/ownerInfo";
 import { AiChatBubbleProvider } from "@/contexts/AiChatBubble";
 import { CartSideProvider } from "@/contexts/cart";
+import { SidebarProvider } from "@/contexts/sidebarContext";
 import LayoutContent from "./LayoutContent";
 
 export function Providers({ children }: { children: React.ReactNode }) {
@@ -24,7 +25,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
                                     <OwnerProvider>
                                         <AiChatBubbleProvider>
                                             <CartSideProvider>
-                                                <LayoutContent>{children}</LayoutContent>
+                                                <SidebarProvider>
+                                                    <LayoutContent>{children}</LayoutContent>
+                                                </SidebarProvider>
                                             </CartSideProvider>
                                         </AiChatBubbleProvider>
                                     </OwnerProvider>

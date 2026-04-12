@@ -37,7 +37,7 @@ const OrderCard = ({
 
     return (
         <div
-            className='w-full flex flex-col gap-2 sm:gap-4 rounded-xl sm:rounded-2xl p-2.5 sm:p-4 transition-all duration-300'
+            className='w-full flex flex-col gap-2 sm:gap-4 rounded-xl sm:rounded-xl p-2.5 sm:p-4 transition-all duration-300'
             style={{
                 backgroundColor: colors.light[100],
                 border: `1px solid ${cardOpened ? colors.light[350] : colors.light[250]}`,

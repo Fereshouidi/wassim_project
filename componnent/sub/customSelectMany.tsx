@@ -45,11 +45,11 @@ const CustomSelectMany = ({
     const isSelected = (value: string) => currentOptions.some(o => o.value === value);
 
     return (
-        <div 
+        <div
             ref={selectRef}
             className={twMerge(
                 "relative min-w-[140px] w-full cursor-pointer select-none border transition-all duration-300",
-                optionsOpen ? "rounded-t-2xl shadow-lg" : "rounded-2xl",
+                optionsOpen ? "rounded-t-2xl shadow-lg" : "rounded-xl",
                 className
             )}
             style={{
@@ -62,7 +62,7 @@ const CustomSelectMany = ({
         >
             <div className="flex items-center justify-between px-4 h-11">
                 <div className="flex items-center gap-2 overflow-hidden">
-                    <span 
+                    <span
                         className="flex items-center justify-center min-w-[20px] h-[20px] rounded-full text-[10px] font-black"
                         style={{ backgroundColor: colors.dark[100], color: colors.light[100] }}
                     >
@@ -72,14 +72,14 @@ const CustomSelectMany = ({
                         {label}
                     </span>
                 </div>
-                
-                <img 
-                    src={activeTheme == "dark" ? "/icons/down-arrow-white.png" : "/icons/down-arrow-black.png" }
+
+                <img
+                    src={activeTheme == "dark" ? "/icons/down-arrow-white.png" : "/icons/down-arrow-black.png"}
                     className={`w-3 h-3 transition-transform duration-300 ${optionsOpen ? "rotate-180" : ""}`}
                 />
             </div>
 
-            <div 
+            <div
                 className={twMerge(
                     "absolute top-[calc(100%-1px)] left-0 w-full overflow-hidden z-[100] border-x border-b rounded-b-2xl transition-all duration-300 ease-in-out shadow-xl",
                     optionsOpen ? "max-h-[250px] opacity-100" : "max-h-0 opacity-0 pointer-events-none"

@@ -13,8 +13,6 @@ import SearchBar from '@/componnent/sub/searchBar';
 import { useOwner } from '@/contexts/ownerInfo';
 
 const SmallScreens = ({
-    isSideBarActive,
-    setIsSideBarActive,
     searchInput,
     className,
     style
@@ -40,10 +38,7 @@ const SmallScreens = ({
           }}
         >
           
-          <MenuIcon
-            isSideBarActive={isSideBarActive}
-            setIsSideBarActive={setIsSideBarActive}
-          />
+          <MenuIcon />
 
           <div className='flex flex-row items-end gap-1.5 absolute left-[50%] translate-x-[-50%]'>
 
@@ -58,14 +53,14 @@ const SmallScreens = ({
                 onClick={() => router.replace('/')}
               >
                 {
-                  activeTheme == "light" ? 
-                    <img 
-                      src={ownerInfo?.logo?.light}
-                      className=' h-full object-contain no-sellect'
-                    /> : 
-                  activeTheme == "dark" ?
+                  activeTheme == "dark" ? 
                     <img 
                       src={ownerInfo?.logo?.dark}
+                      className=' h-full object-contain no-sellect'
+                    /> : 
+                  activeTheme == "light" ?
+                    <img 
+                      src={ownerInfo?.logo?.light}
                       className=' h-full object-contain no-sellect'
                     /> :
                   null

@@ -23,7 +23,9 @@ const OrderData = ({ purchases }: Props) => {
 
     if (!ownerInfo) return <div className="h-20 animate-pulse rounded-xl" style={{ backgroundColor: colors.light[200] }} />;
 
-    const finalTotal = subTotal + (ownerInfo?.shippingCost || 0);
+    const isFreeShipping = (ownerInfo.freeShippingThreshold || 0) > 0 && subTotal >= (ownerInfo.freeShippingThreshold || 0);
+    const effectiveShippingCost = isFreeShipping ? 0 : (ownerInfo.shippingCost || 0);
+    const finalTotal = subTotal + effectiveShippingCost;
 
     return (
         <div
@@ -56,9 +58,22 @@ const OrderData = ({ purchases }: Props) => {
                 <div className="flex justify-between items-center text-[10px]">
                     <span className="opacity-50 font-semibold uppercase tracking-wider">{activeLanguage.shippingCoast}</span>
                     <span className="font-semibold text-[14px] " style={{ color: colors.dark[100] }}>
-                        {(ownerInfo.shippingCost || 0).toFixed(2)} <span className="text-[12px] opacity-40 ml-1">D.T</span>
+                        {isFreeShipping ? (
+                            <span className="text-emerald-500 font-black">FREE</span>
+                        ) : (
+                            <>
+                                {effectiveShippingCost.toFixed(2)} <span className="text-[12px] opacity-40 ml-1">D.T</span>
+                            </>
+                        )}
                     </span>
                 </div>
+                {!isFreeShipping && (ownerInfo.freeShippingThreshold || 0) > 0 && (
+                    <div className="bg-emerald-50/50 p-2 rounded-lg border border-emerald-100/50 mt-1">
+                        <p className="text-[8px] font-black uppercase text-emerald-600/60 tracking-wider text-center">
+                            {(ownerInfo.freeShippingThreshold! - subTotal).toFixed(0)} D.T remaining for FREE SHIPPING
+                        </p>
+                    </div>
+                )}
             </div>
 
             {/* Minimalist Divider */}
@@ -70,8 +85,8 @@ const OrderData = ({ purchases }: Props) => {
                     <span className="text-[11px] uppercase font-semibold tracking-widest" style={{ color: colors.dark[100] }}>
                         {activeLanguage.totalAmmount}
                     </span>
-                    <span className='text-[11px] font-semibold opacity-30 uppercase mt-1'>
-                        Net Payable / VAT Inc.
+                    <span className='text-[10px] font-semibold opacity-30 uppercase mt-1'>
+                        ({activeLanguage.IncludingDeliveryCost})
                     </span>
                 </div>
                 

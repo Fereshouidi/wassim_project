@@ -53,13 +53,21 @@ const CartSide = () => {
 
         const purchasesId = purchases.map(p => p._id);
 
-        // --- FIX APPLIED HERE ---
+        // Calculate subtotal to check for free shipping
+        const subTotal = purchases.reduce((acc, purchase) => {
+            const price = (purchase.specification as any)?.price || 0;
+            return acc + (price * (purchase.quantity || 1));
+        }, 0);
+
+        const isFreeShipping = (ownerInfo?.freeShippingThreshold || 0) > 0 && subTotal >= (ownerInfo?.freeShippingThreshold || 0);
+        const finalShippingCost = isFreeShipping ? 0 : (ownerInfo?.shippingCost || 0);
+
         const orderData = {
             clientId: client._id, // Keep this for backend logic if needed
             orderForm: {
                 ...clientForm,
                 client: client._id, // ADDED: This satisfies Mongoose's "client" required field
-                shippingCoast: ownerInfo?.shippingCost, // Spelled correctly as Cost
+                shippingCoast: finalShippingCost, // Apply free shipping logic
                 clientNote: clientForm.note
             },
             purchasesId

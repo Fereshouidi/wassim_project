@@ -45,7 +45,7 @@ const ScrollToTop = () => {
                     onClick={scrollToTop}
                 >
                     <div
-                        className="w-12 h-12 flex items-center justify-center rounded-2xl shadow-2xl border"
+                        className="w-12 h-12 flex items-center justify-center rounded-xl shadow-2xl border"
                         style={{
                             backgroundColor: isDark ? 'rgba(15, 15, 15, 0.8)' : 'rgba(255, 255, 255, 0.8)',
                             borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',

@@ -23,7 +23,7 @@ type FilterBarType = {
     availableSizes: string[]
     availableTypes: string[]
     importedFrom?: "searchPage" | "anotherPage"
-    filteBarActive: boolean, 
+    filteBarActive: boolean,
     setFilterBarActive: (value: boolean) => void
 }
 
@@ -53,14 +53,14 @@ const FilterBar = ({
     const handleConfirm = () => {
         setFiltration(filtrationCopy);
         localStorage.setItem('searchFilter', JSON.stringify(filtrationCopy));
-        
+
         // Close the filter bar on mobile devices after confirmation
         if (screenWidth < 1024) setFilterBarActive(false);
     };
 
     // Vertical layout design intended for side-by-side product placement
     return (
-        <aside 
+        <aside
             className={`
                 fixed- lg:sticky- transition-all duration-500 ease-in-out z-[10]-
                 left-0 top-0 lg:top-[${headerHeight}px]-
@@ -77,7 +77,7 @@ const FilterBar = ({
 
             {/* Scrollable Content: Main filter groups */}
             <div className="flex-1 overflow-y-auto px-6 py-4 space-y-10 scrollbar-hidden">
-                
+
                 {/* 1. Price Filtering Section */}
                 {mostProductExpensive && (
                     <div className="py-2">
@@ -98,7 +98,7 @@ const FilterBar = ({
                         setFiltrationCopy={setFiltrationCopy}
                         defaultOptions={filtration.collections}
                     />
-                    
+
                     <FilterColor
                         availableColors={availableColors}
                         filtrationCopy={filtrationCopy}
@@ -135,7 +135,7 @@ const FilterBar = ({
             {/* Footer: Persistent control buttons */}
             <div className="p-6 border-t bg-inherit" style={{ borderColor: colors.light[200] }}>
                 <button
-                    className="w-full py-3 rounded-2xl font-bold text-[12px] uppercase tracking-widest transition-all active:scale-[0.98] shadow-xl shadow-black/5"
+                    className="w-full py-3 rounded-xl font-bold text-[12px] uppercase tracking-widest transition-all active:scale-[0.98] shadow-xl shadow-black/5"
                     style={{
                         backgroundColor: colors.dark[100],
                         color: colors.light[100]
@@ -144,8 +144,8 @@ const FilterBar = ({
                 >
                     {activeLanguage.sideMatter.confirm}
                 </button>
-                
-                <button 
+
+                <button
                     className="w-full mt-3 text-[11px] font-bold opacity-40 hover:opacity-100 transition-opacity uppercase underline"
                     onClick={() => {
                         setFiltrationCopy(filtration)
