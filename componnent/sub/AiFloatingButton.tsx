@@ -13,6 +13,33 @@ const AiFloatingButton = () => {
     const { client } = useClient();
     const { setRegisterSectionExist } = useRegisterSection();
     const isDark = activeTheme === 'dark';
+    const [isVisible, setIsVisible] = useState(false);
+    const scrollTimeout = React.useRef<NodeJS.Timeout | null>(null);
+
+    React.useEffect(() => {
+        const handleScroll = () => {
+            setIsVisible(true);
+            
+            // Clear existing timeout
+            if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+            
+            // Set new timeout to hide after 3 seconds
+            scrollTimeout.current = setTimeout(() => {
+                setIsVisible(false);
+            }, 2000);
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        
+        // Initial check or always show initially? User said "stay more than 3 sec without scrolling" 
+        // implies it should show then hide.
+        handleScroll(); 
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+        };
+    }, []);
 
     const handleClick = () => {
         if (!client) {
@@ -29,8 +56,13 @@ const AiFloatingButton = () => {
         <motion.div
             className="fixed bottom-8 left-6 z-[40] flex items-center gap-3"
             initial={{ opacity: 0, scale: 0, y: 40 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ type: 'spring', stiffness: 200, damping: 20, delay: 1 }}
+            animate={{ 
+                opacity: isVisible ? 1 : 0, 
+                scale: isVisible ? 1 : 0, 
+                y: isVisible ? 0 : 40,
+                pointerEvents: isVisible ? 'auto' : 'none'
+            }}
+            transition={{ type: 'spring', stiffness: 200, damping: 20 }}
         >
 
 

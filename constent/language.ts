@@ -11,7 +11,8 @@ export const english = {
         contact: "Contact Us",
         askAi: "AskAi",
         favorite: "Favorite",
-        order: "Orders"
+        order: "Orders",
+        makeYourOwn: "Make your own"
     },
     sideMatter: {
         search: "Search",
@@ -171,7 +172,8 @@ export const frensh = {
         contact: "Contactez Nous",
         askAi: "Demande IA",
         favorite: "Favorit",
-        order: "commandes"
+        order: "commandes",
+        makeYourOwn: "Créez le vôtre"
     },
     sideMatter: {
         search: "Recherche",

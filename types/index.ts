@@ -80,7 +80,8 @@ export type LanguageStracture = {
     contact: string,
     favorite: string,
     askAi: string,
-    order: string
+    order: string,
+    makeYourOwn: string
   },
   sideMatter: {
     search: string,
@@ -337,7 +338,8 @@ export type CollectionType = {
   name: language;
   thumbNail?: string | null;
   type: "private" | "public";
-  display: "vertical" | "horizontal"
+  display: "vertical" | "horizontal";
+  customizable?: "none" | "base" | "pendant";
 }
 
 export interface PurchaseType {
@@ -356,6 +358,8 @@ export interface PurchaseType {
   cart?: string | null;
   order?: string | null;
   status?: "viewed" | "inCart" | "ordered" | 'delivered'
+  isCustomized?: boolean;
+  customizedCharms?: { charm: string | ProductType, charmId: string, spec?: string, x: number, y: number }[];
   createdAt?: Date | null;
   updatedAt?: Date | null;
 }

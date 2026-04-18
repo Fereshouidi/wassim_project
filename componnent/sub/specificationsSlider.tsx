@@ -15,12 +15,18 @@ type Props = {
 
 const DiamondIcon = ({ color, size, isLight }: { color: string, size: string, isLight: boolean }) => (
     <ReactSVG 
-        src="/icons/diamond2.svg" 
+        src="/icons/diamond-svgrepo-com.svg" 
         beforeInjection={(svg) => {
             svg.setAttribute('style', `width: ${size}; height: ${size}; fill: ${color};`);
+            
             if (isLight) {
                 svg.style.filter = 'drop-shadow(0px 0px 1.5px rgba(0,0,0,0.3))';
             }
+
+            const paths = svg.querySelectorAll('path');
+            paths.forEach((path) => {
+                path.setAttribute('fill', color);
+            });
         }}
         wrapper="span"
         className="flex items-center justify-center transition-all duration-300"
@@ -43,30 +49,54 @@ const SpecificationsSlider = ({
             ? product.map(img => img.specification).filter(Boolean) as ProductSpecification[]
             : specifications || [];
 
-        const seenHex = new Set();
+        const seenColors = new Set<string>();
+        const seenHexes = new Set<string>();
 
         return source.filter(spec => {
-            const hex = spec.colorHex;
-            const colorName = spec.color;
-            const isAvailable = !isProductDetails || !availableColors || (colorName && availableColors.includes(colorName));
-            
-            if (!hex || !isAvailable || seenHex.has(hex)) return false;
+            let hex = spec.colorHex?.trim().toLowerCase();
+            const colorName = spec.color?.trim().toLowerCase();
 
-            seenHex.add(hex);
-            return true;
+            // Normalize hex
+            if (hex && hex.length === 4 && hex.startsWith('#')) {
+                hex = '#' + hex[1] + hex[1] + hex[2] + hex[2] + hex[3] + hex[3];
+            }
+
+            const isAvailable = !isProductDetails || !availableColors || (colorName && availableColors.includes(spec.color || ""));
+            
+            if (!isAvailable) return false;
+
+            // If we have both hex and name, check both. If we have only one, check that.
+            const hasSeenHex = hex ? seenHexes.has(hex) : false;
+            const hasSeenName = colorName ? seenColors.has(colorName) : false;
+
+            if ((hex && hasSeenHex) || (colorName && hasSeenName)) {
+                return false;
+            }
+
+            if (hex) seenHexes.add(hex);
+            if (colorName) seenColors.add(colorName);
+            
+            // Only allow if we have at least one identifier and haven't seen it yet
+            return hex || colorName;
         });
     }, [product, specifications, availableColors, isProductDetails]);
 
     const [selectedColor, setSelectedColor] = useState<string | null>(null);
 
-    // --- إذا كان هناك خيار واحد فقط أو لا توجد خيارات، لا تظهر المكون نهائياً ---
     if (uniqueSpecs.length <= 1) return null;
 
     const isLightColor = (hex: string) => {
         const color = hex.replace('#', '');
-        const r = parseInt(color.substring(0, 2), 16);
-        const g = parseInt(color.substring(2, 4), 16);
-        const b = parseInt(color.substring(4, 6), 16);
+        let r, g, b;
+        if (color.length === 3) {
+            r = parseInt(color[0] + color[0], 16);
+            g = parseInt(color[1] + color[1], 16);
+            b = parseInt(color[2] + color[2], 16);
+        } else {
+            r = parseInt(color.substring(0, 2), 16);
+            g = parseInt(color.substring(2, 4), 16);
+            b = parseInt(color.substring(4, 6), 16);
+        }
         return (r * 0.299 + g * 0.587 + b * 0.114) > 220;
     };
 
@@ -83,8 +113,8 @@ const SpecificationsSlider = ({
         } else {
             return {
                 container: "w-7 h-7",
-                iconBase: isMobile ? "20px" : "22px", 
-                iconActive: isMobile ? "20px" : "24px",
+                iconBase: isMobile ? "18px" : "20px", 
+                iconActive: isMobile ? "18px" : "22px",
                 gap: "gap-1",
                 padding: isMobile ? "py-1" : "py-3",
                 ringInset: "-inset-[1px]"

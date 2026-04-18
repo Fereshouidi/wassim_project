@@ -15,9 +15,13 @@ const OrderData = ({ purchases }: Props) => {
 
     const subTotal = useMemo(() => {
         return purchases?.reduce((acc, purchase) => {
-            // @ts-ignore
-            const price = purchase.specification?.price || 0;
-            return acc + (price * (purchase.quantity || 1));
+            const basePrice = (purchase.specification as any)?.price || purchase.specPrice || 0;
+            const charmsPrice = purchase.customizedCharms?.reduce((cAcc, pc) => {
+                const charmPrice = (pc.spec as any)?.price || (pc.charm as any)?.price || (pc.charm as any)?.specifications?.[0]?.price || 0;
+                return cAcc + charmPrice;
+            }, 0) || 0;
+            const totalPrice = basePrice + charmsPrice;
+            return acc + (totalPrice * (purchase.quantity || 1));
         }, 0) || 0;
     }, [purchases]);
 

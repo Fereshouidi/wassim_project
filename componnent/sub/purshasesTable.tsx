@@ -12,6 +12,40 @@ type Props = {
     purchases: PurchaseType[];
     order: OrderType
 }
+const getSpecImage = (product: any, specIdObj: any) => {
+    let imgUri = product?.thumbNail || product?.productThumb || "/icons/shopping-bag-black.png";
+    if (!product || !product.images || !product.specifications || !specIdObj) return imgUri;
+    
+    const specId = typeof specIdObj === 'string' ? specIdObj : specIdObj._id;
+    const specObj = product.specifications.find((s: any) => s._id === specId);
+    
+    if (!specObj) return imgUri;
+
+    const normalizeHex = (h?: string | null) => {
+        if (!h) return '';
+        let v = h.trim().toLowerCase();
+        return (v.length === 4 && v.startsWith('#')) ? `#${v[1]}${v[1]}${v[2]}${v[2]}${v[3]}${v[3]}` : v;
+    };
+    
+    const specHex = normalizeHex(specObj.colorHex);
+    const specColor = specObj.color?.trim().toLowerCase();
+
+    const matchingImg = product.images.find((img: any) => {
+        const imgSpecId = typeof img.specification === 'string' ? img.specification : img.specification?._id;
+        if (imgSpecId === specId) return true;
+        
+        const imgSpecObj = imgSpecId ? product.specifications.find((s: any) => s._id === imgSpecId) : null;
+        const imgColorHex = normalizeHex(imgSpecObj?.colorHex || img.specification?.colorHex);
+        const imgColorName = (imgSpecObj?.color || img.specification?.color)?.trim().toLowerCase();
+        
+        if (specHex && imgColorHex && specHex === imgColorHex) return true;
+        if (specColor && imgColorName && specColor === imgColorName) return true;
+        return false;
+    });
+
+    if (matchingImg?.uri) return matchingImg.uri;
+    return imgUri;
+};
 
 const PurshasesTable = ({ purchases, order }: Props) => {
     const { activeLanguage } = useLanguage();
@@ -75,21 +109,61 @@ const PurshasesTable = ({ purchases, order }: Props) => {
                                 }}
                             >
                                 <td className='p-3 sm:p-4'>
-                                    <div className='flex items-center gap-2 sm:gap-3'>
-                                        <div className='w-8 h-8 sm:w-10 sm:h-10 rounded-lg overflow-hidden border bg-white flex-shrink-0' style={{ borderColor: colors.light[300] }}>
-                                            <img
-                                                src={
-                                                    //@ts-ignore
-                                                    purchase.product?.thumbNail || purchase.productThumb || "/icons/shopping-bag-black.png"
-                                                }
-                                                alt="product"
-                                                className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-300'
-                                            />
+                                    <div className='flex items-center gap-2 sm:gap-4'>
+                                        {purchase.isCustomized ? (
+                                            <div className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-xl bg-gray-50 flex-shrink-0" style={{ borderColor: colors.light[300], overflow: 'hidden' }}>
+                                                {typeof purchase.product === 'object' && (
+                                                    <img
+                                                        src={getSpecImage(purchase.product, purchase.specification)}
+                                                        className="w-[85%] h-[85%] absolute"
+                                                        style={{ top: '7.5%', left: '7.5%', objectFit: 'contain' }}
+                                                        alt="base"
+                                                    />
+                                                )}
+                                                {purchase.customizedCharms?.map((customCharm, idx) => {
+                                                    const charmObj = typeof customCharm.charm === 'object' ? customCharm.charm : null;
+                                                    const charmThumb = charmObj ? getSpecImage(charmObj, customCharm.spec) : null;
+                                                    
+                                                    if (!charmThumb) return null;
+                                                    return (
+                                                        <div
+                                                            key={idx}
+                                                            className="absolute"
+                                                            style={{
+                                                                left: `${customCharm.x}%`,
+                                                                top: `${customCharm.y}%`,
+                                                                width: '15%',
+                                                                aspectRatio: '1/1',
+                                                                marginLeft: '-7.5%',
+                                                                marginTop: '-7.5%',
+                                                                backgroundColor: 'transparent'
+                                                            }}
+                                                        >
+                                                            <img
+                                                                src={charmThumb}
+                                                                className="w-full h-full object-contain"
+                                                                alt="charm"
+                                                            />
+                                                        </div>
+                                                    )
+                                                })}
+                                            </div>
+                                        ) : (
+                                            <div className='w-8 h-8 sm:w-10 sm:h-10 rounded-lg overflow-hidden border bg-white flex-shrink-0' style={{ borderColor: colors.light[300] }}>
+                                                <img
+                                                    src={getSpecImage(purchase.product, purchase.specification)}
+                                                    alt="product"
+                                                    className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-300'
+                                                />
+                                            </div>
+                                        )}
+                                        <div className="flex flex-col gap-1 w-full max-w-[120px] sm:max-w-[200px]">
+                                            <span className='text-[10px] sm:text-xs font-medium' style={{ color: colors.dark[200], wordWrap: 'break-word', whiteSpace: 'normal' }}>
+                                                {purchase.isCustomized && <span className="text-purple-600 font-bold block mb-1" style={{ color: '#9333ea' }}>🪄 DIY - </span>}
+                                                {//@ts-ignore
+                                                purchase.product ? purchase.product.name[activeLanguage.language] : (purchase.productName ? purchase.productName[activeLanguage.language] : "Deleted Product")
+                                            }</span>
                                         </div>
-                                        <span className='text-[10px] sm:text-xs font-medium' style={{ color: colors.dark[200] }}>{
-                                            //@ts-ignore
-                                            purchase.product ? purchase.product.name[activeLanguage.language] : (purchase.productName ? purchase.productName[activeLanguage.language] : "Deleted Product")
-                                        }</span>
                                     </div>
                                 </td>
                                 <td className='p-3 sm:p-4 text-center'>
@@ -103,6 +177,11 @@ const PurshasesTable = ({ purchases, order }: Props) => {
                                         {(purchase.specification?.size || purchase.specSize) && (
                                             <span className='text-[9px] sm:text-[10px] font-bold opacity-60 italic'>Size: {purchase.specification?.size || purchase.specSize}</span>
                                         )}
+                                        {purchase.isCustomized && purchase.customizedCharms && purchase.customizedCharms.length > 0 && (
+                                            <span className='text-[9px] sm:text-[10px] font-bold opacity-80' style={{ color: '#9333ea' }}>
+                                                +{purchase.customizedCharms.length} {activeLanguage.language === 'en' ? 'Charms' : 'Charmes'}
+                                            </span>
+                                        )}
                                     </div>
                                 </td>
                                 <td className='p-3 sm:p-4 text-center'>
@@ -112,9 +191,14 @@ const PurshasesTable = ({ purchases, order }: Props) => {
                                 </td>
                                 <td className='p-3 sm:p-4 text-right'>
                                     <span className='text-[10px] sm:text-xs font-bold' style={{ color: colors.dark[100] }}>
-                                        {
-                                            ((purchase.specification?.price || purchase.specPrice || 0) * (purchase.quantity || 0)).toFixed(2)
-                                        } <span className='text-[8px] sm:text-[10px] opacity-60 font-normal'>D.T</span>
+                                        {(() => {
+                                            const basePrice = (purchase.specification as any)?.price || purchase.specPrice || 0;
+                                            const charmsPrice = purchase.customizedCharms?.reduce((acc, pc) => {
+                                                const p = (pc.spec as any)?.price || (pc.charm as any)?.price || (pc.charm as any)?.specifications?.[0]?.price || 0;
+                                                return acc + p;
+                                            }, 0) || 0;
+                                            return ((basePrice + charmsPrice) * (purchase.quantity || 0)).toFixed(2);
+                                        })()} <span className='text-[8px] sm:text-[10px] opacity-60 font-normal'>D.T</span>
                                     </span>
                                 </td>
                             </motion.tr>

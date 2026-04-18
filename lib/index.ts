@@ -116,9 +116,13 @@ export const calcTotalPrice = (order: OrderType) => {
 
   if (!order.purchases) return totalPrice.toFixed(2);
   order.purchases.forEach((purchase) => {
-    const price = purchase.specification?.price || purchase.specPrice || 0;
+    const basePrice = (purchase.specification as any)?.price || purchase.specPrice || 0;
+    const charmsPrice = purchase.customizedCharms?.reduce((acc: number, pc: any) => {
+      const p = pc.spec?.price || pc.charm?.price || pc.charm?.specifications?.[0]?.price || 0;
+      return acc + p;
+    }, 0) || 0;
     const qty = purchase.quantity || 0;
-    totalPrice += (price * qty);
+    totalPrice += ((basePrice + charmsPrice) * qty);
   })
 
   return totalPrice.toFixed(2)
@@ -126,9 +130,13 @@ export const calcTotalPrice = (order: OrderType) => {
 
 export const calculPurshaseTotalPrice = (purchases: PurchaseType[]) => {
   const total = purchases.reduce((total, purchase) => {
-    const price = purchase.specification?.price || purchase.specPrice || 0;
+    const basePrice = (purchase.specification as any)?.price || purchase.specPrice || 0;
+    const charmsPrice = purchase.customizedCharms?.reduce((acc: number, pc: any) => {
+      const p = pc.spec?.price || pc.charm?.price || pc.charm?.specifications?.[0]?.price || 0;
+      return acc + p;
+    }, 0) || 0;
     const qty = purchase.quantity || 0;
-    return total + (price * qty);
+    return total + ((basePrice + charmsPrice) * qty);
   }, 0);
   return total.toFixed(2);
 }

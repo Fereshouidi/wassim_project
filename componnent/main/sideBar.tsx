@@ -174,6 +174,22 @@ const SideBar = ({
                                 }}
                             >{activeLanguage.nav.favorite}</div>
                         </li>}
+                        <li
+                            className='flex h-14 border-b-[1px] border-b-gray-100 text-sm cursor-pointer transition-colors duration-200'
+                            style={{
+                                borderBottomColor: colors.dark[200],
+                                backgroundColor: pathname === '/make-your-own' ? colors.dark[200] : 'transparent'
+                            }}
+                            onClick={() => handleNavigation('/make-your-own')}
+                        >
+                            <div
+                                className='w-full h-full flex items-center px-7'
+                                style={{
+                                    color: pathname === '/make-your-own' ? colors.light[100] : colors.light[200],
+                                    fontWeight: pathname === '/make-your-own' ? '600' : '400'
+                                }}
+                            >{activeLanguage.nav.makeYourOwn}</div>
+                        </li>
                         {/* {client?._id && <li
                         className='flex h-14 border-b-[1px] border-b-gray-100 text-sm cursor-pointer'
                         style={{

@@ -65,6 +65,41 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
         }
     };
 
+const getSpecImage = (product: any, specIdObj: any) => {
+    let imgUri = product?.thumbNail || product?.productThumb || "/icons/shopping-bag-black.png";
+    if (!product || !product.images || !product.specifications || !specIdObj) return imgUri;
+    
+    const specId = typeof specIdObj === 'string' ? specIdObj : specIdObj._id;
+    const specObj = product.specifications.find((s: any) => s._id === specId);
+    
+    if (!specObj) return imgUri;
+
+    const normalizeHex = (h?: string | null) => {
+        if (!h) return '';
+        let v = h.trim().toLowerCase();
+        return (v.length === 4 && v.startsWith('#')) ? `#${v[1]}${v[1]}${v[2]}${v[2]}${v[3]}${v[3]}` : v;
+    };
+    
+    const specHex = normalizeHex(specObj.colorHex);
+    const specColor = specObj.color?.trim().toLowerCase();
+
+    const matchingImg = product.images.find((img: any) => {
+        const imgSpecId = typeof img.specification === 'string' ? img.specification : img.specification?._id;
+        if (imgSpecId === specId) return true;
+        
+        const imgSpecObj = imgSpecId ? product.specifications.find((s: any) => s._id === imgSpecId) : null;
+        const imgColorHex = normalizeHex(imgSpecObj?.colorHex || img.specification?.colorHex);
+        const imgColorName = (imgSpecObj?.color || img.specification?.color)?.trim().toLowerCase();
+        
+        if (specHex && imgColorHex && specHex === imgColorHex) return true;
+        if (specColor && imgColorName && specColor === imgColorName) return true;
+        return false;
+    });
+
+    if (matchingImg?.uri) return matchingImg.uri;
+    return imgUri;
+};
+
     if (!purchase_ || !purchase) return null;
 
     return (
@@ -88,7 +123,7 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
             <div className="w-22 h-22 flex-shrink-0 overflow-hidden rounded-xl bg-gray-50 border" style={{ borderColor: colors.light[200] }}>
                 <img
                     //@ts-ignore
-                    src={purchase.product?.thumbNail || purchase.productThumb || "/icons/shopping-bag-black.png"}
+                    src={getSpecImage(purchase.product, purchase.specification)}
                     alt="product"
                     className='w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-300'
                 />
@@ -99,6 +134,7 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
                 <div>
                     <div className="flex justify-between items-start gap-2">
                         <h3 className=' flex flex-1 text-[13px] font-bold leading-tight line-clamp-2'>
+                            {purchase.isCustomized && <span className="text-purple-600 mr-1" style={{ color: '#9333ea' }}>🪄 DIY - </span>}
                             {
                                 // @ts-ignore
                                 purchase.product?.name?.[activeLanguage.language] || purchase.productName?.[activeLanguage.language] || "Deleted Product"
@@ -123,6 +159,11 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
                         {purchase?.specification?.size && <span className="border-l pl-2" style={{ borderColor: colors.dark[200] }}>{purchase?.specification.size}</span>}
                         {/* @ts-ignore */}
                         {purchase?.specification?.type && <span className="border-l pl-2" style={{ borderColor: colors.dark[200] }}>{purchase?.specification.type}</span>}
+                        {purchase.isCustomized && purchase.customizedCharms && purchase.customizedCharms.length > 0 && (
+                            <span className="border-l pl-2 font-bold" style={{ borderColor: colors.dark[200], color: '#9333ea' }}>
+                                +{purchase.customizedCharms.length} {activeLanguage.language === 'en' ? 'Charms' : 'Charmes'}
+                            </span>
+                        )}
                     </div>
                 </div>
 
@@ -153,8 +194,14 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
                     </div>
 
                     <p className='text-sm font-bold' style={{ color: colors.dark[100] }}>
-                        {/* @ts-ignore */}
-                        {purchase?.specification?.price || purchase?.specPrice || 0} <span className="text-[10px] font-normal">T.D</span>
+                        {(() => {
+                            const basePrice = (purchase?.specification as any)?.price || purchase?.specPrice || 0;
+                            const charmsPrice = purchase?.customizedCharms?.reduce((acc, pc) => {
+                                const charmPrice = (pc.spec as any)?.price || (pc.charm as any)?.price || (pc.charm as any)?.specifications?.[0]?.price || 0;
+                                return acc + charmPrice;
+                            }, 0) || 0;
+                            return ((basePrice + charmsPrice) * (purchase?.quantity || 1)).toFixed(2);
+                        })()} <span className="text-[10px] font-normal">T.D</span>
                     </p>
                 </div>
             </div>
