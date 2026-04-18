@@ -604,7 +604,7 @@ const Customizer = () => {
                                             backgroundColor: selectedBase?.id === base.id ? bg2 : bg3,
                                             border: `1px solid ${selectedBase?.id === base.id ? txt1 : border2}`,
                                         }}
-                                        whileHover={{ y: -4, shadow: '0 10px 20px rgba(0,0,0,0.1)' }}
+                                        whileHover={{ y: -4, boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
                                         whileTap={{ scale: 0.95 }}
                                     >
                                         <div className="w-12 h-12 mb-2 relative">
@@ -686,7 +686,7 @@ const Customizer = () => {
                                         onClick={() => addCharm(charm.id)}
                                         className="relative rounded-2xl cursor-pointer flex flex-col items-center justify-center py-5 px-2 transition-all"
                                         style={{ backgroundColor: bg3, border: `1px solid ${border2}` }}
-                                        whileHover={{ y: -4, shadow: '0 10px 20px rgba(0,0,0,0.1)' }}
+                                        whileHover={{ y: -4, boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
                                         whileTap={{ scale: 0.95 }}
                                         whileDrag={{ zIndex: 9999, scale: 1.1 }}
                                     >
