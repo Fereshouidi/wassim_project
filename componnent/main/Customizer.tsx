@@ -176,22 +176,22 @@ const DraggableCharm = ({
                         // Priority: Spec image -> Base thumbnail -> Emoji
                         const spec = charm.specifications.find(s => s._id === pc.specId);
                         let displayImg = charm.thumbNail;
-                        
-                        if (spec && charm.images?.length) {
-                             const normalizeHex = (h?: string | null) => {
-                                 if (!h) return '';
-                                 let v = h.trim().toLowerCase();
-                                 return (v.length === 4 && v.startsWith('#')) ? `#${v[1]}${v[1]}${v[2]}${v[2]}${v[3]}${v[3]}` : v;
-                             };
-                             const specHex = normalizeHex(spec.colorHex);
-                             const specColor = spec.color?.trim().toLowerCase();
 
-                             const matched = charm.images.find(img => {
+                        if (spec && charm.images?.length) {
+                            const normalizeHex = (h?: string | null) => {
+                                if (!h) return '';
+                                let v = h.trim().toLowerCase();
+                                return (v.length === 4 && v.startsWith('#')) ? `#${v[1]}${v[1]}${v[2]}${v[2]}${v[3]}${v[3]}` : v;
+                            };
+                            const specHex = normalizeHex(spec.colorHex);
+                            const specColor = spec.color?.trim().toLowerCase();
+
+                            const matched = charm.images.find(img => {
                                 const imgSpecId = typeof img.specification === 'string' ? img.specification : img.specification?._id;
                                 if (imgSpecId === spec._id) return true;
 
                                 const imgSpecObj = imgSpecId ? charm.specifications.find(s => s._id === imgSpecId) : null;
-                                
+
                                 const imgColorHex = normalizeHex(imgSpecObj?.colorHex || img.specification?.colorHex);
                                 const imgColorName = (imgSpecObj?.color || img.specification?.color)?.trim().toLowerCase();
 
@@ -199,17 +199,17 @@ const DraggableCharm = ({
                                 if (specColor && imgColorName && specColor === imgColorName) return true;
 
                                 return false;
-                             });
-                             if (matched) displayImg = matched.uri;
+                            });
+                            if (matched) displayImg = matched.uri;
                         }
 
                         if (displayImg) {
                             return (
                                 <div className="w-full h-full relative rounded-md overflow-hidden">
-                                    <Image 
-                                        src={displayImg} 
-                                        alt="" 
-                                        fill 
+                                    <Image
+                                        src={displayImg}
+                                        alt=""
+                                        fill
                                         className="object-contain pointer-events-none"
                                         sizes="50px"
                                     />
@@ -281,7 +281,7 @@ const Customizer = () => {
             try {
                 // Fetch Bases
                 const basesRes = await axios.get(`${backEndUrl}/getCollectionsByCustomizableType`, { params: { type: 'base' } });
-                const baseProducts: CustomizableBase[] = (basesRes.data.collections || []).flatMap((col: any) => 
+                const baseProducts: CustomizableBase[] = (basesRes.data.collections || []).flatMap((col: any) =>
                     (col.products || []).map((p: any) => ({
                         id: p._id,
                         name: p.name,
@@ -296,7 +296,7 @@ const Customizer = () => {
 
                 // Fetch Pendants
                 const pendantsRes = await axios.get(`${backEndUrl}/getCollectionsByCustomizableType`, { params: { type: 'pendant' } });
-                const pendantProducts: CustomizableCharm[] = (pendantsRes.data.collections || []).flatMap((col: any) => 
+                const pendantProducts: CustomizableCharm[] = (pendantsRes.data.collections || []).flatMap((col: any) =>
                     (col.products || []).map((p: any) => ({
                         id: p._id,
                         name: p.name,
@@ -331,9 +331,9 @@ const Customizer = () => {
         fetchCustomData();
     }, []);
 
-    const currentCharm = useCallback((id: string) => 
+    const currentCharm = useCallback((id: string) =>
         availableCharms.find(c => c.id === id) || { id, emoji: '✨', name: { en: '?', fr: '?' }, price: 0, color: '#ccc' }
-    , [availableCharms]);
+        , [availableCharms]);
 
     /* ── Actions ───────────────────────── */
 
@@ -343,7 +343,7 @@ const Customizer = () => {
 
     // Helper to get current thumbnail for an item based on selected spec
     const getCurrentThumbnail = useCallback((item: CustomizableBase | CustomizableCharm, forcedSpecId?: string) => {
-        const spec = forcedSpecId 
+        const spec = forcedSpecId
             ? item.specifications.find(s => s._id === forcedSpecId)
             : selectedSpecs[item.id];
 
@@ -361,15 +361,15 @@ const Customizer = () => {
         const matchedImage = item.images.find(img => {
             const imgSpecId = typeof img.specification === 'string' ? img.specification : img.specification?._id;
             if (imgSpecId === spec._id) return true;
-            
+
             const imgSpecObj = imgSpecId ? item.specifications.find(s => s._id === imgSpecId) : null;
 
             const imgColorHex = normalizeHex(imgSpecObj?.colorHex || img.specification?.colorHex);
             const imgColorName = (imgSpecObj?.color || img.specification?.color)?.trim().toLowerCase();
-            
+
             if (specHex && imgColorHex && specHex === imgColorHex) return true;
             if (specColor && imgColorName && specColor === imgColorName) return true;
-            
+
             return false;
         });
 
@@ -621,7 +621,7 @@ const Customizer = () => {
                                             {getEffectivePrice(base).toFixed(2).replace(".", ",")} DT
                                         </span>
                                         <div className="mt-1 w-full" onClick={e => e.stopPropagation()}>
-                                            <SpecificationsSlider 
+                                            <SpecificationsSlider
                                                 specifications={base.specifications}
                                                 onColorSelect={(hex) => {
                                                     if (!hex) return;
@@ -631,30 +631,30 @@ const Customizer = () => {
                                                         return (v.length === 4 && v.startsWith('#')) ? `#${v[1]}${v[1]}${v[2]}${v[2]}${v[3]}${v[3]}` : v;
                                                     };
                                                     const hexLower = normalizeHex(hex);
-                                                    
+
                                                     const specWithImg = base.specifications.find(s => {
                                                         const sHex = normalizeHex(s.colorHex);
                                                         const isMatch = sHex === hexLower || (s.color && s.color.trim().toLowerCase() === hexLower);
                                                         return isMatch && base.images?.some(img => {
                                                             const imgSpecId = typeof img.specification === 'string' ? img.specification : img.specification?._id;
                                                             if (imgSpecId === s._id) return true;
-                                                            
+
                                                             const imgSpecObj = imgSpecId ? base.specifications.find(sp => sp._id === imgSpecId) : null;
                                                             const imgColorHex = normalizeHex(imgSpecObj?.colorHex || img.specification?.colorHex);
                                                             const imgColorName = (imgSpecObj?.color || img.specification?.color)?.trim().toLowerCase();
-                                                            
+
                                                             if (sHex && imgColorHex && sHex === imgColorHex) return true;
                                                             if (s.color && imgColorName && s.color.trim().toLowerCase() === imgColorName) return true;
-                                                            
+
                                                             return false;
                                                         });
                                                     });
-                                                    
+
                                                     const spec = specWithImg || base.specifications.find(s => {
                                                         const sHex = normalizeHex(s.colorHex);
                                                         return sHex === hexLower || (s.color && s.color.trim().toLowerCase() === hexLower);
                                                     });
-                                                    
+
                                                     if (spec) handleSpecSelect(base.id, spec);
                                                 }}
                                             />
@@ -704,7 +704,7 @@ const Customizer = () => {
                                             +{getEffectivePrice(charm).toFixed(2).replace(".", ",")} DT
                                         </span>
                                         <div className="mt-1 w-full" onClick={e => e.stopPropagation()}>
-                                            <SpecificationsSlider 
+                                            <SpecificationsSlider
                                                 specifications={charm.specifications}
                                                 onColorSelect={(hex) => {
                                                     if (!hex) return;
@@ -721,23 +721,23 @@ const Customizer = () => {
                                                         return isMatch && charm.images?.some(img => {
                                                             const imgSpecId = typeof img.specification === 'string' ? img.specification : img.specification?._id;
                                                             if (imgSpecId === s._id) return true;
-                                                            
+
                                                             const imgSpecObj = imgSpecId ? charm.specifications.find(sp => sp._id === imgSpecId) : null;
                                                             const imgColorHex = normalizeHex(imgSpecObj?.colorHex || img.specification?.colorHex);
                                                             const imgColorName = (imgSpecObj?.color || img.specification?.color)?.trim().toLowerCase();
-                                                            
+
                                                             if (sHex && imgColorHex && sHex === imgColorHex) return true;
                                                             if (s.color && imgColorName && s.color.trim().toLowerCase() === imgColorName) return true;
-                                                            
+
                                                             return false;
                                                         });
                                                     });
-                                                    
+
                                                     const spec = specWithImg || charm.specifications.find(s => {
                                                         const sHex = normalizeHex(s.colorHex);
                                                         return sHex === hexLower || (s.color && s.color.trim().toLowerCase() === hexLower);
                                                     });
-                                                    
+
                                                     if (spec) handleSpecSelect(charm.id, spec);
                                                 }}
                                             />
@@ -806,7 +806,7 @@ const Customizer = () => {
                             >
                                 {activeLanguage.addToCart}
                             </h4>
-                            
+
                         </motion.button>
                     </div>
                 </div>
@@ -821,8 +821,8 @@ const Customizer = () => {
                 }}
                 onClick={() => setSelectedCharmId(null)}
             >
-                <div className="sticky top-20 w-full flex items-center justify-center overflow-hidden" 
-                     style={{ height: isMobile ? '100%' : 'calc(100vh - 80px)' }}>
+                <div className="sticky top-20 w-full flex items-center justify-center overflow-hidden"
+                    style={{ height: isMobile ? '100%' : 'calc(100vh - 80px)' }}>
                     {/* Background decorations */}
                     <div className="absolute inset-0 pointer-events-none opacity-[0.035]"
                         style={{
@@ -830,7 +830,7 @@ const Customizer = () => {
                             backgroundSize: '40px 40px',
                         }}
                     />
-                    
+
                     <AnimatePresence mode="wait">
                         {selectedBase && (
                             <motion.div

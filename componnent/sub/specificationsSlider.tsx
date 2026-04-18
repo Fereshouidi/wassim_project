@@ -112,9 +112,9 @@ const SpecificationsSlider = ({
             };
         } else {
             return {
-                container: "w-7 h-7",
-                iconBase: isMobile ? "18px" : "20px", 
-                iconActive: isMobile ? "18px" : "22px",
+                container: "w-6 h-6",
+                iconBase: isMobile ? "15px" : "17px", 
+                iconActive: isMobile ? "15px" : "17px",
                 gap: "gap-1",
                 padding: isMobile ? "py-1" : "py-3",
                 ringInset: "-inset-[1px]"
