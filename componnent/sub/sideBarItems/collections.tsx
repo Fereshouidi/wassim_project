@@ -9,6 +9,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { useLoadingScreen } from '@/contexts/loadingScreen';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useScreen } from '@/contexts/screenProvider';
+import { useSidebar } from '@/contexts/sidebarContext';
 
 type ExtendedCollection = CollectionType & { hasChildren?: boolean };
 
@@ -34,6 +35,7 @@ const Collections = ({ sideBarActive }: props) => {
     const router = useRouter();
     const pathname = usePathname();
     const { setLoadingScreen } = useLoadingScreen();
+    const { closeSidebar } = useSidebar();
 
     const currentLevel = useMemo(() => navStack[navStack.length - 1], [navStack]);
 
@@ -114,6 +116,7 @@ const Collections = ({ sideBarActive }: props) => {
             activeLanguage: activeLanguage.language
         };
         router.push(`/search?filter=${encodeURIComponent(JSON.stringify(filtration))}`);
+        closeSidebar();
     };
 
     useEffect(() => {
@@ -136,6 +139,7 @@ const Collections = ({ sideBarActive }: props) => {
                     if (pathname === '/collections') return;
                     setLoadingScreen(true);
                     router.push('/collections');
+                    closeSidebar();
                 }}
             >
                 {activeLanguage.nav.collections}
