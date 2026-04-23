@@ -101,7 +101,7 @@ const CollectionCard = ({
                     border: 'none'
                 }}
             >
-                {collection.thumbNail ?
+                {collection?.thumbNail ?
                     <img
                         src={collection.thumbNail}
                         alt=""
@@ -115,14 +115,14 @@ const CollectionCard = ({
             </div>
 
             <div className='min-h-10 mt-[1px]'>{
-                collection.name[activeLanguage.language] ?
+                collection?.name[activeLanguage.language] ?
                     <h4
                         className='min-h-10 p-3 text-center'
                         style={{
                             color: colors.dark[150]
                         }}
                     >
-                        {collection.name[activeLanguage.language]}
+                        {collection?.name[activeLanguage.language]}
                     </h4> :
                     <div className='h-10'>
                         <SkeletonLoading />

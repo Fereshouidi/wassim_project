@@ -8,78 +8,92 @@ import { collectionsLoading } from '@/constent/data';
 import { useTheme } from '@/contexts/themeProvider';
 
 type CollectionsSectionType = {
-    importedFrom: "collectionsPage" | "homePage"
-    // mostProductExpensive: ProductType
-    // availableColors: string[]
-    // availableTypes: string[]
-    // availableSizes: string[]
+  importedFrom: "collectionsPage" | "homePage"
+  // mostProductExpensive: ProductType
+  // availableColors: string[]
+  // availableTypes: string[]
+  // availableSizes: string[]
 }
 
 const CollectionsSection = ({
-    importedFrom,
-    // mostProductExpensive,
-    // availableColors,
-    // availableSizes,
-    // availableTypes
+  importedFrom,
+  // mostProductExpensive,
+  // availableColors,
+  // availableSizes,
+  // availableTypes
 }: CollectionsSectionType) => {
 
-    const { activeLanguage } = useLanguage();
-    const [collections, setCollections] = useState<CollectionType[] | undefined>(undefined);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const { colors } = useTheme();
+  const { activeLanguage } = useLanguage();
+  const [collections, setCollections] = useState<CollectionType[] | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { colors } = useTheme();
 
 
-    useEffect(() => {
+  useEffect(() => {
 
-        setCollections(collectionsLoading);
+    // setCollections(collectionsLoading);
 
-        const fetchData = async () => {
+    const fetchData = async () => {
 
-            setIsLoading(true);
+      setIsLoading(true);
 
-            if (importedFrom == "homePage") {
+      if (importedFrom == "homePage") {
 
-              await axios.get(backEndUrl + "/topCollections")
-              .then(({ data }) => {
-                  setCollections(data.topCollections);
-                  setIsLoading(false);
-              })
-              .catch((err) => {
-                  throw err;
-              })
-              
-            } else {
+        await axios.get(backEndUrl + "/topCollections")
+          .then(({ data }) => {
+            const validCollections = data.topCollections.filter((collection: CollectionType) => { if (collection?._id) { return collection } })
+            setCollections(validCollections);
+            setIsLoading(false);
+          })
+          .catch((err) => {
+            setCollections([]);
+            throw err;
+          })
 
-              await axios.get(backEndUrl + "/getPublicCollections")
-              .then(({ data }) => {
-                  setCollections(data.publicCollections);
-                  setIsLoading(false);
-              })
-              .catch((err) => {
-                  throw err;
-              })
+      } else {
 
-            }
+        await axios.get(backEndUrl + "/getPublicCollections")
+          .then(({ data }) => {
+            const validCollections = data.publicCollections.filter((collection: CollectionType) => { if (collection?._id) { return collection } })
+            setCollections(validCollections);
+            setIsLoading(false);
+          })
+          .catch((err) => {
+            setCollections([]);
+            throw err;
+          })
 
-        }
+      }
 
-        fetchData();
+    }
 
-    }, [])
+    fetchData();
 
-    // useEffect(() => {
-    //     console.log({
-    //         collections___: collections
-    //     });
-        
-    // }, [collections])
+  }, [])
 
-    
+  // useEffect(() => {
+  //     console.log({
+  //         collections___: collections
+  //     });
+
+  // }, [collections])
+
+
+
+  if (collections?.length == 0) return null;
+
+  // alert(collections?.length);
+  
+  // if (!collections && !isLoading) return null;
+  // if (collections && collections[0]?._id?.length < 2) return null;
+
+  // console.log(collections, !collections && !isLoading, collections && collections[0]?._id?.length < 2);
+  
 
   return (
     <div className='w-full flex flex-col items-center p-5 sm:p-10'>
-      
-      <h4 
+
+      <h4
         className='text-2xl sm:text-4xl py-10 sm:py-16'
         style={{
           color: colors.dark[200]
@@ -95,15 +109,15 @@ const CollectionsSection = ({
 
         {collections?.map((collection, index) => (
 
-            <CollectionCard
-                key={index}
-                collection={collection}
-                isLoading={isLoading}
-                // mostProductExpensive={mostProductExpensive}
-                // availableColors={availableColors}
-                // availableSizes={availableSizes}
-                // availableTypes={availableTypes}
-            />
+          <CollectionCard
+            key={index}
+            collection={collection}
+            isLoading={isLoading}
+          // mostProductExpensive={mostProductExpensive}
+          // availableColors={availableColors}
+          // availableSizes={availableSizes}
+          // availableTypes={availableTypes}
+          />
 
         ))}
 

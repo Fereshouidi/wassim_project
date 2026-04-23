@@ -59,60 +59,66 @@ const ProductsSection = ({
     };
 
     useEffect(() => {
-        setIsThereProducts && setIsThereProducts(products.length > 0)
-        // alert(isThereProducts)
-
-    }, [products])
+        if (!isFirstRender && products?.length === 0) {
+            // If empty, we don't force it to true or false for all.
+            // But if it has products, we can say there are products.
+        } else if (products?.length > 0) {
+            setIsThereProducts && setIsThereProducts(true);
+        }
+    }, [products, isFirstRender])
 
 
     useEffect(() => {
 
         const fetchData = async () => {
-
             if (loading) return;
 
             setLoading(true);
 
-            if (collection._id?.length && collection._id?.length < 3) return setProducts(productsLoading);
+            if (collection._id?.length && collection._id?.length < 3) {
+                setProducts(productsLoading);
+                setLoading(false);
+                return;
+            }
 
-            await axios.get(backEndUrl + "/getProductsByCollection", {
-                params: {
-                    collectionId: collection._id,
-                    limit,
-                    skip,
+            try {
+                const { data } = await axios.get(backEndUrl + "/getProductsByCollection", {
+                    params: {
+                        collectionId: collection._id,
+                        limit,
+                        skip,
+                    }
+                });
+
+                const filterTheProduct = data.products?.filter((product_: ProductType) => product_._id != product?._id)
+
+                if (!isFirstRender && data.products) {
+                    setProducts(prevProducts => [...prevProducts, ...filterTheProduct]);
+                } else {
+                    setProducts(filterTheProduct);
                 }
-            })
 
-                .then(({ data }) => {
+                setProductsCount(data.productsCount - 1);
+                setIsFirstRender(false);
 
-                    const filterTheProduct = data.products?.filter((product_: ProductType) => product_._id != product?._id)
-
-                    !isFirstRender && data.products ?
-                        setProducts([...products, ...filterTheProduct]) :
-                        setProducts(filterTheProduct);
-
-                    setProductsCount(data.productsCount - 1);
-                    setIsFirstRender(false);
-                    setLoading(false);
-
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
-
+            } catch (err) {
+                console.log(err);
+            } finally {
+                setLoading(false);
+            }
         }
 
         fetchData();
 
     }, [collection, skip])
 
-    if (!isThereProducts) return;
+    if (!isFirstRender && products?.length === 0) return null;
 
     return (
 
         <div className='w-full flex flex-col justify-center items-center sm:my-5- overflow-hidden'>
 
-            {collection.name[activeLanguage.language] ?
+            {collection?.name[activeLanguage.language] ?
                 <motion.h2
                     initial="hidden"
                     animate="visible"
@@ -133,7 +139,7 @@ const ProductsSection = ({
             }
 
             {
-                collection.display == "vertical" ?
+                collection?.display == "vertical" ?
 
                     <div className='w-full sm:px-5 flex flex-col justify-center items-center '>
 

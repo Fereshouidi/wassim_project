@@ -36,6 +36,8 @@ const HomeCollections = () => {
     }, [collections?.length])
 
 
+    if (collections?.length === 0) return null;
+
     return (
 
         <div 
@@ -45,9 +47,9 @@ const HomeCollections = () => {
             }}
         >
         
-            {collections?.map((collection) => (
+            {collections?.map((collection, index) => (
                 <ProductsSection
-                    key={collection._id}
+                    key={index}
                     collection={collection}
                     autoScroll={true}
                     isThereProducts={isThereProducts}
