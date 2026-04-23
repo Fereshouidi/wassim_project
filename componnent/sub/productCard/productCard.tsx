@@ -235,11 +235,11 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
                         <span className={`font-semibold`} style={{ color: colors.dark[100], fontSize: isMob ? '16px' : '20px' }}>
                             {activeSpecifications?.price || product.price} DT
                         </span>
-                        {/* {product.oldPrice && Number(product.oldPrice) > Number(activeSpecifications?.price ?? product.price ?? 0) && (
+                        {!!(product.oldPrice > (activeSpecifications?.price ?? product.price ?? 0)) && (
                             <span className="text-xs line-through opacity-30 mt-1">
                                 {product.oldPrice} DT
                             </span>
-                        )} */}
+                        )}
                     </div>
                 </div>
                 {product.images.length > 1 && <div className="px-1" onClick={(e) => e.stopPropagation()}>
