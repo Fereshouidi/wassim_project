@@ -63,7 +63,7 @@ export default function Layout({
   return (
     <html lang="fr">
       <head>
-        <link rel="icon" href="/logo-simple-black.jpg" type="image/x-icon" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
       </head>
       <body>
         <Providers>{children}</Providers>
