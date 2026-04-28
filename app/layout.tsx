@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   creator: "Silver Way",
   publisher: "Silver Way",
   applicationName: "Silver Way",
-  metadataBase: new URL("https://silver-way.vercel.app"),
+  metadataBase: new URL("https://silverway.vercel.app"),
   alternates: {
     canonical: "/",
   },
