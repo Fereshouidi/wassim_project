@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Silver Way Team" }],
   creator: "Silver Way",
   publisher: "Silver Way",
+  applicationName: "Silver Way",
   metadataBase: new URL("https://silver-way.vercel.app"),
   alternates: {
     canonical: "/",
