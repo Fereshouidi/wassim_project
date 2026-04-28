@@ -3,10 +3,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
-  title: {
-    default: "Silver Way | Boutique en Ligne de Bijoux en Argent",
-    template: "%s | Silver Way",
-  },
+  title: "Silver Way",
   description: "Bienvenue chez Silver Way✨\nChaque bijou raconte votre histoire.Découvrez l'élégance de notre collection de colliers,bracelets et bagues personnalisés.",
   keywords: ["bijoux", "argent", "silver", "silverway", "silver way", "boutique", "tunisie", "bagues", "parures"],
   authors: [{ name: "Silver Way Team" }],
