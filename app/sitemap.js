@@ -1,7 +1,7 @@
 export default function sitemap() {
   return [
     {
-      url: 'https://silver-way.vercel.app/',
+      url: 'https://silverway.vercel.app/',
       lastModified: new Date(),
     },
   ];
