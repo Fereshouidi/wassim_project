@@ -3,7 +3,7 @@ import Home from "./home/page";
 
 export const metadata: Metadata = {
   title: {
-    default: "Silver Way | Boutique en Ligne de Bijoux en Argent",
+    default: "Silver Way",
     template: "%s | Silver Way",
   },
   description: "Découvrez notre collection exclusive de bijoux en argent massif. Bagues, colliers, bracelets et plus encore. Qualité supérieure et designs élégants.",
