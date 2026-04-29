@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     siteName: "Silver Way",
     images: [
       {
-        url: "/og-image.jpg", // Make sure this exists or replace with actual URL
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Silver Way Collection",
@@ -54,6 +54,18 @@ export const metadata: Metadata = {
     google: "google-site-verification=suwjDEfgjXDVkX8898eCQZV0Vat9F77UQwd4eXTVdk0",
   },
 };
+
+<script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Silver Way",
+      "url": "https://silverway.vercel.app"
+    }),
+  }}
+/>
 
 export default function Layout({
   children,
