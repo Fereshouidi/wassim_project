@@ -83,3 +83,7 @@ export default function Layout({
     </html>
   );
 }
+
+
+          <span>Bienvenue chez Silver Way.</span>
+          <p>Chaque bijou raconte votre histoire.Découvrez l'élégance de notre collection de colliers,bracelets et bagues personnalisés. ✨️</p>
