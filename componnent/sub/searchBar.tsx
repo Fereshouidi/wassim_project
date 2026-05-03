@@ -122,18 +122,56 @@ const SearchBar = ({
         setIsLoading(true);
 
         try {
-            const { data } = await axios.post(`${backEndUrl}/getAnswerFromAi`, {
-                userId: client?._id,
-                message: currentMsg,
-                agent: "SEARCH"
+            const response = await fetch(`${backEndUrl}/getAnswerFromAi`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userId: client?._id,
+                    message: currentMsg,
+                    agent: "SEARCH"
+                })
             });
-            if (data.uiAction && data.uiAction.element === 'cart') setIsActive(data.uiAction.state === 'open');
-            if (data.filtrationUsed || data.searchQuery) {
-                setFiltration(data.filtrationUsed);
-                router.push(`/search?searchInput=${encodeURIComponent(data.searchQuery ?? "")}&filter=${encodeURIComponent(JSON.stringify(data.filtrationUsed))}`);
+
+            if (!response.body) throw new Error("No response body");
+
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let aiData = null;
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                const chunk = decoder.decode(value, { stream: true });
+                const lines = chunk.split('\n');
+
+                let currentEvent = '';
+                for (const line of lines) {
+                    if (line.startsWith('event:')) {
+                        currentEvent = line.replace('event:', '').trim();
+                    } else if (line.startsWith('data:')) {
+                        const dataStr = line.replace('data:', '').trim();
+                        try {
+                            const data = JSON.parse(dataStr);
+                            if (currentEvent === 'answer') {
+                                aiData = data;
+                            }
+                        } catch (e) {
+                            console.error("Error parsing SSE chunk", e);
+                        }
+                    }
+                }
             }
-            addMessage('assistant', data.answer);
-            setBubbleProps(prev => ({ ...prev, isTherAnswer: true, exist: true }));
+
+            if (aiData) {
+                if (aiData.uiAction && aiData.uiAction.element === 'cart') setIsActive(aiData.uiAction.state === 'open');
+                if (aiData.filtrationUsed || aiData.searchQuery) {
+                    setFiltration(aiData.filtrationUsed);
+                    router.push(`/search?searchInput=${encodeURIComponent(aiData.searchQuery ?? "")}&filter=${encodeURIComponent(JSON.stringify(aiData.filtrationUsed))}`);
+                }
+                addMessage('assistant', aiData.answer);
+                setBubbleProps(prev => ({ ...prev, isTherAnswer: true, exist: true }));
+            }
         } catch (err) {
             setBubbleProps(prev => ({ ...prev, answer: "Connection error..." }));
         } finally {
