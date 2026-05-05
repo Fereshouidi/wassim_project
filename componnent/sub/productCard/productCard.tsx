@@ -233,11 +233,11 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
                     </h4>
                     <div className="text-center flex items-center justify-center gap-2">
                         <span className={`font-semibold`} style={{ color: colors.dark[100], fontSize: isMob ? '16px' : '20px' }}>
-                            {activeSpecifications?.price || product.price} DT
+                            {activeSpecifications?.price || product.price}DT
                         </span>
                         {(product.oldPrice ?? 0) > (activeSpecifications?.price ?? product.price ?? 0) && (
                             <span className="text-xs line-through opacity-30 mt-1">
-                                {product.oldPrice} DT
+                                {product.oldPrice}DT
                             </span>
                         )}
                     </div>
