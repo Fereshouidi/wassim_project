@@ -59,11 +59,18 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
 
     // --- Effects ---
     useEffect(() => {
-        if (product.thumbNail) setCurrentImage(product.thumbNail);
-        else if (product.images?.[0]) setCurrentImage(product.images[0].uri || null);
-
-        // We specifically DO NOT set a default active specification here 
-        // to show the base product price until a user interacts with colors.
+        if (product.mainImageSource === "firstSpecification" && product.images?.[0]?.uri) {
+            setCurrentImage(product.images[0].uri);
+            if (product.specifications?.[0]) {
+                setActiveSpecifications(product.specifications[0]);
+            }
+        } else if (product.thumbNail) {
+            setCurrentImage(product.thumbNail);
+            setActiveSpecifications(null);
+        } else if (product.images?.[0]) {
+            setCurrentImage(product.images[0].uri || null);
+            setActiveSpecifications(null);
+        }
     }, [product]);
 
     useEffect(() => {
@@ -233,11 +240,11 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
                     </h4>
                     <div className="text-center flex items-center justify-center gap-2">
                         <span className={`font-semibold`} style={{ color: colors.dark[100], fontSize: isMob ? '16px' : '20px' }}>
-                            {activeSpecifications?.price || product.price}DT
+                            {activeSpecifications?.price || product.price} DT
                         </span>
                         {(product.oldPrice ?? 0) > (activeSpecifications?.price ?? product.price ?? 0) && (
                             <span className="text-xs line-through opacity-30 mt-1">
-                                {product.oldPrice}DT
+                                {product.oldPrice} DT
                             </span>
                         )}
                     </div>

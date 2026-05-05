@@ -67,6 +67,10 @@ export default function ClientProductPage({ product }: Props) {
         window.scrollTo(0, 0);
         setLoadingScreen(false);
 
+        if (product.mainImageSource === 'firstSpecification' && product.specifications?.[0]) {
+            setActiveSpecifications(product.specifications[0]);
+            setHasInteracted(true);
+        }
     }, [product._id]); 
 
     useEffect(() => {

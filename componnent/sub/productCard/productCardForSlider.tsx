@@ -230,8 +230,8 @@ const ProductCard = ({
                 style={{ backgroundColor: colors.light[300] }}
             >
                 {
-                    product.thumbNail ? <img
-                        src={product.thumbNail}
+                    (product.mainImageSource === 'firstSpecification' ? (product.images?.[0]?.uri || product.thumbNail) : product.thumbNail) ? <img
+                        src={(product.mainImageSource === 'firstSpecification' ? (product.images?.[0]?.uri || product.thumbNail) : product.thumbNail) || ""}
                         className='w-full h-full rounded-xl overflow-hidden hover:scale-110 duration-300 object-cover'
                         alt={product.name[activeLanguage.language] || ""}
                     /> : <SkeletonLoading />
@@ -249,11 +249,11 @@ const ProductCard = ({
                 {product.price != null ? (
                     <>
                         <span className={`font-bold text-center text-[17px] sm:text-lg`} style={{ color: colors.dark[100] }}>
-                            {product.price}DT
+                            {product.price} DT
                         </span>
                         {(product.oldPrice ?? 0) > (product.price ?? 0) && (
                             <span className="text-xs line-through opacity-30 mt-1">
-                                {product.oldPrice}DT
+                                {product.oldPrice} DT
                             </span>
                         )}
                     </>

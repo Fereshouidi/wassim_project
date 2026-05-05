@@ -329,6 +329,7 @@ export type ProductType = {
   collections: string[];
   stock: number | null;
   specifications: ProductSpecification[];
+  mainImageSource?: "thumbnail" | "firstSpecification";
   createdAt?: Date | null;
   updatedAt?: Date | null;
 }
