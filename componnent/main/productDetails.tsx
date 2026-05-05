@@ -242,8 +242,8 @@ const ProductDetails = ({
             {activeSpecifications?.price || (!hasInteracted && product.specifications?.[0]?.price) || product.price || 0}
             <span className="text-sm font-bold opacity-50 ml-1">D.T</span>
           </span>
-          {product.oldPrice && product.oldPrice > (activeSpecifications?.price || (!hasInteracted && product.specifications?.[0]?.price) || product.price || 0) && (
-            <span className="text-xl font-bold line-through opacity-20">
+          {(product.oldPrice ?? 0) > (activeSpecifications?.price ?? product.price ?? 0) && (
+            <span className="text-xs line-through opacity-30 mt-1">
               {product.oldPrice} DT
             </span>
           )}

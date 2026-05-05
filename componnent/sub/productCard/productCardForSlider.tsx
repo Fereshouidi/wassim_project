@@ -251,8 +251,8 @@ const ProductCard = ({
                         <span className={`font-bold text-center text-[17px] sm:text-lg`} style={{ color: colors.dark[100] }}>
                             {product.price} D.T
                         </span>
-                        {product.oldPrice && product.oldPrice > (product.price || 0) && (
-                            <span className="text-xs sm:text-sm line-through opacity-30 mt-0.5 text-center">
+                        {(product.oldPrice ?? 0) > (product.price ?? 0) && (
+                            <span className="text-xs line-through opacity-30 mt-1">
                                 {product.oldPrice} DT
                             </span>
                         )}

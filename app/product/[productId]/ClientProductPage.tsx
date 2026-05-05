@@ -63,12 +63,11 @@ export default function ClientProductPage({ product }: Props) {
     const [clientForm, setClientForm] = useState({ fullName: "", address: "", phone: "", note: "" });
     const [hasInteracted, setHasInteracted] = useState<boolean>(false);
 
-    // --- الحل هنا: إجبار الصفحة على الصعود للأعلى عند الدخول ---
     useEffect(() => {
         window.scrollTo(0, 0);
         setLoadingScreen(false);
 
-    }, [product._id]); // يتم التنفيذ عند تحميل الصفحة أو تغير المنتج
+    }, [product._id]); 
 
     useEffect(() => {
 
