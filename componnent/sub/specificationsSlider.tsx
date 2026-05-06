@@ -11,6 +11,7 @@ type Props = {
     onColorSelect?: (hex: string | null) => void;
     importedFrom?: "productDetails" | "slider";
     availableColors?: string[];
+    defaultSelectedColor?: string | null;
 }
 
 const DiamondIcon = ({ color, size, isLight }: { color: string, size: string, isLight: boolean }) => (
@@ -38,7 +39,8 @@ const SpecificationsSlider = ({
     specifications, 
     onColorSelect, 
     importedFrom = "slider",
-    availableColors 
+    availableColors,
+    defaultSelectedColor = null 
 }: Props) => {
     const { screenWidth } = useScreen();
     const isProductDetails = importedFrom === "productDetails";
@@ -81,7 +83,7 @@ const SpecificationsSlider = ({
         });
     }, [product, specifications, availableColors, isProductDetails]);
 
-    const [selectedColor, setSelectedColor] = useState<string | null>(null);
+    const [selectedColor, setSelectedColor] = useState<string | null>(defaultSelectedColor);
 
     if (uniqueSpecs.length <= 1) return null;
 

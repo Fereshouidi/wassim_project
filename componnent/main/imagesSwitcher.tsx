@@ -77,96 +77,99 @@ const ImagesSwitcher = ({
   const handlePrev = () => setCurrentImageIndex((currentImageIndex - 1 + uniqueImages.length) % uniqueImages.length);
 
   return (
-    <div className={`bg-red-500- h-full relative flex flex-col items-center select-none w-full ${screenWidth > 1000 ? "max-w-[525px] max-h-[5750px] bg-red-500-" : "max-w-[90%]"}  mx-auto ${className}`} style={style}>
+    <div className={`h-full bg-red-500-  relative flex flex-col items-end sm:pr-10- select-none w-full ${screenWidth > 1000 ? "" : "max-w-[90%]"} mx-auto ${className}`} style={style}>
 
-      <div
-        className={`relative w-full overflow-hidden rounded-xl border border-gray-100 shadow-xl bg-white
-          ${screenWidth > 500 ? "h-[475px]" : "h-[400px]"}`}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={() => setZoomPos(prev => ({ ...prev, show: false }))}
-      >
-        <button
-          className={`absolute top-2 right-2 z-20 p-2 rounded-full transition-all active:scale-90 shadow-lg cursor-pointer
-            ${like ? "bg-red-500 text-white" : "bg-gray-300 backdrop-blur-md text-gray-600 hover:bg-white/20"}`}
-          onClick={() => client ? setLike(!like) : setRegisterSectionExist(true)}
+      <div className="w-full sm:w-[475px] sm:h-fit ">
+        <div
+          className={`relative w-full overflow-hidden rounded-xl border border-gray-100 shadow-xl bg-white
+            ${screenWidth > 500 ? "h-[450px]" : "h-[400px]"}`}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={() => setZoomPos(prev => ({ ...prev, show: false }))}
         >
-          <img src={like ? "/icons/heart-white.png" : "/icons/heart-white.png"} className="w-6 h-6" alt="like" />
-        </button>
+          <button
+            className={`absolute top-2 right-2 z-20 p-2 rounded-full transition-all active:scale-90 shadow-lg cursor-pointer
+              ${like ? "bg-red-500 text-white" : "bg-gray-300 backdrop-blur-md text-gray-600 hover:bg-white/20"}`}
+            onClick={() => client ? setLike(!like) : setRegisterSectionExist(true)}
+          >
+            <img src={like ? "/icons/heart-white.png" : "/icons/heart-white.png"} className="w-6 h-6" alt="like" />
+          </button>
 
-        {zoomPos.show && uniqueImages[currentImageIndex]?.uri && (
-          <div
-            className="absolute inset-0 z-10 pointer-events-none"
-            style={{
-              backgroundImage: `url(${uniqueImages[currentImageIndex]?.uri})`,
-              backgroundPosition: `${zoomPos.x}% ${zoomPos.y}%`,
-              backgroundSize: '120%',
-              backgroundRepeat: 'no-repeat',
-            }}
-          />
-        )}
+          {zoomPos.show && uniqueImages[currentImageIndex]?.uri && (
+            <div
+              className="absolute inset-0 z-10 pointer-events-none"
+              style={{
+                backgroundImage: `url(${uniqueImages[currentImageIndex]?.uri})`,
+                backgroundPosition: `${zoomPos.x}% ${zoomPos.y}%`,
+                backgroundSize: '120%',
+                backgroundRepeat: 'no-repeat',
+              }}
+            />
+          )}
 
-        {uniqueImages.length > 0 ? (
-          <img
-            src={uniqueImages[currentImageIndex]?.uri ?? ""}
-            alt="Product"
-            className={`w-full h-full object-cover transition-opacity duration-200 ${zoomPos.show ? 'opacity-0' : 'opacity-100'}`}
-          />
-        ) : (
-          <SkeletonLoading />
+          {uniqueImages.length > 0 ? (
+            <img
+              src={uniqueImages[currentImageIndex]?.uri ?? ""}
+              alt="Product"
+              className={`w-full h-full object-cover transition-opacity duration-200 ${zoomPos.show ? 'opacity-0' : 'opacity-100'}`}
+            />
+          ) : (
+            <SkeletonLoading />
+          )}
+        </div>
+
+        {uniqueImages.length > 0 && (
+          <div className="w-full flex items-center gap-3 mt-5 px-3">
+
+            {screenWidth > 1000 && <button
+              onClick={handlePrev}
+              className="p-2.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-900 shrink-0 border border-gray-100 dark:border-gray-900 shadow-sm active:scale-90 transition-transform"
+            >
+              <img
+                src={activeTheme === "dark" ? "/icons/left-arrow-white.png" : "/icons/left-arrow-black.png"}
+                className="w-4 h-4"
+                alt="prev"
+              />
+            </button>}
+
+            <div
+              ref={sliderRef}
+              className="flex-1 overflow-x-auto scrollbar-hidden scroll-smooth px-1 py-3"
+            >
+              <div className="flex flex-row gap-4">
+                {uniqueImages.map((img, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentImageIndex(index)}
+                    className={`relative shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all duration-300
+                      ${currentImageIndex === index
+                        ? 'border-black scale-105 shadow-lg z-10'
+                        : 'border-transparent opacity-60 hover:opacity-100 hover:scale-105'}`}
+                  >
+                    <img
+                      src={img.uri || ""}
+                      className="w-full h-full object-cover"
+                      alt={`thumbnail ${index}`}
+                    />
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {screenWidth > 1000 && <button
+              onClick={handleNext}
+              className="p-2.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-900 shrink-0 border border-gray-100 dark:border-gray-900 shadow-sm active:scale-90 transition-transform"
+            >
+              <img
+                src={activeTheme === "dark" ? "/icons/right-arrow-white.png" : "/icons/right-arrow-black.png"}
+                className="w-4 h-4"
+                alt="next"
+              />
+            </button>}
+
+          </div>
         )}
       </div>
 
-      {uniqueImages.length > 0 && (
-        <div className="w-full flex items-center gap-3 mt-5 px-3">
-
-          {screenWidth > 1000 && <button
-            onClick={handlePrev}
-            className="p-2.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-900 shrink-0 border border-gray-100 dark:border-gray-900 shadow-sm active:scale-90 transition-transform"
-          >
-            <img
-              src={activeTheme === "dark" ? "/icons/left-arrow-white.png" : "/icons/left-arrow-black.png"}
-              className="w-4 h-4"
-              alt="prev"
-            />
-          </button>}
-
-          <div
-            ref={sliderRef}
-            className="flex-1 overflow-x-auto scrollbar-hidden scroll-smooth px-1 py-3"
-          >
-            <div className="flex flex-row gap-4">
-              {uniqueImages.map((img, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentImageIndex(index)}
-                  className={`relative shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all duration-300
-                    ${currentImageIndex === index
-                      ? 'border-black scale-105 shadow-lg z-10'
-                      : 'border-transparent opacity-60 hover:opacity-100 hover:scale-105'}`}
-                >
-                  <img
-                    src={img.uri || ""}
-                    className="w-full h-full object-cover"
-                    alt={`thumbnail ${index}`}
-                  />
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {screenWidth > 1000 && <button
-            onClick={handleNext}
-            className="p-2.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-900 shrink-0 border border-gray-100 dark:border-gray-900 shadow-sm active:scale-90 transition-transform"
-          >
-            <img
-              src={activeTheme === "dark" ? "/icons/right-arrow-white.png" : "/icons/right-arrow-black.png"}
-              className="w-4 h-4"
-              alt="next"
-            />
-          </button>}
-
-        </div>
-      )}
     </div>
   );
 };

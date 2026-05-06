@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState, useEffect, useRef, CSSProperties } from 'react';
+import React, { useMemo, useState, useEffect, useRef, CSSProperties, RefObject } from 'react';
 import axios from 'axios';
 import { backEndUrl } from '@/api';
 import { useLanguage } from '@/contexts/languageContext';
@@ -47,6 +47,7 @@ type ProductDetailsType = {
   hasInteracted: boolean;
   setHasInteracted: (value: boolean) => void;
   fromCart?: boolean;
+  scrollRef?: RefObject<HTMLDivElement>;
 };
 
 const ProductDetails = ({
@@ -54,7 +55,7 @@ const ProductDetails = ({
   quantity, setQuantity, activeSpecifications, setActiveSpecifications,
   collections, purchase, setPurchase, cart, onSpecificationChange,
   loadingGettingCollection, clientForm, setClientForm, isExplicitlySelected,
-  hasInteracted, setHasInteracted, fromCart
+  hasInteracted, setHasInteracted, fromCart, scrollRef
 }: ProductDetailsType) => {
 
   const { screenWidth } = useScreen();
@@ -223,7 +224,7 @@ const ProductDetails = ({
   }, [product?._id, client?._id]);
 
   return (
-    <div className={`h-full overflow-y-auto scrollbar-hidden px-6 pt-8 ${screenWidth > 1000 ? "w-[50%]" : "w-full"} ${className}`} style={style}>
+    <div ref={scrollRef} className={`h-fit bg-amber-300- overflow-y-auto scrollbar-hidden px-6 pt-2 ${screenWidth > 1000 ? "w-[50%]" : "w-fit"} ${className}`} style={style}>
 
       {/* Product Title & Price Section */}
       <section className="mb-6">
@@ -251,7 +252,7 @@ const ProductDetails = ({
       </section>
 
       {/* Ratings Quick View */}
-      <div className='flex items-center gap-4 py-4 border-y border-black/5 mb-8'>
+      <div className='flex flex-wrap items-center gap-4 py-4 border-y border-black/5 mb-8'>
         <div className='flex items-center gap-2 cursor-pointer' onClick={() => setEvaluationSectionActive(true)}>
           <StarsRatingDisplay rating={calculateRatingStats(evaluations).average} />
           <p className='text-[12px] font-bold opacity-50 underline underline-offset-4'>
@@ -321,7 +322,6 @@ const ProductDetails = ({
             )
             .map((media) => {
               const isFacebook = media.platform?.toLowerCase() === "facebook";
-              // تحديد الألوان الرسمية (أزرق للفيس، أخضر للواتساب)
               const platformColor = isFacebook ? "#1877F2" : "#25D366";
 
               return (
@@ -334,7 +334,7 @@ const ProductDetails = ({
                   <img
                     src={media.icon}
                     alt={media.platform}
-                    className="w-5 h-5 brightness-0- invert-" // لجعل الأيقونة بيضاء لتتناسب مع الخلفية الملونة
+                    className="w-5 h-5 brightness-0- invert-"
                   />
                   <span className="text-[12px] font-black uppercase tracking-wider text-white">
                     {media.platform}
@@ -347,7 +347,7 @@ const ProductDetails = ({
       )}
 
       {/* Order & Form Section */}
-      <div className='space-y-8 mb-20'>
+      <div className='space-y-8 mb-20-'>
         <OrderData
           purchases={[{
             product: product._id,

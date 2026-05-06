@@ -250,7 +250,12 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
                     </div>
                 </div>
                 {product.images.length > 1 && <div className="px-1" onClick={(e) => e.stopPropagation()}>
-                    <SpecificationsSlider product={product.images} importedFrom="slider" onColorSelect={handleColorChange} />
+                    <SpecificationsSlider
+                        product={product.images}
+                        importedFrom="slider"
+                        onColorSelect={handleColorChange}
+                        defaultSelectedColor={product.mainImageSource === 'firstSpecification' ? (product.images?.[0]?.specification as ProductSpecification)?.colorHex || null : null}
+                    />
                 </div>}
                 <div className={`w-full flex ${isMob ? 'flex-col' : 'justify-between'} items-center gap-2 p-2 border-t border-gray-100`}>
                     <button

@@ -8,26 +8,26 @@ import axios from 'axios'
 import React, { useState } from 'react'
 
 type AddEvaluationCardProps = {
-    editEvaluationActive: boolean, 
+    editEvaluationActive: boolean,
     setEditEvaluationActive: (value: boolean) => void
     evaluationToEdit: EvaluationType,
     setEvaluationToEdit: (value: EvaluationType) => void
-    evaluations: EvaluationType[], 
+    evaluations: EvaluationType[],
     setEvaluations: (value: EvaluationType[]) => void
-    evaluationSectionActive: boolean, 
+    evaluationSectionActive: boolean,
     setEvaluationSectionActive: (value: boolean) => void
 }
 
-const AddEvaluationCard = ({ 
+const AddEvaluationCard = ({
     editEvaluationActive,
     setEditEvaluationActive,
     evaluationToEdit,
     setEvaluationToEdit,
-    evaluations, 
+    evaluations,
     setEvaluations,
     evaluationSectionActive,
     setEvaluationSectionActive
- }: AddEvaluationCardProps) => {
+}: AddEvaluationCardProps) => {
 
     const { colors, activeTheme } = useTheme();
     const { activeLanguage } = useLanguage();
@@ -39,29 +39,29 @@ const AddEvaluationCard = ({
         setEditEvaluationActive(false);
         setEvaluationSectionActive(true);
 
-        await axios.put( backEndUrl + "/updateEvaluationById", {
+        await axios.put(backEndUrl + "/updateEvaluationById", {
             updatedData: {
                 //@ts-ignore
                 client: evaluationToEdit.client._id,
                 ...evaluationToEdit
             }
         })
-        .then(({ data }) => {
-            console.log("done");
-        })
-        .catch(( err ) => {
-            console.log({err});
-        })
+            .then(({ data }) => {
+                console.log("done");
+            })
+            .catch((err) => {
+                console.log({ err });
+            })
     }
 
     return (
-        <div 
+        <div
             className='fixed top-0 left-0 w-full h-full bg-black/40 backdrop-blur-sm flex justify-center items-center z-[100] p-4'
             onClick={() => setEditEvaluationActive(false)}
         >
-            <div 
+            <div
                 className='w-full max-w-[450px] h-fit p-6 rounded-md shadow-2xl transition-all scale-up'
-                style={{ 
+                style={{
                     backgroundColor: colors.light[100],
                     border: `1px solid ${colors.light[300]}`
                 }}
@@ -82,16 +82,16 @@ const AddEvaluationCard = ({
                     </p>
                     <div className='flex gap-2'>
                         {[1, 2, 3, 4, 5].map((star) => (
-                        <button
-                            key={star}
-                            onClick={() => setEvaluationToEdit({
-                                ...evaluationToEdit,
-                                number: star
-                            })}
-                            className='text-3xl text-yellow-400 transition-transform active:scale-90 cursor-pointer'
-                        >
-                            {star <= (evaluationToEdit.number || 0) ? '★' : '☆'}
-                        </button>
+                            <button
+                                key={star}
+                                onClick={() => setEvaluationToEdit({
+                                    ...evaluationToEdit,
+                                    number: star
+                                })}
+                                className='text-3xl text-yellow-400 transition-transform active:scale-90 cursor-pointer'
+                            >
+                                {star <= (evaluationToEdit.number || 0) ? '★' : '☆'}
+                            </button>
                         ))}
                     </div>
                 </div>
@@ -100,7 +100,7 @@ const AddEvaluationCard = ({
                     <textarea
                         className='w-full p-3 rounded-xl border outline-none min-h-[120px] text-sm resize-none transition-all focus:ring-1'
                         placeholder={activeLanguage.writeNotes}
-                        style={{ 
+                        style={{
                             backgroundColor: colors.light[100],
                             borderColor: colors.light[300],
                             color: colors.dark[100]
@@ -116,18 +116,18 @@ const AddEvaluationCard = ({
                 <div className='flex flex-row-reverse gap-3'>
                     <button
                         className='flex-1 py-3 rounded-xl font-bold transition-all active:scale-95 text-sm cursor-pointer'
-                        style={{ 
-                            backgroundColor: colors.dark[100], 
-                            color: colors.light[100] 
+                        style={{
+                            backgroundColor: colors.dark[100],
+                            color: colors.light[100]
                         }}
                         onClick={handleSubmit}
                     >
                         {activeLanguage.sideMatter.confirm}
                     </button>
-                    
+
                     <button
                         className='flex-1 py-3 rounded-xl font-bold border transition-all active:scale-95 text-sm cursor-pointer'
-                        style={{ 
+                        style={{
                             borderColor: colors.light[300],
                             color: colors.dark[100]
                         }}

@@ -209,44 +209,65 @@ export default function ClientProductPage({ product }: Props) {
             <AnnouncementBar />
             <Header isSideBarActive={sideBarActive} setIsSideBarActive={setSideBarActive} ownerInfo={ownerInfo} setOwnerInfo={() => { }} />
 
-            <div className={`w-full relative flex ${screenWidth > 1200 ? 'h-[90vh] bg-red-500- flex-row justify-center' : 'flex-col justify-start items-center'} pt-5 mb-24-`} style={{ minHeight: screenHeight - (headerHeight * 1.5) }}>
+            <div className={`w-full relative flex ${screenWidth > 1200 ? 'flex-row justify-center' : 'flex-col justify-start items-center'} pt-5`} style={{ minHeight: screenHeight - (headerHeight * 1.5) }}>
 
-                {screenWidth > 1200 && (
-                    <div className="w-24 flex flex-col gap-4 justify-center items-center mb-20 mr-4-">
-                        {ownerInfo?.socialMedia
-                            ?.filter((media) =>
-                                //@ts-ignore
-                                ["facebook", "whatsapp"].includes(media?.platform?.toLowerCase())
-                            )
-                            .map((media) => (
-                                <img
-                                    key={media.platform}
-                                    src={media.icon}
-                                    alt={media.platform}
-                                    className="w-8 h-8 cursor-pointer opacity-90 hover:opacity-100 transition-opacity"
-                                    onClick={() => handleSocialMediaClick(media)}
-                                />
-                            ))
-                        }
-                    </div>
-                )}
-
-                <div className={`max-w-full flex flex-1 ${screenWidth > 1200 ? 'min-h-[90vh] flex-row justify-center items-start' : 'flex-col items-center'}`}>
+                <div className={`max-w-full flex flex-1 ${screenWidth > 1200 ? 'flex-row items-start gap-10' : 'flex-col items-center'}`}>
+                   
                     {screenWidth < 1200 && (
                         <h4 className='font-bold text-lg sm:text-xl px-10 my-3'>
                             {product.name[activeLanguage.language] || <SkeletonLoading />}
                         </h4>
                     )}
+                  
+                    <div
+                        className={`flex flex-row justify-around items-center gap-10- ${screenWidth > 1200 ? 'w-[50%] sticky top-5' : 'w-full'}`}
+                        style={{ alignSelf: 'flex-start' }}
+                    >
 
-                    <ImagesSwitcher
-                        images={product?.images || []}
-                        currentImageIndex={currentImageIndex}
-                        setCurrentImageIndex={setCurrentImageIndex}
-                        like={like ?? false}
-                        setLike={handleLike}
-                    />
+                        {screenWidth > 1200 && (
+                            <div className="fixed- left-4 flex flex-col gap-4 items-center z-10">
+                                {ownerInfo?.socialMedia
+                                    ?.filter((media) =>
+                                        //@ts-ignore
+                                        ["facebook", "whatsapp"].includes(media?.platform?.toLowerCase())
+                                    )
+                                    .map((media) => (
+                                        <img
+                                            key={media.platform}
+                                            src={media.icon}
+                                            alt={media.platform}
+                                            className="w-8 h-8 cursor-pointer opacity-90 hover:opacity-100 transition-opacity"
+                                            onClick={() => handleSocialMediaClick(media)}
+                                        />
+                                    ))
+                                }
+                            </div>
+                        )}
+
+                        {screenWidth > 1200 ? (
+                            <div className="w-[42%]- sticky- top-5-" style={{ alignSelf: 'flex-start' }}>
+                                <ImagesSwitcher
+                                    images={product?.images || []}
+                                    currentImageIndex={currentImageIndex}
+                                    setCurrentImageIndex={setCurrentImageIndex}
+                                    like={like ?? false}
+                                    setLike={handleLike}
+                                />
+                            </div>
+                        ) : (
+                            <ImagesSwitcher
+                                images={product?.images || []}
+                                currentImageIndex={currentImageIndex}
+                                setCurrentImageIndex={setCurrentImageIndex}
+                                like={like ?? false}
+                                setLike={handleLike}
+                            />
+                        )}
+                    </div>
+
 
                     <ProductDetails
+                        className={screenWidth > 1200 ? 'w-[50%]' : ''}
                         product={product}
                         currentImageIndex={currentImageIndex}
                         setCurrentImageIndex={setCurrentImageIndex}
@@ -270,7 +291,7 @@ export default function ClientProductPage({ product }: Props) {
                 </div>
             </div>
 
-            <div className="my-0 sm:my-24">
+            <div className="my-10 sm:my-24">
                 {product?._id && <OtherSimilarChose collections={collections} product={product} />}
             </div>
 

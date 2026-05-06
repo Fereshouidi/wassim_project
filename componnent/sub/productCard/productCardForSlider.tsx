@@ -246,12 +246,12 @@ const ProductCard = ({
             </h4>
 
             <div className={`w-fit min-w-[90px] h-8 overflow-hidden rounded-xl flex flex-row items-center justify-center gap-2 px-2`}>
-                {product.price != null ? (
+                {product.price != null || (product.mainImageSource === 'firstSpecification' && product.specifications?.[0]?.price) ? (
                     <>
                         <span className={`font-bold text-center text-[17px] sm:text-lg`} style={{ color: colors.dark[100] }}>
-                            {product.price} DT
+                            {(product.mainImageSource === 'firstSpecification' && product.specifications?.[0]?.price) ? product.specifications[0].price : product.price} DT
                         </span>
-                        {(product.oldPrice ?? 0) > (product.price ?? 0) && (
+                        {(product.oldPrice ?? 0) > ((product.mainImageSource === 'firstSpecification' && product.specifications?.[0]?.price) ? product.specifications[0].price! : product.price ?? 0) && (
                             <span className="text-xs line-through opacity-30 mt-1">
                                 {product.oldPrice} DT
                             </span>
