@@ -55,18 +55,6 @@ export const metadata: Metadata = {
   },
 };
 
-<script
-  type="application/ld+json"
-  dangerouslySetInnerHTML={{
-    __html: JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Silver Way",
-      "url": "https://silverway.vercel.app"
-    }),
-  }}
-/>
-
 export default function Layout({
   children,
 }: Readonly<{
@@ -75,7 +63,20 @@ export default function Layout({
   return (
     <html lang="fr">
       <head>
-        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="apple-touch-icon" href="/logo-simple-black.jpg" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": "Silver Way",
+              "alternateName": ["SilverWay"],
+              "url": "https://silverway.vercel.app"
+            }),
+          }}
+        />
       </head>
       <body>
         <Providers>{children}</Providers>
