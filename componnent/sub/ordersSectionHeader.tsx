@@ -59,7 +59,7 @@ const OrdersSectionHeader = ({
 
     const renderTabs = () => (
         <div
-            className='flex items-center p-1 rounded-xl shadow-inner border'
+            className='flex items-center p-1 rounded-sm- shadow-inner border'
             style={{
                 backgroundColor: activeTheme === 'dark' ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)',
                 borderColor: colors.light[250]
@@ -71,7 +71,7 @@ const OrdersSectionHeader = ({
                     <button
                         key={tab.id}
                         onClick={() => setActivePage(tab.id as any)}
-                        className={`relative flex items-center justify-center gap-1.5 px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-[9px] sm:text-[11px] font-semibold uppercase tracking-wider transition-all duration-500`}
+                        className={`relative flex items-center justify-center gap-1.5 px-3 sm:px-5 py-2 sm:py-2.5 rounded-sm- sm:rounded-sm- text-[9px] sm:text-[11px] font-semibold uppercase tracking-wider transition-all duration-500`}
                         style={{
                             color: isActive ? colors.light[100] : colors.dark[400],
                             flex: screenWidth < 500 ? 1 : 'none'
@@ -80,7 +80,7 @@ const OrdersSectionHeader = ({
                         {isActive && (
                             <motion.div
                                 layoutId="activeTabGlow"
-                                className="absolute inset-0 rounded-lg sm:rounded-xl shadow-lg"
+                                className="absolute inset-0 rounded-sm- sm:rounded-sm- shadow-lg"
                                 style={{
                                     backgroundColor: colors.dark[100],
                                     boxShadow: activeTheme === 'dark' ? '0 2px 10px rgba(255,255,255,0.05)' : '0 2px 10px rgba(0,0,0,0.1)'
@@ -102,7 +102,7 @@ const OrdersSectionHeader = ({
 
     const renderPagination = () => (
         <div
-            className='flex items-center gap-1 p-1 rounded-xl border'
+            className='flex items-center gap-1 p-1 rounded-sm- border'
             style={{
                 backgroundColor: colors.light[100],
                 borderColor: colors.light[250],
@@ -111,7 +111,7 @@ const OrdersSectionHeader = ({
             <button
                 onClick={handleLeftArrowClick}
                 disabled={currentPage <= 1}
-                className='w-7 h-7 sm:w-9 sm:h-9 flex items-center justify-center rounded-lg sm:rounded-xl hover:bg-black hover:bg-opacity-5 transition-all active:scale-90 disabled:opacity-20'
+                className='w-7 h-7 sm:w-9 sm:h-9 flex items-center justify-center rounded-sm- sm:rounded-sm- hover:bg-black hover:bg-opacity-5 transition-all active:scale-90 disabled:opacity-20'
             >
                 <img
                     src={activeTheme === "dark" ? "/icons/left-arrow-white.png" : "/icons/left-arrow-black.png"}
@@ -121,7 +121,7 @@ const OrdersSectionHeader = ({
             </button>
 
             <div
-                className='flex flex-col items-center justify-center px-2 sm:px-4 h-7 sm:h-9 rounded-lg sm:rounded-xl border border-dashed'
+                className='flex flex-col items-center justify-center px-2 sm:px-4 h-7 sm:h-9 rounded-sm- sm:rounded-sm- border border-dashed'
                 style={{ borderColor: colors.light[350] }}
             >
                 <div className='flex items-baseline gap-1'>
@@ -134,7 +134,7 @@ const OrdersSectionHeader = ({
             <button
                 onClick={handleRightArrowClick}
                 disabled={currentPage >= totalPages || loadingRightArrow}
-                className='w-7 h-7 sm:w-9 sm:h-9 flex items-center justify-center rounded-lg sm:rounded-xl hover:bg-black hover:bg-opacity-5 transition-all active:scale-90 disabled:opacity-20'
+                className='w-7 h-7 sm:w-9 sm:h-9 flex items-center justify-center rounded-sm- sm:rounded-sm- hover:bg-black hover:bg-opacity-5 transition-all active:scale-90 disabled:opacity-20'
             >
                 {loadingRightArrow ? (
                     <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }}>

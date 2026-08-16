@@ -34,7 +34,7 @@ const EvaluationItem = ({
 
     return (
         <div
-            className='sm:w-[300px]- w-[100%]- w-full h-full p-5 mb-4- rounded-xl transition-all'
+            className='sm:w-[300px]- w-[100%]- w-full h-full p-5 mb-4- rounded-sm- transition-all'
             style={{
                 backgroundColor: colors.light[100],
                 border: `0.5px solid ${colors.light[250]}`,
@@ -46,7 +46,7 @@ const EvaluationItem = ({
 
                     <div className={
                         //@ts-ignore
-                        `flex ${evaluation.client?._id === client?._id ? " flex-col" : " flex-row justify-center items-center " }`
+                        `flex ${evaluation.client?._id === client?._id ? " flex-col" : " flex-row justify-center items-center "}`
                     }>
                         <h4 className='font-bold text-sm bg-red-500-' style={{ color: colors.dark[100] }}>
                             {

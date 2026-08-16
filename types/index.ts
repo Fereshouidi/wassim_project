@@ -216,7 +216,10 @@ export type LanguageStracture = {
   socialMedia: string
   collections: string
   close: string,
-  haveGoodShop: string,
+  haveGoodShop: {
+    part1: string,
+    part2: string
+  },
   edit: string,
   delete: string,
   areYouSure: string,

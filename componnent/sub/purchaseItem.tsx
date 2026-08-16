@@ -46,7 +46,7 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
             if (!data.success) {
                 throw new Error("Server update failed");
             }
-            
+
             // Optionally, sync with server's returned data to ensure consistency (e.g., final price/stock)
             setPurchases((prev: PurchaseType[]) =>
                 prev.map(p => p._id === data.purchase._id ? data.purchase : p)
@@ -65,46 +65,46 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
         }
     };
 
-const getSpecImage = (product: any, specIdObj: any) => {
-    let imgUri = product?.thumbNail || product?.productThumb || "/icons/shopping-bag-black.png";
-    if (!product || !product.images || !product.specifications || !specIdObj) return imgUri;
-    
-    const specId = typeof specIdObj === 'string' ? specIdObj : specIdObj._id;
-    const specObj = product.specifications.find((s: any) => s._id === specId);
-    
-    if (!specObj) return imgUri;
+    const getSpecImage = (product: any, specIdObj: any) => {
+        let imgUri = product?.thumbNail || product?.productThumb || "/icons/shopping-bag-black.png";
+        if (!product || !product.images || !product.specifications || !specIdObj) return imgUri;
 
-    const normalizeHex = (h?: string | null) => {
-        if (!h) return '';
-        let v = h.trim().toLowerCase();
-        return (v.length === 4 && v.startsWith('#')) ? `#${v[1]}${v[1]}${v[2]}${v[2]}${v[3]}${v[3]}` : v;
+        const specId = typeof specIdObj === 'string' ? specIdObj : specIdObj._id;
+        const specObj = product.specifications.find((s: any) => s._id === specId);
+
+        if (!specObj) return imgUri;
+
+        const normalizeHex = (h?: string | null) => {
+            if (!h) return '';
+            let v = h.trim().toLowerCase();
+            return (v.length === 4 && v.startsWith('#')) ? `#${v[1]}${v[1]}${v[2]}${v[2]}${v[3]}${v[3]}` : v;
+        };
+
+        const specHex = normalizeHex(specObj.colorHex);
+        const specColor = specObj.color?.trim().toLowerCase();
+
+        const matchingImg = product.images.find((img: any) => {
+            const imgSpecId = typeof img.specification === 'string' ? img.specification : img.specification?._id;
+            if (imgSpecId === specId) return true;
+
+            const imgSpecObj = imgSpecId ? product.specifications.find((s: any) => s._id === imgSpecId) : null;
+            const imgColorHex = normalizeHex(imgSpecObj?.colorHex || img.specification?.colorHex);
+            const imgColorName = (imgSpecObj?.color || img.specification?.color)?.trim().toLowerCase();
+
+            if (specHex && imgColorHex && specHex === imgColorHex) return true;
+            if (specColor && imgColorName && specColor === imgColorName) return true;
+            return false;
+        });
+
+        if (matchingImg?.uri) return matchingImg.uri;
+        return imgUri;
     };
-    
-    const specHex = normalizeHex(specObj.colorHex);
-    const specColor = specObj.color?.trim().toLowerCase();
-
-    const matchingImg = product.images.find((img: any) => {
-        const imgSpecId = typeof img.specification === 'string' ? img.specification : img.specification?._id;
-        if (imgSpecId === specId) return true;
-        
-        const imgSpecObj = imgSpecId ? product.specifications.find((s: any) => s._id === imgSpecId) : null;
-        const imgColorHex = normalizeHex(imgSpecObj?.colorHex || img.specification?.colorHex);
-        const imgColorName = (imgSpecObj?.color || img.specification?.color)?.trim().toLowerCase();
-        
-        if (specHex && imgColorHex && specHex === imgColorHex) return true;
-        if (specColor && imgColorName && specColor === imgColorName) return true;
-        return false;
-    });
-
-    if (matchingImg?.uri) return matchingImg.uri;
-    return imgUri;
-};
 
     if (!purchase_ || !purchase) return null;
 
     return (
         <div
-            className='group flex gap-3 p-3 rounded-xl border transition-all hover:border-gray-400 bg-white cursor-pointer'
+            className='group flex gap-3 p-3 rounded-sm- border transition-all hover:border-gray-400 bg-white cursor-pointer'
             style={{
                 borderColor: colors.light[200],
                 backgroundColor: activeTheme === 'dark' ? 'rgba(255,255,255,0.02)' : '#fff'
@@ -120,7 +120,7 @@ const getSpecImage = (product: any, specIdObj: any) => {
             }}
         >
             {/* Thumbnail */}
-            <div className="w-22 h-22 flex-shrink-0 overflow-hidden rounded-xl bg-gray-50 border" style={{ borderColor: colors.light[200] }}>
+            <div className="w-22 h-22 flex-shrink-0 overflow-hidden rounded-sm- bg-gray-50 border" style={{ borderColor: colors.light[200] }}>
                 <img
                     //@ts-ignore
                     src={getSpecImage(purchase.product, purchase.specification)}
@@ -168,7 +168,7 @@ const getSpecImage = (product: any, specIdObj: any) => {
                 </div>
 
                 <div className='flex justify-between items-end mt-2'>
-                    <div className='flex items-center border rounded-xl h-7' style={{ borderColor: colors.light[300] }}>
+                    <div className='flex items-center border rounded-sm- h-7' style={{ borderColor: colors.light[300] }}>
                         <button
                             className='w-7 h-full rounded-full flex items-center justify-center hover:bg-black/5'
                             onClick={(e) => {

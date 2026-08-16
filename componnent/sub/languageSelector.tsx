@@ -33,7 +33,7 @@ const LanguageSelector = ({ className }: LanguageSelectorProps) => {
   if (!mounted) return <div className={`w-32 h-10 ${className}`} />;
 
   return (
-    <div 
+    <div
       className={`w-32 h-10 relative flex justify-center items-center outline-none cursor-pointer no-sellect z-[60] ${className}`}
       style={{ color: colors.dark[200] }}
       onClick={() => setIsOpen(!isOpen)}
@@ -41,23 +41,23 @@ const LanguageSelector = ({ className }: LanguageSelectorProps) => {
       tabIndex={0}
     >
       <div className='w-full h-full flex flex-row justify-between items-center px-2 gap-2'>
-        <img 
+        <img
           className='w-4 h-4 object-contain'
           src={activeTheme === "dark" ? "/icons/world-white.png" : "/icons/world-black.png"}
-          alt="lang" 
+          alt="lang"
         />
 
         <h4 className='text-md font-medium truncate flex-1 text-center'>{activeLanguage.label}</h4>
 
-        <img 
+        <img
           src={activeTheme === "dark" ? "/icons/down-arrow-white.png" : "/icons/down-arrow-black.png"}
           className={`w-4 h-4 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
-          alt="arrow" 
+          alt="arrow"
         />
       </div>
 
-      <div 
-        className='absolute top-full left-0 w-full duration-200 shadow-xl rounded-md overflow-hidden border border-black/5'
+      <div
+        className='absolute top-full left-0 w-full duration-200 shadow-xl rounded-sm- overflow-hidden border border-black/5'
         style={{
           backgroundColor: colors.light[100],
           visibility: isOpen ? "visible" : "hidden",
@@ -69,7 +69,7 @@ const LanguageSelector = ({ className }: LanguageSelectorProps) => {
           {languagesDispo.map((language, index) => {
             const isSelected = activeLanguage.language === language.language;
             return (
-              <li 
+              <li
                 key={index}
                 className='flex w-full items-center justify-center px-4 py-3 text-md font-medium transition-colors'
                 style={{

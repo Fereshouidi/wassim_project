@@ -7,7 +7,7 @@ import ProductCard from './productCard/productCardForSlider'
 
 type sliderProps = {
     products: ProductType[]
-    productsCount: number, 
+    productsCount: number,
     isFirstRender: boolean
     setIsFirstRender: (value: boolean) => void
     skip: number,
@@ -41,7 +41,7 @@ const Slider = ({
     const slidesRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        
+
         // if (isFirstRender) return;
 
         if (!isFirstRender && products.length == productsCount) {
@@ -72,7 +72,7 @@ const Slider = ({
     useEffect(() => {
 
         if (productLoadingVisible || userScroll) {
-            return () => {};
+            return () => { };
         }
 
         if (autoScroll) {
@@ -87,74 +87,74 @@ const Slider = ({
             };
         }
 
-    }, [ productLoadingVisible, userScroll]);
+    }, [productLoadingVisible, userScroll]);
 
-  useEffect(() => {
+    useEffect(() => {
         if (productLoadingVisible) {
             setSkip(skip + limit);
         }
-  }, [productLoadingVisible])
+    }, [productLoadingVisible])
 
-  useEffect(() => {
+    useEffect(() => {
 
-    if (!userScroll) return;
+        if (!userScroll) return;
 
-    setTimeout(() => {
-        setUserScroll(false);
-    }, 3000)
+        setTimeout(() => {
+            setUserScroll(false);
+        }, 3000)
 
-  }, [userScroll])
+    }, [userScroll])
 
 
 
-        return (
-            <div 
-                className='w-full relative overflow-x-scroll scrollbar-hidden slide'
-                ref={sliderRef}
-                onMouseDown={() => setUserScroll(true)} 
-                onTouchStart={() => setUserScroll(true)}             
-                onMouseEnter={() => setUserScroll(true)}
+    return (
+        <div
+            className='w-full relative overflow-x-scroll scrollbar-hidden slide'
+            ref={sliderRef}
+            onMouseDown={() => setUserScroll(true)}
+            onTouchStart={() => setUserScroll(true)}
+            onMouseEnter={() => setUserScroll(true)}
+        >
+
+            <div
+                className='w-max h-full flex flex-row justify-start gap-2 px-5 slide'
+                ref={slidesRef}
+                style={{
+                    // transform: `translateX(-${currentIndex}px)`,
+                }}
             >
-                
-                <div 
-                    className='w-max h-full flex flex-row justify-start gap-2 px-5 slide' 
-                    ref={slidesRef}
-                    style={{
-                        // transform: `translateX(-${currentIndex}px)`,
-                    }}
-                >
 
-                    <div className='w-max h-full flex flex-row justify-start gap-2 smpx-5'>{
+                <div className='w-max h-full flex flex-row justify-start gap-2 smpx-5'>{
 
-                        products.map((product) => (
-                            <ProductCard
-                                key={product._id}
-                                product={product}
-                                className='w-[170px] sm:w-[220px] min-h-[150px] sm:min-h-[220px] m-0 rounded-xl overflow-hidden'
-                                // style={{
-                                //     width: cardWidth + "px"
-                                // }}
-                            />
-                        ))
+                    products.map((product) => (
+                        <ProductCard
+                            key={product._id}
+                            product={product}
+                            className='w-[170px] sm:w-[220px] min-h-[150px] sm:min-h-[220px] m-0 rounded-sm- overflow-hidden'
+                        // style={{
+                        //     width: cardWidth + "px"
+                        // }}
+                        />
+                    ))
 
-                    }</div>
-
-                    
-                    { productLoadingShowUp && 
-
-                        <div ref={productLoading} className=''>
-                            <ProductLoading
-                                className='w-[170px] sm:w-[220px] min-h-[150px] sm:min-h-[220px] m-0 rounded-xl overflow-hidden'
-                            />
-                        </div>
-
-                    }
+                }</div>
 
 
-                </div>
+                {productLoadingShowUp &&
+
+                    <div ref={productLoading} className=''>
+                        <ProductLoading
+                            className='w-[170px] sm:w-[220px] min-h-[150px] sm:min-h-[220px] m-0 rounded-sm- overflow-hidden'
+                        />
+                    </div>
+
+                }
+
 
             </div>
-        )
+
+        </div>
+    )
 
 }
 

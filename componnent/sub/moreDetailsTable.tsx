@@ -44,7 +44,7 @@ const MoreDetailsTable = ({
 
     return (
         <div
-            className='w-full cursor-auto rounded-xl overflow-hidden border transition-all duration-300'
+            className='w-full cursor-auto rounded-sm- overflow-hidden border transition-all duration-300'
             style={{
                 backgroundColor: colors.light[100],
                 borderColor: colors.light[250],
@@ -63,18 +63,18 @@ const MoreDetailsTable = ({
             {/* Content Grid */}
             <div className='grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4'>
                 {details.map((detail, idx) => (
-                    <div 
-                        key={idx} 
+                    <div
+                        key={idx}
                         className={`p-5 flex flex-col gap-2 transition-colors border-b lg:border-b-0 lg:border-r last:border-0`}
-                        style={{ 
+                        style={{
                             borderColor: colors.light[250],
-                            backgroundColor: activeTheme === 'dark' ? 'rgba(255,255,255,0.01)' : 'transparent' 
+                            backgroundColor: activeTheme === 'dark' ? 'rgba(255,255,255,0.01)' : 'transparent'
                         }}
                     >
                         <span className='text-[9px] uppercase font-black tracking-widest opacity-30'>
                             {detail.label}
                         </span>
-                        
+
                         <span className='text-[12px] font-bold leading-tight line-clamp-2' style={{ color: colors.dark[100] }}>
                             {detail.value || "---"}
                         </span>

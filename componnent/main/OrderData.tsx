@@ -25,7 +25,7 @@ const OrderData = ({ purchases }: Props) => {
         }, 0) || 0;
     }, [purchases]);
 
-    if (!ownerInfo) return <div className="h-20 animate-pulse rounded-xl" style={{ backgroundColor: colors.light[200] }} />;
+    if (!ownerInfo) return <div className="h-20 animate-pulse rounded-sm-" style={{ backgroundColor: colors.light[200] }} />;
 
     const isFreeShipping = (ownerInfo.freeShippingThreshold || 0) > 0 && subTotal >= (ownerInfo.freeShippingThreshold || 0);
     const effectiveShippingCost = isFreeShipping ? 0 : (ownerInfo.shippingCost || 0);
@@ -33,7 +33,7 @@ const OrderData = ({ purchases }: Props) => {
 
     return (
         <div
-            className='w-full p-6 rounded-xl border transition-all duration-300'
+            className='w-full p-6 rounded-sm- border transition-all duration-300'
             style={{
                 backgroundColor: colors.light[100],
                 borderColor: colors.light[250],
@@ -72,7 +72,7 @@ const OrderData = ({ purchases }: Props) => {
                     </span>
                 </div>
                 {!isFreeShipping && (ownerInfo.freeShippingThreshold || 0) > 0 && (
-                    <div className="bg-emerald-50/50 p-2 rounded-lg border border-emerald-100/50 mt-1">
+                    <div className="bg-emerald-50/50 p-2 rounded-sm- border border-emerald-100/50 mt-1">
                         <p className="text-[8px] font-black uppercase text-emerald-600/60 tracking-wider text-center">
                             {(ownerInfo.freeShippingThreshold! - subTotal).toFixed(0)} D.T remaining for FREE SHIPPING
                         </p>
@@ -93,7 +93,7 @@ const OrderData = ({ purchases }: Props) => {
                         ({activeLanguage.IncludingDeliveryCost})
                     </span>
                 </div>
-                
+
                 <div className='flex items-baseline gap-1'>
                     <span className="text-2xl font-semibold tracking-tighter" style={{ color: colors.dark[100] }}>
                         {finalTotal.toFixed(2)}

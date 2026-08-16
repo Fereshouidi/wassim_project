@@ -58,7 +58,7 @@ export default function HomeContent() {
             <div
                 className="w-full"
                 style={{
-                    backgroundColor: colors.dark[800]
+                    backgroundColor: colors.light[300]
                 }}
             >
                 {pub?.heroBanner ?
@@ -70,7 +70,7 @@ export default function HomeContent() {
                         }}
                         alt="Hero Banner"
                     />
-                    : <div className="h-[250px]">
+                    : <div className="min-h-[250px] sm:min-h-[350px]">
                         <SkeletonLoading />
                     </div>
                 }

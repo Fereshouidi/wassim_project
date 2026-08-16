@@ -25,7 +25,7 @@ const ProductNotFound = () => {
                     style={{ background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)" }}
                 />
                 <div
-                    className="relative w-24 h-24 rounded-xl flex items-center justify-center border shadow-xl"
+                    className="relative w-24 h-24 rounded-sm- flex items-center justify-center border shadow-xl"
                     style={{
                         backgroundColor: colors.light[200],
                         borderColor: colors.light[250]
@@ -51,7 +51,7 @@ const ProductNotFound = () => {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Link
                         href="/"
-                        className="flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-black text-[11px] uppercase tracking-widest transition-all hover:scale-105 active:scale-95 shadow-md"
+                        className="flex items-center justify-center gap-2 px-8 py-4 rounded-sm- font-black text-[11px] uppercase tracking-widest transition-all hover:scale-105 active:scale-95 shadow-md"
                         style={{
                             backgroundColor: colors.dark[100],
                             color: colors.light[100]
@@ -63,7 +63,7 @@ const ProductNotFound = () => {
 
                     <button
                         onClick={() => window.history.back()}
-                        className="flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-black text-[11px] uppercase tracking-widest border transition-all hover:bg-current/5 active:scale-95"
+                        className="flex items-center justify-center gap-2 px-8 py-4 rounded-sm- font-black text-[11px] uppercase tracking-widest border transition-all hover:bg-current/5 active:scale-95"
                         style={{ borderColor: colors.light[250] }}
                     >
                         <ArrowLeft size={16} />

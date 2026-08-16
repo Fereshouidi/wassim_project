@@ -235,13 +235,13 @@ const ProductDetails = ({
             </span>
           ))}
         </div>
-        <h1 className='font-semibold text-2xl sm:text-3xl tracking-tight- mb-3 mt-1 user-select-text' style={{ color: colors.dark[150] }}>
+        <h1 className='font-semibold bg-blue-500- text-2xl sm:text-3xl tracking-tight- mb-3 mt-1 user-select-text' style={{ color: colors.dark[150] }}>
           {product.name?.fr}
         </h1>
-        <div className="flex items-baseline gap-3">
-          <span className='font-bold text-4xl' style={{ color: colors.dark[150] }}>
+        <div className={`flex items-baseline gap-3 ___ bg-red-500- ${screenWidth < 1000 ? 'justify-end- px-2' : ''}`}>
+          <span className='font-bold text-3xl' style={{ color: colors.dark[150] }}>
             {activeSpecifications?.price || (!hasInteracted && product.specifications?.[0]?.price) || product.price || 0}
-            <span className="text-sm font-bold opacity-50 ml-1">D.T</span>
+            <span className="text-sm font-bold opacity-50 ml-1"> DT</span>
           </span>
           {(product.oldPrice ?? 0) > (activeSpecifications?.price ?? product.price ?? 0) && (
             <span className="text-xs line-through opacity-30 mt-1">
@@ -262,7 +262,7 @@ const ProductDetails = ({
         {clientCanRate && (
           <button
             onClick={() => setAddEvaluationActive(true)}
-            className='flex items-center gap-2 px-4 py-2 rounded-xl transition-all active:scale-95 shadow-sm'
+            className='flex items-center gap-2 px-4 py-2 rounded-sm- transition-all active:scale-95 shadow-sm'
             style={{ backgroundColor: colors.dark[100], color: colors.light[100] }}
           >
             <span className="text-[11px] font-black uppercase tracking-wider">{activeLanguage.addEvaluation}</span>
@@ -289,7 +289,7 @@ const ProductDetails = ({
                     key={val}
                     disabled={!isAvailable}
                     onClick={() => attr.handler(val!)}
-                    className={`px-[14px] py-[9px] text-[13px] font-semibold rounded-xl border-1 transition-all duration-300 ${isSelected ? 'scale-105' : 'hover:border-black/20'}`}
+                    className={`px-[14px] py-[9px] text-[13px] font-semibold rounded-sm- border-1 transition-all duration-300 ${isSelected ? 'scale-105' : 'hover:border-black/20'}`}
                     style={{
                       backgroundColor: isSelected ? colors.dark[100] : 'transparent',
                       color: isSelected ? colors.light[150] : colors.dark[150],
@@ -308,7 +308,7 @@ const ProductDetails = ({
       </div>
 
       {/* Description Article */}
-      <article className='mb-10 p-6 rounded-xl bg-black/[0.02] border border-black/5'>
+      <article className='mb-10 p-6 rounded-sm- bg-black/[0.02] border border-black/5'>
         <p className='text-[14px] leading-relaxed font-medium opacity-70 whitespace-pre-line' style={{ color: colors.dark[250] }}>
           {product.description[activeLanguage.language]}
         </p>
@@ -328,7 +328,7 @@ const ProductDetails = ({
                 <div
                   key={media.platform}
                   onClick={() => handleSocialMediaClick(media)}
-                  className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl cursor-pointer transition-transform active:scale-95 shadow-sm"
+                  className="flex-1 flex items-center justify-center gap-2 py-3 rounded-sm- cursor-pointer transition-transform active:scale-95 shadow-sm"
                   style={{ backgroundColor: platformColor }}
                 >
                   <img

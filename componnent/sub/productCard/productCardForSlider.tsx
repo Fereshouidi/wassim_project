@@ -192,12 +192,12 @@ const ProductCard = ({
             animate="visible"
             variants={fadeInUp}
             whileTap={{ scale: 0.98 }}
-            className={`flex relative flex-col items-center justify-between gap-2 rounded-xl overflow-hidden cursor-pointer py-1 px-1 sm:py-2 sm:px-2 transition-all duration-300 ${className}`}
+            className={`flex relative flex-col items-center justify-between gap-2 rounded-sm- overflow-hidden cursor-pointer py-1 px-1 sm:py-2 sm:px-2 transition-all duration-300 ${className}`}
             style={{
                 ...style,
                 color: colors.dark[200],
                 backgroundColor: colors.light[100],
-                boxShadow: `0 0px 15px ${colors.light[300]}`,
+                // boxShadow: `0 0px 15px ${colors.light[300]}`,
             }}
             onClick={() => {
                 if ((product?._id?.length || 0) < 3) return;
@@ -226,26 +226,26 @@ const ProductCard = ({
             </div>}
 
             <div
-                className='w-full h-[150px] sm:h-[280px] pt-2- bg-red-500- rounded-xl overflow-hidden'
+                className='w-full h-[150px] sm:h-[280px] pt-2- bg-red-500- rounded-sm- overflow-hidden'
                 style={{ backgroundColor: colors.light[300] }}
             >
                 {
                     (product.mainImageSource === 'firstSpecification' ? (product.images?.[0]?.uri || product.thumbNail) : product.thumbNail) ? <img
                         src={(product.mainImageSource === 'firstSpecification' ? (product.images?.[0]?.uri || product.thumbNail) : product.thumbNail) || ""}
-                        className='w-full h-full rounded-xl overflow-hidden hover:scale-110 duration-300 object-cover'
+                        className='w-full h-full rounded-sm- overflow-hidden hover:scale-110 duration-300 object-cover'
                         alt={product.name[activeLanguage.language] || ""}
                     /> : <SkeletonLoading />
                 }
             </div>
 
-            <h4 className={`w-full h-7 flex items-center justify-center rounded-xl overflow-hidden z-50- text-[14px] sm:text-[16px] text-center px-4 font-medium`}>
+            <h4 className={`w-full h-7 flex items-center justify-center rounded-sm- overflow-hidden z-50- text-[14px] sm:text-[16px] text-center px-4 font-medium`}>
                 {product.name?.[activeLanguage.language]
                     ? handleLongText(product.name[activeLanguage.language] + "", 15)
                     : <div className="w-28 h-4 opacity-50"><SkeletonLoading /></div>
                 }
             </h4>
 
-            <div className={`w-fit min-w-[90px] h-8 overflow-hidden rounded-xl flex flex-row items-center justify-center gap-2 px-2`}>
+            <div className={`w-fit min-w-[90px] h-8 overflow-hidden rounded-sm- flex flex-row items-center justify-center gap-2 px-2`}>
                 {product.price != null || (product.mainImageSource === 'firstSpecification' && product.specifications?.[0]?.price) ? (
                     <>
                         <span className={`font-bold text-center text-[17px] sm:text-lg`} style={{ color: colors.dark[100] }}>
@@ -264,7 +264,7 @@ const ProductCard = ({
 
             <div className="w-full flex flex-row justify-between items-center gap-2 pt-2 border-t border-gray-50 px-1 sm:px-2">
                 <div
-                    className={`flex items-center justify-center gap-1 w-full sm:w-auto px-1 py-2 rounded-lg active:scale-95 transition-all cursor-pointer ${isInCart ? 'bg-green-50' : 'hover:bg-gray-100'}`}
+                    className={`flex items-center justify-center gap-1 w-full sm:w-auto px-1 py-2 rounded-sm- active:scale-95 transition-all cursor-pointer ${isInCart ? 'bg-green-50' : 'hover:bg-gray-100'}`}
                     onClick={async (e) => {
                         e.stopPropagation();
                         if (!product || (product._id?.length || 0) < 3) return;
@@ -283,7 +283,7 @@ const ProductCard = ({
                 </div>
 
                 <div
-                    className="flex items-center justify-center gap-2 w-full sm:w-auto px-3 py-2 rounded-lg shadow-sm active:scale-95 transition-all cursor-pointer"
+                    className="flex items-center justify-center gap-2 w-full sm:w-auto px-3 py-2 rounded-sm- shadow-sm active:scale-95 transition-all cursor-pointer"
                     style={{ backgroundColor: colors.dark[200], color: colors.light[200] }}
                 >
                     <span className="text-[10px] sm:text-xs font-bold uppercase">Acheter</span>

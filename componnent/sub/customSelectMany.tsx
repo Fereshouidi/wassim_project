@@ -49,7 +49,7 @@ const CustomSelectMany = ({
             ref={selectRef}
             className={twMerge(
                 "relative min-w-[140px] w-full cursor-pointer select-none border transition-all duration-300",
-                optionsOpen ? "rounded-t-2xl shadow-lg" : "rounded-xl",
+                optionsOpen ? "rounded-t-2xl shadow-lg" : "rounded-sm-",
                 className
             )}
             style={{

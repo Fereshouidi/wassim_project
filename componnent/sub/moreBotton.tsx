@@ -31,7 +31,7 @@ const MoreBotton = ({
 
     return (
         <div
-            className='w-44 h-10 border text-sm sm:-text-md cursor-pointer mt-10 rounded-xl flex justify-center items-center overflow-hidden transition-all duration-300'
+            className='w-44 h-10 border text-sm sm:-text-md cursor-pointer mt-10 rounded-sm- flex justify-center items-center overflow-hidden transition-all duration-300'
             style={{
                 borderColor: colors.dark[600],
                 backgroundColor: isHovered && screenWidth > 1000 ? colors.dark[100] : "transparent",

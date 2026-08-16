@@ -85,7 +85,7 @@ const CollectionCard = ({
             viewport={{ once: true, margin: "-20px" }}
             variants={fadeInUp}
             whileTap={isLoading ? undefined : { scale: 0.98 }}
-            className={`w-[320px] sm:w-[250px] max-h-[320px] sm:max-h-[270px] rounded-xl overflow-hidden transition-all duration-500 group ${isLoading ? 'cursor-default' : 'cursor-pointer'}`}
+            className={`w-[320px] sm:w-[250px] max-h-[320px] sm:max-h-[270px] rounded-sm- overflow-hidden transition-all duration-500 group ${isLoading ? 'cursor-default' : 'cursor-pointer'}`}
             style={{
                 backgroundColor: colors.light[100],
                 boxShadow: activeTheme === 'dark' ? `0 10px 30px rgba(0,0,0,0.5)` : `0 10px 30px ${colors.light[400]}`,

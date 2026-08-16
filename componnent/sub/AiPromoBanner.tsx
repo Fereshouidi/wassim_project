@@ -41,7 +41,7 @@ const AiPromoBanner = () => {
             className="w-full px-4 sm:px-8 py-6"
         >
             <div
-                className="relative w-full max-w-6xl mx-auto rounded-xl overflow-hidden cursor-pointer group"
+                className="relative w-full max-w-6xl mx-auto rounded-sm- overflow-hidden cursor-pointer group"
                 onClick={handleOpenAi}
                 style={{
                     background: isDark
@@ -51,7 +51,7 @@ const AiPromoBanner = () => {
                 }}
             >
                 {/* Animated gradient border glow */}
-                <div className="absolute -inset-[1px] rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10 blur-sm"
+                <div className="absolute -inset-[1px] rounded-sm- opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10 blur-sm"
                     style={{ background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%)' }}
                 />
 
@@ -140,7 +140,7 @@ const AiPromoBanner = () => {
                         className="shrink-0"
                     >
                         <div
-                            className="flex items-center gap-3 px-7 py-4 rounded-xl text-white font-black text-sm shadow-xl group-hover:shadow-2xl group-hover:-translate-y-0.5 transition-all duration-300"
+                            className="flex items-center gap-3 px-7 py-4 rounded-sm- text-white font-black text-sm shadow-xl group-hover:shadow-2xl group-hover:-translate-y-0.5 transition-all duration-300"
                             style={{
                                 background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%)',
                                 boxShadow: '0 10px 30px rgba(139, 92, 246, 0.3)',

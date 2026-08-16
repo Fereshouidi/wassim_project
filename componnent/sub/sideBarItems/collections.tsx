@@ -131,7 +131,7 @@ const Collections = ({ sideBarActive }: props) => {
             {/* Root Label */}
             <div
                 className={`flex-1 h-full flex items-center text-[13px] sm:text-sm cursor-pointer transition-all duration-200`}
-                style={{ 
+                style={{
                     color: pathname === '/collections' ? colors.light[100] : colors.light[200],
                     fontWeight: pathname === '/collections' ? '600' : '400'
                 }}
@@ -226,7 +226,7 @@ const Collections = ({ sideBarActive }: props) => {
                                     {currentLevel.items.map((col) => (
                                         <div
                                             key={col._id}
-                                            className={`flex items-center justify-between py-3 px-3 rounded-lg transition-colors cursor-pointer ${activeTheme === 'dark' ? 'hover:bg-black/5' : 'hover:bg-white/5'}`}
+                                            className={`flex items-center justify-between py-3 px-3 rounded-sm- transition-colors cursor-pointer ${activeTheme === 'dark' ? 'hover:bg-black/5' : 'hover:bg-white/5'}`}
                                             onClick={() => handleNavigate(col)}
                                         >
                                             <span className="text-[13px] font-medium" style={{ color: colors.light[200] }}>

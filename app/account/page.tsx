@@ -148,7 +148,7 @@ const AccountPage = () => {
                 style={{ paddingTop: screenWidth > 1000 ? headerHeight : 10 }}
             >
                 <div
-                    className='w-full max-w-5xl flex flex-col rounded-xl overflow-hidden transition-all duration-300'
+                    className='w-full max-w-5xl flex flex-col rounded-sm- overflow-hidden transition-all duration-300'
                     style={{
                         backgroundColor: isDark ? 'rgba(30,30,30,0.6)' : 'white',
                         border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'}`,
@@ -176,7 +176,7 @@ const AccountPage = () => {
                                 className="w-full"
                                 labelClassName='font-semibold mb-2 block text-sm'
                                 placeholder={activeLanguage.inputYourName + "..."}
-                                inputClassName='w-full px-4 py-3 rounded-xl border  rounded transition-all  bg-transparent'
+                                inputClassName='w-full px-4 py-3 rounded-sm- border  rounded transition-all  bg-transparent'
                                 defaultValue={updatedClient?.fullName}
                                 onChange={(e) => setUpdatedClient({ ...updatedClient, fullName: e.target.value })}
                                 maxLength={25}
@@ -188,7 +188,7 @@ const AccountPage = () => {
                                 className="w-full"
                                 labelClassName='font-semibold mb-2 block text-sm'
                                 placeholder={activeLanguage.inputYourPhone + "..."}
-                                inputClassName='w-full px-4 py-3 rounded-xl border  rounded transition-all  bg-transparent'
+                                inputClassName='w-full px-4 py-3 rounded-sm- border  rounded transition-all  bg-transparent'
                                 defaultValue={updatedClient?.phone?.toString()}
                                 onChange={(e) => {
                                     const val = e.target.value;
@@ -203,7 +203,7 @@ const AccountPage = () => {
                                 className="w-full"
                                 labelClassName='font-semibold mb-2 block text-sm'
                                 placeholder={activeLanguage.inputYourEmail + "..."}
-                                inputClassName='w-full px-4 py-3 rounded-xl  rounded transition-all  bg-transparent'
+                                inputClassName='w-full px-4 py-3 rounded-sm-  rounded transition-all  bg-transparent'
                                 defaultValue={updatedClient?.email}
                                 onChange={(e) => setUpdatedClient({ ...updatedClient, email: e.target.value })}
                                 maxLength={50}
@@ -215,7 +215,7 @@ const AccountPage = () => {
                                 className="w-full"
                                 labelClassName='font-semibold mb-2 block text-sm'
                                 placeholder={activeLanguage.sideMatter.address}
-                                inputClassName='w-full px-4 py-3 rounded-xl border border-gray-200   rounded transition-all  bg-transparent'
+                                inputClassName='w-full px-4 py-3 rounded-sm- border border-gray-200   rounded transition-all  bg-transparent'
                                 defaultValue={updatedClient?.address}
                                 onChange={(e) => setUpdatedClient({ ...updatedClient, address: e.target.value })}
                                 maxLength={100}
@@ -227,7 +227,7 @@ const AccountPage = () => {
                                 className="w-full"
                                 labelClassName='font-semibold mb-2 block text-sm'
                                 placeholder={activeLanguage.inputYourPassword + "..."}
-                                inputClassName='w-full px-4 py-3 rounded-xl border  rounded transition-all  bg-transparent'
+                                inputClassName='w-full px-4 py-3 rounded-sm- border  rounded transition-all  bg-transparent'
                                 defaultValue={updatedClient?.password}
                                 onChange={(e) => setUpdatedClient({ ...updatedClient, password: e.target.value })}
                             />
@@ -238,7 +238,7 @@ const AccountPage = () => {
                                 className="w-full"
                                 labelClassName='font-semibold mb-2 block text-sm'
                                 placeholder={activeLanguage.inputYourDateOfBirth}
-                                inputClassName='w-full px-4 py-3 rounded-xl border  rounded transition-all  bg-transparent'
+                                inputClassName='w-full px-4 py-3 rounded-sm- border  rounded transition-all  bg-transparent'
                                 //@ts-ignore
                                 defaultValue={updatedClient?.dateOfBirth ? new Date(updatedClient.dateOfBirth).toISOString().slice(0, 10) : ''}
                                 onChange={(e) => setUpdatedClient({
@@ -253,7 +253,7 @@ const AccountPage = () => {
 
                             {/* Logout Button */}
                             <button
-                                className='group flex items-center justify-center gap-3 px-8 py-3 rounded-xl text-red-500 font-bold hover:bg-red-50 dark:hover:bg-red-950/30 transition-all duration-300 w-full sm:w-auto active:scale-95 border border-transparent hover:border-red-100 dark:hover:border-red-900/30'
+                                className='group flex items-center justify-center gap-3 px-8 py-3 rounded-sm- text-red-500 font-bold hover:bg-red-50 dark:hover:bg-red-950/30 transition-all duration-300 w-full sm:w-auto active:scale-95 border border-transparent hover:border-red-100 dark:hover:border-red-900/30'
                                 onClick={handleLogout}
                             >
                                 <LogOut className='w-4 h-4 opacity-70 group-hover:opacity-100 transition-opacity' />
@@ -263,7 +263,7 @@ const AccountPage = () => {
 
                             {/* Submit Button */}
                             <button
-                                className='w-full sm:w-auto min-w-[200px] flex justify-center items-center py-4 px-10 rounded-xl font-black text-white shadow-xl hover:-translate-y-1 active:translate-y-0 transition-all duration-300 active:scale-[0.98]'
+                                className='w-full sm:w-auto min-w-[200px] flex justify-center items-center py-4 px-10 rounded-sm- font-black text-white shadow-xl hover:-translate-y-1 active:translate-y-0 transition-all duration-300 active:scale-[0.98]'
                                 style={{
                                     backgroundColor: colors.dark[100],
                                     boxShadow: `0 10px 25px -5px ${colors.dark[100]}40`
@@ -282,7 +282,7 @@ const AccountPage = () => {
             {verificationAccountBannerVisible &&
                 <div className='fixed inset-0 z-50 flex justify-center items-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200'>
                     <div
-                        className="w-full max-w-md relative bg-white rounded-xl shadow-2xl overflow-hidden"
+                        className="w-full max-w-md relative bg-white rounded-sm- shadow-2xl overflow-hidden"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <VerificationAccountBanner

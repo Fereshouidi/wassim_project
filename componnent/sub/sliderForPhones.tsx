@@ -133,11 +133,11 @@ const SliderForPhones = ({
                             {products.map((product, index) => (
                                 <div
                                     key={index}
-                                    className='w-[180px] sm:w-[250px] py-2 h-full- flex justify-center items-center bg-red-500- rounded-xl overflow-hidden'
+                                    className='w-[180px] sm:w-[250px] py-2 h-full- flex justify-center items-center bg-red-500- rounded-sm- overflow-hidden'
                                 >
                                     <ProductCard
                                         product={product}
-                                        className='w-[95%] h-[270px] rounded-xl overflow-hidden'
+                                        className='w-[95%] h-[270px] rounded-sm- overflow-hidden'
                                         useLike={useLike}
                                     />
                                 </div>

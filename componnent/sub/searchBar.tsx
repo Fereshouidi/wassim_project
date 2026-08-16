@@ -190,7 +190,7 @@ const SearchBar = ({
 
     return (
         <div
-            className={`relative w-[60%] flex flex-row items-center justify-center transition-all duration-500 rounded-xl p-[1.2px] ${containerClassName}`}
+            className={`relative w-[60%] flex flex-row items-center justify-center transition-all duration-500 rounded-sm- p-[1.2px] ${containerClassName}`}
             style={{
                 ...containerStyle,
                 backgroundColor: aiModeActive ? 'transparent' : (containerStyle?.backgroundColor || 'transparent'),
@@ -220,14 +220,14 @@ const SearchBar = ({
                         <AiMode aiModeActive={aiModeActive} setAiModeActive={setAiModeActive} aiIconStyle={aiIconStyle} aiIconContentStyle={aiIconContentStyle} />
                     )}
                     <div
-                        className={`h-[45px] w-[45px] flex items-center justify-center rounded-xl cursor-pointer`}
+                        className={`h-[45px] w-[45px] flex items-center justify-center rounded-sm- cursor-pointer`}
                         style={{ background: aiModeActive ? aiGradient : (isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)') }}
                         onClick={handleSearchIconClicked}
                     >
                         {aiModeActive ?
                             <FontAwesomeIcon icon={faPaperPlane} className="text-white text-xs" /> :
                             <div
-                                className='w-full h-full p-3 rounded-xl overflow-hidden'
+                                className='w-full h-full p-3 rounded-sm- overflow-hidden'
                                 style={{ ...searchIconStyle, backgroundColor: importedFrom == "sidBar" ? colors.light[100] : colors.dark[100] }}
                             >
                                 <img src={searchIcon} className={`h-full w-full opacity-70-`} style={{ ...searchIconStyle, backgroundColor: importedFrom == "sidBar" ? "" : colors.dark[100] }} alt="search" />
@@ -246,7 +246,7 @@ const SearchBar = ({
 
             {/* AI Search Info Section */}
             {aiModeActive && resSecVisible && input && (
-                <div className="absolute top-full left-0 w-full mt-4 p-[1.5px] rounded-xl z-[999] animate-in fade-in slide-in-from-top-4 shadow-2xl" style={{ background: aiGradient }}>
+                <div className="absolute top-full left-0 w-full mt-4 p-[1.5px] rounded-sm- z-[999] animate-in fade-in slide-in-from-top-4 shadow-2xl" style={{ background: aiGradient }}>
                     <div className="w-full h-full p-5 rounded-[15px] backdrop-blur-2xl" style={{ backgroundColor: isDark ? 'rgba(10, 10, 10, 0.98)' : 'rgba(255, 255, 255, 0.98)' }}>
                         <div className="flex items-center gap-4">
                             <span className="text-[10px] uppercase font-bold tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-pink-500">AI SEARCHING MODE</span>
@@ -259,7 +259,7 @@ const SearchBar = ({
             {/* Live Search Result Section (Re-added) */}
             {!aiModeActive && resSecVisible && input.length > 0 && (
                 <div
-                    className={`w-full max-h-[400px] absolute top-full rounded-xl overflow-y-auto z-[998] shadow-2xl mt-3 p-2 border border-white/5 transition-all duration-300`}
+                    className={`w-full max-h-[400px] absolute top-full rounded-sm- overflow-y-auto z-[998] shadow-2xl mt-3 p-2 border border-white/5 transition-all duration-300`}
                     style={{ ...resSectionStyle, backgroundColor: isDark ? '#121212' : '#fff' }}
                     ref={searchResultDivRef}
                 >
@@ -267,10 +267,10 @@ const SearchBar = ({
                         productsFound.map((product) => (
                             <div
                                 key={product._id}
-                                className='px-4 py-3 rounded-xl text-sm cursor-pointer flex flex-row items-center gap-4 hover:bg-current/5 transition-all group'
+                                className='px-4 py-3 rounded-sm- text-sm cursor-pointer flex flex-row items-center gap-4 hover:bg-current/5 transition-all group'
                                 onClick={() => router.push(`/product/${product._id}`)}
                             >
-                                <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-current/5">
+                                <div className="relative w-12 h-12 rounded-sm- overflow-hidden bg-current/5">
                                     <img src={product.thumbNail ?? ''} className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-500' alt="" />
                                 </div>
                                 <div className="flex-1 min-w-0">

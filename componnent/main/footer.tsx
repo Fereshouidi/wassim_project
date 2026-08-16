@@ -65,14 +65,14 @@ const Footer = ({
 
                         <a
                             href={`mailto:${ownerInfo?.contact?.email}`}
-                            className={`flex flex-row justify-center items-center gap-2 hover:text-white transition-colors text-sm`}
+                            className={`flex flex-row justify-center items-center gap-2 hover:text-white transition-colors text-[12px]`}
                         >
                             <p>{ownerInfo?.contact.email}</p>
                         </a>
 
                         <a
                             href={`tel:+216${ownerInfo?.contact.phone}`}
-                            className="flex flex-row justify-center items-center hover:text-white transition-colors text-sm"
+                            className="flex flex-row justify-center items-center hover:text-white transition-colors text-[12px]"
                         >
                             <p>{"+216" + ownerInfo?.contact.phone}</p>
                         </a>
@@ -88,21 +88,43 @@ const Footer = ({
                                 style={{ color: '#a855f7' }}
                             />
 
-                            <p className='text-sm font-semibold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 group-hover:from-indigo-300 group-hover:via-purple-300 group-hover:to-pink-300 transition-all duration-300'>
+                            <p className='text-[12px] font-semibold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 group-hover:from-indigo-300 group-hover:via-purple-300 group-hover:to-pink-300 transition-all duration-300'>
                                 {activeLanguage.askAi}
                             </p>
                         </div>
                     </div>
                 </div>
 
-                {screenWidth > 1000 && <div className='h-full flex flex-1 flex-col justify-start items-center '>
-                    <p>{activeLanguage.haveGoodShop}</p>
-                    <img
-                        src="/logo-simple-black.jpg"
-                        className='w-14 h-14 mt-8'
-                        alt=""
-                    />
-                </div>}
+                {screenWidth > 1000 && (
+                    <div className='h-full flex flex-1 flex-col justify-center items-center gap-5'>
+                        {/* Decorative line */}
+                        <div className='w-12 h-[1px] bg-gradient-to-r from-transparent via-white/20- to-transparent' />
+
+                        {/* Logo with glow ring */}
+                        <div className='relative group'>
+                            <div
+                                className='absolute inset-0 rounded-full blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-700'
+                                style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%)' }}
+                            />
+                            <div className='relative w-14 h-14 bg-white p-1 rounded-full border border-white/10 group-hover:border-white/25 transition-all duration-500'>
+                                <img
+                                    src="/logo-simple-white.jpg"
+                                    className='w-full h-full rounded-full object-cover'
+                                    alt="Silver Way"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Brand message */}
+                        <div className='text-[8px] font-bold uppercase tracking-[0.3em] text-white/40 text-center'>
+                            <p>{activeLanguage.haveGoodShop?.part1}</p>
+                            <p>{activeLanguage.haveGoodShop?.part2}</p>
+                        </div>
+
+                        {/* Decorative line */}
+                        <div className='w-12 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent' />
+                    </div>
+                )}
 
                 <div className={`w-full flex flex-1 flex-col justify-center items-center gap-3 text-white ${screenWidth <= 1000 ? 'text-center' : ''}`}>
 
@@ -125,20 +147,38 @@ const Footer = ({
                                     alt=""
                                     className={screenWidth > 1000 ? 'w-5 h-5' : 'w-7 h-7'}
                                 />
-                                {screenWidth > 1000 && <p className='text-sm font-[1px] '>{social.platform}</p>}
+                                {screenWidth > 1000 && <p className='text-[11px] font-[1px] '>{social.platform}</p>}
                             </a>
                         ))}
                     </div>
                 </div>
 
-                {screenWidth < 1000 && <div className='h-full flex flex-1 flex-col justify-start items-center '>
-                    <p className='text-center text-sm opacity-80 mt-2'>{activeLanguage.haveGoodShop}</p>
-                    <img
-                        src="/logo-simple-black.jpg"
-                        className='w-10 h-10 mt-4'
-                        alt=""
-                    />
-                </div>}
+                {screenWidth < 1000 && (
+                    <div className='h-full flex flex-1 flex-col justify-center items-center gap-4 pt-2'>
+                        <div className='w-10 h-[1px] bg-gradient-to-r from-transparent via-white/15 to-transparent' />
+
+                        <div className='relative'>
+                            <div
+                                className='absolute inset-0 rounded-full blur-lg opacity-20'
+                                style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%)' }}
+                            />
+                            <div className='relative w-12 h-12 bg-white p-1 rounded-full border border-white/10 group-hover:border-white/25 transition-all duration-500'>
+                                <img
+                                    src="/logo-simple-white.jpg"
+                                    className='w-full h-full rounded-full object-cover'
+                                    alt="Silver Way"
+                                />
+                            </div>
+                        </div>
+
+                        <div className='text-[8px] font-bold uppercase tracking-[0.25em] text-white/35 text-center'>
+                            <p>{activeLanguage.haveGoodShop?.part1}</p>
+                            <p>{activeLanguage.haveGoodShop?.part2}</p>
+                        </div>
+
+                        <div className='w-10 h-[1px] bg-gradient-to-r from-transparent via-white/15 to-transparent' />
+                    </div>
+                )}
 
             </div>
 

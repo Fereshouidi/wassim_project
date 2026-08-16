@@ -205,7 +205,7 @@ const DraggableCharm = ({
 
                         if (displayImg) {
                             return (
-                                <div className="w-full h-full relative rounded-md overflow-hidden">
+                                <div className="w-full h-full relative rounded-sm- overflow-hidden">
                                     <Image
                                         src={displayImg}
                                         alt=""
@@ -548,7 +548,7 @@ const Customizer = () => {
                 {/* Title */}
                 <div className="px-6 pt-6 lg:pt-8 pb-4 flex-shrink-0">
                     <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                        <div className="w-9 h-9 rounded-sm- flex items-center justify-center flex-shrink-0"
                             style={{ backgroundColor: colors.dark[100] }}>
                             <Sparkles size={18} color={colors.light[100]} />
                         </div>
@@ -569,7 +569,7 @@ const Customizer = () => {
                         <button
                             key={tab}
                             onClick={() => setActiveTab(tab)}
-                            className="flex-1 py-2.5 text-[11px] font-bold uppercase tracking-[0.15em] rounded-xl transition-all"
+                            className="flex-1 py-2.5 text-[11px] font-bold uppercase tracking-[0.15em] rounded-sm- transition-all"
                             style={{
                                 color: activeTab === tab ? txt1 : txt3,
                                 backgroundColor: activeTab === tab ? bgTab : 'transparent',
@@ -599,7 +599,7 @@ const Customizer = () => {
                                     <motion.div
                                         key={base.id}
                                         onClick={() => setSelectedBase(base)}
-                                        className="relative rounded-2xl cursor-pointer flex flex-col items-center justify-center py-5 px-2 transition-all"
+                                        className="relative rounded-sm- cursor-pointer flex flex-col items-center justify-center py-5 px-2 transition-all"
                                         style={{
                                             backgroundColor: selectedBase?.id === base.id ? bg2 : bg3,
                                             border: `1px solid ${selectedBase?.id === base.id ? txt1 : border2}`,
@@ -609,9 +609,9 @@ const Customizer = () => {
                                     >
                                         <div className="w-12 h-12 mb-2 relative">
                                             {getCurrentThumbnail(base) ? (
-                                                <Image src={getCurrentThumbnail(base)!} alt="" fill className="object-contain rounded-md" sizes="48px" />
+                                                <Image src={getCurrentThumbnail(base)!} alt="" fill className="object-contain rounded-sm-" sizes="48px" />
                                             ) : (
-                                                <div className="w-full h-full rounded-md" style={{ backgroundColor: base.chainColor }} />
+                                                <div className="w-full h-full rounded-sm-" style={{ backgroundColor: base.chainColor }} />
                                             )}
                                         </div>
                                         <span className="text-[11px] font-bold text-center px-1 truncate w-full" style={{ color: txt1 }}>
@@ -684,7 +684,7 @@ const Customizer = () => {
                                         onDragStart={() => setIsDraggingFromMenu(true)}
                                         onDragEnd={(e, info) => handleMenuDragEnd(e, info, charm.id)}
                                         onClick={() => addCharm(charm.id)}
-                                        className="relative rounded-2xl cursor-pointer flex flex-col items-center justify-center py-5 px-2 transition-all"
+                                        className="relative rounded-sm- cursor-pointer flex flex-col items-center justify-center py-5 px-2 transition-all"
                                         style={{ backgroundColor: bg3, border: `1px solid ${border2}` }}
                                         whileHover={{ y: -4, boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
                                         whileTap={{ scale: 0.95 }}
@@ -692,7 +692,7 @@ const Customizer = () => {
                                     >
                                         <div className="w-12 h-12 mb-2 relative">
                                             {getCurrentThumbnail(charm) ? (
-                                                <Image src={getCurrentThumbnail(charm)!} alt="" fill className="object-contain rounded-md" sizes="48px" />
+                                                <Image src={getCurrentThumbnail(charm)!} alt="" fill className="object-contain rounded-sm-" sizes="48px" />
                                             ) : (
                                                 <span className="text-3xl drop-shadow-md flex items-center justify-center h-full w-full">{charm.emoji}</span>
                                             )}
@@ -762,20 +762,20 @@ const Customizer = () => {
                         </div>
                         <div className="flex flex-wrap gap-2">
                             {selectedBase && (
-                                <div className="w-10 h-10 rounded-xl relative p-1.5" style={{ backgroundColor: bgTab, border: `1px solid ${border1}` }}>
+                                <div className="w-10 h-10 rounded-sm- relative p-1.5" style={{ backgroundColor: bgTab, border: `1px solid ${border1}` }}>
                                     {getCurrentThumbnail(selectedBase) ? (
                                         <Image src={getCurrentThumbnail(selectedBase)!} alt="" fill className="object-contain" sizes="30px" />
                                     ) : (
-                                        <div className="w-full h-full rounded-md" style={{ backgroundColor: selectedBase.chainColor }} />
+                                        <div className="w-full h-full rounded-sm-" style={{ backgroundColor: selectedBase.chainColor }} />
                                     )}
                                 </div>
                             )}
                             {placedCharms.map(pc => {
                                 const charm = availableCharms.find(c => c.id === pc.charmId);
                                 return charm ? (
-                                    <div key={pc.instanceId} className="w-10 h-10 rounded-xl relative p-1.5" style={{ backgroundColor: bgTab }}>
+                                    <div key={pc.instanceId} className="w-10 h-10 rounded-sm- relative p-1.5" style={{ backgroundColor: bgTab }}>
                                         {getCurrentThumbnail(charm, pc.specId) ? (
-                                            <Image src={getCurrentThumbnail(charm, pc.specId)!} alt="" fill className="object-contain rounded-md" sizes="30px" />
+                                            <Image src={getCurrentThumbnail(charm, pc.specId)!} alt="" fill className="object-contain rounded-sm-" sizes="30px" />
                                         ) : (
                                             <span className="text-lg flex items-center justify-center h-full w-full">{charm.emoji}</span>
                                         )}
@@ -797,7 +797,7 @@ const Customizer = () => {
                             onClick={handleAddCustomPurchaseToCart}
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
-                            className="flex-1 py-3 rounded-xl flex items-center justify-center gap-3 shadow-xl-"
+                            className="flex-1 py-3 rounded-sm- flex items-center justify-center gap-3 shadow-xl-"
                             style={{ backgroundColor: colors.dark[100], color: colors.light[100] }}
                         >
                             <ShoppingBag size={18} />
@@ -846,7 +846,7 @@ const Customizer = () => {
                             >
                                 {getCurrentThumbnail(selectedBase) ? (
                                     <div className="absolute inset-0 pointer-events-none drop-shadow-xl">
-                                        <Image src={getCurrentThumbnail(selectedBase)!} alt="" fill className="object-contain rounded-md" sizes="(max-width: 1024px) 85vw, 550px" priority />
+                                        <Image src={getCurrentThumbnail(selectedBase)!} alt="" fill className="object-contain rounded-sm-" sizes="(max-width: 1024px) 85vw, 550px" priority />
                                     </div>
                                 ) : (
                                     <NecklaceSVG chainColor={selectedBase.chainColor} chainHighlight={selectedBase.chainHighlight} />

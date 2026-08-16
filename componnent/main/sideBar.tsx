@@ -232,7 +232,7 @@ const SideBar = ({
                                     setBubbleProps({ ...bubbleProps, exist: true });
                                     closeSidebar();
                                 }}
-                                className='w-full h-full flex items-center gap-3 px-5 rounded-xl font-bold transition-all duration-300 hover:scale-[1.02]'
+                                className='w-full h-full flex items-center gap-3 px-5 rounded-sm- font-bold transition-all duration-300 hover:scale-[1.02]'
                                 style={{
                                     background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.01), rgba(168, 85, 247, 0.01), rgba(236, 72, 153, 0.01))',
                                     color: '#c4b5fd',
@@ -262,7 +262,7 @@ const SideBar = ({
                     </div>}
 
                     <div
-                        className='w-full bg-red-500- mb-0 p-3 pt-8- bg-red-500- rounded-xl flex justify-start items-center fixed- bottom-5- cursor-pointer transition-colors duration-200'
+                        className='w-full bg-red-500- mb-0 p-3 pt-8- bg-red-500- rounded-sm- flex justify-start items-center fixed- bottom-5- cursor-pointer transition-colors duration-200'
                         style={{
                             color: pathname === '/account' ? colors.light[100] : colors.light[150],
                             backgroundColor: pathname === '/account' ? colors.dark[200] : 'transparent'

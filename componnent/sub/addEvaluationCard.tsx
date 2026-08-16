@@ -63,7 +63,7 @@ const AddEvaluationCard = ({
             onClick={() => setAddEvaluationActive(false)}
         >
             <div
-                className='w-full max-w-[450px] h-fit p-6 rounded-md shadow-2xl transition-all scale-up'
+                className='w-full max-w-[450px] h-fit p-6 rounded-sm- shadow-2xl transition-all scale-up'
                 style={{
                     backgroundColor: colors.light[100],
                     border: `1px solid ${colors.light[300]}`
@@ -101,7 +101,7 @@ const AddEvaluationCard = ({
 
                 <div className='mb-6'>
                     <textarea
-                        className='w-full p-3 rounded-xl border outline-none min-h-[120px] text-sm resize-none transition-all focus:ring-1'
+                        className='w-full p-3 rounded-sm- border outline-none min-h-[120px] text-sm resize-none transition-all focus:ring-1'
                         placeholder={activeLanguage.writeNotes}
                         style={{
                             backgroundColor: colors.light[100],
@@ -118,7 +118,7 @@ const AddEvaluationCard = ({
 
                 <div className='flex flex-row-reverse gap-3'>
                     <button
-                        className='flex-1 py-3 rounded-xl font-bold transition-all active:scale-95 text-sm cursor-pointer'
+                        className='flex-1 py-3 rounded-sm- font-bold transition-all active:scale-95 text-sm cursor-pointer'
                         style={{
                             backgroundColor: colors.dark[100],
                             color: colors.light[100]
@@ -129,7 +129,7 @@ const AddEvaluationCard = ({
                     </button>
 
                     <button
-                        className='flex-1 py-3 rounded-xl font-bold border transition-all active:scale-95 text-sm cursor-pointer'
+                        className='flex-1 py-3 rounded-sm- font-bold border transition-all active:scale-95 text-sm cursor-pointer'
                         style={{
                             borderColor: colors.light[300],
                             color: colors.dark[100]

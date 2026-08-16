@@ -133,7 +133,7 @@ const ProductsSection = ({
                     {collection.name[activeLanguage.language]}
                 </motion.h2>
                 :
-                <div className='w-[150px] h-8 rounded-xl overflow-hidden text-2xl sm:text-5xl sm:m-20 m-10'>
+                <div className='w-[150px] h-8 rounded-sm- overflow-hidden text-2xl sm:text-5xl sm:m-20 m-10'>
                     <SkeletonLoading />
                 </div>
             }

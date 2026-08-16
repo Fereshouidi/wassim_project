@@ -10,7 +10,7 @@ export default function InvalidToken() {
 
   return (
     <div
-      className="w-full max-w-md mx-auto mt-10 p-6 rounded-xl shadow-lg flex flex-col items-center text-center"
+      className="w-full max-w-md mx-auto mt-10 p-6 rounded-sm- shadow-lg flex flex-col items-center text-center"
       style={{
         backgroundColor: colors.light[100],
         color: colors.dark[200]

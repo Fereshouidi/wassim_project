@@ -71,7 +71,7 @@ export default function ClientProductPage({ product }: Props) {
             setActiveSpecifications(product.specifications[0]);
             setHasInteracted(true);
         }
-    }, [product._id]); 
+    }, [product._id]);
 
     useEffect(() => {
 
@@ -212,13 +212,13 @@ export default function ClientProductPage({ product }: Props) {
             <div className={`w-full relative flex ${screenWidth > 1200 ? 'flex-row justify-center' : 'flex-col justify-start items-center'} pt-5`} style={{ minHeight: screenHeight - (headerHeight * 1.5) }}>
 
                 <div className={`max-w-full flex flex-1 ${screenWidth > 1200 ? 'flex-row items-start gap-10' : 'flex-col items-center'}`}>
-                   
+
                     {screenWidth < 1200 && (
                         <h4 className='font-bold text-lg sm:text-xl px-10 my-3'>
                             {product.name[activeLanguage.language] || <SkeletonLoading />}
                         </h4>
                     )}
-                  
+
                     <div
                         className={`flex flex-row justify-around items-center gap-10- ${screenWidth > 1200 ? 'w-[50%] sticky top-5' : 'w-full'}`}
                         style={{ alignSelf: 'flex-start' }}
@@ -313,7 +313,7 @@ export default function ClientProductPage({ product }: Props) {
                                         <div
                                             key={media.platform}
                                             onClick={() => handleSocialMediaClick(media)}
-                                            className="flex items-center justify-center gap-2.5 px-5 py-2.5 rounded-xl cursor-pointer transition-all hover:scale-105 active:scale-95 shadow-sm"
+                                            className="flex items-center justify-center gap-2.5 px-5 py-2.5 rounded-sm- cursor-pointer transition-all hover:scale-105 active:scale-95 shadow-sm"
                                             style={{ backgroundColor: platformColor }}
                                         >
                                             <img

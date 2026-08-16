@@ -93,7 +93,7 @@ const SignUp = ({
                     true,
                     null,
                     <div
-                        className='w-full h-full bg-red-500- p-10 rounded-xl flex flex-col justify-center items-center'
+                        className='w-full h-full bg-red-500- p-10 rounded-sm- flex flex-col justify-center items-center'
                         style={{
                             backgroundColor: colors.light[100],
                             boxShadow: `0 0 15px ${colors.dark[700]}`
@@ -120,7 +120,7 @@ const SignUp = ({
                 true,
                 null,
                 <div
-                    className='w-full h-full bg-red-500- p-10 rounded-xl flex flex-col justify-center items-center'
+                    className='w-full h-full bg-red-500- p-10 rounded-sm- flex flex-col justify-center items-center'
                     style={{
                         backgroundColor: colors.light[100],
                         boxShadow: `0 0 15px ${colors.dark[700]}`
@@ -142,7 +142,7 @@ const SignUp = ({
                 true,
                 null,
                 <div
-                    className='w-full h-full bg-red-500- p-10 rounded-xl flex flex-col justify-center items-center'
+                    className='w-full h-full bg-red-500- p-10 rounded-sm- flex flex-col justify-center items-center'
                     style={{
                         backgroundColor: colors.light[100]
                     }}
@@ -162,7 +162,7 @@ const SignUp = ({
 
     return (
         <div
-            className="w-full h-full overflow-y-auto flex flex-col items-center bg-white rounded-xl p-8 shadow-2xl scrollbar-hidden transition-all duration-300"
+            className="w-full h-full overflow-y-auto flex flex-col items-center bg-white rounded-sm- p-8 shadow-2xl scrollbar-hidden transition-all duration-300"
             style={{
                 backgroundColor: colors.light[100],
             }}
@@ -170,7 +170,7 @@ const SignUp = ({
             {/* --- Header Section --- */}
             <div className="mb-6 flex flex-col items-center">
                 <div
-                    className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 shadow-inner"
+                    className="w-16 h-16 rounded-sm- flex items-center justify-center mb-4 shadow-inner"
                     style={{ backgroundColor: colors.light[200] }}
                 >
                     <UserPlus

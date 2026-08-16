@@ -121,7 +121,7 @@ const CartSide = () => {
                         {client?._id && (
                             <button
                                 onClick={() => { router.push(`/orders`); setIsActive(false) }}
-                                className="flex items-center gap-2 px-3.5 py-2 rounded-xl border border-neutral-100/50 hover:bg-white hover:shadow-sm transition-all active:scale-95 cursor-pointer"
+                                className="flex items-center gap-2 px-3.5 py-2 rounded-sm- border border-neutral-100/50 hover:bg-white hover:shadow-sm transition-all active:scale-95 cursor-pointer"
                                 style={{ backgroundColor: colors.light[100] }}
                             >
                                 <img
@@ -137,7 +137,7 @@ const CartSide = () => {
                         <div className='w-[1px] h-4 bg-neutral-300 opacity-30 mx-1' />
                         <button
                             onClick={() => setIsActive(false)}
-                            className='w-10 h-10 rounded-xl flex items-center justify-center hover:bg-neutral-50 transition-colors active:scale-90 group'
+                            className='w-10 h-10 rounded-sm- flex items-center justify-center hover:bg-neutral-50 transition-colors active:scale-90 group'
                         >
                             <img src={`/icons/close-${activeTheme === "dark" ? "white" : "black"}.png`} className='w-3 h-3 opacity-20 group-hover:opacity-100 transition-opacity' alt="Close" />
                         </button>
@@ -163,7 +163,7 @@ const CartSide = () => {
 
                             <div className='space-y-6'>
                                 <OrderData purchases={purchases} />
-                                <div className='p-4 border rounded-xl' style={{ borderColor: colors.light[300], backgroundColor: colors.light[100] }}>
+                                <div className='p-4 border rounded-sm-' style={{ borderColor: colors.light[300], backgroundColor: colors.light[100] }}>
                                     <InputForm clientForm={clientForm} setClientForm={setClientForm} />
                                 </div>
                             </div>
@@ -174,7 +174,7 @@ const CartSide = () => {
                 {/* --- FOOTER --- */}
                 <div className='p-5 border-t space-y-2 z-10' style={{ borderColor: colors.light[300], backgroundColor: colors.light[100] }}>
                     <button
-                        className={`w-full h-12 rounded-xl font-bold text-xs uppercase tracking-widest transition-all active:scale-[0.99] flex items-center justify-center cursor-pointer ${confirmBTNWorks ? "hover:brightness-110" : "opacity-30 cursor-not-allowed grayscale"
+                        className={`w-full h-12 rounded-sm- font-bold text-xs uppercase tracking-widest transition-all active:scale-[0.99] flex items-center justify-center cursor-pointer ${confirmBTNWorks ? "hover:brightness-110" : "opacity-30 cursor-not-allowed grayscale"
                             }`}
                         style={{ backgroundColor: colors.dark[100], color: colors.light[100] }}
                         onClick={handleConfirm}

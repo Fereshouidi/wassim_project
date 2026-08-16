@@ -16,14 +16,14 @@ type props = {
   deliveredOrdersSkip: number
   limit: number
   getMorePendingOrder: () => void
-  getMoreFailedOrder:  () => void
-  getMoreDeliveredOrder:  () => void
-  getLessPendingOrders:  () => void
-  getLessFailedOrders:  () => void
-  getLessDeliveredOrders:  () => void
+  getMoreFailedOrder: () => void
+  getMoreDeliveredOrder: () => void
+  getLessPendingOrders: () => void
+  getLessFailedOrders: () => void
+  getLessDeliveredOrders: () => void
 }
 
-const OrdersSection = ({ 
+const OrdersSection = ({
   orders,
   pendingOrdersCount,
   failedOrdersCount,
@@ -38,16 +38,16 @@ const OrdersSection = ({
   getMoreDeliveredOrder,
   getMoreFailedOrder,
   getMorePendingOrder
-  
+
 }: props) => {
 
   const { screenWidth, screenHeight } = useScreen();
   const { colors } = useTheme();
-  const [ activePage, setActivePage ] = useState<"pending" | "failed" | "delivered">("pending");
+  const [activePage, setActivePage] = useState<"pending" | "failed" | "delivered">("pending");
 
 
   return (
-    <div 
+    <div
       className='w-[85vw] h-full bg-red-500- flex flex-row justify-center bg-yellow-500- gap-2 py-5 px-10'
       style={{
         minHeight: screenHeight - (headerHeight * 1.7) + "px",
@@ -55,7 +55,7 @@ const OrdersSection = ({
       }}
     >
 
-      <div className='h-full bg-blue-500- flex flex-1 rounded-xl px-4 '
+      <div className='h-full bg-blue-500- flex flex-1 rounded-sm- px-4 '
         style={{
           border: `0.2px solid ${colors.light[200]}`,
           minHeight: screenHeight - (headerHeight * 2) + "px",
@@ -65,36 +65,36 @@ const OrdersSection = ({
         <OrdersListSection
           orders={
             activePage == "pending" ? orders.pendingOrders
-            : activePage == "failed" ? orders.failedOrders
-            : activePage == "delivered" ? orders.deliveredOrders
-            : []
+              : activePage == "failed" ? orders.failedOrders
+                : activePage == "delivered" ? orders.deliveredOrders
+                  : []
           }
           totalOrdersCount={
-              activePage == "pending" ? pendingOrdersCount
+            activePage == "pending" ? pendingOrdersCount
               : activePage == "failed" ? failedOrdersCount
-              : activePage == "delivered" ? deliveredOrdersCount
-              : 0
+                : activePage == "delivered" ? deliveredOrdersCount
+                  : 0
           }
           activePage={activePage}
           setActivePage={setActivePage}
           limit={limit}
           skip={
-              activePage == "pending" ? pendingOrdersSkip
+            activePage == "pending" ? pendingOrdersSkip
               : activePage == "failed" ? failedOrdersSkip
-              : activePage == "delivered" ? deliveredOrdersSkip
-              : 0
+                : activePage == "delivered" ? deliveredOrdersSkip
+                  : 0
           }
           getMore={
-              activePage == "pending" ? getMorePendingOrder
+            activePage == "pending" ? getMorePendingOrder
               : activePage == "failed" ? getMoreFailedOrder
-              : activePage == "delivered" ? getMoreDeliveredOrder
-              : () => {}
+                : activePage == "delivered" ? getMoreDeliveredOrder
+                  : () => { }
           }
           getLess={
-              activePage == "pending" ? getLessPendingOrders
+            activePage == "pending" ? getLessPendingOrders
               : activePage == "failed" ? getLessFailedOrders
-              : activePage == "delivered" ? getLessDeliveredOrders
-              : () => {alert('hi')}
+                : activePage == "delivered" ? getLessDeliveredOrders
+                  : () => { alert('hi') }
           }
         />
       </div>

@@ -19,16 +19,16 @@ const CustomSelect = ({
 
 
     useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-        if (selectRef.current && !selectRef.current?.contains(event.target as Node)) {
-        setOptionsOpent(false);
+        function handleClickOutside(event: MouseEvent) {
+            if (selectRef.current && !selectRef.current?.contains(event.target as Node)) {
+                setOptionsOpent(false);
+            }
         }
-    }
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-    };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
     }, []);
 
     const optionStyle: CSSProperties = {
@@ -47,8 +47,8 @@ const CustomSelect = ({
     }
 
     return (
-        <div 
-            className={`min-w-[170px] relative cursor-pointer no-sellect border-[0.02px] rounded-xl duration-300 ${className}`}
+        <div
+            className={`min-w-[170px] relative cursor-pointer no-sellect border-[0.02px] rounded-sm- duration-300 ${className}`}
             style={{
                 border: `0.002px solid ${colors.light[400]}`,
                 backgroundColor: colors.light[150],
@@ -57,15 +57,15 @@ const CustomSelect = ({
             ref={selectRef}
             onClick={() => setOptionsOpent(!optionsOpen)}
         >
-            <div className='w-full h-7 rounded-xl px-1 py-5 z-10 flex flex-row justify-between items-center'>
+            <div className='w-full h-7 rounded-sm- px-1 py-5 z-10 flex flex-row justify-between items-center'>
                 <h4 className='text-[14px]'>{currentOption.label}</h4>
-                <img 
-                    src={activeTheme == "dark" ? "/icons/down-arrow-white.png" : "/icons/down-arrow-black.png" }
+                <img
+                    src={activeTheme == "dark" ? "/icons/down-arrow-white.png" : "/icons/down-arrow-black.png"}
                     className='w-6 h-6 ml-1'
                 />
             </div>
 
-            <div 
+            <div
                 className={`w-full max-h-[200px] overflow-y-scroll scrollbar-hidden absolute top-full left-0 z-[999] duration-300 ${!optionsOpen && 'invisible'}`}
                 style={{
                     border: `0.002px solid ${colors.light[400]}`,
@@ -89,7 +89,7 @@ const CustomSelect = ({
                             }}
                             onMouseLeave={() => {
                                 const el = optionsRef.current[index];
-                                if (el && currentOption.value != option.value ) el.style.backgroundColor = "transparent";
+                                if (el && currentOption.value != option.value) el.style.backgroundColor = "transparent";
                             }}
 
                             style={currentOption.value == option.value ? activeOptionStyle : optionStyle}

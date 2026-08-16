@@ -135,7 +135,7 @@ const FilterBar = ({
             {/* Footer: Persistent control buttons */}
             <div className="p-6 border-t bg-inherit" style={{ borderColor: colors.light[200] }}>
                 <button
-                    className="w-full py-3 rounded-xl font-bold text-[12px] uppercase tracking-widest transition-all active:scale-[0.98] shadow-xl shadow-black/5"
+                    className="w-full py-3 rounded-sm- font-bold text-[12px] uppercase tracking-widest transition-all active:scale-[0.98] shadow-xl shadow-black/5"
                     style={{
                         backgroundColor: colors.dark[100],
                         color: colors.light[100]

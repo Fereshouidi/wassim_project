@@ -11,19 +11,19 @@ const StatusBanner = () => {
     const { statusBannerExist, setStatusBanner, contentClassName, contentStyle, className, style, items, text } = useStatusBanner();
 
     return (
-        <div 
+        <div
             className={`w-full h-full fixed top-0 left-0 flex justify-center items-center z-[999] bg-black/30 backdrop-blur-sm ${contentClassName}`}
-            style={{...contentStyle}}
+            style={{ ...contentStyle }}
             onClick={() => setStatusBanner(false)}
         >
 
-            <div 
+            <div
                 className={`
-                    rounded-xl flex justify-center px-5 py-2 absolute-
+                    rounded-sm- flex justify-center px-5 py-2 absolute-
                     duration-300 ${className}`
                 }
                 style={{
-                    top: screenWidth > 1000 ? headerHeight * 1.7 : headerHeightForPhones * 1.7 ,
+                    top: screenWidth > 1000 ? headerHeight * 1.7 : headerHeightForPhones * 1.7,
                     ...style
                 }}
             >

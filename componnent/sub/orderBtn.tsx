@@ -33,7 +33,7 @@ export default function OrderNowButton({ onOrder, disabled }: { onOrder: () => P
     <button
       onClick={handleOrder}
       disabled={status === "loading" || disabled}
-      className={`flex flex-1 min-w-fit px-4 justify-center items-center w-12 h-12 text-sm sm:text-md rounded-xl cursor-pointer ${disabled ? 'opacity-30 grayscale' : ''}`}
+      className={`flex flex-1 min-w-fit px-4 justify-center items-center w-12 h-12 text-sm sm:text-md rounded-sm- cursor-pointer ${disabled ? 'opacity-30 grayscale' : ''}`}
       style={{
         backgroundColor: status === "success" ? "#000" : mainColor,
         color: status === "success" ? "#fff" : contrastColor,

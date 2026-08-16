@@ -51,7 +51,7 @@ const FilterBar = ({
     };
 
     return (
-        <div 
+        <div
             ref={filterBarRef}
             className={`
                 w-full sticky z-30 transition-all duration-500 ease-in-out flex flex-col overflow-hidden
@@ -76,7 +76,7 @@ const FilterBar = ({
                     </span>
                 </div>
 
-                <button 
+                <button
                     onClick={() => setFilterBarActive(!filteBarActive)}
                     className="flex items-center gap-2 px-4 py-1.5 rounded-full transition-all active:scale-95"
                     style={{ backgroundColor: colors.light[200] }}
@@ -84,11 +84,11 @@ const FilterBar = ({
                     <span className="text-[9px] font-black uppercase tracking-widest">
                         {filteBarActive ? (activeLanguage.close || "CLOSE") : activeLanguage.sideMatter.filter}
                     </span>
-                    <img 
-                        src={filteBarActive ? 
-                            (activeTheme === 'dark' ? "/icons/up-white.png" : "/icons/up-black.png") : 
+                    <img
+                        src={filteBarActive ?
+                            (activeTheme === 'dark' ? "/icons/up-white.png" : "/icons/up-black.png") :
                             (activeTheme === 'dark' ? "/icons/filter-white.png" : "/icons/filter-black.png")
-                        } 
+                        }
                         className="w-3.5 h-3.5 object-contain opacity-70"
                     />
                 </button>
@@ -100,9 +100,9 @@ const FilterBar = ({
                 ${filteBarActive ? "opacity-100 overflow-y-auto" : "opacity-0 pointer-events-none"}
             `}>
                 <div className="flex flex-col gap-5 sm:gap-8 mt-4">
-                    
+
                     {/* Price Range Section - Compact Layout */}
-                    <div className="w-full lg:w-3/4 mx-auto p-4 sm:p-6 rounded-xl" style={{ backgroundColor: colors.light[200] }}>
+                    <div className="w-full lg:w-3/4 mx-auto p-4 sm:p-6 rounded-sm-" style={{ backgroundColor: colors.light[200] }}>
                         {mostProductExpensive && (
                             <FilterPriceRange
                                 filtration={filtration}
@@ -120,54 +120,54 @@ const FilterBar = ({
                                 {activeLanguage.collections}
                             </h5>
                             <div className="flex flex-wrap gap-1.5">
-                                <FilterCollection 
-                                    allCollections={allCollections} 
-                                    filtrationCopy={filtration} 
-                                    setFiltrationCopy={handleUpdate} 
-                                    defaultOptions={filtration.collections} 
+                                <FilterCollection
+                                    allCollections={allCollections}
+                                    filtrationCopy={filtration}
+                                    setFiltrationCopy={handleUpdate}
+                                    defaultOptions={filtration.collections}
                                 />
                             </div>
                         </div>
 
                         {/* 2. Responsive Grid: Colors, Sizes, and Types */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
-                            
+
                             {/* Colors Wrapper */}
-                            <div className="flex flex-col gap-3 p-3 sm:p-5 rounded-xl border" style={{ borderColor: colors.light[200] }}>
+                            <div className="flex flex-col gap-3 p-3 sm:p-5 rounded-sm- border" style={{ borderColor: colors.light[200] }}>
                                 <h5 className="text-[8px] font-black uppercase tracking-widest opacity-30">
                                     {activeLanguage.sideMatter.colors}
                                 </h5>
-                                <FilterColor 
-                                    availableColors={availableColors} 
-                                    filtrationCopy={filtration} 
-                                    setFiltrationCopy={handleUpdate} 
-                                    defaultOptions={filtration.colors} 
+                                <FilterColor
+                                    availableColors={availableColors}
+                                    filtrationCopy={filtration}
+                                    setFiltrationCopy={handleUpdate}
+                                    defaultOptions={filtration.colors}
                                 />
                             </div>
 
                             {/* Sizes Wrapper */}
-                            <div className="flex flex-col gap-3 p-3 sm:p-5 rounded-xl border" style={{ borderColor: colors.light[200] }}>
+                            <div className="flex flex-col gap-3 p-3 sm:p-5 rounded-sm- border" style={{ borderColor: colors.light[200] }}>
                                 <h5 className="text-[8px] font-black uppercase tracking-widest opacity-30">
                                     {activeLanguage.sideMatter.sizes}
                                 </h5>
-                                <FilterSize 
-                                    availableSizes={availableSizes} 
-                                    filtrationCopy={filtration} 
-                                    setFiltrationCopy={handleUpdate} 
-                                    defaultOptions={filtration.sizes} 
+                                <FilterSize
+                                    availableSizes={availableSizes}
+                                    filtrationCopy={filtration}
+                                    setFiltrationCopy={handleUpdate}
+                                    defaultOptions={filtration.sizes}
                                 />
                             </div>
 
                             {/* Types Wrapper */}
-                            <div className="flex flex-col gap-3 p-3 sm:p-5 rounded-xl border" style={{ borderColor: colors.light[200] }}>
+                            <div className="flex flex-col gap-3 p-3 sm:p-5 rounded-sm- border" style={{ borderColor: colors.light[200] }}>
                                 <h5 className="text-[8px] font-black uppercase tracking-widest opacity-30">
                                     {activeLanguage.sideMatter.types}
                                 </h5>
-                                <FilterType 
-                                    availableType={availableTypes} 
-                                    filtrationCopy={filtration} 
-                                    setFiltrationCopy={handleUpdate} 
-                                    defaultOptions={filtration.types} 
+                                <FilterType
+                                    availableType={availableTypes}
+                                    filtrationCopy={filtration}
+                                    setFiltrationCopy={handleUpdate}
+                                    defaultOptions={filtration.types}
                                 />
                             </div>
                         </div>

@@ -15,10 +15,10 @@ type Props = {
 const getSpecImage = (product: any, specIdObj: any) => {
     let imgUri = product?.thumbNail || product?.productThumb || "/icons/shopping-bag-black.png";
     if (!product || !product.images || !product.specifications || !specIdObj) return imgUri;
-    
+
     const specId = typeof specIdObj === 'string' ? specIdObj : specIdObj._id;
     const specObj = product.specifications.find((s: any) => s._id === specId);
-    
+
     if (!specObj) return imgUri;
 
     const normalizeHex = (h?: string | null) => {
@@ -26,18 +26,18 @@ const getSpecImage = (product: any, specIdObj: any) => {
         let v = h.trim().toLowerCase();
         return (v.length === 4 && v.startsWith('#')) ? `#${v[1]}${v[1]}${v[2]}${v[2]}${v[3]}${v[3]}` : v;
     };
-    
+
     const specHex = normalizeHex(specObj.colorHex);
     const specColor = specObj.color?.trim().toLowerCase();
 
     const matchingImg = product.images.find((img: any) => {
         const imgSpecId = typeof img.specification === 'string' ? img.specification : img.specification?._id;
         if (imgSpecId === specId) return true;
-        
+
         const imgSpecObj = imgSpecId ? product.specifications.find((s: any) => s._id === imgSpecId) : null;
         const imgColorHex = normalizeHex(imgSpecObj?.colorHex || img.specification?.colorHex);
         const imgColorName = (imgSpecObj?.color || img.specification?.color)?.trim().toLowerCase();
-        
+
         if (specHex && imgColorHex && specHex === imgColorHex) return true;
         if (specColor && imgColorName && specColor === imgColorName) return true;
         return false;
@@ -60,7 +60,7 @@ const PurshasesTable = ({ purchases, order }: Props) => {
 
     return (
         <div
-            className='w-full cursor-auto overflow-hidden rounded-xl'
+            className='w-full cursor-auto overflow-hidden rounded-sm-'
             style={{
                 backgroundColor: colors.light[100],
                 border: `1px solid ${colors.light[250]}`,
@@ -111,7 +111,7 @@ const PurshasesTable = ({ purchases, order }: Props) => {
                                 <td className='p-3 sm:p-4'>
                                     <div className='flex items-center gap-2 sm:gap-4'>
                                         {purchase.isCustomized ? (
-                                            <div className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-xl bg-gray-50 flex-shrink-0" style={{ borderColor: colors.light[300], overflow: 'hidden' }}>
+                                            <div className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-sm- bg-gray-50 flex-shrink-0" style={{ borderColor: colors.light[300], overflow: 'hidden' }}>
                                                 {typeof purchase.product === 'object' && (
                                                     <img
                                                         src={getSpecImage(purchase.product, purchase.specification)}
@@ -123,7 +123,7 @@ const PurshasesTable = ({ purchases, order }: Props) => {
                                                 {purchase.customizedCharms?.map((customCharm, idx) => {
                                                     const charmObj = typeof customCharm.charm === 'object' ? customCharm.charm : null;
                                                     const charmThumb = charmObj ? getSpecImage(charmObj, customCharm.spec) : null;
-                                                    
+
                                                     if (!charmThumb) return null;
                                                     return (
                                                         <div
@@ -149,7 +149,7 @@ const PurshasesTable = ({ purchases, order }: Props) => {
                                                 })}
                                             </div>
                                         ) : (
-                                            <div className='w-8 h-8 sm:w-10 sm:h-10 rounded-lg overflow-hidden border bg-white flex-shrink-0' style={{ borderColor: colors.light[300] }}>
+                                            <div className='w-8 h-8 sm:w-10 sm:h-10 rounded-sm- overflow-hidden border bg-white flex-shrink-0' style={{ borderColor: colors.light[300] }}>
                                                 <img
                                                     src={getSpecImage(purchase.product, purchase.specification)}
                                                     alt="product"
@@ -161,8 +161,8 @@ const PurshasesTable = ({ purchases, order }: Props) => {
                                             <span className='text-[10px] sm:text-xs font-medium' style={{ color: colors.dark[200], wordWrap: 'break-word', whiteSpace: 'normal' }}>
                                                 {purchase.isCustomized && <span className="text-purple-600 font-bold block mb-1" style={{ color: '#9333ea' }}>🪄 DIY - </span>}
                                                 {//@ts-ignore
-                                                purchase.product ? purchase.product.name[activeLanguage.language] : (purchase.productName ? purchase.productName[activeLanguage.language] : "Deleted Product")
-                                            }</span>
+                                                    purchase.product ? purchase.product.name[activeLanguage.language] : (purchase.productName ? purchase.productName[activeLanguage.language] : "Deleted Product")
+                                                }</span>
                                         </div>
                                     </div>
                                 </td>
@@ -185,7 +185,7 @@ const PurshasesTable = ({ purchases, order }: Props) => {
                                     </div>
                                 </td>
                                 <td className='p-3 sm:p-4 text-center'>
-                                    <span className='text-[10px] sm:text-xs font-bold px-1.5 sm:px-2 py-1 rounded-md' style={{ backgroundColor: colors.light[250], color: colors.dark[300] }}>
+                                    <span className='text-[10px] sm:text-xs font-bold px-1.5 sm:px-2 py-1 rounded-sm-' style={{ backgroundColor: colors.light[250], color: colors.dark[300] }}>
                                         {purchase.quantity}
                                     </span>
                                 </td>
@@ -219,7 +219,7 @@ const PurshasesTable = ({ purchases, order }: Props) => {
                 <div className='h-[1px] my-1' style={{ backgroundColor: colors.light[300] }} />
                 <div className='flex justify-between items-center'>
                     <span className='text-[10px] sm:text-xs font-bold uppercase tracking-wider'>{activeLanguage.totalAmmount}</span>
-                    <div className='bg-black text-white px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs sm:text-sm font-bold shadow-lg'
+                    <div className='bg-black text-white px-2 sm:px-3 py-1 sm:py-1.5 rounded-sm- text-xs sm:text-sm font-bold shadow-lg'
                         style={{ backgroundColor: colors.dark[100], color: colors.light[100] }}>
                         {(totalPrice + (order?.shippingCoast || 0)).toFixed(2)} <span className='text-[8px] sm:text-[10px] font-normal'>D.T</span>
                     </div>

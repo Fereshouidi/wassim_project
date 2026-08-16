@@ -259,7 +259,7 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
                 </div>}
                 <div className={`w-full flex ${isMob ? 'flex-col' : 'justify-between'} items-center gap-2 p-2 border-t border-gray-100`}>
                     <button
-                        className={`flex items-center justify-center gap-2 flex-1 py-2.5 rounded-xl transition-all cursor-pointer w-full ${isInCart ? 'bg-green-50' : 'hover:bg-gray-100'}`}
+                        className={`flex items-center justify-center gap-2 flex-1 py-2.5 rounded-sm- transition-all cursor-pointer w-full ${isInCart ? 'bg-green-50' : 'hover:bg-gray-100'}`}
                         onClick={handleCartToggle}
                     >
                         {!isInCart && <img src={activeTheme === "dark" ? "/icons/shopping-bag-white.png" : "/icons/shopping-bag-black.png"} className="w-4 h-4 opacity-70" alt="Cart" />}
@@ -267,7 +267,7 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
                             {isInCart ? activeLanguage.inCart : activeLanguage.add}
                         </span>
                     </button>
-                    <button className="flex items-center justify-center gap-2 flex-1 py-2.5 rounded-xl cursor-pointer w-full" style={{ backgroundColor: colors.dark[200], color: colors.light[200] }}>
+                    <button className="flex items-center justify-center gap-2 flex-1 py-2.5 rounded-sm- cursor-pointer w-full" style={{ backgroundColor: colors.dark[200], color: colors.light[200] }}>
                         <span className="text-[11px] font-bold uppercase tracking-tighter">{activeLanguage.orderNow}</span>
                         <img src={activeTheme === "dark" ? "/icons/right-arrow-black.png" : "/icons/right-arrow-white.png"} className="w-3 h-3" alt="Buy" />
                     </button>
@@ -283,12 +283,12 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
             viewport={{ once: true, amount: 0.1 }}
             variants={fadeInUp}
             whileTap={{ scale: 0.98 }}
-            className={`group relative flex flex-col justify-between overflow-hidden rounded-xl transition-all duration-500 ${className} ${isMobile ? 'w-full h-[380px]' : 'w-full max-w-[320px] min-h-[400px]'} cursor-pointer`}
+            className={`group relative flex flex-col justify-between overflow-hidden rounded-sm- transition-all duration-500 ${className} ${isMobile ? 'w-full h-[380px]' : 'w-full max-w-[320px] min-h-[400px]'} cursor-pointer`}
             style={{
                 ...style,
                 backgroundColor: colors.light[100],
                 color: colors.dark[200],
-                boxShadow: activeTheme === 'dark' ? `0 10px 30px rgba(0,0,0,0.5)` : `0 10px 30px ${colors.light[400]}`,
+                // boxShadow: activeTheme === 'dark' ? `0 10px 30px rgba(0,0,0,0.5)` : `0 0px 30px ${colors.light[300]}`,
             }}
             onClick={() => {
                 if (!product?._id || product._id.length < 4) return;

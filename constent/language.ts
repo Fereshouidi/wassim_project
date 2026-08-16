@@ -148,7 +148,10 @@ export const english = {
     socialMedia: "Social Media",
     collections: "Collections",
     close: "Close",
-    haveGoodShop: "have a good shop with SilverWayShop 💫",
+    haveGoodShop: {
+        part1: "have a good shop",
+        part2: "with SilverWayShop 💫"
+    },
     edit: "Edit",
     delete: "Delete",
     areYouSure: "Are you sure?",
@@ -309,7 +312,10 @@ export const frensh = {
     socialMedia: "Réseaux sociaux",
     collections: "Collections",
     close: "fermer",
-    haveGoodShop: "Bon shopping avec SilverWayShop 💫",
+    haveGoodShop: {
+        part1: "Bon shopping",
+        part2: "avec SilverWayShop 💫"
+    },
     edit: "Modifier",
     delete: "Supprimer",
     areYouSure: "Êtes-vous sûr ?",

@@ -60,7 +60,7 @@ const CustomInputText = ({
             </h4>
 
             <input
-                className={`w-full h-11 rounded-xl bg-transparent text-[13px] px-4 outline-none transition-all duration-300 border focus:ring-2 focus:ring-opacity-20 ${inputClassName}`}
+                className={`w-full h-11 rounded-sm- bg-transparent text-[13px] px-4 outline-none transition-all duration-300 border focus:ring-2 focus:ring-opacity-20 ${inputClassName}`}
                 style={{
                     borderColor: colors.light[500],
                     color: colors.dark[100],

@@ -175,7 +175,7 @@ const Slider = ({
                             {products.map((product, index) => (
                                 <div
                                     key={index}
-                                    className=' h-[290px] h-fit- bg-red-500- sm:h-[370px] m-2- px-2 rounded-xl overflow-hidden'
+                                    className=' h-[290px] h-fit- bg-red-500- sm:h-[370px] m-2- px-2 rounded-sm- overflow-hidden'
                                     style={{
                                         width: cardWidth + "px",
                                     }}
@@ -192,14 +192,14 @@ const Slider = ({
                         {productLoadingShowUp && (
                             <div
                                 ref={productLoading}
-                                className=' h-[290px] h-fit- bg-red-500- sm:h-[390px] m-2- px-2 rounded-xl overflow-hidden'
+                                className=' h-[290px] h-fit- bg-red-500- sm:h-[390px] m-2- px-2 rounded-sm- overflow-hidden'
                                 style={{
                                     width: cardWidth + "px",
                                 }}
                             >
                                 <ProductLoading
                                     style={{ width: cardWidth }}
-                                    className=' h-[250px] h-fit- bg-red-500- sm:h-[330px] m-2- px-2 rounded-xl overflow-hidden'
+                                    className=' h-[250px] h-fit- bg-red-500- sm:h-[330px] m-2- px-2 rounded-sm- overflow-hidden'
                                 />
                             </div>
                         )}

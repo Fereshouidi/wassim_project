@@ -8,12 +8,12 @@ type OrderConfirmedBannerProps = {
 
 export const OrderConfirmedBanner = ({ show, order }: OrderConfirmedBannerProps) => {
     const { colors } = useTheme();
-    
+
     if (!show) return null;
 
     return (
-        <div 
-            className='w-full max-w-md p-4 rounded-lg shadow-lg flex items-center gap-3 animate-slideIn'
+        <div
+            className='w-full max-w-md p-4 rounded-sm- shadow-lg flex items-center gap-3 animate-slideIn'
             style={{
                 backgroundColor: '#10b981',
                 color: 'white'

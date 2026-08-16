@@ -7,12 +7,12 @@ type ErrorBannerProps = {
 
 export const ErrorBanner = ({ show, message }: ErrorBannerProps) => {
     const { colors } = useTheme();
-    
+
     if (!show) return null;
 
     return (
-        <div 
-            className='w-full max-w-md p-4 rounded-lg shadow-lg flex items-center gap-3 animate-slideIn'
+        <div
+            className='w-full max-w-md p-4 rounded-sm- shadow-lg flex items-center gap-3 animate-slideIn'
             style={{
                 backgroundColor: '#ef4444',
                 color: 'white'
