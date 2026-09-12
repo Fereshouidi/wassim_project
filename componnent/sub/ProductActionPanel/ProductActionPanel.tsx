@@ -82,6 +82,7 @@ const ProductActionPanel = ({
             if (data.success) {
                 // Synchronize state with the latest server data
                 setPurchase(data.purchase);
+                setPurchases([...purchases, data.purchase].reverse())
                 return true;
             }
             return false;

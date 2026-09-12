@@ -109,7 +109,6 @@ const ProductCard = ({
 
         try {
             if (isInCart) {
-                // 1. العثور على العنصر المراد حذفه من السلة (محلياً)
                 const purchaseToRemove = purchases.find(pur =>
                     //@ts-ignore
                     (typeof pur.product === 'string' ? pur.product === product._id : pur.product?._id === product._id) &&
@@ -117,10 +116,8 @@ const ProductCard = ({
                 );
 
                 if (purchaseToRemove) {
-                    // تحديث محلي فوري (حذف)
                     setPurchases(prev => prev.filter(p => p._id !== purchaseToRemove._id));
 
-                    // تحديث السيرفر
                     await axios.put(`${backEndUrl}/updatePurchase`, {
                         ...purchaseToRemove,
                         cart: null,
@@ -128,7 +125,6 @@ const ProductCard = ({
                     });
                 }
             } else {
-                // 2. تحديث محلي فوري (إضافة)
                 const optimisticPurchase = {
                     _id: tempId,
                     product: product,
@@ -137,9 +133,8 @@ const ProductCard = ({
                     status: 'inCart'
                 } as unknown as PurchaseType;
 
-                setPurchases(prev => [...prev, optimisticPurchase]);
+                setPurchases(prev => [...prev, optimisticPurchase].reverse());
 
-                // جلب Purchase الموجود أو إنشاء واحد جديد
                 const { data: getRes } = await axios.get(`${backEndUrl}/getPurchaseByClientAndProduct`, {
                     params: { productId: product._id, clientId: client._id }
                 });
@@ -159,7 +154,6 @@ const ProductCard = ({
 
                 if (!targetPurchase) throw new Error("Purchase action failed");
 
-                // وضع المنتج في السلة
                 const { data: updateRes } = await axios.put(`${backEndUrl}/updatePurchase`, {
                     ...targetPurchase,
                     cart: cart?._id,

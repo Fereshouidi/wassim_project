@@ -86,7 +86,7 @@ const LargeScreens = ({
             containerClassName="h-14 border-[0.5px]"
             containerStyle={{
               borderColor: colors.light[300],
-              backgroundColor: colors.light[200]
+              backgroundColor: colors.light[100]
             }}
             className='h-full border-l-[0.02px]'
             style={{

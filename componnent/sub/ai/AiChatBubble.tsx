@@ -303,7 +303,7 @@ const AiChatBubble = () => {
                 {isLoadingMore && <div className="h-4 bg-current/5 rounded w-1/3 self-center animate-pulse" />}
 
                 {/* Welcome Screen — shown only when no conversation history */}
-                {!isLoadingMore && history.filter(m => m.role === 'user' || m.role === 'assistant').length === 0 && !isTyping && (
+                {true && (
                     <div className="flex flex-col items-center justify-center h-full gap-5 animate-in fade-in slide-in-from-bottom-4 duration-500">
                         {/* AI Avatar */}
                         <div className="relative">
@@ -335,12 +335,12 @@ const AiChatBubble = () => {
                         {/* Suggested Prompts Grid */}
                         <div className="w-full grid grid-cols-2 gap-2">
                             {[
-                                { icon: '🛍️', label: 'Browse products', prompt: 'Show me your latest products' },
-                                { icon: '📦', label: 'Track my order', prompt: 'Where is my order?' },
-                                { icon: '💡', label: 'Recommend something', prompt: 'Recommend a product for me' },
-                                { icon: '⭐', label: 'Best sellers', prompt: 'What are your best selling products?' },
-                                { icon: '🎨', label: 'Custom order', prompt: 'Can I make a custom order?' },
-                                { icon: '💬', label: 'Contact support', prompt: 'How can I contact support?' },
+                                { icon: '🛍️', label: 'Browse products', prompt: 'Help me find a suitable acceswares' },
+                                { icon: '📦', label: 'Track my order', prompt: 'i want to see my orders' },
+                                { icon: '🌙', label: 'switch to dark mode', prompt: 'switch to dark mode' },
+                                { icon: '☀️', label: 'switch to light mode', prompt: 'switch to light mode' },
+                                { icon: '🎨', label: 'Custom acceswares', prompt: 'I want to make a custom acceswares?' },
+                                { icon: '🛒', label: 'show me my cart', prompt: 'show me my cart' },
                             ].map(({ icon, label, prompt }) => (
                                 <button
                                     key={label}

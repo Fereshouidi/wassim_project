@@ -59,7 +59,7 @@ const OrdersSectionHeader = ({
 
     const renderTabs = () => (
         <div
-            className='flex items-center p-1 rounded-sm shadow-inner border'
+            className='w-full sm:w-fit flex items-center p-1 rounded-sm shadow-inner border'
             style={{
                 backgroundColor: activeTheme === 'dark' ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)',
                 borderColor: colors.light[250]

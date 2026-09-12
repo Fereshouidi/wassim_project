@@ -149,7 +149,7 @@ const CartSide = () => {
                     {purchases.length === 0 ? (
                         <div className='h-full flex flex-col justify-center items-center opacity-40 gap-4'>
                             <img src="/icons/shopping-bag-black.png" className="w-12 h-12 grayscale opacity-20" alt="" />
-                            <p className="text-sm font-medium uppercase tracking-widest">{activeLanguage.emptyCart}</p>
+                            <p className="text-[11px] font-semibold uppercase tracking-widest- opacity-50">{activeLanguage.emptyCart}</p>
                         </div>
                     ) : (
                         <div className='flex flex-col gap-8'>

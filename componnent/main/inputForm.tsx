@@ -29,6 +29,7 @@ const InputForm = ({ clientForm, setClientForm }: InputFormType) => {
         borderColor: colors.light[350],
         backgroundColor: activeTheme === 'dark' ? 'transparent' : '#fff',
         color: colors.dark[100],
+        fontSize: screen.availWidth < 768 ? '11px' : '12px',
     };
 
     return (
@@ -37,7 +38,6 @@ const InputForm = ({ clientForm, setClientForm }: InputFormType) => {
                 {activeLanguage.sideMatter.fillOutTheForm}
             </h4>
 
-            {/* تم تغيير flex-col إلى flex-row مع flex-wrap */}
             <div className='flex flex-row flex-wrap gap-3'>
                 <input
                     type="text"
@@ -59,7 +59,7 @@ const InputForm = ({ clientForm, setClientForm }: InputFormType) => {
                     type="text"
                     value={clientForm.address}
                     placeholder={activeLanguage.sideMatter.address}
-                    className={`${inputClasses} h-14 w-full min-w-full`} // العنوان غالباً يحتاج عرضاً كاملاً
+                    className={`${inputClasses} h-14 w-full min-w-full`}
                     style={dynamicStyle}
                     onChange={(e) => setClientForm({ ...clientForm, address: e.target.value })}
                 />

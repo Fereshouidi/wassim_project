@@ -34,11 +34,10 @@ const MoreDetailsTable = ({
         fetchDeliveryWorker();
     }, [order])
 
-    // تم استبدال الإيموجي بنقاط ملونة أو تركها فارغة لتعزيز الطابع الرسمي
     const details = [
         { label: activeLanguage.receiver, value: client?.fullName, color: colors.dark[100] },
         { label: activeLanguage.sideMatter.address, value: order?.address, color: colors.dark[100] },
-        { label: activeLanguage.deliveryPhone, value: deliveryWorker?.phone ? `+216 ${deliveryWorker.phone}` : "...", color: colors.dark[100] },
+        // { label: activeLanguage.deliveryPhone, value: deliveryWorker?.phone ? `+216 ${deliveryWorker.phone}` : "...", color: colors.dark[100] },
         { label: activeLanguage.orderedAt, value: order.createdAt ? showTimeWithTranslate(order.createdAt, activeLanguage.language) : "...", color: colors.dark[100] },
     ];
 
@@ -71,11 +70,11 @@ const MoreDetailsTable = ({
                             backgroundColor: activeTheme === 'dark' ? 'rgba(255,255,255,0.01)' : 'transparent'
                         }}
                     >
-                        <span className='text-[9px] uppercase font-black tracking-widest opacity-30'>
+                        <span className='text-[8px] uppercase font-black tracking-widest opacity-30'>
                             {detail.label}
                         </span>
 
-                        <span className='text-[12px] font-bold leading-tight line-clamp-2' style={{ color: colors.dark[100] }}>
+                        <span className='text-[10px] font-bold leading-tight line-clamp-2' style={{ color: colors.dark[100] }}>
                             {detail.value || "---"}
                         </span>
                     </div>

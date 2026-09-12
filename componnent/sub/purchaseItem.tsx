@@ -39,9 +39,18 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
             return prev.map(p => p._id === updatedData._id ? updatedData : p);
         });
 
+        console.log({purchase});
+        
+
         try {
             // 2. Send update to server in background
-            const { data } = await axios.put(`${backEndUrl}/updatePurchase`, updatedData);
+            const { data } = await axios.put(`${backEndUrl}/updatePurchase`, {
+                ...updatedData,
+                //@ts-ignore
+                client: updatedData.client?._id,
+                product: updatedData.product?._id,
+                specification: updatedData.specification?._id,
+            });
 
             if (!data.success) {
                 throw new Error("Server update failed");
