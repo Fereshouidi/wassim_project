@@ -221,7 +221,7 @@ const ProductCard = ({
 
             <div
                 className='w-full h-[150px] sm:h-[280px] pt-2- bg-red-500- rounded-sm overflow-hidden'
-                style={{ backgroundColor: colors.light[300] }}
+                style={{ backgroundColor: colors.light[100] }}
             >
                 {
                     (product.mainImageSource === 'firstSpecification' ? (product.images?.[0]?.uri || product.thumbNail) : product.thumbNail) ? <img
