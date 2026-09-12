@@ -201,7 +201,7 @@ const ProductCard = ({
             }}
         >
             {useLike && <div
-                className={`absolute top-1 right-1 sm:top-3 sm:right-3 rounded-full- p-[5px] ${like ? "bg-red-500" : "bg-gray-400 opacity-75"} transition-transform active:scale-75 w-8 h-8 z-[2] cursor-pointer`}
+                className={`absolute top-0 right-0 sm:top-0 sm:right-0 rounded-full- p-[5px] ${like ? "bg-red-500" : "bg-gray-400 opacity-75"} transition-transform active:scale-75 w-8 h-8 z-[2] cursor-pointer`}
                 onClick={(e) => {
                     e.stopPropagation();
                     if (client) {
