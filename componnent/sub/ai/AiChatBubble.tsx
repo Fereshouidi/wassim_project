@@ -303,7 +303,7 @@ const AiChatBubble = () => {
                 {isLoadingMore && <div className="h-4 bg-current/5 rounded w-1/3 self-center animate-pulse" />}
 
                 {/* Welcome Screen — shown only when no conversation history */}
-                {true && (
+                {!isLoadingMore && history.filter(m => m.role === 'user' || m.role === 'assistant').length === 0 && !isTyping  && (
                     <div className="flex flex-col items-center justify-center h-full gap-5 animate-in fade-in slide-in-from-bottom-4 duration-500">
                         {/* AI Avatar */}
                         <div className="relative">
