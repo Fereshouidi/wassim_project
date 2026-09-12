@@ -212,7 +212,7 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
         return (
             <>
                 {useLike && <div
-                    className={`absolute top-1 right-2 rounded-full p-[5px] ${like ? "bg-red-500" : "bg-gray-400 opacity-75"} transition-transform active:scale-75 w-8 h-8 z-[2] cursor-pointer`}
+                    className={`absolute top-1 right-2 rounded-full- p-[5px] ${like ? "bg-red-500" : "bg-gray-400 opacity-75"} transition-transform active:scale-75 w-8 h-8 z-[2] cursor-pointer`}
                     onClick={(e) => {
                         e.stopPropagation();
                         if (client && product._id) {
@@ -235,18 +235,18 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
                     ) : <SkeletonLoading />}
                 </div>
                 <div className="flex flex-col gap-1 px-2 pb-1">
-                    <h4 className={`font-md text-center line-clamp-1 mt-2`} style={{ color: colors.dark[200], fontSize: isMob ? '14px' : '16px' }}>
+                    <h4 className={`font-medium text-center h-10- line-clamp-1 mt-2`} style={{ color: colors.dark[200], fontSize: isMob ? '14px' : '16px' }}>
                         {product.name[activeLanguage.language] ? handleLongText(product.name[activeLanguage.language]!, isMob ? 20 : 25) : "..."}
                     </h4>
                     <div className="text-center flex items-center justify-center gap-2">
-                        <span className={`font-semibold`} style={{ color: colors.dark[100], fontSize: isMob ? '16px' : '20px' }}>
-                            {activeSpecifications?.price || product.price} DT
-                        </span>
                         {(product.oldPrice ?? 0) > (activeSpecifications?.price ?? product.price ?? 0) && (
                             <span className="text-xs line-through opacity-30 mt-1">
                                 {product.oldPrice} DT
                             </span>
                         )}
+                        <span className={`font-semibold`} style={{ color: colors.dark[100], fontSize: isMob ? '16px' : '20px' }}>
+                            {activeSpecifications?.price || product.price} DT
+                        </span>
                     </div>
                 </div>
                 {product.images.length > 1 && <div className="px-1" onClick={(e) => e.stopPropagation()}>
@@ -259,7 +259,7 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
                 </div>}
                 <div className={`w-full flex ${isMob ? 'flex-col' : 'justify-between'} items-center gap-2 p-2 border-t border-gray-100`}>
                     <button
-                        className={`flex items-center justify-center gap-2 flex-1 py-2.5 rounded-sm- transition-all cursor-pointer w-full ${isInCart ? 'bg-green-50' : 'hover:bg-gray-100'}`}
+                        className={`flex items-center justify-center gap-2 flex-1 py-2.5 rounded-sm transition-all cursor-pointer w-full ${isInCart ? 'bg-green-50' : 'hover:bg-gray-100'}`}
                         onClick={handleCartToggle}
                     >
                         {!isInCart && <img src={activeTheme === "dark" ? "/icons/shopping-bag-white.png" : "/icons/shopping-bag-black.png"} className="w-4 h-4 opacity-70" alt="Cart" />}
@@ -267,7 +267,7 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
                             {isInCart ? activeLanguage.inCart : activeLanguage.add}
                         </span>
                     </button>
-                    <button className="flex items-center justify-center gap-2 flex-1 py-2.5 rounded-sm- cursor-pointer w-full" style={{ backgroundColor: colors.dark[200], color: colors.light[200] }}>
+                    <button className="flex items-center justify-center gap-2 flex-1 py-2.5 rounded-sm cursor-pointer w-full" style={{ backgroundColor: colors.dark[200], color: colors.light[200] }}>
                         <span className="text-[11px] font-bold uppercase tracking-tighter">{activeLanguage.orderNow}</span>
                         <img src={activeTheme === "dark" ? "/icons/right-arrow-black.png" : "/icons/right-arrow-white.png"} className="w-3 h-3" alt="Buy" />
                     </button>
@@ -283,12 +283,12 @@ const ProductCard = ({ product, className, style, useLike }: ProductCardType) =>
             viewport={{ once: true, amount: 0.1 }}
             variants={fadeInUp}
             whileTap={{ scale: 0.98 }}
-            className={`group relative flex flex-col justify-between overflow-hidden rounded-sm- transition-all duration-500 ${className} ${isMobile ? 'w-full h-[380px]' : 'w-full max-w-[320px] min-h-[400px]'} cursor-pointer`}
+            className={`group relative flex flex-col justify-between overflow-hidden rounded-sm transition-all duration-500 ${className} ${isMobile ? 'w-full h-[380px]' : 'w-full max-w-[320px] min-h-[400px]'} cursor-pointer`}
             style={{
                 ...style,
                 backgroundColor: colors.light[100],
                 color: colors.dark[200],
-                // boxShadow: activeTheme === 'dark' ? `0 10px 30px rgba(0,0,0,0.5)` : `0 0px 30px ${colors.light[300]}`,
+                boxShadow: activeTheme === 'dark' ? `0 10px 30px rgba(0,0,0,0.5)` : `0 0px 30px ${colors.light[300]}`,
             }}
             onClick={() => {
                 if (!product?._id || product._id.length < 4) return;

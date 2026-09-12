@@ -12,7 +12,7 @@ export const ErrorBanner = ({ show, message }: ErrorBannerProps) => {
 
     return (
         <div
-            className='w-full max-w-md p-4 rounded-sm- shadow-lg flex items-center gap-3 animate-slideIn'
+            className='w-full max-w-md p-4 rounded-sm shadow-lg flex items-center gap-3 animate-slideIn'
             style={{
                 backgroundColor: '#ef4444',
                 color: 'white'

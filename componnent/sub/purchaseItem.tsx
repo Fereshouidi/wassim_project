@@ -104,7 +104,7 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
 
     return (
         <div
-            className='group flex gap-3 p-3 rounded-sm- border transition-all hover:border-gray-400 bg-white cursor-pointer'
+            className='group flex gap-3 p-3 rounded-sm border transition-all hover:border-gray-400 bg-white cursor-pointer'
             style={{
                 borderColor: colors.light[200],
                 backgroundColor: activeTheme === 'dark' ? 'rgba(255,255,255,0.02)' : '#fff'
@@ -120,7 +120,7 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
             }}
         >
             {/* Thumbnail */}
-            <div className="w-22 h-22 flex-shrink-0 overflow-hidden rounded-sm- bg-gray-50 border" style={{ borderColor: colors.light[200] }}>
+            <div className="w-22 h-22 flex-shrink-0 overflow-hidden rounded-sm bg-gray-50 border" style={{ borderColor: colors.light[200] }}>
                 <img
                     //@ts-ignore
                     src={getSpecImage(purchase.product, purchase.specification)}
@@ -168,7 +168,7 @@ const PurchaseItem = ({ purchase, setPurchases }: Props) => {
                 </div>
 
                 <div className='flex justify-between items-end mt-2'>
-                    <div className='flex items-center border rounded-sm- h-7' style={{ borderColor: colors.light[300] }}>
+                    <div className='flex items-center border rounded-sm h-7' style={{ borderColor: colors.light[300] }}>
                         <button
                             className='w-7 h-full rounded-full flex items-center justify-center hover:bg-black/5'
                             onClick={(e) => {

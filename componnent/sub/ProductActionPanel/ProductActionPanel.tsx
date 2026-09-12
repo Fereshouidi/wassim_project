@@ -139,7 +139,7 @@ const ProductActionPanel = ({
     };
 
     return (
-        <div className='w-full flex flex-row justify-center items-center my-5 mx-2 px-5 gap-4'>
+        <div className='w-full flex flex-row justify-center items-center my-5 mx-2 px-5- gap-4'>
 
             <ChoseQuantity
                 quantity={quantity}

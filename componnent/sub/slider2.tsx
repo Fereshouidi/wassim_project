@@ -176,7 +176,7 @@ const Slider2 = ({
                             products.map((product, index) => (
                                 <div
                                     key={index}
-                                    className='h-[150px] sm:h-[220px] m-0  rounded-sm- overflow-hidden'
+                                    className='h-[150px] sm:h-[220px] m-0  rounded-sm overflow-hidden'
                                     style={{
                                         width: cardWidth + "px",
                                         paddingLeft: '5px',
@@ -196,7 +196,7 @@ const Slider2 = ({
 
                         {productLoadingShowUp &&
 
-                            <div ref={productLoading} className='h-[150px] sm:h-[220px] m-0  rounded-sm- overflow-hidden'>
+                            <div ref={productLoading} className='h-[150px] sm:h-[220px] m-0  rounded-sm overflow-hidden'>
                                 <ProductLoading
                                     className='w-[100%] h-[97%]'
                                     style={{

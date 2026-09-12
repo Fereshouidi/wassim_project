@@ -54,7 +54,7 @@ const ThemeMode = () => {
 
   return (
     <div
-      className='w-32 h-10 flex justify-center items-center cursor-pointer no-sellect relative z-50 rounded-sm- transition-all'
+      className='w-32 h-10 flex justify-center items-center cursor-pointer no-sellect relative z-50 rounded-sm transition-all'
       style={{ color: colors.dark[200] }}
       onClick={() => setIsOpen(!isOpen)}
       onBlur={() => setTimeout(() => setIsOpen(false), 200)} // Delay to allow onClick of items
@@ -72,7 +72,7 @@ const ThemeMode = () => {
 
       {/* Dropdown Menu */}
       <div
-        className={`absolute top-[110%] left-0 w-full rounded-sm- overflow-hidden shadow-2xl transition-all duration-300 origin-top
+        className={`absolute top-[110%] left-0 w-full rounded-sm overflow-hidden shadow-2xl transition-all duration-300 origin-top
           ${isOpen ? 'opacity-100 scale-100 visible' : 'opacity-0 scale-95 invisible'}`}
         style={{
           backgroundColor: colors.light[100],

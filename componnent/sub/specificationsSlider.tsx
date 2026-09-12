@@ -128,7 +128,7 @@ const SpecificationsSlider = ({
 
     return (
         <div 
-            className={`w-full flex flex-row items-center ${isProductDetails ? 'justify-start' : 'justify-center'}`} 
+            className={`w-full h-10 bg-blue-400- flex flex-row items-center ${isProductDetails ? 'justify-start' : 'justify-center'}`} 
             onClick={(e) => e.stopPropagation()}
         >
             <div className={`flex flex-nowrap items-center ${sizes.gap} ${sizes.padding} overflow-x-auto scrollbar-hidden touch-pan-x px-4`}>

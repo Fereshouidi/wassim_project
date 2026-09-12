@@ -214,9 +214,27 @@ export default function ClientProductPage({ product }: Props) {
                 <div className={`max-w-full flex flex-1 ${screenWidth > 1200 ? 'flex-row items-start gap-10' : 'flex-col items-center'}`}>
 
                     {screenWidth < 1200 && (
-                        <h4 className='font-bold text-lg sm:text-xl px-10 my-3'>
-                            {product.name[activeLanguage.language] || <SkeletonLoading />}
-                        </h4>
+                        <div className="w-full flex flex-wrap justify-start items-center pl-5 mb-2 gap-1">{collections.map((collection, index) => (
+                            <div
+                                className="flex justify-center items-center gap-1"
+                                key={collection._id}
+                                style={{
+                                    color: colors.dark[750]
+                                }}
+                            >
+                                {index > 0 && <span className="text-gray-500"> / </span>}
+                                {index == 0 && <span className="text-gray-500"> {"->"} </span>}
+                                <h4 className=' text-sm sm:text-md p-1-'
+                                    style={{
+                                        // backgroundColor: colors.light[250],
+                                        // color: colors.dark[750]
+                                    }}
+                                >
+                                    {collection.name[activeLanguage.language] || <SkeletonLoading />}
+                                </h4>
+                            </div>
+
+                        ))}</div>
                     )}
 
                     <div
@@ -295,7 +313,7 @@ export default function ClientProductPage({ product }: Props) {
                 {product?._id && <OtherSimilarChose collections={collections} product={product} />}
             </div>
 
-            <div className="w-full fixed bottom-0 left-0 flex flex-row justify-center items-center p-2 z-20" style={{ backgroundColor: colors.light[100], boxShadow: `0 -2px 10px rgba(0,0,0,0.1)`, height: productActionPanelHeight }}>
+            <div className="w-full fixed bottom-0 left-0 flex flex-row justify-center items-center p-2 px-4 z-20" style={{ backgroundColor: colors.light[100], boxShadow: `0 -2px 10px rgba(0,0,0,0.1)`, height: productActionPanelHeight }}>
                 <div className="w-full flex flex-row justify-center items-center gap-10 sm:w-[800px]">
                     {screenWidth > 1000 && (
                         <div className="mr-10- flex flex-row gap-3">
@@ -313,7 +331,7 @@ export default function ClientProductPage({ product }: Props) {
                                         <div
                                             key={media.platform}
                                             onClick={() => handleSocialMediaClick(media)}
-                                            className="flex items-center justify-center gap-2.5 px-5 py-2.5 rounded-sm- cursor-pointer transition-all hover:scale-105 active:scale-95 shadow-sm"
+                                            className="flex items-center justify-center gap-2.5 px-5 py-2.5 rounded-sm cursor-pointer transition-all hover:scale-105 active:scale-95 shadow-sm"
                                             style={{ backgroundColor: platformColor }}
                                         >
                                             <img

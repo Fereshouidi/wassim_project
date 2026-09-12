@@ -133,7 +133,7 @@ const ProductsSection = ({
                     {collection.name[activeLanguage.language]}
                 </motion.h2>
                 :
-                <div className='w-[150px] h-8 rounded-sm- overflow-hidden text-2xl sm:text-5xl sm:m-20 m-10'>
+                <div className='w-[150px] h-8 rounded-sm overflow-hidden text-2xl sm:text-5xl sm:m-20 m-10'>
                     <SkeletonLoading />
                 </div>
             }
@@ -150,7 +150,7 @@ const ProductsSection = ({
                                     <ProductCard
                                         key={index}
                                         product={product}
-                                        className="w-[45%]- sm:w-[500px]- h-[370px] sm:min-h-[500px] bg-red-500- my-3- p-2-"
+                                        className="w-[45%]- sm:w-[500px]- h-[370px] sm:min-h-[450px] bg-red-500- my-3- p-2-"
                                         useLike={useLike}
                                         style={{
                                             width: screenWidth > 800 ? "300px" : "47%",

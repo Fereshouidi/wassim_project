@@ -34,7 +34,7 @@ const EvaluationItem = ({
 
     return (
         <div
-            className='sm:w-[300px]- w-[100%]- w-full h-full p-5 mb-4- rounded-sm- transition-all'
+            className='sm:w-[300px]- w-[100%]- w-full h-full p-5 mb-4- rounded-sm transition-all'
             style={{
                 backgroundColor: colors.light[100],
                 border: `0.5px solid ${colors.light[250]}`,

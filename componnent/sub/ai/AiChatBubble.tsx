@@ -251,6 +251,8 @@ const AiChatBubble = () => {
                             }
                         } catch (e) {
                             console.error("Error parsing SSE chunk", e);
+                            addMessage('assistant', "Sorry, I'm having trouble understanding you right now. Could you please rephrase your request?");
+
                         }
                     }
                 }
@@ -281,7 +283,7 @@ const AiChatBubble = () => {
                 backdropFilter: 'blur(12px)',
                 borderColor: isDark ? '#333' : '#e5e7eb',
             }}
-            className="fixed z-[9999] w-[95vw] sm:w-[85vw] md:w-[480px] max-h-[90vh] flex flex-col rounded-sm- overflow-hidden border shadow-[0_20px_50px_rgba(0,0,0,0.2)]"
+            className="fixed z-[9999] w-[95vw] sm:w-[85vw] md:w-[480px] max-h-[90vh] flex flex-col rounded-sm overflow-hidden border shadow-[0_20px_50px_rgba(0,0,0,0.2)]"
         >
             <div onMouseDown={handleMouseDown} onTouchStart={handleMouseDown} className="flex items-center justify-between px-6 py-5 cursor-grab active:cursor-grabbing border-b border-current/5 select-none touch-none">
                 <div className="flex items-center gap-3">
@@ -299,15 +301,125 @@ const AiChatBubble = () => {
             </div>
             <div ref={scrollRef} onScroll={(e) => e.currentTarget.scrollTop <= 100 && !isLoadingMore && hasMore && fetchChatHistory(skip)} className="p-4 md:p-6 h-[50vh] min-h-[300px] overflow-y-auto custom-scrollbar flex flex-col gap-6">
                 {isLoadingMore && <div className="h-4 bg-current/5 rounded w-1/3 self-center animate-pulse" />}
+
+                {/* Welcome Screen — shown only when no conversation history */}
+                {!isLoadingMore && history.filter(m => m.role === 'user' || m.role === 'assistant').length === 0 && !isTyping && (
+                    <div className="flex flex-col items-center justify-center h-full gap-5 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        {/* AI Avatar */}
+                        <div className="relative">
+                            <div
+                                className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg"
+                                style={{ background: accentGradient }}
+                            >
+                                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8">
+                                    <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-1H1a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73A2 2 0 0 1 12 2z" strokeLinecap="round" strokeLinejoin="round" />
+                                    <circle cx="9" cy="13" r="1" fill="white" stroke="none" />
+                                    <circle cx="15" cy="13" r="1" fill="white" stroke="none" />
+                                </svg>
+                            </div>
+                            <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 flex items-center justify-center" style={{ borderColor: isDark ? 'rgba(0,0,0,0.85)' : 'rgba(255,255,255,0.9)' }}>
+                                <div className="w-1.5 h-1.5 rounded-full bg-white" />
+                            </div>
+                        </div>
+
+                        {/* Greeting */}
+                        <div className="text-center px-2">
+                            <h3 className="text-[15px] font-bold mb-1" style={{ margin: 0 }}>
+                                Hello! I&apos;m {ownerInfo?.name ? `${ownerInfo.name}'s` : 'your'} AI Assistant ✨
+                            </h3>
+                            <p className="text-[12px] opacity-50 leading-relaxed" style={{ margin: 0 }}>
+                                Ask me anything about products, orders, or the store.
+                            </p>
+                        </div>
+
+                        {/* Suggested Prompts Grid */}
+                        <div className="w-full grid grid-cols-2 gap-2">
+                            {[
+                                { icon: '🛍️', label: 'Browse products', prompt: 'Show me your latest products' },
+                                { icon: '📦', label: 'Track my order', prompt: 'Where is my order?' },
+                                { icon: '💡', label: 'Recommend something', prompt: 'Recommend a product for me' },
+                                { icon: '⭐', label: 'Best sellers', prompt: 'What are your best selling products?' },
+                                { icon: '🎨', label: 'Custom order', prompt: 'Can I make a custom order?' },
+                                { icon: '💬', label: 'Contact support', prompt: 'How can I contact support?' },
+                            ].map(({ icon, label, prompt }) => (
+                                <button
+                                    key={label}
+                                    onClick={() => {
+                                        setUserMessage(prompt);
+                                        setTimeout(() => {
+                                            // auto-send
+                                            if (!isTyping) {
+                                                addMessage('user', prompt);
+                                                pendingScrollRestore.current = 'bottom';
+                                                setUserMessage('');
+                                                setIsTyping(true);
+                                                setBubbleProps(prev => ({ ...prev, isTherAnswer: true }));
+                                                setStatusMessage('Thinking...');
+                                                fetch(`${backEndUrl}/getAnswerFromAi`, {
+                                                    method: 'POST',
+                                                    headers: { 'Content-Type': 'application/json' },
+                                                    body: JSON.stringify({ userId: client?._id, message: prompt }),
+                                                }).then(async response => {
+                                                    if (!response.body) throw new Error('No response body');
+                                                    const reader = response.body.getReader();
+                                                    const decoder = new TextDecoder();
+                                                    let aiData = null;
+                                                    while (true) {
+                                                        const { done, value } = await reader.read();
+                                                        if (done) break;
+                                                        const chunk = decoder.decode(value, { stream: true });
+                                                        const lines = chunk.split('\n');
+                                                        let currentEvent = '';
+                                                        for (const line of lines) {
+                                                            if (line.startsWith('event:')) {
+                                                                currentEvent = line.replace('event:', '').trim();
+                                                            } else if (line.startsWith('data:')) {
+                                                                const dataStr = line.replace('data:', '').trim();
+                                                                try {
+                                                                    const data = JSON.parse(dataStr);
+                                                                    if (currentEvent === 'status') setStatusMessage(data.message);
+                                                                    else if (currentEvent === 'answer') aiData = data;
+                                                                } catch { }
+                                                            }
+                                                        }
+                                                    }
+                                                    if (aiData) {
+                                                        if (aiData.uiAction) handleUiAction(aiData.uiAction);
+                                                        if (aiData.cartChanged) fetchPurchasesInCart();
+                                                        addMessage('assistant', aiData.answer);
+                                                    }
+                                                    pendingScrollRestore.current = 'bottom';
+                                                }).catch(() => {
+                                                    setBubbleProps(prev => ({ ...prev, answer: 'Error.' }));
+                                                }).finally(() => {
+                                                    setIsTyping(false);
+                                                });
+                                            }
+                                        }, 0);
+                                    }}
+                                    className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-left text-[12px] font-medium border transition-all hover:scale-[1.03] active:scale-95"
+                                    style={{
+                                        background: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
+                                        borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)',
+                                    }}
+                                >
+                                    <span className="text-base flex-shrink-0">{icon}</span>
+                                    <span className="opacity-75 leading-tight">{label}</span>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
                 <div className={`prose prose-sm max-w-none ${isDark ? 'prose-invert' : ''}`}>
                     {(Array.isArray(history) ? history : [])?.filter((msg, idx) => msg.content && (msg.role == "user" || msg.role == "assistant")).map((msg, idx) => (
                         <div key={history.length - idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} mb-2`}>
-                            <div className={`max-w-[88%] px-5 py-3 rounded-[22px] text-[14px] leading-relaxed shadow-sm ${msg.role === 'user' ? 'bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-tr-none' : 'bg-current/5 border border-current/5 rounded-tl-none'}`}>
+                            <div className={`max-w-[88%] px-5 py-3 rounded-[7px] text-[14px] leading-relaxed shadow-sm ${msg.role === 'user' ? 'bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-tr-none' : 'bg-current/5 border border-current/5 rounded-tl-none'}`}>
                                 <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]} components={{
-                                    table: ({ children }) => (<div className="my-3 overflow-x-auto border border-current/10 rounded-sm- scrollbar-hide"><table className="min-w-full divide-y divide-current/10 text-[12px]">{children}</table></div>),
+                                    table: ({ children }) => (<div className="my-3 overflow-x-auto border border-current/10 rounded-sm scrollbar-hide"><table className="min-w-full divide-y divide-current/10 text-[12px]">{children}</table></div>),
                                     th: ({ children }) => <th className="p-3 bg-current/5 font-bold text-left whitespace-nowrap">{children}</th>,
                                     td: ({ children }) => <td className="p-3 border-t border-current/5 whitespace-nowrap">{children}</td>,
-                                    img: ({ node, ...props }) => <img {...props} className="max-w-full h-auto rounded-sm- my-2" loading="lazy" />,
+                                    img: ({ node, ...props }) => <img {...props} className="max-w-full h-auto rounded-sm my-2" loading="lazy" />,
                                 }}>
                                     {msg.content}
                                 </ReactMarkdown>
@@ -337,8 +449,8 @@ const AiChatBubble = () => {
             </div>
             <div className="p-6 bg-gradient-to-b from-transparent to-current/[0.03]">
                 <div className="relative group">
-                    <textarea value={userMessage} onChange={(e) => setUserMessage(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSendMessage(); } }} placeholder="Ask me anything..." className="w-full p-4 pb-12 bg-current/5 rounded-sm- text-[14px] border border-transparent focus:border-purple-500/30 outline-none transition-all resize-none shadow-inner" rows={2} />
-                    <button onClick={handleSendMessage} disabled={isTyping || !userMessage.trim()} className="absolute bottom-3 right-3 p-2.5 rounded-sm- transition-all hover:scale-105 active:scale-95 disabled:opacity-30" style={{ background: accentGradient, color: 'white' }}>
+                    <textarea value={userMessage} onChange={(e) => setUserMessage(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSendMessage(); } }} placeholder="Ask me anything..." className="w-full p-4 pb-12 bg-current/5 rounded-sm text-[14px] border border-transparent focus:border-purple-500/30 outline-none transition-all resize-none shadow-inner" rows={2} />
+                    <button onClick={handleSendMessage} disabled={isTyping || !userMessage.trim()} className="absolute bottom-3 right-3 p-2.5 rounded-sm transition-all hover:scale-105 active:scale-95 disabled:opacity-30" style={{ background: accentGradient, color: 'white' }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" strokeLinecap="round" strokeLinejoin="round" /></svg>
                     </button>
                 </div>

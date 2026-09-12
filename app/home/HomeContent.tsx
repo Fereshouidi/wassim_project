@@ -58,7 +58,7 @@ export default function HomeContent() {
             <div
                 className="w-full"
                 style={{
-                    backgroundColor: colors.light[300]
+                    backgroundColor: colors.light[150]
                 }}
             >
                 {pub?.heroBanner ?
@@ -66,7 +66,7 @@ export default function HomeContent() {
                         src={screenWidth < 1000 ? pub?.heroBanner?.sm : pub?.heroBanner?.md}
                         className="w-full h-full object-cover object-top max-h-[65vh]"
                         style={{
-                            backgroundColor: colors.dark[800]
+                            backgroundColor: colors.light[150]
                         }}
                         alt="Hero Banner"
                     />
