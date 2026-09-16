@@ -102,7 +102,7 @@ const FilterBar = ({
                 <div className="flex flex-col gap-5 sm:gap-8 mt-4">
 
                     {/* Price Range Section - Compact Layout */}
-                    <div className="w-full lg:w-3/4 mx-auto p-4 sm:p-6 rounded-sm" style={{ backgroundColor: colors.light[200] }}>
+                    <div className="w-full lg:w-3/4 mx-auto p-4 sm:p-6 rounded-lg" style={{ backgroundColor: colors.light[200] }}>
                         {mostProductExpensive && (
                             <FilterPriceRange
                                 filtration={filtration}
@@ -133,7 +133,7 @@ const FilterBar = ({
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
 
                             {/* Colors Wrapper */}
-                            <div className="flex flex-col gap-3 p-3 sm:p-5 rounded-sm border" style={{ borderColor: colors.light[200] }}>
+                            <div className="flex flex-col gap-3 p-3 sm:p-5 rounded-lg border" style={{ borderColor: colors.light[200] }}>
                                 <h5 className="text-[8px] font-black uppercase tracking-widest opacity-30">
                                     {activeLanguage.sideMatter.colors}
                                 </h5>
@@ -146,7 +146,7 @@ const FilterBar = ({
                             </div>
 
                             {/* Sizes Wrapper */}
-                            <div className="flex flex-col gap-3 p-3 sm:p-5 rounded-sm border" style={{ borderColor: colors.light[200] }}>
+                            <div className="flex flex-col gap-3 p-3 sm:p-5 rounded-lg border" style={{ borderColor: colors.light[200] }}>
                                 <h5 className="text-[8px] font-black uppercase tracking-widest opacity-30">
                                     {activeLanguage.sideMatter.sizes}
                                 </h5>
@@ -159,7 +159,7 @@ const FilterBar = ({
                             </div>
 
                             {/* Types Wrapper */}
-                            <div className="flex flex-col gap-3 p-3 sm:p-5 rounded-sm border" style={{ borderColor: colors.light[200] }}>
+                            <div className="flex flex-col gap-3 p-3 sm:p-5 rounded-lg border" style={{ borderColor: colors.light[200] }}>
                                 <h5 className="text-[8px] font-black uppercase tracking-widest opacity-30">
                                     {activeLanguage.sideMatter.types}
                                 </h5>

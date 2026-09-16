@@ -81,7 +81,7 @@ const ImagesSwitcher = ({
 
       <div className="w-full sm:w-[475px] sm:h-fit ">
         <div
-          className={`relative w-full overflow-hidden rounded-sm border border-gray-100 shadow-md bg-white
+          className={`relative w-full overflow-hidden rounded-lg border border-gray-100 shadow-md bg-white
             ${screenWidth > 500 ? "h-[450px]" : "h-[400px]"}`}
           onMouseMove={handleMouseMove}
           onMouseLeave={() => setZoomPos(prev => ({ ...prev, show: false }))}
@@ -140,7 +140,7 @@ const ImagesSwitcher = ({
                   <button
                     key={index}
                     onClick={() => setCurrentImageIndex(index)}
-                    className={`relative shrink-0 w-20 h-20 rounded-sm overflow-hidden border-2 transition-all duration-300
+                    className={`relative shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all duration-300
                       ${currentImageIndex === index
                         ? 'border-black scale-105 shadow-lg z-10'
                         : 'border-transparent opacity-60 hover:opacity-100 hover:scale-105'}`}

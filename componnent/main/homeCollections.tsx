@@ -20,7 +20,10 @@ const HomeCollections = () => {
 
             await axios.get(backEndUrl + "/homeCollections")
 
-            .then(({data}) => setCollections(data.homeCollections))
+            .then(({data}) =>  {
+                // console.log(data.homeCollections);
+                setCollections(data.homeCollections)
+            })
             .catch((err) => {
                 console.log(err);
             })

@@ -184,7 +184,7 @@ const ProductRatingForm = ({
                                 onChange={(e) => setNote(e.target.value)}
                                 placeholder={activeLanguage.writeNotes}
                                 rows={2}
-                                className="w-full text-[12px] p-3 rounded-sm border outline-none resize-none transition-all"
+                                className="w-full text-[12px] p-3 rounded-lg border outline-none resize-none transition-all"
                                 style={{
                                     backgroundColor: colors.light[100],
                                     borderColor: colors.light[300],

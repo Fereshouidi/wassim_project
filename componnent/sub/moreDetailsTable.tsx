@@ -43,7 +43,7 @@ const MoreDetailsTable = ({
 
     return (
         <div
-            className='w-full cursor-auto rounded-sm overflow-hidden border transition-all duration-300'
+            className='w-full cursor-auto rounded-lg overflow-hidden border transition-all duration-300'
             style={{
                 backgroundColor: colors.light[100],
                 borderColor: colors.light[250],

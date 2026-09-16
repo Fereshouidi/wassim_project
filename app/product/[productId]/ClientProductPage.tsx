@@ -331,7 +331,7 @@ export default function ClientProductPage({ product }: Props) {
                                         <div
                                             key={media.platform}
                                             onClick={() => handleSocialMediaClick(media)}
-                                            className="flex items-center justify-center gap-2.5 px-5 py-2.5 rounded-sm cursor-pointer transition-all hover:scale-105 active:scale-95 shadow-sm"
+                                            className="flex items-center justify-center gap-2.5 px-5 py-2.5 rounded-lg cursor-pointer transition-all hover:scale-105 active:scale-95 shadow-sm"
                                             style={{ backgroundColor: platformColor }}
                                         >
                                             <img

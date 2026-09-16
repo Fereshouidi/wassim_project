@@ -280,7 +280,7 @@ const ProductDetails = ({
         {clientCanRate && (
           <button
             onClick={() => setAddEvaluationActive(true)}
-            className='flex items-center gap-2 px-4 py-2 rounded-sm transition-all active:scale-95 shadow-sm'
+            className='flex items-center gap-2 px-4 py-2 rounded-lg transition-all active:scale-95 shadow-sm'
             style={{ backgroundColor: colors.dark[100], color: colors.light[100] }}
           >
             <span className="text-[11px] font-black uppercase tracking-wider">{activeLanguage.addEvaluation}</span>
@@ -290,7 +290,7 @@ const ProductDetails = ({
       </div>}
 
       {/* Description Article */}
-      {screenWidth > 1200 && <article className='mb-10 p-6 rounded-sm bg-black/[0.02] border border-black/5'>
+      {screenWidth > 1200 && <article className='mb-10 p-6 rounded-lg bg-black/[0.02] border border-black/5'>
         <p className='text-[14px] leading-relaxed font-medium opacity-70 whitespace-pre-line' style={{ color: colors.dark[250] }}>
           {product.description[activeLanguage.language]}
         </p>
@@ -314,7 +314,7 @@ const ProductDetails = ({
                     key={val}
                     disabled={!isAvailable}
                     onClick={() => attr.handler(val!)}
-                    className={`px-[14px] py-[9px] text-[13px] font-semibold rounded-sm border-1 transition-all duration-300 ${isSelected ? 'scale-105' : 'hover:border-black/20'}`}
+                    className={`px-[14px] py-[9px] text-[13px] font-semibold rounded-lg border-1 transition-all duration-300 ${isSelected ? 'scale-105' : 'hover:border-black/20'}`}
                     style={{
                       backgroundColor: isSelected ? colors.dark[100] : 'transparent',
                       color: isSelected ? colors.light[150] : colors.dark[150],
@@ -333,7 +333,7 @@ const ProductDetails = ({
       </div>
 
       {/* Description Article */}
-      {screenWidth < 1200 && <article className='mb-10 p-6 rounded-sm bg-black/[0.02] border border-black/5'>
+      {screenWidth < 1200 && <article className='mb-10 p-6 rounded-lg bg-black/[0.02] border border-black/5'>
         <p className='text-[14px] leading-relaxed font-medium opacity-70 whitespace-pre-line' style={{ color: colors.dark[250] }}>
           {product.description[activeLanguage.language]}
         </p>
@@ -353,7 +353,7 @@ const ProductDetails = ({
                 <div
                   key={media.platform}
                   onClick={() => handleSocialMediaClick(media)}
-                  className="flex-1 flex items-center justify-center gap-2 py-3 rounded-sm cursor-pointer transition-transform active:scale-95 shadow-sm"
+                  className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg cursor-pointer transition-transform active:scale-95 shadow-sm"
                   style={{ backgroundColor: platformColor }}
                 >
                   <img

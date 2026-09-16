@@ -30,7 +30,7 @@ export default function OrderConfirmedBanner({
         max-w-[90%] w-fit min-w-[300px]
         fixed top-4 left-1/2 -translate-x-1/2 z-50
         flex items-start gap-3 px-3 py-2 sm:px-6 sm:py-4
-        bg-green-600 text-white rounded-sm shadow-xl
+        bg-green-600 text-white rounded-lg shadow-xl
         backdrop-blur-md border border-green-400/50
 
         transition-all duration-500 ease-out

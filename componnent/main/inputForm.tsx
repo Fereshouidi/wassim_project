@@ -21,7 +21,7 @@ const InputForm = ({ clientForm, setClientForm }: InputFormType) => {
 
     // أزلنا w-full من هنا لنتمكن من التحكم في العرض عبر الحاوية
     const inputClasses = `
-        rounded-sm text-[13px] px-3 transition-colors outline-none
+        rounded-lg text-[13px] px-3 transition-colors outline-none
         border focus:border-black placeholder:opacity-70 flex-1
     `;
 

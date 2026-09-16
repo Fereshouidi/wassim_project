@@ -13,7 +13,6 @@ import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { useScreen } from '@/contexts/screenProvider';
 import SliderForPhones from '../sub/sliderForPhones';
 import SkeletonLoading from '../sub/SkeletonLoading';
-// استيراد motion
 import { motion } from 'framer-motion';
 import { slideInFromBottom } from '@/lib/motion';
 
@@ -40,7 +39,7 @@ const ProductsSection = ({
     const { colors } = useTheme();
     const { activeLanguage } = useLanguage();
     const { screenWidth } = useScreen();
-    const [limit, setLimit] = useState<number>(10);
+    const [limit, setLimit] = useState<number>(8);
     const [skip, setSkip] = useState<number>(0);
     const [productsCount, setProductsCount] = useState<number>(0);
     const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
@@ -48,7 +47,6 @@ const ProductsSection = ({
 
     const [products, setProducts] = useState<ProductType[]>(productsLoading);
 
-    // الـ Variants الخاصة بالعنوان
     const titleAnimation = {
         hidden: { y: -20, opacity: 0 },
         visible: {
@@ -116,7 +114,7 @@ const ProductsSection = ({
 
     return (
 
-        <div className='w-full flex flex-col justify-center items-center sm:my-5- overflow-hidden'>
+        <div className='w-full flex flex-col justify-center items-center sm:my-5 overflow-hidden'>
 
             {collection?.name[activeLanguage.language] ?
                 <motion.h2
@@ -124,7 +122,7 @@ const ProductsSection = ({
                     animate="visible"
                     //@ts-ignore
                     variants={slideInFromBottom(0.1)}
-                    className='text-xl sm:text-4xl sm:mb-20 mt-10 m-5 sm:m-10'
+                    className='text-xl sm:text-4xl sm:mb-10 mt-10 m-5 sm:m-10'
                     style={{
                         color: colors.dark[100],
                         ...tittleStyle
@@ -133,7 +131,7 @@ const ProductsSection = ({
                     {collection.name[activeLanguage.language]}
                 </motion.h2>
                 :
-                <div className='w-[150px] h-8 rounded-sm overflow-hidden text-2xl sm:text-5xl sm:m-20 m-10'>
+                <div className='w-[150px] h-8 rounded-lg overflow-hidden text-2xl sm:text-5xl sm:m-20 m-10'>
                     <SkeletonLoading />
                 </div>
             }

@@ -130,7 +130,7 @@ const Slider = ({
                         <ProductCard
                             key={product._id}
                             product={product}
-                            className='w-[170px] sm:w-[220px] min-h-[150px] sm:min-h-[220px] m-0 rounded-sm overflow-hidden'
+                            className='w-[170px] sm:w-[220px] min-h-[150px] sm:min-h-[220px] m-0 rounded-lg overflow-hidden'
                         // style={{
                         //     width: cardWidth + "px"
                         // }}
@@ -144,7 +144,7 @@ const Slider = ({
 
                     <div ref={productLoading} className=''>
                         <ProductLoading
-                            className='w-[170px] sm:w-[220px] min-h-[150px] sm:min-h-[220px] m-0 rounded-sm overflow-hidden'
+                            className='w-[170px] sm:w-[220px] min-h-[150px] sm:min-h-[220px] m-0 rounded-lg overflow-hidden'
                         />
                     </div>
 

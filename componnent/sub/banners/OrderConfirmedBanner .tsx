@@ -13,7 +13,7 @@ export const OrderConfirmedBanner = ({ show, order }: OrderConfirmedBannerProps)
 
     return (
         <div
-            className='w-full max-w-md p-4 rounded-sm shadow-lg flex items-center gap-3 animate-slideIn'
+            className='w-full max-w-md p-4 rounded-lg shadow-lg flex items-center gap-3 animate-slideIn'
             style={{
                 backgroundColor: '#10b981',
                 color: 'white'

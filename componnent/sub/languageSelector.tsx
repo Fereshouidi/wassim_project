@@ -57,7 +57,7 @@ const LanguageSelector = ({ className }: LanguageSelectorProps) => {
       </div>
 
       <div
-        className='absolute top-full left-0 w-full duration-200 shadow-xl rounded-sm overflow-hidden border border-black/5'
+        className='absolute top-full left-0 w-full duration-200 shadow-xl rounded-lg overflow-hidden border border-black/5'
         style={{
           backgroundColor: colors.light[100],
           visibility: isOpen ? "visible" : "hidden",
